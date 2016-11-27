@@ -12,14 +12,11 @@ public class PlayerCharacter : MonoBehaviour
         AssignStates();
 
         stateMachine.ActivateState(StateID.OnFootState);
-        stateMachine.ActivateState(StateID.SwitchingGravityState);
     }
 
     void AssignStates()
     {
         stateMachine.AssignState(StateID.OnFootState, GetComponent<OnFootState>());
         stateMachine.AssignState(StateID.GrapplingState, GetComponent<GrapplingState>());
-        stateMachine.AssignState(StateID.StickyState, GetComponent<StickyState>());
-        stateMachine.AssignState(StateID.SwitchingGravityState, GetComponent<SwitchingGravityState>());
     }
 }

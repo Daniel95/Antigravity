@@ -9,7 +9,7 @@ public class OnFootState : State {
     private ControlVelocity playerVelocity;
     private GrapplingHook grapplingHook;
     private ControlDirection playerDirection;
-    private ControlGravity playerGravity;
+    private SwitchGravity playerGravity;
 
     protected override void Awake()
     {
@@ -17,7 +17,7 @@ public class OnFootState : State {
         playerVelocity = GetComponent<ControlVelocity>();
         grapplingHook = GetComponent<GrapplingHook>();
         playerDirection = GetComponent<ControlDirection>();
-        playerGravity = GetComponent<ControlGravity>();
+        playerGravity = GetComponent<SwitchGravity>();
     }
 
     protected override void Start()
@@ -47,7 +47,7 @@ public class OnFootState : State {
         //switch the gravity
         if (Input.GetKeyDown(SwitchGravityInput))
         {
-            playerGravity.SwitchGravity();
+            playerGravity.StartGravitating();
         }
     }
 
@@ -61,6 +61,7 @@ public class OnFootState : State {
     //on collision we check in which direction we should go
     public override void OnCollEnter2D(Collision2D coll)
     {
+
         playerDirection.CheckDirection(playerVelocity.GetDirection);
     }
 }

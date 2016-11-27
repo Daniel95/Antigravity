@@ -70,7 +70,8 @@ public class GrapplingState : State {
     {
         while (true)
         {
-            //set the direction to the direction of our current velocity, also save it in previous direction so next frame we can check what the old direction was
+            //set the direction to the direction of our current velocity, 
+            //also save it in previous direction so next frame we can check what the old direction was
             playerVelocity.SetDirection(previousDirection = playerVelocity.GetVelocityDirection);
             yield return new WaitForFixedUpdate();
         }

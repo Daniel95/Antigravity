@@ -6,7 +6,6 @@ public enum StateID
     OnFootState = 0,
     GrapplingState = 1,
     StickyState = 2,
-    SwitchingGravityState = 3,
 }
 
 public class StateMachine : MonoBehaviour {

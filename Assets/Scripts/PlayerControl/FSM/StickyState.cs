@@ -11,20 +11,19 @@ public class StickyState : State {
 
     private CharRaycasting charRaycasting;
     private ControlVelocity playerMovement;
-    private ControlGravity playerGravity;
+    private SwitchGravity playerGravity;
 
     protected override void Awake()
     {
         base.Awake();
         charRaycasting = GetComponent<CharRaycasting>();
         playerMovement = GetComponent<ControlVelocity>();
-        playerGravity = GetComponent<ControlGravity>();
+        playerGravity = GetComponent<SwitchGravity>();
     }
 
     public override void EnterState()
     {
         base.EnterState();
-        playerGravity.SetGravity(stickyGravity);
     }
 
     public override void Act()

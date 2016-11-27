@@ -28,9 +28,11 @@ public class ControlVelocity : MonoBehaviour {
 
     private Rigidbody2D rb;
 
-    public Coroutine updateDirectionalMovement;
+    private  Coroutine updateDirectionalMovement;
 
-    public Coroutine updateNaturalMovement;
+    private Coroutine updateNaturalMovement;
+
+    private Coroutine addSpeedOverTime;
 
     void Awake()
     {
@@ -86,6 +88,35 @@ public class ControlVelocity : MonoBehaviour {
         StartCoroutine(ReturnSpeedToNormal(speedIncreaseTime));
     }
 
+    public void StartIncrementingSpeed(float _increment, float _max)
+    {
+        addSpeedOverTime = StartCoroutine(IncrementingSpeed(_increment, _max));
+    }
+
+    public void StopIncrementingSpeed() {
+        StopCoroutine(addSpeedOverTime);
+    }
+
+    IEnumerator IncrementingSpeed (float _increment, float _max)
+    {
+        if (_max > speed)
+        {
+            while (speed < _max)
+            {
+                speed += _increment;
+                yield return new WaitForFixedUpdate();
+            }
+        }
+        else
+        {
+            while (speed > _max)
+            {
+                speed += _increment;
+                yield return new WaitForFixedUpdate();
+            }
+        }
+    }
+
     public void AddVelocity(Vector2 _velocity) {
         rb.velocity += _velocity;
     }
@@ -101,7 +132,7 @@ public class ControlVelocity : MonoBehaviour {
     public void SetDirection(Vector2 _dir) {
         direction = _dir;
     }
-    
+
     //returns our own controlled direction
     public Vector2 GetDirection {
         get { return direction; }
