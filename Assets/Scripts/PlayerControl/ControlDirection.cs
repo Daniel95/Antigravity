@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
+
 
 public class ControlDirection : MonoBehaviour {
 
@@ -9,6 +11,8 @@ public class ControlDirection : MonoBehaviour {
     //the last directions before it was set to zero
     private Vector2 lastDir;
 
+    public Action<Vector2> finishedDirectionLogic;
+
     void Start() {
         ray = GetComponent<CharRaycasting>();
         controlVelocity = GetComponent<ControlVelocity>();
@@ -16,60 +20,71 @@ public class ControlDirection : MonoBehaviour {
         lastDir = controlVelocity.GetDirection;
     }
 
-    public void CheckDirection(Vector2 _grappleDirection = default(Vector2)) {
-        StartCoroutine(WaitForRigidBodyCorrection(_grappleDirection));
+    public void CheckDirection(Vector2 _currentDir) {
+        StartCoroutine(WaitForRigidBodyCorrection(_currentDir));
     }
 
-    //we have to wait one frame, because the first frame of collision the object might be inside the other object, 
+    //we have to wait two frames, because at this time the object might be inside the other object, 
     //so we wait until the rigidbody has adjusted our position 
-    IEnumerator WaitForRigidBodyCorrection(Vector2 _grappleDirection)
+    IEnumerator WaitForRigidBodyCorrection(Vector2 _currentDir)
     {
         yield return new WaitForFixedUpdate();
         yield return new WaitForFixedUpdate();
-        DirectionLogic(_grappleDirection);
+        AdjustDirection(_currentDir);
     }
 
-    public void DirectionLogic(Vector2 _grappleDirection) {
+    private void AdjustDirection(Vector2 _currentDir) {
+        controlVelocity.SetDirection(DirectionLogic(_currentDir));
+
+        if (finishedDirectionLogic != null)
+        {
+            finishedDirectionLogic(lastDir);
+        }
+    }
+
+    //the logic we use to control the players direction using raycasts after we had collision with another object
+    private Vector2 DirectionLogic(Vector2 _currentDir)
+    {
 
         //get the collision directions of the raycasts
         Vector2 rayDir = new Vector2(ray.CheckHorizontalDir(), ray.CheckVerticalDir());
 
-        //if we have collision on only one axis, check the direction of our velocity to decide our direction
-        if (rayDir.x != 0 && rayDir.y == 0) {
-            //if we have velocity towards a direction (we could move at a platform from an angle), use that for the new direction
-            if (_grappleDirection.y != 0)
-            {
-                if (_grappleDirection.y > 0)
-                    lastDir.y = 1;
-                else
-                    lastDir.y = -1;
+        Vector2 newDir = new Vector2();
 
+        //if we are not hitting a wall on both axis
+        if (rayDir.x == 0 || rayDir.y == 0) {
+
+            //we dont want to overwrite our last dir when it with a zero, we use to to determine which direction we should move
+            //if our currentDir.x isn't 0, set is as our lastDir.x
+            if (_currentDir.x != 0)
+            {
+                lastDir.x = InvertOnNegativeCeil(_currentDir.x);
+            }
+
+            //if our currentDir.y isn't 0, set is as our lastDir.y
+            if (_currentDir.y != 0)
+            {
+                lastDir.y = InvertOnNegativeCeil(_currentDir.y);
+            }
+
+            //if both _currentDir.x & _currentDir.y aren't 0, we come from an angle and we should speed up
+            if (_currentDir.x != 0 && _currentDir.y != 0)
+            {
                 controlVelocity.TempSpeedUp();
             }
-            else {
+            else { //else our collision is direct and we should slow down
                 controlVelocity.TempSlowDown();
             }
 
-            controlVelocity.TempSlowDown();
-            controlVelocity.SetDirection(new Vector2(0, lastDir.y));
-        }
-        else if (rayDir.y != 0 && rayDir.x == 0)
-        {
-            //if we have velocity towards a direction (we could move at a platform from an angle), use that for the new direction
-            if (_grappleDirection.x != 0)
+            //replace the dir on the axis that we dont have a collision with
+            //example: if we hit something under us, move to the left or right, depeding on our lastDir
+            if (rayDir.x != 0)
             {
-                if (_grappleDirection.x > 0)
-                    lastDir.x = 1;
-                else
-                    lastDir.x = -1;
-
-                controlVelocity.TempSpeedUp();
+                newDir = new Vector2(0, lastDir.y);
             }
             else {
-                controlVelocity.TempSlowDown();
+                newDir = new Vector2(lastDir.x, 0);
             }
-
-            controlVelocity.SetDirection(new Vector2(lastDir.x, 0));
         }
         else //here we know we are hitting more than one wall, or no wall at all
         {
@@ -79,20 +94,61 @@ public class ControlDirection : MonoBehaviour {
             }
             else
             {
-                //if the velocity is zero on the x, we know we are wall 
-                if (controlVelocity.GetDirection.x != 0)
+                //if the direction is zero on the x, we know we hit a wall on the Y axis
+                if (_currentDir.x != 0)
                 {
                     lastDir.y = rayDir.y * -1;
-                    controlVelocity.SetDirection(new Vector2(0, lastDir.y));
+                    newDir = new Vector2(0, lastDir.y);
                 }
                 else
                 {
                     lastDir.x = rayDir.x * -1;
-                    controlVelocity.SetDirection(new Vector2(lastDir.x, 0));
+                    newDir = new Vector2(lastDir.x, 0);
                 }
 
                 controlVelocity.TempSlowDown();
             }
         }
+
+        return newDir;
+    }
+
+    //round the float to the highest, or lowest int, depeding on if the float is negative or positive
+    private int InvertOnNegativeCeil(float _float) {
+        if (_float > 0)
+        {
+            return Mathf.CeilToInt(_float);
+        }
+        else {
+            return Mathf.FloorToInt(_float);
+        }
+    }
+
+    //get the direction we should move towards when we start sliding
+    public Vector2 GetSlideDirection(Vector2 _grappleDirection)
+    {
+        Vector2 currentDir = controlVelocity.GetVelocityDirection;
+        print("currentdir: " + currentDir);
+        print("grappledir: " + _grappleDirection);
+        float angle = Vector2.Angle(currentDir, _grappleDirection);
+        print("angle: " + angle);
+        print("adjusted grapple dir:" + (_grappleDirection * (angle / 180)));
+        Vector2 newDir = (currentDir + (_grappleDirection * (angle / 270))) / 2;
+        print("newDir: " + newDir);
+
+        /*
+         * 
+         *         Vector2 currentDir = controlVelocity.GetControlledDirection;
+        print("currentdir: " + currentDir);
+        print("grappledir: " + _grappleDirection);
+        float angle = Vector2.Angle(currentDir, _grappleDirection);
+        print("angle: " + angle);
+        print("adjusted grapple dir:" + (_grappleDirection * (angle / 180)));
+        Vector2 newDir = (_grappleDirection * (angle / 270) - currentDir);
+        print("newDir: " + newDir);
+
+        */
+
+        return newDir;
     }
 }

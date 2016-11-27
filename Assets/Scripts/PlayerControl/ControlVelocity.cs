@@ -24,26 +24,35 @@ public class ControlVelocity : MonoBehaviour {
     [SerializeField]
     private Vector2 direction;
 
+    private float startMaxSpeed;
+
     private Rigidbody2D rb;
 
-    private Coroutine updateMovement;
+    public Coroutine updateDirectionalMovement;
+
+    public Coroutine updateNaturalMovement;
 
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        startMaxSpeed = maxSpeed;
     }
 
-    public void StartPlayerMovement()
+    public void StartDirectionalMovement()
     {
-        updateMovement = StartCoroutine(UpdateMovement());
+        updateDirectionalMovement = StartCoroutine(UpdateDirectionalMovement());
     }
 
-    public void StopPlayerMovement()
+    public void StopDirectionalMovement()
     {
-        StopCoroutine(updateMovement);
+        if (updateDirectionalMovement != null)
+        {
+            StopCoroutine(updateDirectionalMovement);
+            updateDirectionalMovement = null;
+        }
     }
 
-    IEnumerator UpdateMovement()
+    IEnumerator UpdateDirectionalMovement()
     {
         while (true)
         {
@@ -81,12 +90,8 @@ public class ControlVelocity : MonoBehaviour {
         rb.velocity += _velocity;
     }
 
-    public void SetVelocityX(float _xVelocity) {
-        rb.velocity = new Vector3(_xVelocity, rb.velocity.y);
-    }
-
-    public void SetVelocityY(float _yVelocity) {
-        rb.velocity = new Vector3(rb.velocity.x, _yVelocity);
+    public void SetVelocity(Vector2 _velocity) {
+        rb.velocity = _velocity;
     }
 
     public void SwitchDirection() {
@@ -97,12 +102,29 @@ public class ControlVelocity : MonoBehaviour {
         direction = _dir;
     }
     
+    //returns our own controlled direction
     public Vector2 GetDirection {
         get { return direction; }
     }
 
+    //returns the realtime direction of the velocity
+    public Vector2 GetVelocityDirection {
+        //get { return transform.InverseTransformDirection(rb.velocity).normalized; }
+        get { return rb.velocity.normalized; }
+    }
+
     public Vector2 GetVelocity {
         get { return rb.velocity; }
+    }
+
+    public float MaxSpeed {
+        get { return maxSpeed; }
+        set { maxSpeed = value; }
+    }
+
+    public void ResetMaxSpeed()
+    {
+        maxSpeed = startMaxSpeed;
     }
 }
 

@@ -53,6 +53,7 @@ public class ActivateWeapon : MonoBehaviour {
                 targetPos = hit.point;
             }
 
+            //fire the current weapon
             weapons[weaponIndex].Fire(dir, targetPos, spawnTransform.position);
         }
     }

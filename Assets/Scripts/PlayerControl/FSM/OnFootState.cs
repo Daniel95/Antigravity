@@ -17,24 +17,34 @@ public class OnFootState : State {
         playerVelocity = GetComponent<ControlVelocity>();
         grapplingHook = GetComponent<GrapplingHook>();
         playerDirection = GetComponent<ControlDirection>();
+        playerGravity = GetComponent<ControlGravity>();
     }
 
     protected override void Start()
     {
         base.Start();
+
         playerVelocity.StartReturnSpeedToNormal(0.1f);
     }
 
     public override void EnterState()
     {
         base.EnterState();
+
+        playerVelocity.StopDirectionalMovement();
+        playerVelocity.StartDirectionalMovement();
+
+        //subscribe to StartedGrappleLocking, so we know when we should start grappling and exit this state
         grapplingHook.StartedGrappleLocking += ExitState;
-        playerVelocity.StartPlayerMovement();
+
+        playerVelocity.ResetMaxSpeed();
     }
 
     public override void Act()
     {
         base.Act();
+
+        //switch the gravity
         if (Input.GetKeyDown(SwitchGravityInput))
         {
             playerGravity.SwitchGravity();
@@ -48,8 +58,9 @@ public class OnFootState : State {
         stateMachine.DeactivateState(StateID.OnFootState);
     }
 
+    //on collision we check in which direction we should go
     public override void OnCollEnter2D(Collision2D coll)
     {
-        playerDirection.CheckDirection();
+        playerDirection.CheckDirection(playerVelocity.GetDirection);
     }
 }

@@ -22,7 +22,6 @@ public class GrapplingHook : MonoBehaviour, IWeapon {
     //use the direction to determine which direction we go when we lands
     private Vector2 currentDirection;
 
-
     void Start() {
         distanceJoint = GetComponent<DistanceJoint2D>();
         lineRenderer = GetComponent<LineRenderer>();
@@ -40,10 +39,12 @@ public class GrapplingHook : MonoBehaviour, IWeapon {
 
         currentGrappleProjectile = Instantiate(grappleProjectile, _spawnPosition, new Quaternion(0, 0, 0, 0)) as GameObject;
 
+        //activate movetowards script
         MoveTowards grappleMovement = currentGrappleProjectile.GetComponent<MoveTowards>();
         grappleMovement.reachedDestination += EnterGrappleLock;
         grappleMovement.StartMoving(_destination);
 
+        //activate line renderer
         lineRenderer.enabled = true;
         lineUpdateCoroutine = StartCoroutine(UpdateLineRendererPositions());
     }
@@ -61,8 +62,9 @@ public class GrapplingHook : MonoBehaviour, IWeapon {
         if (StartedGrappleLocking != null)
             StartedGrappleLocking();
 
+        //activate distanceJoint2D
         distanceJoint.enabled = true;
-        
+
         distanceJoint.connectedAnchor = currentGrappleProjectile.transform.position;
         distanceJoint.distance = Vector2.Distance(transform.position, currentGrappleProjectile.transform.position);
     }
@@ -74,6 +76,7 @@ public class GrapplingHook : MonoBehaviour, IWeapon {
 
         lineRenderer.enabled = false;
         StopCoroutine(lineUpdateCoroutine);
+
         distanceJoint.enabled = false;
         Destroy(currentGrappleProjectile);
     }
