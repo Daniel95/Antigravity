@@ -2,6 +2,8 @@
 using System;
 using System.Collections;
 
+using UnityEditor;
+
 public class MoveTowards : MonoBehaviour {
 
     [SerializeField]
@@ -12,8 +14,15 @@ public class MoveTowards : MonoBehaviour {
 
     public Action reachedDestination;
 
+    private Coroutine moveTo;
+
     public void StartMoving(Vector2 _destination) {
-        StartCoroutine(MoveTo(_destination));
+        //if we are still busy moving towards something, cancel it
+        if (moveTo != null) {
+            StopMoving();
+        }
+
+        moveTo = StartCoroutine(MoveTo(_destination));
     }
 
     //moves itself to the destination with a const force, activates reachedDestination delegate when the distance is small enough
@@ -23,10 +32,17 @@ public class MoveTowards : MonoBehaviour {
             yield return new WaitForFixedUpdate();
         }
 
+        moveTo = null;
+
         transform.position = _destination;
 
         if (reachedDestination != null)
             reachedDestination();
+    }
+
+    public void StopMoving() {
+        StopCoroutine(moveTo);
+        moveTo = null;
     }
 
     void OnDestroy() {

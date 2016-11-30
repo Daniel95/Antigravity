@@ -39,27 +39,23 @@ public class GrapplingState : State {
     public override void EnterState()
     {
         base.EnterState();
-        playerVelocity.MaxSpeed = grappleSpeed;
+        playerVelocity.TargetSpeed = grappleSpeed;
 
-        //subscribe SetSlideDirection to the startgrapplelocking delegate for when we activate a new grapple while still in this state
-        grapplingHook.StartedGrappleLocking += ActivateSlingDirection;
-        //but the first time activate SetSlideDirection manually
+        //activate a different direction movement when in this state
         ActivateSlingDirection();
+
+        //exit the state when the grapple has released itself
+        grapplingHook.StoppedGrappleLocking += ExitState;
 
         checkStuckTimer = StartCoroutine(CheckStuckTimer());
     }
 
     //set the right slide direction so we always move the same speed when we slide
     private void ActivateSlingDirection() {
-        
-        //playerVelocity.SetVelocity(playerVelocity.MaxSpeed * playerDirection.GetSlideDirection(grapplingHook.Direction));
-
         //stop the directionalMovement
         playerVelocity.StopDirectionalMovement();
 
-        if (updateSlingDirection == null)
-            updateSlingDirection = StartCoroutine(UpdateSlingDirection());
-
+        updateSlingDirection = StartCoroutine(UpdateSlingDirection());
 
         //start the directionalMovement again when we updated the direction
         playerVelocity.StartDirectionalMovement();
@@ -108,14 +104,17 @@ public class GrapplingState : State {
         }
     }
 
-    private void ExitState()
-    {
-        //stop the updateslingdir coroutine and unsubscribe from the started grappling delegate 
-        StopCoroutine(updateSlingDirection);
-        updateSlingDirection = null;
+    private void ExitState() {
+        //unsubscripte from all relevant delegates
         grapplingHook.StartedGrappleLocking -= ActivateSlingDirection;
+        grapplingHook.StoppedGrappleLocking -= ExitState;
 
         grapplingHook.ExitGrappleLock();
+
+        //stop the updateslingdir coroutine and unsubscribe from the started grappling delegate 
+        StopCoroutine(updateSlingDirection);
+
+        grapplingHook.StoppedGrappleLocking -= ExitState;
 
         stateMachine.ActivateState(StateID.OnFootState);
         stateMachine.DeactivateState(StateID.GrapplingState);

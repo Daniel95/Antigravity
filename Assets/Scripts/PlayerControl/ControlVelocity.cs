@@ -5,9 +5,11 @@ using System.Collections;
 public class ControlVelocity : MonoBehaviour {
 
     [SerializeField]
-    private float maxSpeed = 5;
+    private float targetSpeed = 5;
 
-    private float speed;
+    private float currentSpeed;
+
+    private float speedMultiplier = 1;
 
     [SerializeField]
     private float speedIncreaseTime = 0.3f;
@@ -24,7 +26,7 @@ public class ControlVelocity : MonoBehaviour {
     [SerializeField]
     private Vector2 direction;
 
-    private float startMaxSpeed;
+    private float originalTargetSpeed;
 
     private Rigidbody2D rb;
 
@@ -37,7 +39,7 @@ public class ControlVelocity : MonoBehaviour {
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-        startMaxSpeed = maxSpeed;
+        originalTargetSpeed = targetSpeed;
     }
 
     public void StartDirectionalMovement()
@@ -59,16 +61,16 @@ public class ControlVelocity : MonoBehaviour {
         while (true)
         {
             //add our own constant force, without removing the gravity of our rigidbodys
-            rb.velocity = direction * speed;
+            rb.velocity = direction * (currentSpeed * speedMultiplier);
             yield return new WaitForFixedUpdate();
         }
     }
 
     IEnumerator ReturnSpeedToNormal(float _time)
     {
-        while (speed != maxSpeed)
+        while (currentSpeed != targetSpeed)
         {
-            speed = Mathf.Lerp(speed, maxSpeed, _time);
+            currentSpeed = Mathf.Lerp(currentSpeed, targetSpeed, _time);
             yield return new WaitForFixedUpdate();
         }
     }
@@ -79,12 +81,12 @@ public class ControlVelocity : MonoBehaviour {
     }
 
     public void TempSlowDown() {
-        speed = maxSpeed * speedDecreaseMultiplier;
+        currentSpeed = targetSpeed * speedDecreaseMultiplier;
         StartCoroutine(ReturnSpeedToNormal(speedDecreaseTime));
     }
 
     public void TempSpeedUp() {
-        speed = maxSpeed * speedIncreaseMultiplier;
+        currentSpeed = targetSpeed * speedIncreaseMultiplier;
         StartCoroutine(ReturnSpeedToNormal(speedIncreaseTime));
     }
 
@@ -99,19 +101,19 @@ public class ControlVelocity : MonoBehaviour {
 
     IEnumerator IncrementingSpeed (float _increment, float _max)
     {
-        if (_max > speed)
+        if (_max > currentSpeed)
         {
-            while (speed < _max)
+            while (currentSpeed < _max)
             {
-                speed += _increment;
+                currentSpeed += _increment;
                 yield return new WaitForFixedUpdate();
             }
         }
         else
         {
-            while (speed > _max)
+            while (currentSpeed > _max)
             {
-                speed += _increment;
+                currentSpeed += _increment;
                 yield return new WaitForFixedUpdate();
             }
         }
@@ -123,6 +125,10 @@ public class ControlVelocity : MonoBehaviour {
 
     public void SetVelocity(Vector2 _velocity) {
         rb.velocity = _velocity;
+    }
+
+    public void SetSpeedMultiplier(float _newMultiplier) {
+        speedMultiplier = _newMultiplier;
     }
 
     public void SwitchDirection() {
@@ -148,14 +154,19 @@ public class ControlVelocity : MonoBehaviour {
         get { return rb.velocity; }
     }
 
-    public float MaxSpeed {
-        get { return maxSpeed; }
-        set { maxSpeed = value; }
+    public float TargetSpeed
+    {
+        get { return targetSpeed; }
+        set { targetSpeed = value; }
     }
 
-    public void ResetMaxSpeed()
+    public float CurrentSpeed {
+        get { return currentSpeed; }
+    }
+
+    public void ResetTargetSpeed()
     {
-        maxSpeed = startMaxSpeed;
+        targetSpeed = originalTargetSpeed;
     }
 }
 

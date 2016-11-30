@@ -16,7 +16,7 @@ public class GrappleProjectile : MonoBehaviour, IShootable {
         moveTowards.reachedDestination += grappleLocked;
     }
 
-    void OnDestroy()
+    void OnDisable()
     {
         grappleLocked = null;
     }

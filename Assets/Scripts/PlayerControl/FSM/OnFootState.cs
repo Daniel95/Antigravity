@@ -37,7 +37,7 @@ public class OnFootState : State {
         //subscribe to StartedGrappleLocking, so we know when we should start grappling and exit this state
         grapplingHook.StartedGrappleLocking += ExitState;
 
-        playerVelocity.ResetMaxSpeed();
+        playerVelocity.ResetTargetSpeed();
     }
 
     public override void Act()
@@ -61,7 +61,6 @@ public class OnFootState : State {
     //on collision we check in which direction we should go
     public override void OnCollEnter2D(Collision2D coll)
     {
-
         playerDirection.CheckDirection(playerVelocity.GetDirection);
     }
 }
