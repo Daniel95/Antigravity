@@ -95,9 +95,11 @@ public class ControlVelocity : MonoBehaviour {
         addSpeedOverTime = StartCoroutine(IncrementingSpeed(_increment, _max));
     }
 
+
     public void StopIncrementingSpeed() {
         StopCoroutine(addSpeedOverTime);
     }
+
 
     IEnumerator IncrementingSpeed (float _increment, float _max)
     {
@@ -127,27 +129,59 @@ public class ControlVelocity : MonoBehaviour {
         rb.velocity = _velocity;
     }
 
-    public void SetSpeedMultiplier(float _newMultiplier) {
-        speedMultiplier = _newMultiplier;
-    }
-
     public void SwitchDirection() {
         direction *= -1;
     }
 
-    public void SetDirection(Vector2 _dir) {
+    //adjusts the given dir with the current multiplier,
+    //also only inverts a dir when it has changed
+    public void SetAdjustingDirection(Vector2 _dir) {
+        Vector2 directionDifference = direction - _dir;
+
+        int multiplierDir = GetMultiplierDir();
+
+        //only adjust the direction to multiplierDir if it has changed
+        if (directionDifference.x != 0) {
+            _dir.x *= multiplierDir;
+        }
+        if (directionDifference.y != 0) {
+            _dir.y *= multiplierDir;
+        }
+
+        direction = _dir;
+    }
+
+    //returns the direction of the multiplier (1 or -1)
+    public int GetMultiplierDir()
+    {
+        int speedMultiplierDir = 1;
+        if (speedMultiplier < 0)
+        {
+            speedMultiplierDir = -1;
+        }
+
+        return speedMultiplierDir;
+    }
+
+    //set the direction without adjusting anything
+    public void SetDirectDirection(Vector2 _dir)
+    {
         direction = _dir;
     }
 
     //returns our own controlled direction
-    public Vector2 GetDirection {
-        get { return direction; }
+    public Vector2 GetControlledDirection() {
+        return direction;
     }
 
     //returns the realtime direction of the velocity
-    public Vector2 GetVelocityDirection {
-        //get { return transform.InverseTransformDirection(rb.velocity).normalized; }
-        get { return rb.velocity.normalized; }
+    public Vector2 GetVelocityDirection() {
+        return GetVelocity.normalized;
+    }
+
+    public Vector2 GetCeilVelocityDirection() {
+        Vector2 velocityNormalized = GetVelocity.normalized;
+        return new Vector2(Rounding.InvertOnNegativeCeil(velocityNormalized.x), Rounding.InvertOnNegativeCeil(velocityNormalized.y));
     }
 
     public Vector2 GetVelocity {
@@ -162,6 +196,12 @@ public class ControlVelocity : MonoBehaviour {
 
     public float CurrentSpeed {
         get { return currentSpeed; }
+    }
+
+    public float SpeedMultiplier
+    {
+        get { return speedMultiplier; }
+        set { speedMultiplier = value; }
     }
 
     public void ResetTargetSpeed()

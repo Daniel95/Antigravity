@@ -6,15 +6,17 @@ public class GrapplingState : State {
     [SerializeField]
     private KeyCode cancelGrappleKey = KeyCode.Space;
 
-    [SerializeField]
-    private float grappleSpeed = 3;
+    //[SerializeField]
+    //private float grappleSpeed = 4.5f;
 
     [SerializeField]
     private int maxFramesStuck = 40;
 
-    private ControlVelocity playerVelocity;
-    private ControlDirection playerDirection;
     private GrapplingHook grapplingHook;
+
+    private FutureDirectionIndicator dirIndicator;
+
+    private PlayerScriptAccess plrAccess;
 
     private Coroutine checkStuckTimer;
 
@@ -30,19 +32,25 @@ public class GrapplingState : State {
     protected override void Awake()
     {
         base.Awake();
-        playerVelocity = GetComponent<ControlVelocity>();
-        playerDirection = GetComponent<ControlDirection>();
         grapplingHook = GetComponent<GrapplingHook>();
+        plrAccess = GetComponent<PlayerScriptAccess>();
+        dirIndicator = GetComponent<FutureDirectionIndicator>();
         gunLookAt = gun.GetComponent<LookAt>();
     }
 
     public override void EnterState()
     {
         base.EnterState();
-        playerVelocity.TargetSpeed = grappleSpeed;
 
         //activate a different direction movement when in this state
         ActivateSlingDirection();
+
+        plrAccess.changeSpeedMultiplier.switchedSpeed += FlipSwingDirection;
+        
+        //only flip the swingdir when our multiplier is in the minus, because we cant
+        if (plrAccess.controlVelocity.SpeedMultiplier < 0) {
+            FlipSwingDirection();
+        }
 
         //exit the state when the grapple has released itself
         grapplingHook.StoppedGrappleLocking += ExitState;
@@ -53,12 +61,12 @@ public class GrapplingState : State {
     //set the right slide direction so we always move the same speed when we slide
     private void ActivateSlingDirection() {
         //stop the directionalMovement
-        playerVelocity.StopDirectionalMovement();
+        plrAccess.controlVelocity.StopDirectionalMovement();
 
         updateSlingDirection = StartCoroutine(UpdateSlingDirection());
 
         //start the directionalMovement again when we updated the direction
-        playerVelocity.StartDirectionalMovement();
+        plrAccess.controlVelocity.StartDirectionalMovement();
     }
 
     //updates the direction of the controlVelocity script so that we swing smoothly towards the right direction
@@ -68,9 +76,15 @@ public class GrapplingState : State {
         {
             //set the direction to the direction of our current velocity, 
             //also save it in previous direction so next frame we can check what the old direction was
-            playerVelocity.SetDirection(previousDirection = playerVelocity.GetVelocityDirection);
+            plrAccess.controlVelocity.SetDirectDirection(previousDirection = plrAccess.controlVelocity.GetVelocityDirection());
+            plrAccess.controlVelocity.SpeedMultiplier = Mathf.Abs(plrAccess.controlVelocity.SpeedMultiplier);
             yield return new WaitForFixedUpdate();
         }
+    }
+
+    //sets the velocity to the opposite
+    private void FlipSwingDirection() {
+        plrAccess.controlVelocity.SetVelocity(plrAccess.controlVelocity.GetVelocity * -1);
     }
 
     public override void Act()
@@ -80,6 +94,7 @@ public class GrapplingState : State {
         if (Input.GetKeyDown(cancelGrappleKey))
         {
             ExitState();
+            dirIndicator.PointToRoundedVelocityDir();
         }
 
         //update the rotation of the gun
@@ -97,19 +112,22 @@ public class GrapplingState : State {
         }
 
         //check if the player is still stuck, if so unlock the grapple
-        if (playerVelocity.GetVelocity == Vector2.zero)
+        if (plrAccess.controlVelocity.GetVelocity == Vector2.zero)
         {
-            playerVelocity.SetDirection(grapplingHook.Direction);
+            plrAccess.controlVelocity.SetAdjustingDirection(grapplingHook.Direction);
             ExitState();
         }
     }
 
     private void ExitState() {
         //unsubscripte from all relevant delegates
+        plrAccess.changeSpeedMultiplier.switchedSpeed -= FlipSwingDirection;
         grapplingHook.StartedGrappleLocking -= ActivateSlingDirection;
         grapplingHook.StoppedGrappleLocking -= ExitState;
 
         grapplingHook.ExitGrappleLock();
+
+        plrAccess.changeSpeedMultiplier.ResetSpeedMultiplier();
 
         //stop the updateslingdir coroutine and unsubscribe from the started grappling delegate 
         StopCoroutine(updateSlingDirection);
@@ -123,7 +141,7 @@ public class GrapplingState : State {
     //on collision we exit this state, and check which direction we should go
     public override void OnCollEnter2D(Collision2D coll)
     {
-        playerDirection.CheckDirection(previousDirection);
+        plrAccess.controlDirection.CheckDirection(previousDirection);
         ExitState();
     }
 }

@@ -8,13 +8,15 @@ public class SwitchGravity : MonoBehaviour {
     private float gravitateSpeedIncrement = 0.01f;
 
     [SerializeField]
-    private float gravitateSpeedMax = 5;
+    private float gravitateMaxSpeedIncrement = 1;
 
     private ControlVelocity velocity;
 
     private CharRaycasting raycasting;
 
     private bool gravitating;
+
+    public Action switchedGravity;
 
 	// Use this for initialization
 	void Start () {
@@ -27,7 +29,7 @@ public class SwitchGravity : MonoBehaviour {
 
         Vector2 newDir = new Vector2();
 
-        //check if we have raycast collision on only one axis, gravity wont work when we are on a corner
+        //check if we have raycast collision on only one axis, gravity wont work when we are in a corner
         if (raycastResults.x == 0 || raycastResults.y == 0)
         {
             //check the raycastdir, our newDir is the opposite of one of the axes
@@ -40,10 +42,13 @@ public class SwitchGravity : MonoBehaviour {
                 newDir.y = raycastResults.y * -1;
             }
 
-            velocity.SetDirection(newDir + velocity.GetDirection);
-            velocity.StartIncrementingSpeed(gravitateSpeedIncrement, gravitateSpeedMax);
+            velocity.SetAdjustingDirection(newDir + velocity.GetControlledDirection());
+            velocity.StartIncrementingSpeed(gravitateSpeedIncrement, velocity.CurrentSpeed + gravitateMaxSpeedIncrement);
 
             gravitating = true;
+
+            if (switchedGravity != null)
+                switchedGravity();
         }
     }
 

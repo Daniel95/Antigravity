@@ -6,38 +6,34 @@ public class OnFootState : State {
     [SerializeField]
     private KeyCode SwitchGravityInput = KeyCode.Space;
 
-    private ControlVelocity playerVelocity;
+    private PlayerScriptAccess plrAccess;
     private GrapplingHook grapplingHook;
-    private ControlDirection playerDirection;
-    private SwitchGravity playerGravity;
 
     protected override void Awake()
     {
         base.Awake();
-        playerVelocity = GetComponent<ControlVelocity>();
+        plrAccess = GetComponent<PlayerScriptAccess>();
         grapplingHook = GetComponent<GrapplingHook>();
-        playerDirection = GetComponent<ControlDirection>();
-        playerGravity = GetComponent<SwitchGravity>();
     }
 
     protected override void Start()
     {
         base.Start();
 
-        playerVelocity.StartReturnSpeedToNormal(0.1f);
+        plrAccess.controlVelocity.StartReturnSpeedToNormal(0.1f);
     }
 
     public override void EnterState()
     {
         base.EnterState();
 
-        playerVelocity.StopDirectionalMovement();
-        playerVelocity.StartDirectionalMovement();
+        plrAccess.controlVelocity.StopDirectionalMovement();
+        plrAccess.controlVelocity.StartDirectionalMovement();
 
         //subscribe to StartedGrappleLocking, so we know when we should start grappling and exit this state
         grapplingHook.StartedGrappleLocking += ExitState;
 
-        playerVelocity.ResetTargetSpeed();
+        plrAccess.controlVelocity.ResetTargetSpeed();
     }
 
     public override void Act()
@@ -47,7 +43,7 @@ public class OnFootState : State {
         //switch the gravity
         if (Input.GetKeyDown(SwitchGravityInput))
         {
-            playerGravity.StartGravitating();
+            plrAccess.switchGravity.StartGravitating();
         }
     }
 
@@ -61,6 +57,6 @@ public class OnFootState : State {
     //on collision we check in which direction we should go
     public override void OnCollEnter2D(Collision2D coll)
     {
-        playerDirection.CheckDirection(playerVelocity.GetDirection);
+        plrAccess.controlDirection.CheckDirection(plrAccess.controlVelocity.GetControlledDirection());
     }
 }

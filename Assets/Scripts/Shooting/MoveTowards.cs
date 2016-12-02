@@ -2,8 +2,6 @@
 using System;
 using System.Collections;
 
-using UnityEditor;
-
 public class MoveTowards : MonoBehaviour {
 
     [SerializeField]

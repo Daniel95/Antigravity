@@ -17,7 +17,7 @@ public class ControlDirection : MonoBehaviour {
         ray = GetComponent<CharRaycasting>();
         controlVelocity = GetComponent<ControlVelocity>();
 
-        lastDir = controlVelocity.GetDirection;
+        lastDir = controlVelocity.GetControlledDirection();
     }
 
     public void CheckDirection(Vector2 _currentDir) {
@@ -34,7 +34,8 @@ public class ControlDirection : MonoBehaviour {
     }
 
     private void AdjustDirection(Vector2 _currentDir) {
-        controlVelocity.SetDirection(DirectionLogic(_currentDir));
+        //use the direction logic for our new dir, but invert it if our speed multiplier is also inverted
+        controlVelocity.SetAdjustingDirection(DirectionLogic(_currentDir));
 
         if (finishedDirectionLogic != null)
         {
@@ -48,7 +49,7 @@ public class ControlDirection : MonoBehaviour {
 
         //get the collision directions of the raycasts
         Vector2 rayDir = new Vector2(ray.CheckHorizontalDir(), ray.CheckVerticalDir());
-
+        
         Vector2 newDir = new Vector2();
 
         //if we are not hitting a wall on both axis
@@ -58,13 +59,13 @@ public class ControlDirection : MonoBehaviour {
             //if our currentDir.x isn't 0, set is as our lastDir.x
             if (_currentDir.x != 0)
             {
-                lastDir.x = InvertOnNegativeCeil(_currentDir.x);
+                lastDir.x = Rounding.InvertOnNegativeCeil(_currentDir.x);
             }
 
             //if our currentDir.y isn't 0, set is as our lastDir.y
             if (_currentDir.y != 0)
             {
-                lastDir.y = InvertOnNegativeCeil(_currentDir.y);
+                lastDir.y = Rounding.InvertOnNegativeCeil(_currentDir.y);
             }
 
             //if both _currentDir.x & _currentDir.y aren't 0, we come from an angle and we should speed up
@@ -90,7 +91,7 @@ public class ControlDirection : MonoBehaviour {
         {
             if (rayDir == Vector2.zero)
             {
-                controlVelocity.SetDirection(lastDir);
+                controlVelocity.SetAdjustingDirection(lastDir);
             }
             else
             {
@@ -109,45 +110,6 @@ public class ControlDirection : MonoBehaviour {
                 controlVelocity.TempSlowDown();
             }
         }
-
-        return newDir;
-    }
-
-    //round the float to the highest, or lowest int, depeding on if the float is negative or positive
-    private int InvertOnNegativeCeil(float _float) {
-        if (_float > 0)
-        {
-            return Mathf.CeilToInt(_float);
-        }
-        else {
-            return Mathf.FloorToInt(_float);
-        }
-    }
-
-    //get the direction we should move towards when we start sliding
-    public Vector2 GetSlideDirection(Vector2 _grappleDirection)
-    {
-        Vector2 currentDir = controlVelocity.GetVelocityDirection;
-        print("currentdir: " + currentDir);
-        print("grappledir: " + _grappleDirection);
-        float angle = Vector2.Angle(currentDir, _grappleDirection);
-        print("angle: " + angle);
-        print("adjusted grapple dir:" + (_grappleDirection * (angle / 180)));
-        Vector2 newDir = (currentDir + (_grappleDirection * (angle / 270))) / 2;
-        print("newDir: " + newDir);
-
-        /*
-         * 
-         *         Vector2 currentDir = controlVelocity.GetControlledDirection;
-        print("currentdir: " + currentDir);
-        print("grappledir: " + _grappleDirection);
-        float angle = Vector2.Angle(currentDir, _grappleDirection);
-        print("angle: " + angle);
-        print("adjusted grapple dir:" + (_grappleDirection * (angle / 180)));
-        Vector2 newDir = (_grappleDirection * (angle / 270) - currentDir);
-        print("newDir: " + newDir);
-
-        */
 
         return newDir;
     }
