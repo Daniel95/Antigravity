@@ -16,13 +16,6 @@ public class OnFootState : State {
         grapplingHook = GetComponent<GrapplingHook>();
     }
 
-    protected override void Start()
-    {
-        base.Start();
-
-        plrAccess.controlVelocity.StartReturnSpeedToNormal(0.1f);
-    }
-
     public override void EnterState()
     {
         base.EnterState();
@@ -32,8 +25,6 @@ public class OnFootState : State {
 
         //subscribe to StartedGrappleLocking, so we know when we should start grappling and exit this state
         grapplingHook.StartedGrappleLocking += ExitState;
-
-        plrAccess.controlVelocity.ResetTargetSpeed();
     }
 
     public override void Act()

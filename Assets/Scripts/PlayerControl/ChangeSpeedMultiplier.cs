@@ -28,8 +28,6 @@ public class ChangeSpeedMultiplier : MonoBehaviour {
 
     private float originalSpeedMultiplier = 1;
 
-    private bool flipped = false;
-
     void Start() {
         velocity = GetComponent<ControlVelocity>();
         velocity.SpeedMultiplier = startMultiplier;

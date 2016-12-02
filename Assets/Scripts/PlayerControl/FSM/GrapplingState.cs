@@ -6,9 +6,6 @@ public class GrapplingState : State {
     [SerializeField]
     private KeyCode cancelGrappleKey = KeyCode.Space;
 
-    //[SerializeField]
-    //private float grappleSpeed = 4.5f;
-
     [SerializeField]
     private int maxFramesStuck = 40;
 
@@ -17,8 +14,6 @@ public class GrapplingState : State {
     private FutureDirectionIndicator dirIndicator;
 
     private PlayerScriptAccess plrAccess;
-
-    private Coroutine checkStuckTimer;
 
     [SerializeField]
     private GameObject gun;
@@ -55,7 +50,7 @@ public class GrapplingState : State {
         //exit the state when the grapple has released itself
         grapplingHook.StoppedGrappleLocking += ExitState;
 
-        checkStuckTimer = StartCoroutine(CheckStuckTimer());
+        StartCoroutine(CheckStuckTimer());
     }
 
     //set the right slide direction so we always move the same speed when we slide

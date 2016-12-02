@@ -68,15 +68,6 @@ public class ControlDirection : MonoBehaviour {
                 lastDir.y = Rounding.InvertOnNegativeCeil(_currentDir.y);
             }
 
-            //if both _currentDir.x & _currentDir.y aren't 0, we come from an angle and we should speed up
-            if (_currentDir.x != 0 && _currentDir.y != 0)
-            {
-                controlVelocity.TempSpeedUp();
-            }
-            else { //else our collision is direct and we should slow down
-                controlVelocity.TempSlowDown();
-            }
-
             //replace the dir on the axis that we dont have a collision with
             //example: if we hit something under us, move to the left or right, depeding on our lastDir
             if (rayDir.x != 0)
@@ -106,8 +97,6 @@ public class ControlDirection : MonoBehaviour {
                     lastDir.x = rayDir.x * -1;
                     newDir = new Vector2(lastDir.x, 0);
                 }
-
-                controlVelocity.TempSlowDown();
             }
         }
 

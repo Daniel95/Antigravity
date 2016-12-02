@@ -4,17 +4,9 @@ using System.Collections;
 
 public class SwitchGravity : MonoBehaviour {
 
-    [SerializeField]
-    private float gravitateSpeedIncrement = 0.01f;
-
-    [SerializeField]
-    private float gravitateMaxSpeedIncrement = 1;
-
     private ControlVelocity velocity;
 
     private CharRaycasting raycasting;
-
-    private bool gravitating;
 
     public Action switchedGravity;
 
@@ -43,24 +35,9 @@ public class SwitchGravity : MonoBehaviour {
             }
 
             velocity.SetAdjustingDirection(newDir + velocity.GetControlledDirection());
-            velocity.StartIncrementingSpeed(gravitateSpeedIncrement, velocity.CurrentSpeed + gravitateMaxSpeedIncrement);
-
-            gravitating = true;
 
             if (switchedGravity != null)
                 switchedGravity();
-        }
-    }
-
-    public void StopGravitating()
-    {
-        velocity.StopIncrementingSpeed();
-        gravitating = false;
-    }
-
-    void OnCollisionEnter2D(Collision2D _coll) {
-        if (gravitating) {
-            velocity.StopIncrementingSpeed();
         }
     }
 }
