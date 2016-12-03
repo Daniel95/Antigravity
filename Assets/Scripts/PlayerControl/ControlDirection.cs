@@ -35,7 +35,7 @@ public class ControlDirection : MonoBehaviour {
 
     private void AdjustDirection(Vector2 _currentDir) {
         //use the direction logic for our new dir, but invert it if our speed multiplier is also inverted
-        controlVelocity.SetAdjustingDirection(DirectionLogic(_currentDir));
+        controlVelocity.SetDirection(controlVelocity.AdjustDirToMultiplier(DirectionLogic(_currentDir)));
 
         if (finishedDirectionLogic != null)
         {
@@ -55,7 +55,7 @@ public class ControlDirection : MonoBehaviour {
         //if we are not hitting a wall on both axis
         if (rayDir.x == 0 || rayDir.y == 0) {
 
-            //we dont want to overwrite our last dir when it with a zero, we use to to determine which direction we should move
+            //we dont want to overwrite our last dir with a zero, we use it determine which direction we should move
             //if our currentDir.x isn't 0, set is as our lastDir.x
             if (_currentDir.x != 0)
             {
@@ -82,7 +82,7 @@ public class ControlDirection : MonoBehaviour {
         {
             if (rayDir == Vector2.zero)
             {
-                controlVelocity.SetAdjustingDirection(lastDir);
+                controlVelocity.SetDirection(controlVelocity.AdjustDirToMultiplier(lastDir));
             }
             else
             {

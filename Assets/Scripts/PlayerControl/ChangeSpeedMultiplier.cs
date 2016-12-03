@@ -35,11 +35,11 @@ public class ChangeSpeedMultiplier : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-        if (Input.GetKey(speedNegativeInput))
+        if (Input.GetKey(speedPostiveInput))
         {
             ChangeSpeed(changeSpeed * Time.deltaTime);
         }
-        else if (Input.GetKey(speedPostiveInput)) {
+        else if (Input.GetKey(speedNegativeInput)) {
             ChangeSpeed(-changeSpeed * Time.deltaTime);
         }
     }

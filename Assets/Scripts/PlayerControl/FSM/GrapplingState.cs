@@ -48,7 +48,8 @@ public class GrapplingState : State {
         }
 
         //exit the state when the grapple has released itself
-        grapplingHook.StoppedGrappleLocking += ExitState;
+        grapplingHook.StoppedGrappleLocking += StopGrappling;
+        //grapplingHook.StoppedGrappleLocking += ExitState;
 
         StartCoroutine(CheckStuckTimer());
     }
@@ -71,7 +72,7 @@ public class GrapplingState : State {
         {
             //set the direction to the direction of our current velocity, 
             //also save it in previous direction so next frame we can check what the old direction was
-            plrAccess.controlVelocity.SetDirectDirection(previousDirection = plrAccess.controlVelocity.GetVelocityDirection());
+            plrAccess.controlVelocity.SetDirection(previousDirection = plrAccess.controlVelocity.GetVelocityDirection());
             plrAccess.controlVelocity.SpeedMultiplier = Mathf.Abs(plrAccess.controlVelocity.SpeedMultiplier);
             yield return new WaitForFixedUpdate();
         }
@@ -88,8 +89,9 @@ public class GrapplingState : State {
 
         if (Input.GetKeyDown(cancelGrappleKey))
         {
-            ExitState();
-            dirIndicator.PointToRoundedVelocityDir();
+            //ExitState();
+            StopGrappling();
+            dirIndicator.PointToCeilVelocityDir();
         }
 
         //update the rotation of the gun
@@ -109,9 +111,16 @@ public class GrapplingState : State {
         //check if the player is still stuck, if so unlock the grapple
         if (plrAccess.controlVelocity.GetVelocity == Vector2.zero)
         {
-            plrAccess.controlVelocity.SetAdjustingDirection(grapplingHook.Direction);
+            plrAccess.controlVelocity.SetDirection(plrAccess.controlVelocity.AdjustDirToMultiplier(grapplingHook.Direction));
             ExitState();
         }
+    }
+
+    private void StopGrappling() {
+        grapplingHook.StartedGrappleLocking -= ActivateSlingDirection;
+        grapplingHook.StoppedGrappleLocking -= StopGrappling;
+
+        grapplingHook.ExitGrappleLock();
     }
 
     private void ExitState() {
@@ -126,8 +135,6 @@ public class GrapplingState : State {
 
         //stop the updateslingdir coroutine and unsubscribe from the started grappling delegate 
         StopCoroutine(updateSlingDirection);
-
-        grapplingHook.StoppedGrappleLocking -= ExitState;
 
         stateMachine.ActivateState(StateID.OnFootState);
         stateMachine.DeactivateState(StateID.GrapplingState);

@@ -5,7 +5,7 @@ using System.Collections;
 public class ControlVelocity : MonoBehaviour {
 
     [SerializeField]
-    private float speed;
+    private float speed = 3;
 
     private float speedMultiplier = 1;
 
@@ -65,19 +65,27 @@ public class ControlVelocity : MonoBehaviour {
 
     //adjusts the given dir with the current multiplier,
     //also only inverts a dir when it has changed
-    public void SetAdjustingDirection(Vector2 _dir) {
+    public Vector2 AdjustDirToMultiplier(Vector2 _dir) {
         Vector2 directionDifference = direction - _dir;
 
         int multiplierDir = GetMultiplierDir();
 
         //only adjust the direction to multiplierDir if it has changed
-        if (directionDifference.x != 0) {
+        if (directionDifference.x != 0)
+        {
             _dir.x *= multiplierDir;
         }
-        if (directionDifference.y != 0) {
+        if (directionDifference.y != 0)
+        {
             _dir.y *= multiplierDir;
         }
 
+        return _dir;
+    }
+
+    //set the direction without adjusting anything
+    public void SetDirection(Vector2 _dir)
+    {
         direction = _dir;
     }
 
@@ -91,12 +99,6 @@ public class ControlVelocity : MonoBehaviour {
         }
 
         return speedMultiplierDir;
-    }
-
-    //set the direction without adjusting anything
-    public void SetDirectDirection(Vector2 _dir)
-    {
-        direction = _dir;
     }
 
     //returns our own controlled direction

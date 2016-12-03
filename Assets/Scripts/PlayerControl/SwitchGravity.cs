@@ -34,7 +34,7 @@ public class SwitchGravity : MonoBehaviour {
                 newDir.y = raycastResults.y * -1;
             }
 
-            velocity.SetAdjustingDirection(newDir + velocity.GetControlledDirection());
+            velocity.SetDirection(velocity.AdjustDirToMultiplier(newDir + velocity.GetControlledDirection()));
 
             if (switchedGravity != null)
                 switchedGravity();

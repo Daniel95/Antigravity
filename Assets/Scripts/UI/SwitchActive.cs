@@ -3,13 +3,30 @@
 public class SwitchActive : MonoBehaviour
 {
     [SerializeField]
-    private GameObject element;
+    private Element[] elements;
 
-    public void Switch()
+    public void SwitchCurrentState()
     {
-        if (element.activeSelf)
-            element.SetActive(false);
-        else
-            element.SetActive(true);
+        for (int i = 0; i < elements.Length; i++)
+        {
+            if (elements[i].gameObject.activeSelf)
+                elements[i].gameObject.SetActive(false);
+            else
+                elements[i].gameObject.SetActive(true);
+        }
+    }
+
+    public void SwitchToGivenState() {
+        for (int i = 0; i < elements.Length; i++)
+        {
+            elements[i].gameObject.SetActive(elements[i].nextState);
+            elements[i].nextState = !elements[i].nextState;
+        }
+    }
+
+    [System.Serializable]
+    private struct Element {
+        public GameObject gameObject;
+        public bool nextState;
     }
 }

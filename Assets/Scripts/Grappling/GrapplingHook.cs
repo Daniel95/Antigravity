@@ -45,7 +45,6 @@ public class GrapplingHook : MonoBehaviour, IWeapon {
 
     //spawns the grapple projectile and activates its moveTowards script
     public void Fire(Vector2 _direction, Vector2 _destination, Vector2 _spawnPosition) {
-
         if (currentGrapplingHookState == GrapplingHookStates.inactive)
         {
             ShootGrappleHook(_direction, _destination, _spawnPosition);
@@ -131,9 +130,10 @@ public class GrapplingHook : MonoBehaviour, IWeapon {
         PullBack();
     }
 
-    //pulls the grappling hook back to the player, once it reached the player destroy it
+    //pulls the grappling hook back to the player, once it reached the player set in inactive it
     void PullBack() {
-        if (currentGrapplingHookState != GrapplingHookStates.busyPullingBack)
+        //only pullback when we aren't already pulling back and the we are not in the inactive state. 
+        if (currentGrapplingHookState != GrapplingHookStates.busyPullingBack && currentGrapplingHookState != GrapplingHookStates.inactive)
         {
             currentGrapplingHookState = GrapplingHookStates.busyPullingBack;
 
