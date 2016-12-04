@@ -17,6 +17,7 @@ public class PlayerCharacter : MonoBehaviour
     void AssignStates()
     {
         stateMachine.AssignState(StateID.OnFootState, GetComponent<OnFootState>());
+        stateMachine.AssignState(StateID.LaunchedState, GetComponent<LaunchedState>());
         stateMachine.AssignState(StateID.GrapplingState, GetComponent<GrapplingState>());
     }
 }

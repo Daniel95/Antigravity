@@ -5,7 +5,7 @@ public enum StateID
 {
     OnFootState = 0,
     GrapplingState = 1,
-    StickyState = 2,
+    LaunchedState = 2,
 }
 
 public class StateMachine : MonoBehaviour {

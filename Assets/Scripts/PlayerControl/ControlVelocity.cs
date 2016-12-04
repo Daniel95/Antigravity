@@ -59,6 +59,12 @@ public class ControlVelocity : MonoBehaviour {
         rb.velocity = _velocity;
     }
 
+    //switched to direction of the velocity
+    public void SwitchVelocityDirection()
+    {
+        SetVelocity(GetVelocity * -1);
+    }
+
     public void SwitchDirection() {
         direction *= -1;
     }

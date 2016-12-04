@@ -14,14 +14,17 @@ public class OnFootState : State {
         base.Awake();
         plrAccess = GetComponent<PlayerScriptAccess>();
         grapplingHook = GetComponent<GrapplingHook>();
+        plrAccess.controlVelocity.StartDirectionalMovement();
     }
 
     public override void EnterState()
     {
         base.EnterState();
 
-        plrAccess.controlVelocity.StopDirectionalMovement();
-        plrAccess.controlVelocity.StartDirectionalMovement();
+        //plrAccess.controlDirection.SetLogicDirection(plrAccess.controlVelocity.GetCeilVelocityDirection());
+
+        //plrAccess.controlVelocity.StopDirectionalMovement();
+        //plrAccess.controlVelocity.StartDirectionalMovement();
 
         //subscribe to StartedGrappleLocking, so we know when we should start grappling and exit this state
         grapplingHook.StartedGrappleLocking += ExitState;
@@ -48,6 +51,6 @@ public class OnFootState : State {
     //on collision we check in which direction we should go
     public override void OnCollEnter2D(Collision2D coll)
     {
-        plrAccess.controlDirection.CheckDirection(plrAccess.controlVelocity.GetControlledDirection());
+        plrAccess.controlDirection.SetLogicDirection(plrAccess.controlVelocity.GetControlledDirection());
     }
 }

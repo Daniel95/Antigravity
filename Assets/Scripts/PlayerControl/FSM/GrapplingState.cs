@@ -15,72 +15,58 @@ public class GrapplingState : State {
 
     private PlayerScriptAccess plrAccess;
 
+    private Frames frames;
+
     [SerializeField]
     private GameObject gun;
 
     private LookAt gunLookAt;
 
-    private Coroutine updateSlingDirection;
+    private Coroutine slingMovement;
 
-    private Vector2 previousDirection;
+    private Vector2 previousFrameDirection;
 
     protected override void Awake()
     {
         base.Awake();
         grapplingHook = GetComponent<GrapplingHook>();
         plrAccess = GetComponent<PlayerScriptAccess>();
+        frames = GetComponent<Frames>();
         dirIndicator = GetComponent<FutureDirectionIndicator>();
         gunLookAt = gun.GetComponent<LookAt>();
+
     }
 
     public override void EnterState()
     {
         base.EnterState();
 
-        //activate a different direction movement when in this state
-        ActivateSlingDirection();
+        //when we switch our speed, also switch the direction of our velocity
+        plrAccess.changeSpeedMultiplier.switchedSpeed += plrAccess.controlVelocity.SwitchVelocityDirection;
 
-        plrAccess.changeSpeedMultiplier.switchedSpeed += FlipSwingDirection;
-        
-        //only flip the swingdir when our multiplier is in the minus, because we cant
+        //when we enter this state, only flip the swingdir when our multiplier is in the minus
         if (plrAccess.controlVelocity.SpeedMultiplier < 0) {
-            FlipSwingDirection();
+            plrAccess.controlVelocity.SwitchVelocityDirection();
         }
 
+        //activate a different direction movement when in this state
+        plrAccess.controlVelocity.StopDirectionalMovement();
+        slingMovement = StartCoroutine(SlingMovement());
+        plrAccess.controlVelocity.StartDirectionalMovement();
+
         //exit the state when the grapple has released itself
-        grapplingHook.StoppedGrappleLocking += StopGrappling;
-        //grapplingHook.StoppedGrappleLocking += ExitState;
+        grapplingHook.StoppedGrappleLocking += EnterLaunchedState;
 
         StartCoroutine(CheckStuckTimer());
     }
 
-    //set the right slide direction so we always move the same speed when we slide
-    private void ActivateSlingDirection() {
-        //stop the directionalMovement
-        plrAccess.controlVelocity.StopDirectionalMovement();
-
-        updateSlingDirection = StartCoroutine(UpdateSlingDirection());
-
-        //start the directionalMovement again when we updated the direction
-        plrAccess.controlVelocity.StartDirectionalMovement();
-    }
-
-    //updates the direction of the controlVelocity script so that we swing smoothly towards the right direction
-    IEnumerator UpdateSlingDirection()
-    {
-        while (true)
-        {
-            //set the direction to the direction of our current velocity, 
-            //also save it in previous direction so next frame we can check what the old direction was
-            plrAccess.controlVelocity.SetDirection(previousDirection = plrAccess.controlVelocity.GetVelocityDirection());
+    IEnumerator SlingMovement() {
+        while (true) {
+            plrAccess.controlVelocity.SetDirection(previousFrameDirection = plrAccess.controlVelocity.GetVelocityDirection());
             plrAccess.controlVelocity.SpeedMultiplier = Mathf.Abs(plrAccess.controlVelocity.SpeedMultiplier);
+
             yield return new WaitForFixedUpdate();
         }
-    }
-
-    //sets the velocity to the opposite
-    private void FlipSwingDirection() {
-        plrAccess.controlVelocity.SetVelocity(plrAccess.controlVelocity.GetVelocity * -1);
     }
 
     public override void Act()
@@ -89,9 +75,7 @@ public class GrapplingState : State {
 
         if (Input.GetKeyDown(cancelGrappleKey))
         {
-            //ExitState();
-            StopGrappling();
-            dirIndicator.PointToCeilVelocityDir();
+            EnterLaunchedState();
         }
 
         //update the rotation of the gun
@@ -111,39 +95,43 @@ public class GrapplingState : State {
         //check if the player is still stuck, if so unlock the grapple
         if (plrAccess.controlVelocity.GetVelocity == Vector2.zero)
         {
-            plrAccess.controlVelocity.SetDirection(plrAccess.controlVelocity.AdjustDirToMultiplier(grapplingHook.Direction));
-            ExitState();
+            EnterOnFootState();
         }
     }
 
-    private void StopGrappling() {
-        grapplingHook.StartedGrappleLocking -= ActivateSlingDirection;
-        grapplingHook.StoppedGrappleLocking -= StopGrappling;
+    private void EnterLaunchedState() {
+        GeneralStateCleanUp();
 
-        grapplingHook.ExitGrappleLock();
+        stateMachine.ActivateState(StateID.LaunchedState);
+        stateMachine.DeactivateState(StateID.GrapplingState);
     }
 
-    private void ExitState() {
-        //unsubscripte from all relevant delegates
-        plrAccess.changeSpeedMultiplier.switchedSpeed -= FlipSwingDirection;
-        grapplingHook.StartedGrappleLocking -= ActivateSlingDirection;
-        grapplingHook.StoppedGrappleLocking -= ExitState;
+    private void EnterOnFootState() {
+        GeneralStateCleanUp();
 
-        grapplingHook.ExitGrappleLock();
+
 
         plrAccess.changeSpeedMultiplier.ResetSpeedMultiplier();
-
-        //stop the updateslingdir coroutine and unsubscribe from the started grappling delegate 
-        StopCoroutine(updateSlingDirection);
 
         stateMachine.ActivateState(StateID.OnFootState);
         stateMachine.DeactivateState(StateID.GrapplingState);
     }
 
+    private void GeneralStateCleanUp()
+    {
+        StopCoroutine(slingMovement);
+
+        //unsubscripte from all relevant delegates
+        plrAccess.changeSpeedMultiplier.switchedSpeed -= plrAccess.controlVelocity.SwitchVelocityDirection;
+        grapplingHook.StoppedGrappleLocking -= EnterLaunchedState;
+
+        grapplingHook.ExitGrappleLock();
+    }
+
     //on collision we exit this state, and check which direction we should go
     public override void OnCollEnter2D(Collision2D coll)
     {
-        plrAccess.controlDirection.CheckDirection(previousDirection);
-        ExitState();
+        plrAccess.controlDirection.SetLogicDirection(previousFrameDirection);
+        EnterOnFootState();
     }
 }

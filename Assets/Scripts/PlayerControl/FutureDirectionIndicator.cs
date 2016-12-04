@@ -12,9 +12,12 @@ public class FutureDirectionIndicator : MonoBehaviour {
 
     private Vector2 lookDir;
 
+    private Frames frames;
+
     void Start() {
         lookAt = arrowTransform.GetComponent<LookAt>();
         plrAccess = GetComponent<PlayerScriptAccess>();
+        frames = GetComponent<Frames>();
         SubscribeToDelegates();
     }
 
@@ -33,18 +36,21 @@ public class FutureDirectionIndicator : MonoBehaviour {
     {
         plrAccess.controlDirection.finishedDirectionLogic -= PointToControlledDir;
         plrAccess.changeSpeedMultiplier.switchedSpeed -= PointToCeilVelocityDir;
-        plrAccess.switchGravity.switchedGravity += PointToCeilVelocityDir;
+        plrAccess.switchGravity.switchedGravity -= PointToCeilVelocityDir;
     }
 
     public void PointToControlledDir(Vector2 _futureDir)
     {
         lookDir = _futureDir;
-        print("look at controldir:" + lookDir);
         lookAt.UpdateLookAt((Vector2)transform.position + _futureDir);
     }
 
     //look at the the ceiled values of our current normalized velocity 
     public void PointToCeilVelocityDir() {
+        frames.ExecuteAfterDelay(1, UpdateCeilVelocityDir);
+    }
+
+    private void UpdateCeilVelocityDir() {
         Vector2 CeilVelocityDir = plrAccess.controlVelocity.GetCeilVelocityDirection();
 
         //don't update the dir when its new value is zero
@@ -56,8 +62,6 @@ public class FutureDirectionIndicator : MonoBehaviour {
         {
             lookDir.y = CeilVelocityDir.y;
         }
-
-        print("look at veldir:" + lookDir);
 
         lookAt.UpdateLookAt((Vector2)transform.position + lookDir);
     }

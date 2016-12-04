@@ -20,7 +20,7 @@ public class ControlDirection : MonoBehaviour {
         lastDir = controlVelocity.GetControlledDirection();
     }
 
-    public void CheckDirection(Vector2 _currentDir) {
+    public void SetLogicDirection(Vector2 _currentDir) {
         StartCoroutine(WaitForRigidBodyCorrection(_currentDir));
     }
 
@@ -46,7 +46,6 @@ public class ControlDirection : MonoBehaviour {
     //the logic we use to control the players direction using raycasts after we had collision with another object
     private Vector2 DirectionLogic(Vector2 _currentDir)
     {
-
         //get the collision directions of the raycasts
         Vector2 rayDir = new Vector2(ray.CheckHorizontalDir(), ray.CheckVerticalDir());
         
