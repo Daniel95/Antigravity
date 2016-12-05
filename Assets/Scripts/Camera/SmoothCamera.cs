@@ -7,9 +7,6 @@ public class SmoothCamera : MonoBehaviour
     private Transform target;
 
     [SerializeField]
-    private float orthographicSize = 2;
-
-    [SerializeField]
     private float smoothness = 0.15f;
 
     private Vector3 velocity = Vector3.zero;
@@ -18,7 +15,6 @@ public class SmoothCamera : MonoBehaviour
     void Start()
     {
         gameCamera = GetComponent<Camera>();
-        gameCamera.orthographicSize = orthographicSize;
     }
 
     // Update is called once per frame

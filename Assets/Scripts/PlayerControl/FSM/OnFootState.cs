@@ -9,9 +9,9 @@ public class OnFootState : State {
     private PlayerScriptAccess plrAccess;
     private GrapplingHook grapplingHook;
 
-    protected override void Awake()
+    protected override void Start()
     {
-        base.Awake();
+        base.Start();
         plrAccess = GetComponent<PlayerScriptAccess>();
         grapplingHook = GetComponent<GrapplingHook>();
         plrAccess.controlVelocity.StartDirectionalMovement();
@@ -20,11 +20,6 @@ public class OnFootState : State {
     public override void EnterState()
     {
         base.EnterState();
-
-        //plrAccess.controlDirection.SetLogicDirection(plrAccess.controlVelocity.GetCeilVelocityDirection());
-
-        //plrAccess.controlVelocity.StopDirectionalMovement();
-        //plrAccess.controlVelocity.StartDirectionalMovement();
 
         //subscribe to StartedGrappleLocking, so we know when we should start grappling and exit this state
         grapplingHook.StartedGrappleLocking += ExitState;

@@ -9,16 +9,12 @@ public class GrapplingState : State {
     [SerializeField]
     private int maxFramesStuck = 40;
 
-    private GrapplingHook grapplingHook;
-
-    private FutureDirectionIndicator dirIndicator;
-
-    private PlayerScriptAccess plrAccess;
-
-    private Frames frames;
-
     [SerializeField]
     private GameObject gun;
+
+    private GrapplingHook grapplingHook;
+
+    private PlayerScriptAccess plrAccess;
 
     private LookAt gunLookAt;
 
@@ -31,10 +27,7 @@ public class GrapplingState : State {
         base.Awake();
         grapplingHook = GetComponent<GrapplingHook>();
         plrAccess = GetComponent<PlayerScriptAccess>();
-        frames = GetComponent<Frames>();
-        dirIndicator = GetComponent<FutureDirectionIndicator>();
         gunLookAt = gun.GetComponent<LookAt>();
-
     }
 
     public override void EnterState()

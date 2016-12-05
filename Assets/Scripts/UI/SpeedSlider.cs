@@ -4,15 +4,17 @@ using UnityEngine.UI;
 
 public class SpeedSlider : MonoBehaviour {
 
-    private RectTransform bar;
+    [SerializeField]
+    private ChangeSpeedMultiplier speedMultiplier;
+
+    private Scrollbar bar;
 
     // Use this for initialization
     void Start () {
-        bar = transform as RectTransform;
+        bar = GetComponent<Scrollbar>();
     }
-	
-	// Update is called once per frame
-	void Update () {
-        bar.sizeDelta = new Vector2(80, bar.sizeDelta.y);
+
+    public void ValueChange() {
+        bar.value = 1;
     }
 }
