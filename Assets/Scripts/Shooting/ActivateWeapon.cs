@@ -1,10 +1,11 @@
 ﻿using UnityEngine;
+using UnityEngine.EventSystems;
 using System.Collections.Generic;
 
-public class ActivateWeapon : MonoBehaviour {
+public class ActivateWeapon : MonoBehaviour, IEventSystemHandler {
 
     [SerializeField]
-    private LayerMask layers;
+    private LayerMask rayLayers;
 
     [SerializeField]
     private KeyCode shootInput = KeyCode.Mouse0;
@@ -39,22 +40,24 @@ public class ActivateWeapon : MonoBehaviour {
     {
         if (Input.GetKeyDown(shootInput))
         {
-            Vector2 clickPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            if (!MouseDetect.IsPointerOverUIObject()) {
+                Vector2 clickPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-            gunLookAt.UpdateLookAt(clickPos);
+                gunLookAt.UpdateLookAt(clickPos);
 
-            Vector2 dir = (clickPos - (Vector2)spawnTransform.position).normalized;
+                Vector2 dir = (clickPos - (Vector2)spawnTransform.position).normalized;
 
-            Vector2 targetPos = dir * maxRaycastDistance;
+                Vector2 targetPos = dir * maxRaycastDistance;
 
-            RaycastHit2D hit = Physics2D.Raycast(transform.position, targetPos, maxRaycastDistance, layers);
+                RaycastHit2D hit = Physics2D.Raycast(transform.position, targetPos, maxRaycastDistance, rayLayers);
 
-            if (hit.collider != null) {
-                targetPos = hit.point;
+                if (hit.collider != null) {
+                    targetPos = hit.point;
+                }
+
+                //fire the current weapon
+                weapons[weaponIndex].Fire(dir, targetPos, spawnTransform.position);
             }
-
-            //fire the current weapon
-            weapons[weaponIndex].Fire(dir, targetPos, spawnTransform.position);
         }
     }
 

@@ -13,13 +13,13 @@ public class PlayerScriptAccess : MonoBehaviour {
     [HideInInspector]
     public SwitchGravity switchGravity;
     [HideInInspector]
-    public ChangeSpeedMultiplier changeSpeedMultiplier;
+    public SpeedMultiplier speedMultiplier;
 
     void Awake() {
         charRaycasting = GetComponent<CharRaycasting>();
         controlVelocity = GetComponent<ControlVelocity>();
         controlDirection = GetComponent<ControlDirection>();
         switchGravity = GetComponent<SwitchGravity>();
-        changeSpeedMultiplier = GetComponent<ChangeSpeedMultiplier>();
+        speedMultiplier = GetComponent<SpeedMultiplier>();
     }
 }

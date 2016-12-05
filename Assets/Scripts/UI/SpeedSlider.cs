@@ -1,20 +1,21 @@
 ﻿using UnityEngine;
-using System.Collections;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
-public class SpeedSlider : MonoBehaviour {
+public class SpeedSlider : MonoBehaviour, IDragHandler {
 
     [SerializeField]
-    private ChangeSpeedMultiplier speedMultiplier;
+    private SpeedMultiplier speedMultiplier;
 
     private Scrollbar bar;
-
+    
     // Use this for initialization
     void Start () {
         bar = GetComponent<Scrollbar>();
     }
 
-    public void ValueChange() {
-        bar.value = 1;
+    public void OnDrag(PointerEventData data)
+    {
+        speedMultiplier.SetSpeedMultiplierPercentage(bar.value);
     }
 }
