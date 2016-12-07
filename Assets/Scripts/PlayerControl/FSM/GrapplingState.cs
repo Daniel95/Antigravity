@@ -4,9 +4,6 @@ using System.Collections;
 public class GrapplingState : State {
 
     [SerializeField]
-    private KeyCode cancelGrappleKey = KeyCode.Space;
-
-    [SerializeField]
     private int maxFramesStuck = 40;
 
     [SerializeField]
@@ -35,12 +32,7 @@ public class GrapplingState : State {
         base.EnterState();
 
         //when we switch our speed, also switch the direction of our velocity
-        plrAccess.speedMultiplier.switchedSpeed += plrAccess.controlVelocity.SwitchVelocityDirection;
-
-        //when we enter this state, only flip the swingdir when our multiplier is in the minus
-        if (plrAccess.controlVelocity.SpeedMultiplier < 0) {
-            plrAccess.controlVelocity.SwitchVelocityDirection();
-        }
+        plrAccess.speedMultiplier.switchedMultiplier += plrAccess.controlVelocity.SwitchVelocityDirection;
 
         //activate a different direction movement when in this state
         plrAccess.controlVelocity.StopDirectionalMovement();
@@ -66,7 +58,7 @@ public class GrapplingState : State {
     {
         base.Act();
 
-        if (Input.GetKeyDown(cancelGrappleKey))
+        if (plrAccess.playerInputs.CheckJumpInput())
         {
             EnterLaunchedState();
         }
@@ -102,8 +94,6 @@ public class GrapplingState : State {
     private void EnterOnFootState() {
         GeneralStateCleanUp();
 
-
-
         plrAccess.speedMultiplier.ResetSpeedMultiplier();
 
         stateMachine.ActivateState(StateID.OnFootState);
@@ -115,7 +105,7 @@ public class GrapplingState : State {
         StopCoroutine(slingMovement);
 
         //unsubscripte from all relevant delegates
-        plrAccess.speedMultiplier.switchedSpeed -= plrAccess.controlVelocity.SwitchVelocityDirection;
+        plrAccess.speedMultiplier.switchedMultiplier -= plrAccess.controlVelocity.SwitchVelocityDirection;
         grapplingHook.StoppedGrappleLocking -= EnterLaunchedState;
 
         grapplingHook.ExitGrappleLock();

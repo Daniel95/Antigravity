@@ -2,20 +2,24 @@
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class SpeedSlider : MonoBehaviour, IDragHandler {
+public class SpeedSlider : MonoBehaviour, IDragHandler
+{
 
     [SerializeField]
     private SpeedMultiplier speedMultiplier;
 
     private Scrollbar bar;
-    
+
     // Use this for initialization
-    void Start () {
+    void Awake()
+    {
         bar = GetComponent<Scrollbar>();
     }
 
     public void OnDrag(PointerEventData data)
     {
+        //print("_______________");
+        //print("value: " + bar.value);
         speedMultiplier.SetSpeedMultiplierPercentage(bar.value);
     }
 }

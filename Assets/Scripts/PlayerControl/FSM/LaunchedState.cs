@@ -25,7 +25,7 @@ public class LaunchedState : State
 
         //subscribe to StartedGrappleLocking, so we know when we should start grappling and exit this state
         grapplingHook.StartedGrappleLocking += EnterGrapplingState;
-        plrAccess.speedMultiplier.switchedSpeed += FakeSwitchSpeed;
+        plrAccess.speedMultiplier.switchedMultiplier += FakeSwitchSpeed;
 
         previousDirection = plrAccess.controlVelocity.GetVelocityDirection();
 
@@ -67,7 +67,7 @@ public class LaunchedState : State
     {
         //unsubscripte from all relevant delegates
         grapplingHook.StartedGrappleLocking -= EnterGrapplingState;
-        plrAccess.speedMultiplier.switchedSpeed -= FakeSwitchSpeed;
+        plrAccess.speedMultiplier.switchedMultiplier -= FakeSwitchSpeed;
     }
 
     //on collision we exit this state, and check which direction we should go

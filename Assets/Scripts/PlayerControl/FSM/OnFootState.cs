@@ -3,17 +3,19 @@ using System.Collections;
 
 public class OnFootState : State {
 
-    [SerializeField]
-    private KeyCode SwitchGravityInput = KeyCode.Space;
-
     private PlayerScriptAccess plrAccess;
     private GrapplingHook grapplingHook;
+
+    protected override void Awake()
+    {
+        base.Awake();
+        grapplingHook = GetComponent<GrapplingHook>();
+    }
 
     protected override void Start()
     {
         base.Start();
         plrAccess = GetComponent<PlayerScriptAccess>();
-        grapplingHook = GetComponent<GrapplingHook>();
         plrAccess.controlVelocity.StartDirectionalMovement();
     }
 
@@ -30,7 +32,7 @@ public class OnFootState : State {
         base.Act();
 
         //switch the gravity
-        if (Input.GetKeyDown(SwitchGravityInput))
+        if (plrAccess.playerInputs.CheckJumpInput())
         {
             plrAccess.switchGravity.StartGravitating();
         }

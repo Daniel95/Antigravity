@@ -24,9 +24,11 @@ public class SpeedMultiplier : MonoBehaviour {
 
     private ControlVelocity velocity;
 
-    public Action switchedSpeed;
+    public Action switchedMultiplier;
 
     private float originalSpeedMultiplier = 1;
+
+    private float flippedCompensation = 1;
 
     void Awake() {
         velocity = GetComponent<ControlVelocity>();
@@ -37,10 +39,10 @@ public class SpeedMultiplier : MonoBehaviour {
     void Update() {
         if (Input.GetKey(speedPostiveInput))
         {
-            ChangeSpeedMultiplier(changeSpeed * Time.deltaTime);
+            ChangeSpeedMultiplier((changeSpeed) * Time.deltaTime);
         }
         else if (Input.GetKey(speedNegativeInput)) {
-            ChangeSpeedMultiplier(-changeSpeed * Time.deltaTime);
+            ChangeSpeedMultiplier((-changeSpeed) * Time.deltaTime);
         }
     }
 
@@ -60,20 +62,18 @@ public class SpeedMultiplier : MonoBehaviour {
         { //round the speed if it reaches the minimal threshold
             if (_newMultiplierSpeed > 0)
             {
-                velocity.SpeedMultiplier = -minSwitchSpeedThreshold;
+                velocity.SpeedMultiplier = minSwitchSpeedThreshold;
             }
             else
             {
-                velocity.SpeedMultiplier = minSwitchSpeedThreshold;
+                velocity.SpeedMultiplier = -minSwitchSpeedThreshold;
             }
-
         }
 
         //secure way of checking if the multiplier has flipped between + and -, even if the change is really fast
         if (originalSpeedMultiplier <= 0 && _newMultiplierSpeed > 0 || originalSpeedMultiplier >= 0 && _newMultiplierSpeed < 0) {
-
-            if (switchedSpeed != null)
-                switchedSpeed();
+            if (switchedMultiplier != null)
+                switchedMultiplier();
         }
 
         originalSpeedMultiplier = _newMultiplierSpeed;
@@ -81,14 +81,14 @@ public class SpeedMultiplier : MonoBehaviour {
 
     public void SetSpeedMultiplierPercentage(float _percentage)
     {
-        float newMultiplierSpeed = _percentage * (maxSpeed * 2) - maxSpeed;
+        float newMultiplierSpeed = (_percentage * (maxSpeed * 2) - maxSpeed) * flippedCompensation;
 
         SetSpeed(newMultiplierSpeed);
     }
 
     private void ChangeSpeedMultiplier(float _change)
     {
-        float _newMultiplierSpeed = originalSpeedMultiplier + _change;
+        float _newMultiplierSpeed = originalSpeedMultiplier + _change * flippedCompensation;
 
         SetSpeed(_newMultiplierSpeed);
     }
@@ -97,7 +97,7 @@ public class SpeedMultiplier : MonoBehaviour {
     {
         if (originalSpeedMultiplier != velocity.SpeedMultiplier)
         {
-            changeSpeed *= -1;
+            flippedCompensation *= -1;
 
             originalSpeedMultiplier = velocity.SpeedMultiplier;
         }

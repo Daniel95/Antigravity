@@ -28,14 +28,14 @@ public class FutureDirectionIndicator : MonoBehaviour {
 
     void SubscribeToDelegates() {
         plrAccess.controlDirection.finishedDirectionLogic += PointToControlledDir;
-        plrAccess.speedMultiplier.switchedSpeed += PointToCeilVelocityDir;
+        plrAccess.speedMultiplier.switchedMultiplier += PointToCeilVelocityDir;
         plrAccess.switchGravity.switchedGravity += PointToCeilVelocityDir;
     }
 
     void OnDisable()
     {
         plrAccess.controlDirection.finishedDirectionLogic -= PointToControlledDir;
-        plrAccess.speedMultiplier.switchedSpeed -= PointToCeilVelocityDir;
+        plrAccess.speedMultiplier.switchedMultiplier -= PointToCeilVelocityDir;
         plrAccess.switchGravity.switchedGravity -= PointToCeilVelocityDir;
     }
 

@@ -14,6 +14,8 @@ public class PlayerScriptAccess : MonoBehaviour {
     public SwitchGravity switchGravity;
     [HideInInspector]
     public SpeedMultiplier speedMultiplier;
+    [HideInInspector]
+    public PlayerInputs playerInputs;
 
     void Awake() {
         charRaycasting = GetComponent<CharRaycasting>();
@@ -21,5 +23,6 @@ public class PlayerScriptAccess : MonoBehaviour {
         controlDirection = GetComponent<ControlDirection>();
         switchGravity = GetComponent<SwitchGravity>();
         speedMultiplier = GetComponent<SpeedMultiplier>();
+        playerInputs = GetComponent<PlayerInputs>();
     }
 }
