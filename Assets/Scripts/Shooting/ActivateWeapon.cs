@@ -24,8 +24,6 @@ public class ActivateWeapon : MonoBehaviour, IEventSystemHandler {
 
     void Start()
     {
-        PlayerInputs playerInputs = GetComponent<PlayerInputs>();
-
         foreach (IWeapon weapon in GetComponents<IWeapon>())
         {
             weapons.Add(weapon);
@@ -34,6 +32,7 @@ public class ActivateWeapon : MonoBehaviour, IEventSystemHandler {
         gunLookAt = gun.GetComponent<LookAt>();
     }
 
+    //assign input functions to the input delegates of playerInput
     void OnEnable()
     {
         PlayerInputs playerInputs = GetComponent<PlayerInputs>();
@@ -54,6 +53,7 @@ public class ActivateWeapon : MonoBehaviour, IEventSystemHandler {
     private void Dragging(Vector2 _dir)
     {
         weapons[weaponIndex].Dragging(_dir, GetHitPoint(_dir), spawnTransform.position);
+        gunLookAt.UpdateLookAt((Vector2)transform.position + _dir);
     }
 
     private void CancelDrag()

@@ -6,13 +6,10 @@ public class OnFootState : State {
     private PlayerScriptAccess plrAccess;
     private GrapplingHook grapplingHook;
 
-    private PlayerInputs inputs;
-
     protected override void Awake()
     {
         base.Awake();
         grapplingHook = GetComponent<GrapplingHook>();
-        inputs = GetComponent<PlayerInputs>();
     }
 
     protected override void Start()
