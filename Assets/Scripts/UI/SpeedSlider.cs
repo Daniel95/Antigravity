@@ -18,8 +18,6 @@ public class SpeedSlider : MonoBehaviour, IDragHandler
 
     public void OnDrag(PointerEventData data)
     {
-        //print("_______________");
-        //print("value: " + bar.value);
         speedMultiplier.SetSpeedMultiplierPercentage(bar.value);
     }
 }

@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+using System.Collections;
+
 
 public class PlayerCharacter : MonoBehaviour
 {
@@ -9,6 +11,12 @@ public class PlayerCharacter : MonoBehaviour
     {
         stateMachine = GetComponent<StateMachine>();
 
+        //wait 1 frame before we start the player statemachine, so all scripts have time to retrieve all their needed info
+        GetComponent<Frames>().ExecuteAfterDelay(1,StartPlayerStatemachine);
+    }
+
+    void StartPlayerStatemachine()
+    {
         AssignStates();
 
         stateMachine.ActivateState(StateID.OnFootState);

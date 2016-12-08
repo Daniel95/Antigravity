@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using System;
-using System.Collections;
 
 public class PlayerInputs : MonoBehaviour {
 
@@ -9,33 +8,49 @@ public class PlayerInputs : MonoBehaviour {
     [SerializeField]
     private InputTypes inputTypeUsed;
 
-    private Func<bool> jumpInput;
+    public Action<Vector2> dragging;
 
-    private Func<Vector2> shootInput;
+    public Action<Vector2> release;
+
+    public Action cancelDrag;
+
+    private MobileInputs mobileInputs;
+
+    private PCInputs pcInputs;
 
     void Start() {
-        PCInputs pcInputs = GetComponent<PCInputs>();
-        MobileInputs mobileInputs = GetComponent<MobileInputs>();
 
+        mobileInputs = GetComponent<MobileInputs>();
+        pcInputs = GetComponent<PCInputs>();
+
+        //assign to the right controls, given by inputTypeUsed 
         if (inputTypeUsed == InputTypes.Mobile)
         {
-            jumpInput += mobileInputs.JumpInput;
-            shootInput += mobileInputs.ShootInput;
+            mobileInputs.StartUpdatingInputs();
+
+            mobileInputs.dragging += dragging;
+            mobileInputs.release += release;
+            mobileInputs.cancelDrag += cancelDrag;
         }
         else if (inputTypeUsed == InputTypes.PC)
         {
-            jumpInput += pcInputs.JumpInput;
-            shootInput += pcInputs.ShootInput;
+            pcInputs.StartUpdatingInputs();
+
+            pcInputs.dragging += dragging;
+            pcInputs.release += release;
+            pcInputs.cancelDrag += cancelDrag;
         }
     }
 
-    public bool CheckJumpInput()
+    public InputsBase GetInputController()
     {
-        return jumpInput();
-    }
-
-    public Vector2 CheckShootInput()
-    {
-        return shootInput();
+        if(inputTypeUsed == InputTypes.Mobile)
+        {
+            return mobileInputs;
+        }
+        else
+        {
+            return pcInputs;
+        }
     }
 }

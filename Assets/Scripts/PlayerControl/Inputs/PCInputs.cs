@@ -1,24 +1,69 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 
-public class PCInputs : MonoBehaviour {
+public class PCInputs : InputsBase {
 
     [SerializeField]
     private KeyCode jumpInput = KeyCode.Space;
 
     [SerializeField]
-    private KeyCode shootInput = KeyCode.Mouse0;
+    private KeyCode aimInput = KeyCode.Mouse0;
 
-    public bool JumpInput() {
-        return Input.GetKeyDown(jumpInput);
+    [SerializeField]
+    private KeyCode cancelAimInput = KeyCode.Mouse2;
+
+    private bool holding;
+
+    public void StartUpdatingInputs()
+    {
+        StartCoroutine(UpdateInputs());
     }
 
-    public Vector2 ShootInput()
+    IEnumerator UpdateInputs()
     {
-        if (Input.GetKeyDown(shootInput) && !InputDetect.CheckUICollision(Input.mousePosition))
+        while (true)
         {
-            return (Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position).normalized;
+            if (Input.GetKeyDown(KeyCode.Space)) {
+                if (space != null)
+                {
+                    space();
+                }
+            }
+
+            if (Input.GetKeyDown(aimInput) && !InputDetect.CheckUICollision(Input.mousePosition))
+            {
+                holding = true;
+            }
+            else if (Input.GetKeyDown(cancelAimInput))
+            {
+                if (cancelDrag != null)
+                    cancelDrag();
+            }
+
+            if (holding)
+            {
+                //release
+                if (Input.GetKeyUp(aimInput))
+                {
+                    holding = false;
+
+                    if (release != null)
+                        release((Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position).normalized);
+                }
+                else //dragging
+                {
+                    if (dragging != null)
+                        dragging((Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position).normalized);
+                }
+            }
+
+            yield return null;
         }
-        else return Vector2.zero;
+    }
+
+    private bool Jump()
+    {
+        return Input.GetKeyDown(jumpInput);
     }
 }

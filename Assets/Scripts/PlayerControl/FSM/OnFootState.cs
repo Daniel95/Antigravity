@@ -6,10 +6,13 @@ public class OnFootState : State {
     private PlayerScriptAccess plrAccess;
     private GrapplingHook grapplingHook;
 
+    private PlayerInputs inputs;
+
     protected override void Awake()
     {
         base.Awake();
         grapplingHook = GetComponent<GrapplingHook>();
+        inputs = GetComponent<PlayerInputs>();
     }
 
     protected override void Start()
@@ -25,21 +28,20 @@ public class OnFootState : State {
 
         //subscribe to StartedGrappleLocking, so we know when we should start grappling and exit this state
         grapplingHook.StartedGrappleLocking += ExitState;
+
+        //subscribe to the space input, so we know when to jump
+        plrAccess.playerInputs.GetInputController().space += Jump;
     }
 
-    public override void Act()
+    private void Jump()
     {
-        base.Act();
-
-        //switch the gravity
-        if (plrAccess.playerInputs.CheckJumpInput())
-        {
-            plrAccess.switchGravity.StartGravitating();
-        }
+        plrAccess.switchGravity.StartGravitating();
     }
 
     private void ExitState()
     {
+        plrAccess.playerInputs.GetInputController().space -= Jump;
+
         grapplingHook.StartedGrappleLocking -= ExitState;
         stateMachine.ActivateState(StateID.GrapplingState);
         stateMachine.DeactivateState(StateID.OnFootState);

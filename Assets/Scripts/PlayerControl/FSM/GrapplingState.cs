@@ -42,6 +42,9 @@ public class GrapplingState : State {
         //exit the state when the grapple has released itself
         grapplingHook.StoppedGrappleLocking += EnterLaunchedState;
 
+        //subscribe to the space input, so we know when to exit our grapple
+        plrAccess.playerInputs.GetInputController().space += ExitGrapple;
+
         StartCoroutine(CheckStuckTimer());
     }
 
@@ -58,13 +61,12 @@ public class GrapplingState : State {
     {
         base.Act();
 
-        if (plrAccess.playerInputs.CheckJumpInput())
-        {
-            EnterLaunchedState();
-        }
-
         //update the rotation of the gun
         gunLookAt.UpdateLookAt(grapplingHook.Destination);
+    }
+
+    private void ExitGrapple() {
+        EnterLaunchedState();
     }
 
     IEnumerator CheckStuckTimer()
@@ -107,6 +109,8 @@ public class GrapplingState : State {
         //unsubscripte from all relevant delegates
         plrAccess.speedMultiplier.switchedMultiplier -= plrAccess.controlVelocity.SwitchVelocityDirection;
         grapplingHook.StoppedGrappleLocking -= EnterLaunchedState;
+
+        plrAccess.playerInputs.GetInputController().space -= ExitGrapple;
 
         grapplingHook.ExitGrappleLock();
     }

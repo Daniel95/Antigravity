@@ -16,8 +16,6 @@ public class ActivateWeapon : MonoBehaviour, IEventSystemHandler {
     [SerializeField]
     private Transform spawnTransform;
 
-    private PlayerInputs playerInputs;
-
     private LookAt gunLookAt;
 
     private List<IWeapon> weapons = new List<IWeapon>();
@@ -26,7 +24,7 @@ public class ActivateWeapon : MonoBehaviour, IEventSystemHandler {
 
     void Start()
     {
-        playerInputs = GetComponent<PlayerInputs>();
+        PlayerInputs playerInputs = GetComponent<PlayerInputs>();
 
         foreach (IWeapon weapon in GetComponents<IWeapon>())
         {
@@ -36,50 +34,50 @@ public class ActivateWeapon : MonoBehaviour, IEventSystemHandler {
         gunLookAt = gun.GetComponent<LookAt>();
     }
 
-    //when given the right input, activate the current weapon
-    private void Update()
+    void OnEnable()
     {
-        Vector2 dir = playerInputs.CheckShootInput();
+        PlayerInputs playerInputs = GetComponent<PlayerInputs>();
 
-        if (dir != Vector2.zero) {
-            gunLookAt.UpdateLookAt(dir + (Vector2)transform.position);
+        playerInputs.dragging += Dragging;
+        playerInputs.cancelDrag += CancelDrag;
+        playerInputs.release += Release;
+    }
 
-            //Vector2 dir = (clickPos - (Vector2)spawnTransform.position).normalized;
+    void OnDisable() {
+        PlayerInputs playerInputs = GetComponent<PlayerInputs>();
 
-            Vector2 targetPos = dir * maxRaycastDistance;
+        playerInputs.dragging -= Dragging;
+        playerInputs.cancelDrag -= CancelDrag;
+        playerInputs.release -= Release;
+    }
 
-            RaycastHit2D hit = Physics2D.Raycast(transform.position, targetPos, maxRaycastDistance, rayLayers);
+    private void Dragging(Vector2 _dir)
+    {
+        weapons[weaponIndex].Dragging(_dir, GetHitPoint(_dir), spawnTransform.position);
+    }
 
-            if (hit.collider != null)
-            {
-                targetPos = hit.point;
-            }
+    private void CancelDrag()
+    {
+        weapons[weaponIndex].Cancel();
+    }
 
-            //fire the current weapon
-            weapons[weaponIndex].Fire(dir, targetPos, spawnTransform.position);
-        }
-        /*
-        if (Input.GetKeyDown(shootInput))
+    private void Release(Vector2 _dir)
+    {
+        weapons[weaponIndex].Release(_dir, GetHitPoint(_dir), spawnTransform.position);
+    }
+
+    private Vector2 GetHitPoint(Vector2 _dir) {
+
+        Vector2 targetPos = _dir * maxRaycastDistance;
+
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, targetPos, maxRaycastDistance, rayLayers);
+
+        if (hit.collider != null)
         {
-            if (!MouseDetect.IsPointerOverUIObject()) {
-                Vector2 clickPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            targetPos = hit.point;
+        }
 
-                gunLookAt.UpdateLookAt(clickPos);
-
-                Vector2 dir = (clickPos - (Vector2)spawnTransform.position).normalized;
-
-                Vector2 targetPos = dir * maxRaycastDistance;
-
-                RaycastHit2D hit = Physics2D.Raycast(transform.position, targetPos, maxRaycastDistance, rayLayers);
-
-                if (hit.collider != null) {
-                    targetPos = hit.point;
-                }
-
-                //fire the current weapon
-                weapons[weaponIndex].Fire(dir, targetPos, spawnTransform.position);
-            }
-        }*/
+        return targetPos;
     }
 
     void ChangeWeapon(int _change)

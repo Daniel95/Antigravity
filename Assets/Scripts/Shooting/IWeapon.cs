@@ -2,5 +2,9 @@
 
 public interface IWeapon
 {
-    void Fire(Vector2 _direction, Vector2 _destination, Vector2 _spawnPosition);
+    void Dragging(Vector2 _direction, Vector2 _destination, Vector2 _spawnPosition);
+
+    void Release(Vector2 _direction, Vector2 _destination, Vector2 _spawnPosition);
+
+    void Cancel();
 }

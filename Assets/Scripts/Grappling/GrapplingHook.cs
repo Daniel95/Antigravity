@@ -11,8 +11,8 @@ public class GrapplingHook : MonoBehaviour, IWeapon {
     private float minDistance = 0.3f;
 
     //variables to control the unity components
-    private DistanceJoint2D distanceJoint;
     private LineRenderer lineRenderer;
+    private DistanceJoint2D distanceJoint;
 
     //to save our LineUpdateCoroutine;
     private Coroutine lineUpdateCoroutine;
@@ -30,21 +30,52 @@ public class GrapplingHook : MonoBehaviour, IWeapon {
 
     private GrapplingHookStates currentGrapplingHookState = GrapplingHookStates.inactive;
 
+    private BulletTime bulletTime;
+
+    private int maxDraggingFrames = 10;
+    private int draggingFrames;
+
     //use the direction to determine which direction we go when we lands
     private Vector2 currentDirection;
 
     void Start() {
         distanceJoint = GetComponent<DistanceJoint2D>();
-        lineRenderer = GetComponent<LineRenderer>();
         distanceJoint.enabled = false;
+
+        lineRenderer = GetComponent<LineRenderer>();
+
+        bulletTime = GetComponent<BulletTime>();
 
         grappleProjectile = Instantiate(grappleProjectilePrefab, Vector2.zero, new Quaternion(0, 0, 0, 0)) as GameObject;
         grappleMovement = grappleProjectile.GetComponent<MoveTowards>();
         grappleProjectile.SetActive(false);
     }
 
+    public void Dragging(Vector2 _direction, Vector2 _destination, Vector2 _spawnPosition) {
+        draggingFrames++;
+
+        bulletTime.SetRayDestination = _destination;
+
+        if (draggingFrames > maxDraggingFrames) {
+            draggingFrames = 0;
+            bulletTime.StartBulletTime();
+        }
+    }
+
+    public void Cancel()
+    {
+        StopBulletTime();
+    }
+
+    void StopBulletTime() {
+        draggingFrames = 0;
+        bulletTime.StopBulletTime();
+    }
+
     //spawns the grapple projectile and activates its moveTowards script
-    public void Fire(Vector2 _direction, Vector2 _destination, Vector2 _spawnPosition) {
+    public void Release(Vector2 _direction, Vector2 _destination, Vector2 _spawnPosition) {
+        StopBulletTime();
+
         if (currentGrapplingHookState == GrapplingHookStates.inactive)
         {
             ShootGrappleHook(_direction, _destination, _spawnPosition);
@@ -86,7 +117,7 @@ public class GrapplingHook : MonoBehaviour, IWeapon {
         while (true) {
             lineRenderer.SetPosition(0, transform.position);
             lineRenderer.SetPosition(1, grappleProjectile.transform.position);
-            yield return new WaitForFixedUpdate();
+            yield return null;
         }
     }
 
