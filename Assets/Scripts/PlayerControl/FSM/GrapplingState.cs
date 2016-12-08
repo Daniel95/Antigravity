@@ -82,6 +82,7 @@ public class GrapplingState : State {
         //check if the player is still stuck, if so unlock the grapple
         if (plrAccess.controlVelocity.GetVelocity == Vector2.zero)
         {
+            plrAccess.controlDirection.SetLogicDirection(previousFrameDirection);
             EnterOnFootState();
         }
     }
