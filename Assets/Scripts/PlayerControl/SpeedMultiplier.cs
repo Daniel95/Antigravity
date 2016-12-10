@@ -14,7 +14,7 @@ public class SpeedMultiplier : MonoBehaviour {
     private float startMultiplier = 1;
 
     [SerializeField]
-    private float changeSpeed = 0.01f;
+    private float flipSpeed = 0.01f;
 
     [SerializeField]
     private float maxSpeed = 2f;
@@ -30,6 +30,10 @@ public class SpeedMultiplier : MonoBehaviour {
 
     private float flippedCompensation = 1;
 
+    private Coroutine moveMultiplier;
+
+    private float lastTarget;
+
     void Awake() {
         velocity = GetComponent<ControlVelocity>();
         velocity.SpeedMultiplier = startMultiplier;
@@ -37,12 +41,8 @@ public class SpeedMultiplier : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-        if (Input.GetKey(speedPostiveInput))
-        {
-            ChangeSpeedMultiplier((changeSpeed) * Time.deltaTime);
-        }
-        else if (Input.GetKey(speedNegativeInput)) {
-            ChangeSpeedMultiplier((-changeSpeed) * Time.deltaTime);
+        if (Input.GetKeyDown(KeyCode.D)) {
+            SmoothFlipMultiplier();
         }
     }
 
@@ -86,6 +86,7 @@ public class SpeedMultiplier : MonoBehaviour {
         SetSpeed(newMultiplierSpeed);
     }
 
+    //increases or decreases the multiplier by an set amount
     private void ChangeSpeedMultiplier(float _change)
     {
         float _newMultiplierSpeed = originalSpeedMultiplier + _change * flippedCompensation;
@@ -93,10 +94,27 @@ public class SpeedMultiplier : MonoBehaviour {
         SetSpeed(_newMultiplierSpeed);
     }
 
+    public void SmoothFlipMultiplier() {
+        float newTarget = originalSpeedMultiplier * -1;
+
+        if (moveMultiplier != null)
+        {
+            StopCoroutine(moveMultiplier);
+            newTarget = lastTarget *= -1;
+        }
+        else {
+            lastTarget = newTarget;
+        }
+
+        moveMultiplier = StartCoroutine(MoveMultiplier(newTarget, flipSpeed));
+    }
+
     public void ResetSpeedMultiplier()
     {
         if (originalSpeedMultiplier != velocity.SpeedMultiplier)
         {
+            print("flip multiplier");
+
             flippedCompensation *= -1;
 
             originalSpeedMultiplier = velocity.SpeedMultiplier;
@@ -106,5 +124,15 @@ public class SpeedMultiplier : MonoBehaviour {
     public float OriginalSpeedMultiplier
     {
         get { return originalSpeedMultiplier; }
+    }
+
+    IEnumerator MoveMultiplier(float _target, float _time)
+    {
+        while (Mathf.Round(originalSpeedMultiplier * 10) / 10 != Mathf.Round(_target * 10) / 10)
+        {
+            SetSpeed(Mathf.Lerp(originalSpeedMultiplier, _target, _time));
+            yield return new WaitForFixedUpdate();
+        }
+        originalSpeedMultiplier = _target;
     }
 }
