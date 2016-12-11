@@ -27,7 +27,7 @@ public class OnFootState : State {
         grapplingHook.StartedGrappleLocking += ExitState;
 
         //subscribe to the space input, so we know when to jump
-        plrAccess.playerInputs.GetInputController().space += Jump;
+        plrAccess.playerInputs.GetInputController().action += Jump;
     }
 
     private void Jump()
@@ -37,7 +37,7 @@ public class OnFootState : State {
 
     private void ExitState()
     {
-        plrAccess.playerInputs.GetInputController().space -= Jump;
+        plrAccess.playerInputs.GetInputController().action -= Jump;
 
         grapplingHook.StartedGrappleLocking -= ExitState;
         stateMachine.ActivateState(StateID.GrapplingState);

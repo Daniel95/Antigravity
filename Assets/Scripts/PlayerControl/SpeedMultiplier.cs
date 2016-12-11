@@ -4,13 +4,6 @@ using System.Collections;
 
 public class SpeedMultiplier : MonoBehaviour
 {
-
-    [SerializeField]
-    private KeyCode speedNegativeInput = KeyCode.A;
-
-    [SerializeField]
-    private KeyCode speedPostiveInput = KeyCode.D;
-
     [SerializeField]
     private float startMultiplier = 1;
 
@@ -25,6 +18,8 @@ public class SpeedMultiplier : MonoBehaviour
 
     private ControlVelocity velocity;
 
+    private PlayerInputs playerInputs;
+
     public Action switchedMultiplier;
 
     //the original speed multiplier, not affected by any rules of setSpeed
@@ -34,21 +29,13 @@ public class SpeedMultiplier : MonoBehaviour
 
     private float lastTarget;
 
-    private bool fakeFlipped;
-
-    void Awake()
+    void Start()
     {
         velocity = GetComponent<ControlVelocity>();
         velocity.SpeedMultiplier = originalSpeedMultiplier = startMultiplier;
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            SmoothFlipMultiplier();
-        }
+        playerInputs = GetComponent<PlayerInputs>();
+        playerInputs.GetInputController().flipSpeed += SmoothFlipMultiplier;
     }
 
     public void SetSpeedMultiplier(float _newMultiplierSpeed)
@@ -129,8 +116,6 @@ public class SpeedMultiplier : MonoBehaviour
             else {
                 SetSpeedMultiplier(Mathf.Abs(originalSpeedMultiplier));
             }
-
-            fakeFlipped = false;
         }
     }
 
@@ -144,12 +129,3 @@ public class SpeedMultiplier : MonoBehaviour
         SetSpeedMultiplier(_target);
     }
 }
-
-
-/*
- * lasttarget should be updated
- * but it also doesnt go below the min threshold, so the mulitplier can be flipped when its not necessary.
- * 
- * mul goes from 1 to -1
- * then when we switch speed before the last one ended, the lastTarget is old
- */

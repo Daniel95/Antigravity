@@ -8,6 +8,9 @@ public class PCInputs : InputsBase {
     private KeyCode jumpInput = KeyCode.Space;
 
     [SerializeField]
+    private KeyCode flipSpeedInput = KeyCode.X;
+
+    [SerializeField]
     private KeyCode aimInput = KeyCode.Mouse0;
 
     [SerializeField]
@@ -24,10 +27,17 @@ public class PCInputs : InputsBase {
     {
         while (true)
         {
-            if (Input.GetKeyDown(KeyCode.Space)) {
-                if (space != null)
+            if (Input.GetKeyDown(jumpInput))
+            {
+                if (action != null)
                 {
-                    space();
+                    action();
+                }
+            }
+            else if (Input.GetKeyDown(flipSpeedInput)) {
+                if (flipSpeed != null)
+                {
+                    flipSpeed();
                 }
             }
 

@@ -42,7 +42,7 @@ public class GrapplingState : State {
         grapplingHook.StoppedGrappleLocking += EnterLaunchedState;
 
         //subscribe to the space input, so we know when to exit our grapple
-        plrAccess.playerInputs.GetInputController().space += ExitGrapple;
+        plrAccess.playerInputs.GetInputController().action += ExitGrapple;
 
         StartCoroutine(CheckStuckTimer());
     }
@@ -111,7 +111,7 @@ public class GrapplingState : State {
         //unsubscripte from all relevant delegates
         plrAccess.speedMultiplier.switchedMultiplier -= FakeSwitchSpeed;
         grapplingHook.StoppedGrappleLocking -= EnterLaunchedState;
-        plrAccess.playerInputs.GetInputController().space -= ExitGrapple;
+        plrAccess.playerInputs.GetInputController().action -= ExitGrapple;
 
         grapplingHook.ExitGrappleLock();
 
