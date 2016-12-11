@@ -17,7 +17,7 @@ public class GrapplingState : State {
 
     private Coroutine slingMovement;
 
-    private Vector2 previousFrameDirection;
+    private Vector2 direction;
 
     protected override void Awake()
     {
@@ -32,12 +32,11 @@ public class GrapplingState : State {
         base.EnterState();
 
         //when we switch our speed, also switch the direction of our velocity
-        plrAccess.speedMultiplier.switchedMultiplier += plrAccess.controlVelocity.SwitchVelocityDirection;
+        plrAccess.speedMultiplier.switchedMultiplier += FakeSwitchSpeed;
 
         //activate a different direction movement when in this state
         plrAccess.controlVelocity.StopDirectionalMovement();
         slingMovement = StartCoroutine(SlingMovement());
-        plrAccess.controlVelocity.StartDirectionalMovement();
 
         //exit the state when the grapple has released itself
         grapplingHook.StoppedGrappleLocking += EnterLaunchedState;
@@ -48,13 +47,19 @@ public class GrapplingState : State {
         StartCoroutine(CheckStuckTimer());
     }
 
-    IEnumerator SlingMovement() {
-        while (true) {
-            plrAccess.controlVelocity.SetDirection(previousFrameDirection = plrAccess.controlVelocity.GetVelocityDirection());
-            plrAccess.controlVelocity.SpeedMultiplier = Mathf.Abs(plrAccess.controlVelocity.SpeedMultiplier);
+    IEnumerator SlingMovement()
+    {
+        while (true)
+        {
+            direction = plrAccess.controlVelocity.GetVelocityDirection();
+            plrAccess.controlVelocity.SetVelocity(direction * (plrAccess.controlVelocity.Speed * Mathf.Abs(plrAccess.controlVelocity.SpeedMultiplier)));
 
             yield return new WaitForFixedUpdate();
         }
+    }
+
+    private void FakeSwitchSpeed() {
+        plrAccess.controlVelocity.SwitchVelocityDirection();
     }
 
     public override void Act()
@@ -82,7 +87,7 @@ public class GrapplingState : State {
         //check if the player is still stuck, if so unlock the grapple
         if (plrAccess.controlVelocity.GetVelocity == Vector2.zero)
         {
-            plrAccess.controlDirection.SetLogicDirection(previousFrameDirection);
+            plrAccess.controlDirection.SetLogicDirection(direction);
             EnterOnFootState();
         }
     }
@@ -97,29 +102,32 @@ public class GrapplingState : State {
     private void EnterOnFootState() {
         GeneralStateCleanUp();
 
-        plrAccess.speedMultiplier.ResetSpeedMultiplier();
-
         stateMachine.ActivateState(StateID.OnFootState);
         stateMachine.DeactivateState(StateID.GrapplingState);
     }
 
     private void GeneralStateCleanUp()
     {
-        StopCoroutine(slingMovement);
-
         //unsubscripte from all relevant delegates
-        plrAccess.speedMultiplier.switchedMultiplier -= plrAccess.controlVelocity.SwitchVelocityDirection;
+        plrAccess.speedMultiplier.switchedMultiplier -= FakeSwitchSpeed;
         grapplingHook.StoppedGrappleLocking -= EnterLaunchedState;
-
         plrAccess.playerInputs.GetInputController().space -= ExitGrapple;
 
         grapplingHook.ExitGrappleLock();
+
+        //return to the normal movement
+        StopCoroutine(slingMovement);
+        plrAccess.controlVelocity.SetDirection(direction = plrAccess.controlVelocity.GetVelocityDirection());
+        plrAccess.speedMultiplier.MakeMultiplierPositive();
+
+        //reactivate the normal movement when in exiting grappling state
+        plrAccess.controlVelocity.StartDirectionalMovement();
     }
 
     //on collision we exit this state, and check which direction we should go
     public override void OnCollEnter2D(Collision2D coll)
     {
-        plrAccess.controlDirection.SetLogicDirection(previousFrameDirection);
+        plrAccess.controlDirection.SetLogicDirection(direction);
         EnterOnFootState();
     }
 }

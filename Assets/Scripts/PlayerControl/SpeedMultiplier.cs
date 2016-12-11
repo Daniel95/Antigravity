@@ -2,7 +2,8 @@
 using System;
 using System.Collections;
 
-public class SpeedMultiplier : MonoBehaviour {
+public class SpeedMultiplier : MonoBehaviour
+{
 
     [SerializeField]
     private KeyCode speedNegativeInput = KeyCode.A;
@@ -26,32 +27,36 @@ public class SpeedMultiplier : MonoBehaviour {
 
     public Action switchedMultiplier;
 
-    private float originalSpeedMultiplier = 1;
-
-    private float flippedCompensation = 1;
+    //the original speed multiplier, not affected by any rules of setSpeed
+    private float originalSpeedMultiplier;
 
     private Coroutine moveMultiplier;
 
     private float lastTarget;
 
-    void Awake() {
+    private bool fakeFlipped;
+
+    void Awake()
+    {
         velocity = GetComponent<ControlVelocity>();
-        velocity.SpeedMultiplier = startMultiplier;
+        velocity.SpeedMultiplier = originalSpeedMultiplier = startMultiplier;
     }
 
     // Update is called once per frame
-    void Update() {
-        if (Input.GetKeyDown(KeyCode.D)) {
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.D))
+        {
             SmoothFlipMultiplier();
         }
     }
 
-    public void SetSpeed(float _newMultiplierSpeed) {
+    public void SetSpeedMultiplier(float _newMultiplierSpeed)
+    {
 
         //check if the new multiplier is outside the threshold
         if (Mathf.Abs(_newMultiplierSpeed) >= minSwitchSpeedThreshold)
         {
-
             //only replace the speed when it is lower or equals the maxSpeed
             if (_newMultiplierSpeed <= maxSpeed && _newMultiplierSpeed >= -maxSpeed)
             {
@@ -70,8 +75,9 @@ public class SpeedMultiplier : MonoBehaviour {
             }
         }
 
-        //secure way of checking if the multiplier has flipped between + and -, even if the change is really fast
-        if (originalSpeedMultiplier <= 0 && _newMultiplierSpeed > 0 || originalSpeedMultiplier >= 0 && _newMultiplierSpeed < 0) {
+        //secure way of checking if the multiplier has flipped between pos and neg, even if the change is really fast
+        if (originalSpeedMultiplier <= 0 && _newMultiplierSpeed > 0 || originalSpeedMultiplier >= 0 && _newMultiplierSpeed < 0)
+        {
             if (switchedMultiplier != null)
                 switchedMultiplier();
         }
@@ -81,20 +87,21 @@ public class SpeedMultiplier : MonoBehaviour {
 
     public void SetSpeedMultiplierPercentage(float _percentage)
     {
-        float newMultiplierSpeed = (_percentage * (maxSpeed * 2) - maxSpeed) * flippedCompensation;
+        float newMultiplierSpeed = (_percentage * (maxSpeed * 2) - maxSpeed);
 
-        SetSpeed(newMultiplierSpeed);
+        SetSpeedMultiplier(newMultiplierSpeed);
     }
 
     //increases or decreases the multiplier by an set amount
     private void ChangeSpeedMultiplier(float _change)
     {
-        float _newMultiplierSpeed = originalSpeedMultiplier + _change * flippedCompensation;
+        float _newMultiplierSpeed = originalSpeedMultiplier + _change;
 
-        SetSpeed(_newMultiplierSpeed);
+        SetSpeedMultiplier(_newMultiplierSpeed);
     }
 
-    public void SmoothFlipMultiplier() {
+    public void SmoothFlipMultiplier()
+    {
         float newTarget = originalSpeedMultiplier * -1;
 
         if (moveMultiplier != null)
@@ -102,37 +109,47 @@ public class SpeedMultiplier : MonoBehaviour {
             StopCoroutine(moveMultiplier);
             newTarget = lastTarget *= -1;
         }
-        else {
+        else
+        {
             lastTarget = newTarget;
         }
 
         moveMultiplier = StartCoroutine(MoveMultiplier(newTarget, flipSpeed));
     }
 
-    public void ResetSpeedMultiplier()
+    public void MakeMultiplierPositive()
     {
-        if (originalSpeedMultiplier != velocity.SpeedMultiplier)
-        {
-            print("flip multiplier");
+        if (originalSpeedMultiplier < 0) {
+            if (moveMultiplier != null)
+            {
+                lastTarget = -1;
+                SetSpeedMultiplier(Mathf.Abs(originalSpeedMultiplier * -1));
+                SmoothFlipMultiplier();
+            }
+            else {
+                SetSpeedMultiplier(Mathf.Abs(originalSpeedMultiplier));
+            }
 
-            flippedCompensation *= -1;
-
-            originalSpeedMultiplier = velocity.SpeedMultiplier;
+            fakeFlipped = false;
         }
-    }
-
-    public float OriginalSpeedMultiplier
-    {
-        get { return originalSpeedMultiplier; }
     }
 
     IEnumerator MoveMultiplier(float _target, float _time)
     {
         while (Mathf.Round(originalSpeedMultiplier * 10) / 10 != Mathf.Round(_target * 10) / 10)
         {
-            SetSpeed(Mathf.Lerp(originalSpeedMultiplier, _target, _time));
+            SetSpeedMultiplier(Mathf.Lerp(originalSpeedMultiplier, _target, _time));
             yield return new WaitForFixedUpdate();
         }
-        originalSpeedMultiplier = _target;
+        SetSpeedMultiplier(_target);
     }
 }
+
+
+/*
+ * lasttarget should be updated
+ * but it also doesnt go below the min threshold, so the mulitplier can be flipped when its not necessary.
+ * 
+ * mul goes from 1 to -1
+ * then when we switch speed before the last one ended, the lastTarget is old
+ */

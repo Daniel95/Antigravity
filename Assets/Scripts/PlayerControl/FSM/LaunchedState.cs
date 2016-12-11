@@ -25,24 +25,10 @@ public class LaunchedState : State
 
         //subscribe to StartedGrappleLocking, so we know when we should start grappling and exit this state
         grapplingHook.StartedGrappleLocking += EnterGrapplingState;
-        plrAccess.speedMultiplier.switchedMultiplier += FakeSwitchSpeed;
 
         previousDirection = plrAccess.controlVelocity.GetVelocityDirection();
 
         directionIndicator.PointToCeilVelocityDir();
-    }
-
-    public override void Act()
-    {
-        base.Act();
-
-        plrAccess.controlVelocity.SpeedMultiplier = Mathf.Abs(plrAccess.controlVelocity.SpeedMultiplier);
-    }
-
-    //fake the speedMultiplier switch
-    private void FakeSwitchSpeed() {
-        plrAccess.controlVelocity.SwitchVelocityDirection();
-        plrAccess.controlVelocity.SetDirection(previousDirection = plrAccess.controlVelocity.GetVelocityDirection());
     }
 
     private void EnterGrapplingState()
@@ -57,8 +43,6 @@ public class LaunchedState : State
     {
         GeneralStateCleanUp();
 
-        plrAccess.speedMultiplier.ResetSpeedMultiplier();
-
         stateMachine.ActivateState(StateID.OnFootState);
         stateMachine.DeactivateState(StateID.LaunchedState);
     }
@@ -67,7 +51,6 @@ public class LaunchedState : State
     {
         //unsubscripte from all relevant delegates
         grapplingHook.StartedGrappleLocking -= EnterGrapplingState;
-        plrAccess.speedMultiplier.switchedMultiplier -= FakeSwitchSpeed;
     }
 
     //on collision we exit this state, and check which direction we should go
