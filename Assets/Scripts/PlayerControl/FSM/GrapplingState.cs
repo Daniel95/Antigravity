@@ -4,9 +4,6 @@ using System.Collections;
 public class GrapplingState : State {
 
     [SerializeField]
-    private int maxFramesStuck = 40;
-
-    [SerializeField]
     private GameObject gun;
 
     private GrapplingHook grapplingHook;
@@ -43,8 +40,6 @@ public class GrapplingState : State {
 
         //subscribe to the space input, so we know when to exit our grapple
         plrAccess.playerInputs.GetInputController().action += ExitGrapple;
-
-        StartCoroutine(CheckStuckTimer());
     }
 
     IEnumerator SlingMovement()
@@ -66,30 +61,17 @@ public class GrapplingState : State {
     {
         base.Act();
 
+        if (plrAccess.controlVelocity.GetVelocity == Vector2.zero) {
+            plrAccess.controlDirection.SetLogicDirection(direction);
+            EnterOnFootState();
+        }
+
         //update the rotation of the gun
         gunLookAt.UpdateLookAt(grapplingHook.Destination);
     }
 
     private void ExitGrapple() {
         EnterLaunchedState();
-    }
-
-    IEnumerator CheckStuckTimer()
-    {
-        int framesStuckCounter = 0;
-
-        while (framesStuckCounter < maxFramesStuck)
-        {
-            framesStuckCounter++;
-            yield return new WaitForFixedUpdate();
-        }
-
-        //check if the player is still stuck, if so unlock the grapple
-        if (plrAccess.controlVelocity.GetVelocity == Vector2.zero)
-        {
-            plrAccess.controlDirection.SetLogicDirection(direction);
-            EnterOnFootState();
-        }
     }
 
     private void EnterLaunchedState() {

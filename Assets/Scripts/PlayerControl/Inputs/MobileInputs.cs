@@ -10,12 +10,11 @@ public class MobileInputs : InputsBase {
         StartCoroutine(UpdateInputs());
     }
 
-
     IEnumerator UpdateInputs()
     {
         while (true)
         {
-            if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Moved && !InputDetect.CheckUICollision(Input.GetTouch(0).position))
+            if (Input.touchCount > 0 && !InputDetect.CheckUICollision(Input.GetTouch(0).position))
                 holding = true;
 
             if (holding && Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Ended)
@@ -23,45 +22,26 @@ public class MobileInputs : InputsBase {
                 holding = false;
 
                 if (release != null)
-                    release(Input.GetTouch(0).deltaPosition.normalized);
+                    release((Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position) - transform.position).normalized);
             }
             else if (holding)
             {
                 if(dragging != null)
-                    dragging(Input.GetTouch(0).deltaPosition.normalized);
+                    dragging((Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position) - transform.position).normalized);
             }
 
             yield return null;
         }
     }
 
-    /*
-
-    public bool Tab()
-    {
-        return Input.touchCount > 0 && Input.GetTouch(0).phase != TouchPhase.Began && Input.GetTouch(0).phase != TouchPhase.Moved && !InputDetect.CheckUICollision(Input.GetTouch(0).position);
+    public void Action() {
+        if (action != null)
+            action();
     }
 
-    private Vector2 Dragging()
+    public void FlipSpeed()
     {
-        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Moved && !InputDetect.CheckUICollision(Input.GetTouch(0).position))
-            holding = true;
-
-        if (holding)
-        {
-            return Input.GetTouch(0).deltaPosition.normalized;
-        }
-        else return Vector2.zero;
+        if (flipSpeed != null)
+            flipSpeed();
     }
-
-    private Vector2 Release()
-    {
-        if (holding && Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Ended)
-        {
-            holding = false;
-            return Input.GetTouch(0).deltaPosition.normalized;
-        }
-        else return Vector2.zero;
-    }
-    */
 }

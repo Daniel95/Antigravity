@@ -72,8 +72,15 @@ public class PCInputs : InputsBase {
         }
     }
 
-    private bool Jump()
+    public void Action()
     {
-        return Input.GetKeyDown(jumpInput);
+        if (action != null)
+            action();
+    }
+
+    public void FlipSpeed()
+    {
+        if (flipSpeed != null)
+            flipSpeed();
     }
 }
