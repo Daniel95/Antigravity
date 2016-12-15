@@ -14,9 +14,11 @@ public class PCInputs : InputsBase {
     private KeyCode aimInput = KeyCode.Mouse0;
 
     [SerializeField]
-    private KeyCode cancelAimInput = KeyCode.Mouse2;
+    private KeyCode cancelAimInput = KeyCode.Mouse1;
 
     private bool holding;
+
+    private Vector2 startHoldPosition;
 
     public void StartUpdatingInputs()
     {
@@ -45,8 +47,10 @@ public class PCInputs : InputsBase {
             {
                 holding = true;
             }
-            else if (Input.GetKeyDown(cancelAimInput))
+            if (Input.GetKeyDown(cancelAimInput))
             {
+                holding = false;
+
                 if (cancelDrag != null)
                     cancelDrag();
             }

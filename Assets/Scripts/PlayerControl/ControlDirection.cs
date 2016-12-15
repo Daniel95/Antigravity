@@ -2,11 +2,9 @@
 using System;
 using System.Collections;
 
-
 public class ControlDirection : MonoBehaviour {
 
-    private CharRaycasting ray;
-    private ControlVelocity controlVelocity;
+    private PlayerScriptAccess plrAcces;
 
     //the last directions before it was set to zero
     private Vector2 lastDir;
@@ -14,10 +12,9 @@ public class ControlDirection : MonoBehaviour {
     public Action<Vector2> finishedDirectionLogic;
 
     void Start() {
-        ray = GetComponent<CharRaycasting>();
-        controlVelocity = GetComponent<ControlVelocity>();
+        plrAcces = GetComponent<PlayerScriptAccess>();
 
-        lastDir = controlVelocity.GetControlledDirection();
+        lastDir = plrAcces.controlVelocity.GetControlledDirection();
     }
 
     public void SetLogicDirection(Vector2 _currentDir) {
@@ -34,12 +31,17 @@ public class ControlDirection : MonoBehaviour {
     }
 
     private void AdjustDirection(Vector2 _currentDir) {
+
+        Vector2 newDir = DirectionLogic(_currentDir);
+
+        Vector2 lookDir = plrAcces.controlVelocity.AdjustDirToMultiplier(lastDir);
+
         //use the direction logic for our new dir, but invert it if our speed multiplier is also inverted
-        controlVelocity.SetDirection(controlVelocity.AdjustDirToMultiplier(DirectionLogic(_currentDir)));
+        plrAcces.controlVelocity.SetDirection(plrAcces.controlVelocity.AdjustDirToMultiplier(newDir));
 
         if (finishedDirectionLogic != null)
         {
-            finishedDirectionLogic(lastDir);
+            finishedDirectionLogic(lookDir);
         }
     }
 
@@ -47,14 +49,14 @@ public class ControlDirection : MonoBehaviour {
     private Vector2 DirectionLogic(Vector2 _currentDir)
     {
         //get the collision directions of the raycasts
-        Vector2 rayDir = new Vector2(ray.CheckHorizontalDir(), ray.CheckVerticalDir());
+        Vector2 rayDir = new Vector2(plrAcces.charRaycasting.CheckHorizontalDir(), plrAcces.charRaycasting.CheckVerticalDir());
         
         Vector2 newDir = new Vector2();
 
         //if we are not hitting a wall on both axis
         if (rayDir.x == 0 || rayDir.y == 0) {
 
-            //we dont want to overwrite our last dir with a zero, we use it determine which direction we should move
+            //we dont want to overwrite our last dir with a zero, we use it determine which direction we should move next
             //if our currentDir.x isn't 0, set is as our lastDir.x
             if (_currentDir.x != 0)
             {
@@ -81,7 +83,7 @@ public class ControlDirection : MonoBehaviour {
         {
             if (rayDir == Vector2.zero)
             {
-                controlVelocity.SetDirection(controlVelocity.AdjustDirToMultiplier(lastDir));
+                plrAcces.controlVelocity.SetDirection(plrAcces.controlVelocity.AdjustDirToMultiplier(lastDir));
             }
             else
             {

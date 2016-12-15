@@ -65,6 +65,7 @@ public class GrapplingHook : MonoBehaviour, IWeapon {
     public void Cancel()
     {
         StopBulletTime();
+        ExitGrappleLock();
     }
 
     void StopBulletTime() {

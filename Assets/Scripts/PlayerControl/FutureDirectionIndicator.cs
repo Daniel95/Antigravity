@@ -18,18 +18,14 @@ public class FutureDirectionIndicator : MonoBehaviour {
         lookAt = arrowTransform.GetComponent<LookAt>();
         plrAccess = GetComponent<PlayerScriptAccess>();
         frames = GetComponent<Frames>();
+        lookDir = plrAccess.controlVelocity.GetCeilVelocityDirection();
+
         SubscribeToDelegates();
     }
 
     void OnEnable() {
         if (plrAccess != null)
             SubscribeToDelegates();
-    }
-
-    void SubscribeToDelegates() {
-        plrAccess.controlDirection.finishedDirectionLogic += PointToControlledDir;
-        plrAccess.speedMultiplier.switchedMultiplier += PointToCeilVelocityDir;
-        plrAccess.switchGravity.switchedGravity += PointToCeilVelocityDir;
     }
 
     void OnDisable()
@@ -39,30 +35,51 @@ public class FutureDirectionIndicator : MonoBehaviour {
         plrAccess.switchGravity.switchedGravity -= PointToCeilVelocityDir;
     }
 
-    public void PointToControlledDir(Vector2 _futureDir)
-    {
-        lookDir = _futureDir;
-        lookAt.UpdateLookAt((Vector2)transform.position + _futureDir);
+    void SubscribeToDelegates() {
+        plrAccess.controlDirection.finishedDirectionLogic += PointToControlledDir;
+        plrAccess.speedMultiplier.switchedMultiplier += PointToCeilVelocityDir;
+        plrAccess.switchGravity.switchedGravity += PointToCeilVelocityDir;
     }
 
+    public void PointToControlledDir(Vector2 _futureDir)
+    {
+
+        lookDir = _futureDir * plrAccess.controlVelocity.GetMultiplierDir();
+
+        lookAt.UpdateLookAt((Vector2)transform.position + lookDir);
+    }
+    
     //look at the the ceiled values of our current normalized velocity 
     public void PointToCeilVelocityDir() {
         frames.ExecuteAfterDelay(1, UpdateCeilVelocityDir);
     }
 
     private void UpdateCeilVelocityDir() {
-        Vector2 CeilVelocityDir = plrAccess.controlVelocity.GetCeilVelocityDirection();
+        Vector2 velocityDir = plrAccess.controlVelocity.GetCeilVelocityDirection();
 
         //don't update the dir when its new value is zero
-        if (CeilVelocityDir.x != 0)
+        if (velocityDir.x != 0)
         {
-            lookDir.x = CeilVelocityDir.x;
+            lookDir.x = velocityDir.x;
         }
-        if (CeilVelocityDir.y != 0)
+        if (velocityDir.y != 0)
         {
-            lookDir.y = CeilVelocityDir.y;
+            lookDir.y = velocityDir.y;
         }
 
         lookAt.UpdateLookAt((Vector2)transform.position + lookDir);
+    }
+
+    private void UpdateLookDir(Vector2 _newLookDir)
+    {
+        //don't update the dir when its new value is zero
+        if (_newLookDir.x != 0)
+        {
+            lookDir.x = _newLookDir.x;
+        }
+        if (_newLookDir.y != 0)
+        {
+            lookDir.y = _newLookDir.y;
+        }
     }
 }

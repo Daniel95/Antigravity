@@ -5,6 +5,9 @@ using System.Collections.Generic;
 public class ActivateWeapon : MonoBehaviour, IEventSystemHandler {
 
     [SerializeField]
+    private LayerMask test;
+
+    [SerializeField]
     private LayerMask rayLayers;
     
     [SerializeField]

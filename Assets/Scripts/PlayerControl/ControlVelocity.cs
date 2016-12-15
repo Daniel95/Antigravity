@@ -76,7 +76,7 @@ public class ControlVelocity : MonoBehaviour {
 
         int multiplierDir = GetMultiplierDir();
 
-        //only adjust the direction to multiplierDir if it has changed
+        //only adjust the direction to multiplierDir if the direction has changed
         if (directionDifference.x != 0)
         {
             _dir.x *= multiplierDir;

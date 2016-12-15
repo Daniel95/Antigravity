@@ -21,13 +21,21 @@ public class MobileInputs : InputsBase {
             {
                 holding = false;
 
-                if (release != null)
-                    release((Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position) - transform.position).normalized);
+                //check if we are not releasing on a UI element.
+                if (InputDetect.CheckUICollision(Input.GetTouch(0).position))
+                {
+                    if (release != null)
+                        release((Input.GetTouch(0).deltaPosition - (Vector2)transform.position).normalized);
+                }
+                else {
+                    if (cancelDrag != null)
+                        cancelDrag();
+                }
             }
             else if (holding)
             {
                 if(dragging != null)
-                    dragging((Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position) - transform.position).normalized);
+                    dragging((Input.GetTouch(0).deltaPosition - (Vector2)transform.position).normalized);
             }
 
             yield return null;
