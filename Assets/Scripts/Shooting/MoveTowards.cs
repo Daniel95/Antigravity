@@ -20,7 +20,6 @@ public class MoveTowards : MonoBehaviour {
             StopMoving();
         }
 
-        //if(gameObject.activeSelf)
         moveTo = StartCoroutine(MoveTo(_destination));
     }
 
