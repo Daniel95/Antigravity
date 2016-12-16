@@ -13,4 +13,7 @@ public class InputsBase : MonoBehaviour {
     public Action flipSpeed;
 
     public Action action;
+
+    protected Coroutine updateJoyStickInputs;
+    protected Coroutine updateStandardInputs;
 }

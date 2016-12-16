@@ -32,8 +32,7 @@ public class GrapplingHook : MonoBehaviour, IWeapon {
 
     private BulletTime bulletTime;
 
-    private int maxDraggingFrames = 10;
-    private int draggingFrames;
+    private bool bulletTimeActive;
 
     //use the direction to determine which direction we go when we lands
     private Vector2 currentDirection;
@@ -52,14 +51,12 @@ public class GrapplingHook : MonoBehaviour, IWeapon {
     }
 
     public void Dragging(Vector2 _direction, Vector2 _destination, Vector2 _spawnPosition) {
-        draggingFrames++;
-
-        bulletTime.SetRayDestination = _destination;
-
-        if (draggingFrames > maxDraggingFrames) {
-            draggingFrames = 0;
+        if (!bulletTimeActive) {
+            bulletTimeActive = true;
             bulletTime.StartBulletTime();
         }
+
+        bulletTime.SetRayDestination = _destination;
     }
 
     public void Cancel()
@@ -69,7 +66,7 @@ public class GrapplingHook : MonoBehaviour, IWeapon {
     }
 
     void StopBulletTime() {
-        draggingFrames = 0;
+        bulletTimeActive = false;
         bulletTime.StopBulletTime();
     }
 
@@ -175,7 +172,6 @@ public class GrapplingHook : MonoBehaviour, IWeapon {
     }
 
     void DonePullingBack() {
-
         grappleProjectileScript.reachedDestination -= DonePullingBack;
         DestroyGrappleLock();
     }

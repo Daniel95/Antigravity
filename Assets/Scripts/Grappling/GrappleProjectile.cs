@@ -24,14 +24,14 @@ public class GrappleProjectile : MonoBehaviour {
     public void GoToShootPos(Vector2 _destination) {
         hookedToSurface = false;
 
-        moveTowards.StartMoving(_destination);
         moveTowards.reachedDestination = ReachedShootPos;
+        moveTowards.StartMoving(_destination);
     }
 
     public void Return(Vector2 _destination)
     {
-        moveTowards.StartMoving(_destination);
         moveTowards.reachedDestination = reachedDestination;
+        moveTowards.StartMoving(_destination);
     }
 
     void OnDisable()
@@ -62,6 +62,14 @@ public class GrappleProjectile : MonoBehaviour {
     {
         if (((1 << collision.gameObject.layer) & hookAbleLayers) != 0) {
             hookedToSurface = true;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (((1 << collision.gameObject.layer) & hookAbleLayers) != 0)
+        {
+            hookedToSurface = false;
         }
     }
 }

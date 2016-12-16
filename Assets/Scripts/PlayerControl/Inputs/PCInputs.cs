@@ -18,14 +18,126 @@ public class PCInputs : InputsBase {
 
     private bool holding;
 
-    private Vector2 startHoldPosition;
+    [SerializeField]
+    private GameObject joyStickPrefab;
 
-    public void StartUpdatingInputs()
+    private GameObject joyStickGObj;
+
+    private DragDirIndicator dragDirIndicator;
+
+    [SerializeField]
+    private float minDistToDrag = 1;
+
+    private bool touched;
+    private bool isDragging;
+
+    private Vector2 startTouchPosition;
+
+    public void StartUpdatingStandardInputs()
     {
-        StartCoroutine(UpdateInputs());
+        updateStandardInputs = StartCoroutine(UpdateStandardInputs());
     }
 
-    IEnumerator UpdateInputs()
+    public void StopUpdatingStandardInputs()
+    {
+        if(updateStandardInputs != null)
+        {
+            StopCoroutine(updateStandardInputs);
+        }
+    }
+
+    public void StartUpdatingJoyStickInputs()
+    {
+        joyStickGObj = Instantiate(joyStickPrefab, Vector2.zero, new Quaternion(0, 0, 0, 0)) as GameObject;
+        dragDirIndicator = joyStickGObj.GetComponent<DragDirIndicator>();
+        joyStickGObj.SetActive(false);
+
+        updateJoyStickInputs = StartCoroutine(UpdateJoyStickInputs());
+    }
+
+    public void StopUpdatingJoyStickInputs()
+    {
+        if (joyStickGObj != null) {
+            joyStickGObj.SetActive(false);
+        }
+
+        if (updateJoyStickInputs != null)
+        {
+            StopCoroutine(updateJoyStickInputs);
+        }
+    }
+
+    IEnumerator UpdateJoyStickInputs()
+    {
+        while (true)
+        {
+            if (Input.GetKeyDown(aimInput) && !InputDetect.CheckUICollision(Input.mousePosition))
+            {
+                touched = true;
+
+                startTouchPosition = Input.mousePosition;
+            }
+
+            if (touched)
+            {
+                //if we released
+                if (Input.GetKeyUp(aimInput))
+                {
+                    touched = false;
+
+                    //if we release on an UI element, cancel it
+                    if (InputDetect.CheckUICollision(Input.mousePosition))
+                    {
+                        if (cancelDrag != null)
+                            cancelDrag();
+                    }
+                    else if (release != null)
+                    {
+                        //if we are dragging, use the normalized value of the start and end pos
+                        if (isDragging)
+                        {
+                            isDragging = false;
+                            joyStickGObj.SetActive(false);
+                            release(((Vector2)Input.mousePosition - startTouchPosition).normalized);
+                        }
+                        else //else use the normalized value of the player and the endpos
+                        {
+                            release(((Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition) - (Vector2)transform.position).normalized);
+                        }
+                    }
+                }
+                else
+                { //if we are still holding
+                    if (!isDragging)
+                    {
+                        if (Vector2.Distance((Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition), (Vector2)Camera.main.ScreenToWorldPoint(startTouchPosition)) > minDistToDrag)
+                        {
+                            isDragging = true;
+                        }
+                    }
+                    else
+                    {
+                        joyStickGObj.SetActive(true);
+                        Vector2 mouseWorldPos = Camera.main.ScreenToWorldPoint(startTouchPosition);
+
+                        //z = 0
+                        joyStickGObj.transform.position = new Vector3(mouseWorldPos.x, mouseWorldPos.y, -4);
+
+                        Vector2 dir = ((Vector2)Input.mousePosition - startTouchPosition).normalized;
+                        dragDirIndicator.SetDragDir(dir);
+
+                        if (dragging != null)
+                            dragging(dir);
+                    }
+                }
+            }
+
+            yield return null;
+        }
+    }
+
+    
+    IEnumerator UpdateStandardInputs()
     {
         while (true)
         {

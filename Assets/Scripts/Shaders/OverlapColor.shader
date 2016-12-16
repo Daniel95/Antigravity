@@ -1,0 +1,97 @@
+﻿Shader "Custom/OverlapColor"
+{
+	Properties
+	{
+		_StandardColor("StandardColor", Color) = (0, 0, 1, 1)
+		_OverlapColor("OverlapColor", Color) = (1, 0, 1, 1)
+	}
+		
+	SubShader
+	{
+		Tags{ "Queue" = "Transparent" "IgnoreProjector" = "True" "RenderType" = "Transparent" }
+		Blend SrcAlpha OneMinusSrcAlpha
+		LOD 100
+
+		Pass
+		{
+			Stencil{
+				Ref 0
+				Comp Equal
+				Pass IncrSat
+				Fail IncrSat
+			}
+
+			CGPROGRAM
+			#pragma vertex vert
+			#pragma fragment frag
+
+			#include "UnityCG.cginc"
+
+			struct appdata
+			{
+				float4 vertex : POSITION;
+			};
+
+			struct v2f
+			{
+				float4 vertex : SV_POSITION;
+			};
+
+			v2f vert(appdata v)
+			{
+				v2f o;
+				o.vertex = mul(UNITY_MATRIX_MVP, v.vertex);
+				return o;
+			}
+
+			fixed4 _StandardColor;
+
+			fixed4 frag(v2f i) : SV_Target
+			{
+				fixed4 col = _StandardColor;
+				return col;
+			}
+			ENDCG
+		}
+
+		Pass
+		{
+			Stencil{
+				Ref 1
+				Comp Less
+			}
+
+			CGPROGRAM
+			#pragma vertex vert
+			#pragma fragment frag
+
+			#include "UnityCG.cginc"
+
+			struct appdata
+			{
+				float4 vertex : POSITION;
+			};
+
+			struct v2f
+			{
+				float4 vertex : SV_POSITION;
+			};
+
+			v2f vert(appdata v)
+			{
+				v2f o;
+				o.vertex = mul(UNITY_MATRIX_MVP, v.vertex);
+				return o;
+			}
+
+			fixed4 _OverlapColor;
+
+			fixed4 frag(v2f i) : SV_Target
+			{
+				fixed4 col = _OverlapColor;
+				return col;
+			}
+			ENDCG
+		}
+	}
+}
