@@ -32,12 +32,12 @@ public class ControlDirection : MonoBehaviour {
 
     private void AdjustDirection(Vector2 _currentDir) {
 
-        Vector2 newDir = DirectionLogic(_currentDir);
+        Vector2 dirLogic = DirectionLogic(_currentDir);
 
         Vector2 lookDir = plrAcces.controlVelocity.AdjustDirToMultiplier(lastDir);
 
         //use the direction logic for our new dir, but invert it if our speed multiplier is also inverted
-        plrAcces.controlVelocity.SetDirection(plrAcces.controlVelocity.AdjustDirToMultiplier(newDir));
+        plrAcces.controlVelocity.SetDirection(plrAcces.controlVelocity.AdjustDirToMultiplier(dirLogic));
 
         if (finishedDirectionLogic != null)
         {
@@ -56,17 +56,35 @@ public class ControlDirection : MonoBehaviour {
         //if we are not hitting a wall on both axis
         if (rayDir.x == 0 || rayDir.y == 0) {
 
-            //we dont want to overwrite our last dir with a zero, we use it determine which direction we should move next
-            //if our currentDir.x isn't 0, set is as our lastDir.x
-            if (_currentDir.x != 0)
-            {
-                lastDir.x = Rounding.InvertOnNegativeCeil(_currentDir.x);
-            }
+            Vector2 velocityDir = plrAcces.controlVelocity.GetVelocityDirection();
 
-            //if our currentDir.y isn't 0, set is as our lastDir.y
-            if (_currentDir.y != 0)
+            //if our velocity dir is zero on one of the axis, we know we are going in a straight line
+            if (velocityDir.x == 0 || velocityDir.y == 0)
             {
-                lastDir.y = Rounding.InvertOnNegativeCeil(_currentDir.y);
+                //we dont want to overwrite our last dir with a zero, we use it determine which direction we should move next
+                //if our currentDir.x isn't 0, set is as our lastDir.x
+                if (_currentDir.x != 0)
+                {
+                    lastDir.x = Rounding.InvertOnNegativeCeil(_currentDir.x);
+                }
+
+                //if our currentDir.y isn't 0, set is as our lastDir.y
+                if (_currentDir.y != 0)
+                {
+                    lastDir.y = Rounding.InvertOnNegativeCeil(_currentDir.y);
+                }
+            }
+            else { //we are hitting a platform from an angle, use the angle to calculate which way we go next
+                if (velocityDir.x != 0)
+                {
+                    lastDir.x = Rounding.InvertOnNegativeCeil(velocityDir.x);
+                }
+
+                //if our currentDir.y isn't 0, set is as our lastDir.y
+                if (velocityDir.y != 0)
+                {
+                    lastDir.y = Rounding.InvertOnNegativeCeil(velocityDir.y);
+                }
             }
 
             //replace the dir on the axis that we dont have a collision with
