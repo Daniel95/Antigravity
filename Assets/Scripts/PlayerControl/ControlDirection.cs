@@ -56,10 +56,8 @@ public class ControlDirection : MonoBehaviour {
         //if we are not hitting a wall on both axis
         if (rayDir.x == 0 || rayDir.y == 0) {
 
-            Vector2 velocityDir = plrAcces.controlVelocity.GetVelocityDirection();
-
             //if our velocity dir is zero on one of the axis, we know we are going in a straight line
-            if (velocityDir.x == 0 || velocityDir.y == 0)
+            if (plrAcces.controlVelocity.GetVelocity.x == 0 || plrAcces.controlVelocity.GetVelocity.y == 0)
             {
                 //we dont want to overwrite our last dir with a zero, we use it determine which direction we should move next
                 //if our currentDir.x isn't 0, set is as our lastDir.x
@@ -75,6 +73,8 @@ public class ControlDirection : MonoBehaviour {
                 }
             }
             else { //we are hitting a platform from an angle, use the angle to calculate which way we go next
+                Vector2 velocityDir = plrAcces.controlVelocity.GetVelocityDirection();
+
                 if (velocityDir.x != 0)
                 {
                     lastDir.x = Rounding.InvertOnNegativeCeil(velocityDir.x);

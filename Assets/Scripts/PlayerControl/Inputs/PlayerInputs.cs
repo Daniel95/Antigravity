@@ -27,7 +27,10 @@ public class PlayerInputs : MonoBehaviour {
 
         mobileInputs = GetComponent<MobileInputs>();
         pcInputs = GetComponent<PCInputs>();
+    }
 
+    public void StartInputs()
+    {
         //assign to the right controls, given by inputTypeUsed 
         if (inputFormatUsed == InputFormat.Mobile)
         {

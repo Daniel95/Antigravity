@@ -24,12 +24,12 @@ public class ActivateWeapon : MonoBehaviour, IEventSystemHandler {
 
     void Start()
     {
+        gunLookAt = gun.GetComponent<LookAt>();
+
         foreach (IWeapon weapon in GetComponents<IWeapon>())
         {
             weapons.Add(weapon);
         }
-
-        gunLookAt = gun.GetComponent<LookAt>();
     }
 
     //assign input functions to the input delegates of playerInput
