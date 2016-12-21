@@ -43,9 +43,13 @@ public class OnFootState : State {
         stateMachine.DeactivateState(StateID.OnFootState);
     }
 
-    //on collision we check in which direction we should go
-    public override void OnCollEnter2D(Collision2D coll)
+    public override void OnTrigEnter2D(Collider2D collider)
     {
-        plrAccess.controlDirection.SetLogicDirection(plrAccess.controlVelocity.GetControlledDirection());
+        //only register a collision when the other collider isn't a trigger. we use our own main collider as a trigger
+        if (!collider.isTrigger) {
+            plrAccess.controlDirection.ActivateLogicDirection(plrAccess.controlVelocity.GetControlledDirection());
+        }
+
+        base.OnTrigEnter2D(collider);
     }
 }

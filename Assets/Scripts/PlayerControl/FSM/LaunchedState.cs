@@ -9,7 +9,7 @@ public class LaunchedState : State
 
     private FutureDirectionIndicator directionIndicator;
 
-    private Vector2 previousDirection;
+    //private Vector2 previousDirection;
 
     protected override void Awake()
     {
@@ -26,7 +26,7 @@ public class LaunchedState : State
         //subscribe to StartedGrappleLocking, so we know when we should start grappling and exit this state
         grapplingHook.StartedGrappleLocking += EnterGrapplingState;
 
-        previousDirection = plrAccess.controlVelocity.GetVelocityDirection();
+        //previousDirection = plrAccess.controlVelocity.GetVelocityDirection();
 
         directionIndicator.PointToCeilVelocityDir();
     }
@@ -53,10 +53,16 @@ public class LaunchedState : State
         grapplingHook.StartedGrappleLocking -= EnterGrapplingState;
     }
 
-    //on collision we exit this state, and check which direction we should go
-    public override void OnCollEnter2D(Collision2D coll)
+    public override void OnTrigEnter2D(Collider2D collider)
     {
-        plrAccess.controlDirection.SetLogicDirection(previousDirection);
-        EnterOnFootState();
+        base.OnTrigEnter2D(collider);
+
+        //only register a collision when the other collider isn't a trigger. we use our own main collider as a trigger
+        if (!collider.isTrigger)
+        {
+            plrAccess.controlDirection.ActivateLogicDirection(plrAccess.controlVelocity.GetLastVelocity.normalized);
+
+            EnterOnFootState();
+        }
     }
 }

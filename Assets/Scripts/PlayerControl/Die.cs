@@ -31,7 +31,8 @@ public class Die : MonoBehaviour {
 
     private void OnCollisionStay2D(Collision2D collision)
     {
-        if (enteredKillerTrigger) {
+        if (enteredKillerTrigger)
+        {
             GetKilled();
         }
     }

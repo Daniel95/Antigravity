@@ -61,7 +61,7 @@ public class GrapplingState : State {
         base.Act();
 
         if (plrAccess.controlVelocity.GetVelocity == Vector2.zero) {
-            plrAccess.controlDirection.SetLogicDirection(direction);
+            plrAccess.controlDirection.ActivateLogicDirection(direction);
             EnterOnFootState();
         }
 
@@ -105,10 +105,16 @@ public class GrapplingState : State {
         plrAccess.controlVelocity.StartDirectionalMovement();
     }
 
-    //on collision we exit this state, and check which direction we should go
-    public override void OnCollEnter2D(Collision2D coll)
+    public override void OnTrigEnter2D(Collider2D collider)
     {
-        plrAccess.controlDirection.SetLogicDirection(direction);
-        EnterOnFootState();
+        base.OnTrigEnter2D(collider);
+
+        //only register a collision when the other collider isn't a trigger. we use our own main collider as a trigger
+        if (!collider.isTrigger)
+        {
+            plrAccess.controlDirection.ActivateLogicDirection(plrAccess.controlVelocity.GetControlledDirection());
+
+            EnterOnFootState();
+        }
     }
 }

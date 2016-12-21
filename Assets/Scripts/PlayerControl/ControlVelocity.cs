@@ -147,5 +147,9 @@ public class ControlVelocity : MonoBehaviour {
         get { return speedMultiplier; }
         set { speedMultiplier = value; }
     }
+
+    public bool CheckMovingStandard() {
+        return updateDirectionalMovement != null;
+    }
 }
 
