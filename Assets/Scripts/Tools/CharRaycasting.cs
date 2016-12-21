@@ -66,7 +66,7 @@ public class CharRaycasting : MonoBehaviour {
     {
         if (Physics2D.Raycast(_rayOrigin1, _direction1, rayLength, layers) || Physics2D.Raycast(_rayOrigin2, _direction2, rayLength, layers))
             return true;
-
+        
         return false;
     }
 

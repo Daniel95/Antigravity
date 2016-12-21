@@ -11,9 +11,13 @@ public class PlayerStarter : MonoBehaviour {
         plrAcces = GetComponent<PlayerScriptAccess>();
     }
 
-    public void StartPlayer()
+    public void StartPlayerMovement()
     {
-        plrAcces.playerInputs.StartInputs();
         plrAcces.controlVelocity.StartDirectionalMovement();
     }
+
+    public void StartPlayerControls()
+    {
+        plrAcces.playerInputs.StartInputs();
+    } 
 }

@@ -49,7 +49,7 @@ public class StateMachine : MonoBehaviour {
         currentActiveStates.Remove(states[_stateID]);
     }
 
-    void OnCollisionEnter2D(Collision2D coll) {
+    private void OnCollisionEnter2D(Collision2D coll) {
 
         for (int i = 0; i < currentActiveStates.Count; i++)
         {
@@ -57,11 +57,27 @@ public class StateMachine : MonoBehaviour {
         }
     }
 
-    void OnCollisionExit2D(Collision2D coll) {
+    private void OnCollisionExit2D(Collision2D coll) {
 
         for (int i = 0; i < currentActiveStates.Count; i++)
         {
             currentActiveStates[i].OnCollExit2D(coll);
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collider)
+    {
+        for (int i = 0; i < currentActiveStates.Count; i++)
+        {
+            currentActiveStates[i].OnTrigEnter2D(collider);
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collider)
+    {
+        for (int i = 0; i < currentActiveStates.Count; i++)
+        {
+            currentActiveStates[i].OnTrigExit2D(collider);
         }
     }
 

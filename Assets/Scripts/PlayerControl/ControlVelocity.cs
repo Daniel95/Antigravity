@@ -12,6 +12,8 @@ public class ControlVelocity : MonoBehaviour {
     [SerializeField]
     private Vector2 direction;
 
+    private Vector2 lastVelocity;
+
     private float originalTargetSpeed;
 
     private Rigidbody2D rb;
@@ -29,6 +31,7 @@ public class ControlVelocity : MonoBehaviour {
 
     public void StartDirectionalMovement()
     {
+        StopDirectionalMovement();
         updateDirectionalMovement = StartCoroutine(UpdateDirectionalMovement());
     }
 
@@ -45,17 +48,21 @@ public class ControlVelocity : MonoBehaviour {
     {
         while (true)
         {
-            //add our own constant force, without removing the gravity of our rigidbodys
+            lastVelocity = rb.velocity;
+
+            //add our own constant force
             rb.velocity = direction * (speed * speedMultiplier);
             yield return new WaitForFixedUpdate();
         }
     }
 
     public void AddVelocity(Vector2 _velocity) {
+        lastVelocity = rb.velocity;
         rb.velocity += _velocity;
     }
 
     public void SetVelocity(Vector2 _velocity) {
+        lastVelocity = rb.velocity;
         rb.velocity = _velocity;
     }
 
@@ -124,6 +131,11 @@ public class ControlVelocity : MonoBehaviour {
 
     public Vector2 GetVelocity {
         get { return rb.velocity; }
+    }
+
+    public Vector2 GetLastVelocity
+    {
+        get { return lastVelocity; }
     }
 
     public float Speed {

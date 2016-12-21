@@ -46,8 +46,7 @@ public class GrapplingState : State {
     {
         while (true)
         {
-            direction = plrAccess.controlVelocity.GetVelocityDirection();
-            plrAccess.controlVelocity.SetVelocity(direction * (plrAccess.controlVelocity.Speed * Mathf.Abs(plrAccess.controlVelocity.SpeedMultiplier)));
+            plrAccess.controlVelocity.SetVelocity(plrAccess.controlVelocity.GetVelocityDirection() * (plrAccess.controlVelocity.Speed * Mathf.Abs(plrAccess.controlVelocity.SpeedMultiplier)));
 
             yield return new WaitForFixedUpdate();
         }
@@ -71,6 +70,7 @@ public class GrapplingState : State {
     }
 
     private void ExitGrapple() {
+        plrAccess.controlVelocity.SetDirection(direction = plrAccess.controlVelocity.GetVelocityDirection());
         EnterLaunchedState();
     }
 
@@ -99,7 +99,6 @@ public class GrapplingState : State {
 
         //return to the normal movement
         StopCoroutine(slingMovement);
-        plrAccess.controlVelocity.SetDirection(direction = plrAccess.controlVelocity.GetVelocityDirection());
         plrAccess.speedMultiplier.MakeMultiplierPositive();
 
         //reactivate the normal movement when in exiting grappling state

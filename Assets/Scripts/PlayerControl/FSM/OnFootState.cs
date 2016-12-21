@@ -16,7 +16,6 @@ public class OnFootState : State {
     {
         base.Start();
         plrAccess = GetComponent<PlayerScriptAccess>();
-        plrAccess.controlVelocity.StartDirectionalMovement();
     }
 
     public override void EnterState()

@@ -4,6 +4,9 @@ using System.Collections;
 
 public class ControlDirection : MonoBehaviour {
 
+    [SerializeField]
+    private float minVelocityToDecideDirection = 0.5f;
+
     private PlayerScriptAccess plrAcces;
 
     //the last directions before it was set to zero
@@ -18,19 +21,6 @@ public class ControlDirection : MonoBehaviour {
     }
 
     public void SetLogicDirection(Vector2 _currentDir) {
-        StartCoroutine(WaitForRigidBodyCorrection(_currentDir));
-    }
-
-    //we have to wait two frames, because at this time the object might be inside the other object, 
-    //so we wait until the rigidbody has adjusted our position 
-    IEnumerator WaitForRigidBodyCorrection(Vector2 _currentDir)
-    {
-        yield return new WaitForFixedUpdate();
-        yield return new WaitForFixedUpdate();
-        AdjustDirection(_currentDir);
-    }
-
-    private void AdjustDirection(Vector2 _currentDir) {
 
         Vector2 dirLogic = DirectionLogic(_currentDir);
 
@@ -50,15 +40,16 @@ public class ControlDirection : MonoBehaviour {
     {
         //get the collision directions of the raycasts
         Vector2 rayDir = new Vector2(plrAcces.charRaycasting.CheckHorizontalDir(), plrAcces.charRaycasting.CheckVerticalDir());
-        
+
         Vector2 newDir = new Vector2();
 
         //if we are not hitting a wall on both axis
         if (rayDir.x == 0 || rayDir.y == 0) {
 
-            //if our velocity dir is zero on one of the axis, we know we are going in a straight line
-            if (plrAcces.controlVelocity.GetVelocity.x == 0 || plrAcces.controlVelocity.GetVelocity.y == 0)
+            //if our velocity dir is zero (or very close to zero) on one of the axis, we know we are going in a straight line
+            if (Mathf.Abs(plrAcces.controlVelocity.GetLastVelocity.x) < minVelocityToDecideDirection || Mathf.Abs(plrAcces.controlVelocity.GetLastVelocity.y) < minVelocityToDecideDirection)
             {
+
                 //we dont want to overwrite our last dir with a zero, we use it determine which direction we should move next
                 //if our currentDir.x isn't 0, set is as our lastDir.x
                 if (_currentDir.x != 0)
@@ -73,7 +64,7 @@ public class ControlDirection : MonoBehaviour {
                 }
             }
             else { //we are hitting a platform from an angle, use the angle to calculate which way we go next
-                Vector2 velocityDir = plrAcces.controlVelocity.GetVelocityDirection();
+                Vector2 velocityDir = plrAcces.controlVelocity.GetLastVelocity.normalized;
 
                 if (velocityDir.x != 0)
                 {

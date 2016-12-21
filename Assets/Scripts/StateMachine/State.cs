@@ -25,4 +25,8 @@ public abstract class State : MonoBehaviour {
     public virtual void OnCollEnter2D(Collision2D coll) { }
 
     public virtual void OnCollExit2D(Collision2D coll) { }
+
+    public virtual void OnTrigEnter2D(Collider2D collider) { }
+
+    public virtual void OnTrigExit2D(Collider2D collider) { }
 }
