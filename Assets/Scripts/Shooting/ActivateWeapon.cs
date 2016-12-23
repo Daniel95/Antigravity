@@ -18,12 +18,16 @@ public class ActivateWeapon : MonoBehaviour, IEventSystemHandler {
 
     private LookAt gunLookAt;
 
+    private PlayerInputs playerInputs;
+
     private List<IWeapon> weapons = new List<IWeapon>();
 
     private int weaponIndex;
 
-    void Start()
+    private void Awake()
     {
+        playerInputs = GetComponent<PlayerInputs>();
+
         gunLookAt = gun.GetComponent<LookAt>();
 
         foreach (IWeapon weapon in GetComponents<IWeapon>())
@@ -35,19 +39,15 @@ public class ActivateWeapon : MonoBehaviour, IEventSystemHandler {
     //assign input functions to the input delegates of playerInput
     void OnEnable()
     {
-        PlayerInputs playerInputs = GetComponent<PlayerInputs>();
-
-        playerInputs.dragging += Dragging;
-        playerInputs.cancelDrag += CancelDrag;
-        playerInputs.release += Release;
+        playerInputs.InputController.dragging += Dragging;
+        playerInputs.InputController.cancelDrag += CancelDrag;
+        playerInputs.InputController.release += Release;
     }
 
     void OnDisable() {
-        PlayerInputs playerInputs = GetComponent<PlayerInputs>();
-
-        playerInputs.dragging -= Dragging;
-        playerInputs.cancelDrag -= CancelDrag;
-        playerInputs.release -= Release;
+        playerInputs.InputController.dragging -= Dragging;
+        playerInputs.InputController.cancelDrag -= CancelDrag;
+        playerInputs.InputController.release -= Release;
     }
 
     private void Dragging(Vector2 _dir)

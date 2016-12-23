@@ -4,9 +4,6 @@ using System.Collections;
 
 public class ControlDirection : MonoBehaviour {
 
-    [SerializeField]
-    private float minVelocityToDecideDirection = 0.5f;
-
     private PlayerScriptAccess plrAcces;
 
     //the last directions before it was set to zero
@@ -14,14 +11,15 @@ public class ControlDirection : MonoBehaviour {
 
     public Action<Vector2> finishedDirectionLogic;
 
-    private Collider2D ourCollider;
-
     void Start() {
         plrAcces = GetComponent<PlayerScriptAccess>();
 
         lastDir = plrAcces.controlVelocity.GetControlledDirection();
 
-        ourCollider = GetComponent<Collider2D>();
+        if (lastDir.x == 0)
+            lastDir.x = 1;
+        if (lastDir.y == 0)
+            lastDir.y = 1;
     }
 
     public void ActivateLogicDirection(Vector2 _currentDir) {

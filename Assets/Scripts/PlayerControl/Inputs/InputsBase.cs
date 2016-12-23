@@ -16,4 +16,9 @@ public class InputsBase : MonoBehaviour {
 
     protected Coroutine updateJoyStickInputs;
     protected Coroutine updateStandardInputs;
+
+    public virtual void StartUpdatingStandardInputs() { }
+    public virtual void StopUpdatingStandardInputs() { }
+    public virtual void StartUpdatingJoyStickInputs() { }
+    public virtual void StopUpdatingJoyStickInputs() { }
 }

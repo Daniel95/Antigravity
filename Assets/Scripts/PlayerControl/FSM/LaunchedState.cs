@@ -9,8 +9,6 @@ public class LaunchedState : State
 
     private FutureDirectionIndicator directionIndicator;
 
-    //private Vector2 previousDirection;
-
     protected override void Awake()
     {
         base.Awake();
@@ -23,10 +21,10 @@ public class LaunchedState : State
     {
         base.EnterState();
 
+        print("enter launched state");
+
         //subscribe to StartedGrappleLocking, so we know when we should start grappling and exit this state
         grapplingHook.StartedGrappleLocking += EnterGrapplingState;
-
-        //previousDirection = plrAccess.controlVelocity.GetVelocityDirection();
 
         directionIndicator.PointToCeilVelocityDir();
     }

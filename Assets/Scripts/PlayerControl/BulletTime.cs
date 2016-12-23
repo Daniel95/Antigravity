@@ -18,7 +18,7 @@ public class BulletTime : MonoBehaviour {
 
     private Coroutine moveTimeScale;
 
-    private bool isInBulletTime;
+    private bool bulletTimeActive;
 
     void Start() {
         aimRay.enabled = false;
@@ -29,7 +29,7 @@ public class BulletTime : MonoBehaviour {
             StopCoroutine(moveTimeScale);
         }
 
-        isInBulletTime = true;
+        bulletTimeActive = true;
         aimRay.enabled = true;
 
         updateLineRendererPositions = StartCoroutine(UpdateLineRendererPositions());
@@ -57,12 +57,12 @@ public class BulletTime : MonoBehaviour {
 
     public void StopBulletTime()
     {
-        if (isInBulletTime) {
+        if (bulletTimeActive) {
 
             StopCoroutine(moveTimeScale);
             StopCoroutine(updateLineRendererPositions);
 
-            isInBulletTime = false;
+            bulletTimeActive = false;
             aimRay.enabled = false;
 
             moveTimeScale = StartCoroutine(MoveTimeScale(1, slowDownTime));
@@ -72,5 +72,9 @@ public class BulletTime : MonoBehaviour {
 
     public Vector2 SetRayDestination {
         set { rayDestination = value; }
+    }
+
+    public bool BulletTimeActive {
+        get { return bulletTimeActive; }
     }
 }

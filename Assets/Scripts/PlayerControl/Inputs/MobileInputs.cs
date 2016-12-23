@@ -19,12 +19,12 @@ public class MobileInputs : InputsBase {
 
     private Vector2 startTouchPosition;
 
-    public void StartUpdatingStandardInputs()
+    public override void StartUpdatingStandardInputs()
     {
         updateStandardInputs = StartCoroutine(UpdateStandardInputs());
     }
 
-    public void StopUpdatingStandardInputs()
+    public override void StopUpdatingStandardInputs()
     {
         if (updateStandardInputs != null)
         {
@@ -32,7 +32,7 @@ public class MobileInputs : InputsBase {
         }
     }
 
-    public void StartUpdatingJoyStickInputs()
+    public override void StartUpdatingJoyStickInputs()
     {
         joyStickGObj = Instantiate(joyStickPrefab, Vector2.zero, new Quaternion(0, 0, 0, 0)) as GameObject;
         dragDirIndicator = joyStickGObj.GetComponent<DragDirIndicator>();
@@ -41,7 +41,7 @@ public class MobileInputs : InputsBase {
         updateJoyStickInputs = StartCoroutine(UpdateJoyStickInputs());
     }
 
-    public void StopUpdatingJoyStickInputs()
+    public override void StopUpdatingJoyStickInputs()
     {
         if (joyStickGObj != null)
         {

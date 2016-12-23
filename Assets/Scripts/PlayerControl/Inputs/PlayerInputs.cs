@@ -13,58 +13,39 @@ public class PlayerInputs : MonoBehaviour {
     [SerializeField]
     private InputType inputTypeUsed;
 
-    public Action<Vector2> dragging;
-
-    public Action<Vector2> release;
-
-    public Action cancelDrag;
-
     private MobileInputs mobileInputs;
 
     private PCInputs pcInputs;
 
-    void Start() {
+    private InputsBase inputController;
 
+    void Awake()
+    {
         mobileInputs = GetComponent<MobileInputs>();
         pcInputs = GetComponent<PCInputs>();
+        inputController = GetInputController();
     }
 
     public void StartInputs()
     {
         //assign to the right controls, given by inputTypeUsed 
-        if (inputFormatUsed == InputFormat.Mobile)
+        if (inputTypeUsed == InputType.Standard)
         {
-            if (inputTypeUsed == InputType.Standard)
-            {
-                mobileInputs.StartUpdatingStandardInputs();
-            }
-            else
-            {
-                mobileInputs.StartUpdatingJoyStickInputs();
-            }
-
-            mobileInputs.dragging += dragging;
-            mobileInputs.release += release;
-            mobileInputs.cancelDrag += cancelDrag;
+            inputController.StartUpdatingStandardInputs();
         }
-        else if (inputFormatUsed == InputFormat.PC)
+        else
         {
-            if (inputTypeUsed == InputType.Standard)
-            {
-                pcInputs.StartUpdatingStandardInputs();
-            }
-            else
-            {
-                pcInputs.StartUpdatingJoyStickInputs();
-            }
-
-            pcInputs.dragging += dragging;
-            pcInputs.release += release;
-            pcInputs.cancelDrag += cancelDrag;
+            inputController.StartUpdatingJoyStickInputs();
         }
     }
 
-    public InputsBase GetInputController()
+    //used by other scripts to assign themselfes to input delegates
+    public InputsBase InputController
+    {
+        get { return inputController; }
+    }
+
+    private InputsBase GetInputController()
     {
         if(inputFormatUsed == InputFormat.Mobile)
         {
@@ -78,31 +59,15 @@ public class PlayerInputs : MonoBehaviour {
 
     public void SwitchControlType()
     {
-        if (inputFormatUsed == InputFormat.Mobile)
+        if (inputTypeUsed == InputType.Standard)
         {
-            if (inputTypeUsed == InputType.Standard)
-            {
-                mobileInputs.StopUpdatingStandardInputs();
-                mobileInputs.StartUpdatingJoyStickInputs();
-            }
-            else
-            {
-                mobileInputs.StopUpdatingJoyStickInputs();
-                mobileInputs.StartUpdatingStandardInputs();
-            }
+            inputController.StopUpdatingStandardInputs();
+            inputController.StartUpdatingJoyStickInputs();
         }
         else
         {
-            if (inputTypeUsed == InputType.Standard)
-            {
-                pcInputs.StopUpdatingStandardInputs();
-                pcInputs.StartUpdatingJoyStickInputs();
-            }
-            else
-            {
-                pcInputs.StopUpdatingJoyStickInputs();
-                pcInputs.StartUpdatingStandardInputs();
-            }
+            inputController.StopUpdatingJoyStickInputs();
+            inputController.StartUpdatingStandardInputs();
         }
     }
 }

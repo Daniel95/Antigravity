@@ -32,8 +32,6 @@ public class GrapplingHook : MonoBehaviour, IWeapon {
 
     private BulletTime bulletTime;
 
-    private bool bulletTimeActive;
-
     //use the direction to determine which direction we go when we lands
     private Vector2 currentDirection;
 
@@ -51,8 +49,7 @@ public class GrapplingHook : MonoBehaviour, IWeapon {
     }
 
     public void Dragging(Vector2 _direction, Vector2 _destination, Vector2 _spawnPosition) {
-        if (!bulletTimeActive) {
-            bulletTimeActive = true;
+        if (!bulletTime.BulletTimeActive) {
             bulletTime.StartBulletTime();
         }
 
@@ -66,7 +63,6 @@ public class GrapplingHook : MonoBehaviour, IWeapon {
     }
 
     void StopBulletTime() {
-        bulletTimeActive = false;
         bulletTime.StopBulletTime();
     }
 

@@ -39,7 +39,7 @@ public class GrapplingState : State {
         grapplingHook.StoppedGrappleLocking += EnterLaunchedState;
 
         //subscribe to the space input, so we know when to exit our grapple
-        plrAccess.playerInputs.GetInputController().action += ExitGrapple;
+        plrAccess.playerInputs.InputController.action += ExitGrapple;
     }
 
     IEnumerator SlingMovement()
@@ -93,7 +93,7 @@ public class GrapplingState : State {
         //unsubscripte from all relevant delegates
         plrAccess.speedMultiplier.switchedMultiplier -= FakeSwitchSpeed;
         grapplingHook.StoppedGrappleLocking -= EnterLaunchedState;
-        plrAccess.playerInputs.GetInputController().action -= ExitGrapple;
+        plrAccess.playerInputs.InputController.action -= ExitGrapple;
 
         grapplingHook.ExitGrappleLock();
 

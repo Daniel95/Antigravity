@@ -6,6 +6,7 @@ public enum StateID
     OnFootState = 0,
     GrapplingState = 1,
     LaunchedState = 2,
+    RevivedState = 3,
 }
 
 public class StateMachine : MonoBehaviour {
@@ -47,6 +48,18 @@ public class StateMachine : MonoBehaviour {
 
         //we remove the state from currentActiveStates
         currentActiveStates.Remove(states[_stateID]);
+    }
+
+    public void DeactivateAllStates()
+    {
+        //reset all states
+        for (int i = 0; i < currentActiveStates.Count; i++)
+        {
+            currentActiveStates[i].ResetState();
+        }
+
+        //clear the currentActiveState list so we no longer update any states.
+        currentActiveStates.Clear(); ;
     }
 
     private void OnCollisionEnter2D(Collision2D coll) {

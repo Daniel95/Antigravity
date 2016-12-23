@@ -35,7 +35,7 @@ public class SpeedMultiplier : MonoBehaviour
         velocity.SpeedMultiplier = originalSpeedMultiplier = startMultiplier;
 
         playerInputs = GetComponent<PlayerInputs>();
-        playerInputs.GetInputController().flipSpeed += SmoothFlipMultiplier;
+        playerInputs.InputController.flipSpeed += SmoothFlipMultiplier;
     }
 
     public void SetSpeedMultiplier(float _newMultiplierSpeed)

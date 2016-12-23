@@ -8,12 +8,17 @@ public class SwitchGravity : MonoBehaviour {
 
     private CharRaycasting raycasting;
 
+    private Frames frames;
+
     public Action switchedGravity;
+
+    private bool inBouncyTrigger;
 
 	// Use this for initialization
 	void Start () {
         velocity = GetComponent<ControlVelocity>();
         raycasting = GetComponent<CharRaycasting>();
+        frames = GetComponent<Frames>();
     }
 
     public void StartGravitating() {
@@ -38,6 +43,30 @@ public class SwitchGravity : MonoBehaviour {
 
             if (switchedGravity != null)
                 switchedGravity();
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.transform.CompareTag(Tags.Bouncy) || inBouncyTrigger)
+        {
+            frames.ExecuteAfterDelay(1, StartGravitating);
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.transform.CompareTag(Tags.Bouncy))
+        {
+            inBouncyTrigger = true;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.transform.CompareTag(Tags.Bouncy))
+        {
+            inBouncyTrigger = false;
         }
     }
 }
