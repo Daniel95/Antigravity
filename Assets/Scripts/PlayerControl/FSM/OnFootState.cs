@@ -47,7 +47,7 @@ public class OnFootState : State {
     {
         //only register a collision when the other collider isn't a trigger. we use our own main collider as a trigger
         if (!collider.isTrigger) {
-            plrAccess.controlDirection.ActivateLogicDirection(plrAccess.controlVelocity.GetControlledDirection());
+            plrAccess.controlDirection.ActivateLogicDirection(plrAccess.controlVelocity.GetDirection());
         }
 
         base.OnTrigEnter2D(collider);

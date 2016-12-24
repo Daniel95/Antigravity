@@ -14,24 +14,39 @@ public class ControlDirection : MonoBehaviour {
     void Start() {
         plrAcces = GetComponent<PlayerScriptAccess>();
 
-        lastDir = plrAcces.controlVelocity.GetControlledDirection();
+        lastDir = plrAcces.controlVelocity.GetDirection();
 
         if (lastDir.x == 0)
             lastDir.x = 1;
         if (lastDir.y == 0)
             lastDir.y = 1;
+
+        GetComponent<Frames>().ExecuteAfterDelay(1, () =>
+        {
+            if (finishedDirectionLogic != null)
+            {
+                finishedDirectionLogic(lastDir);
+            }
+        });
     }
 
     public void ActivateLogicDirection(Vector2 _currentDir) {
         StartCoroutine(WaitFrames(_currentDir, plrAcces.controlVelocity.GetLastVelocity, plrAcces.controlVelocity.CheckMovingStandard()));
 
-        plrAcces.controlVelocity.SetDirection(new Vector2(0, 0));
+
     }
 
     IEnumerator WaitFrames(Vector2 _currentDir, Vector2 _lastVelocity, bool _movingStraight)
     {
+        Vector2 oldDir = plrAcces.controlVelocity.GetDirection();
+
+        //reset the direction, so the next few frames we are having collision we dont move while we are having collsion
+        plrAcces.controlVelocity.SetDirection(new Vector2(0, 0));
+
         yield return new WaitForFixedUpdate();
         yield return new WaitForFixedUpdate();
+
+        plrAcces.controlVelocity.SetDirection(oldDir);
 
         ApplyLogicDirection(_currentDir, _lastVelocity, _movingStraight);
     }

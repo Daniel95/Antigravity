@@ -115,7 +115,7 @@ public class ControlVelocity : MonoBehaviour {
     }
 
     //returns our own controlled direction
-    public Vector2 GetControlledDirection() {
+    public Vector2 GetDirection() {
         return direction;
     }
 
