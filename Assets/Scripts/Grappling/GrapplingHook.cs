@@ -32,8 +32,8 @@ public class GrapplingHook : MonoBehaviour, IWeapon {
 
     private BulletTime bulletTime;
 
-    //use the direction to determine which direction we go when we lands
-    private Vector2 currentDirection;
+    //use the direction to determine which direction we go when we land
+    //private Vector2 currentDirection;
 
     void Start() {
         distanceJoint = GetComponent<DistanceJoint2D>();
@@ -48,7 +48,7 @@ public class GrapplingHook : MonoBehaviour, IWeapon {
         grappleProjectileGObj.SetActive(false);
     }
 
-    public void Dragging(Vector2 _direction, Vector2 _destination, Vector2 _spawnPosition) {
+    public void Dragging(Vector2 _destination, Vector2 _spawnPosition) {
         if (!bulletTime.BulletTimeActive) {
             bulletTime.StartBulletTime();
         }
@@ -67,33 +67,33 @@ public class GrapplingHook : MonoBehaviour, IWeapon {
     }
 
     //spawns the grapple projectile and activates its moveTowards script
-    public void Release(Vector2 _direction, Vector2 _destination, Vector2 _spawnPosition) {
+    public void Release(Vector2 _destination, Vector2 _spawnPosition) {
         StopBulletTime();
 
         if (currentGrapplingHookState == GrapplingHookStates.inactive)
         {
-            ShootGrappleHook(_direction, _destination, _spawnPosition);
+            ShootGrappleHook(_destination, _spawnPosition);
         }
         //if we still have a grapple activate, deactivate it first before we shoot a new one
         else if (currentGrapplingHookState == GrapplingHookStates.activate || currentGrapplingHookState == GrapplingHookStates.busyShooting)
         {
-            holdGrappleCoroutine = StartCoroutine(HoldGrapple(_direction, _destination, _spawnPosition));
+            holdGrappleCoroutine = StartCoroutine(HoldGrapple( _destination, _spawnPosition));
             PullBack();
         } 
     }
 
-    IEnumerator HoldGrapple(Vector2 _direction, Vector2 _destination, Vector2 _spawnPosition) {
+    IEnumerator HoldGrapple(Vector2 _destination, Vector2 _spawnPosition) {
         while (currentGrapplingHookState != GrapplingHookStates.inactive) {
             yield return null;
         }
 
-        ShootGrappleHook(_direction, _destination, _spawnPosition);
+        ShootGrappleHook(_destination, _spawnPosition);
     }
 
-    private void ShootGrappleHook(Vector2 _direction, Vector2 _destination, Vector2 _spawnPosition) {
+    private void ShootGrappleHook(Vector2 _destination, Vector2 _spawnPosition) {
         currentGrapplingHookState = GrapplingHookStates.busyShooting;
 
-        currentDirection = _direction;
+        //currentDirection = _direction;
 
         grappleProjectileGObj.SetActive(true);
         grappleProjectileGObj.transform.position = _spawnPosition;
@@ -184,10 +184,11 @@ public class GrapplingHook : MonoBehaviour, IWeapon {
         StopCoroutine(lineUpdateCoroutine);
     }
 
+    /*
     public Vector2 Direction
     {
         get { return currentDirection; }
-    }
+    }*/
 
     public Vector2 Destination
     {

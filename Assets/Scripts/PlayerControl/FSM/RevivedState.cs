@@ -34,6 +34,8 @@ public class RevivedState : State
     {
         base.EnterState();
 
+        plrAccess.controlDirection.CancelLogicDirection();
+
         //deactivate the weapon so we no longer shoot when we click/tab
         activateWeapon.enabled = false;
 
@@ -60,7 +62,7 @@ public class RevivedState : State
         activateWeapon.enabled = true;
 
         bulletTime.StopBulletTime();
-        plrAccess.controlVelocity.SetDirection(_dir.normalized);
+        plrAccess.controlVelocity.SetDirection(_dir * plrAccess.controlVelocity.GetMultiplierDir());
 
         EnterLaunchedState();
     }

@@ -11,6 +11,8 @@ public class ControlDirection : MonoBehaviour {
 
     public Action<Vector2> finishedDirectionLogic;
 
+    private Coroutine waitRigidbodyCorrectionFrames;
+
     void Start() {
         plrAcces = GetComponent<PlayerScriptAccess>();
 
@@ -21,6 +23,7 @@ public class ControlDirection : MonoBehaviour {
         if (lastDir.y == 0)
             lastDir.y = 1;
 
+        //wait one frame so all scripts are loaded, then send out a delegate with the direction, used by FutureDirectionIndicator
         GetComponent<Frames>().ExecuteAfterDelay(1, () =>
         {
             if (finishedDirectionLogic != null)
@@ -31,12 +34,15 @@ public class ControlDirection : MonoBehaviour {
     }
 
     public void ActivateLogicDirection(Vector2 _currentDir) {
-        StartCoroutine(WaitFrames(_currentDir, plrAcces.controlVelocity.GetLastVelocity, plrAcces.controlVelocity.CheckMovingStandard()));
-
-
+        waitRigidbodyCorrectionFrames = StartCoroutine(WaitRigidbodyCorrectionFrames(_currentDir, plrAcces.controlVelocity.GetLastVelocity, plrAcces.controlVelocity.CheckMovingStandard()));
     }
 
-    IEnumerator WaitFrames(Vector2 _currentDir, Vector2 _lastVelocity, bool _movingStraight)
+    public void CancelLogicDirection()
+    {
+        StopCoroutine(waitRigidbodyCorrectionFrames);
+    }
+
+    IEnumerator WaitRigidbodyCorrectionFrames(Vector2 _currentDir, Vector2 _lastVelocity, bool _movingStraight)
     {
         Vector2 oldDir = plrAcces.controlVelocity.GetDirection();
 
@@ -57,6 +63,8 @@ public class ControlDirection : MonoBehaviour {
 
         Vector2 lookDir = plrAcces.controlVelocity.AdjustDirToMultiplier(lastDir);
 
+        print("lookDir: " + lookDir);
+
         //use the direction logic for our new dir, but invert it if our speed multiplier is also inverted
         plrAcces.controlVelocity.SetDirection(plrAcces.controlVelocity.AdjustDirToMultiplier(dirLogic));
 
@@ -72,6 +80,8 @@ public class ControlDirection : MonoBehaviour {
         //get the collision directions of the raycasts
         Vector2 rayDir = new Vector2(plrAcces.charRaycasting.CheckHorizontalDir(), plrAcces.charRaycasting.CheckVerticalDir());
 
+        print("raydir: " + rayDir);
+
         Vector2 newDir = new Vector2();
 
         //if we are not hitting a wall on both axis
@@ -80,7 +90,8 @@ public class ControlDirection : MonoBehaviour {
             //if we are moving standard, it means we are going in a straight line
             if (_movingStraight)
             {
-
+                print("_currentDir: " + _currentDir);
+                print("lastDir1: " + _currentDir);
                 //we dont want to overwrite our last dir with a zero, we use it determine which direction we should move next
                 //if our currentDir.x isn't 0, set is as our lastDir.x
                 if (_currentDir.x != 0)
@@ -93,6 +104,8 @@ public class ControlDirection : MonoBehaviour {
                 {
                     lastDir.y = Rounding.InvertOnNegativeCeil(_currentDir.y);
                 }
+
+                print("lastDir2: " + _currentDir);
             }
             else { //we are hitting a platform from an angle, use the angle to calculate which way we go next
 

@@ -175,12 +175,12 @@ public class PCInputs : InputsBase {
                     holding = false;
 
                     if (release != null)
-                        release((Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position).normalized);
+                        release(((Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition) - (Vector2)transform.position).normalized);
                 }
                 else //dragging
                 {
                     if (dragging != null)
-                        dragging((Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position).normalized);
+                        dragging(((Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition) - (Vector2)transform.position).normalized);
                 }
             }
 

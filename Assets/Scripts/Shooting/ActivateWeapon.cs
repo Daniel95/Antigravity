@@ -52,7 +52,7 @@ public class ActivateWeapon : MonoBehaviour, IEventSystemHandler {
 
     private void Dragging(Vector2 _dir)
     {
-        weapons[weaponIndex].Dragging(_dir, GetHitPoint(_dir), spawnTransform.position);
+        weapons[weaponIndex].Dragging(GetHitPoint(_dir), spawnTransform.position);
         gunLookAt.UpdateLookAt((Vector2)transform.position + _dir);
     }
 
@@ -63,15 +63,18 @@ public class ActivateWeapon : MonoBehaviour, IEventSystemHandler {
 
     private void Release(Vector2 _dir)
     {
-        weapons[weaponIndex].Release(_dir, GetHitPoint(_dir), spawnTransform.position);
+        weapons[weaponIndex].Release(GetHitPoint(_dir), spawnTransform.position);
+        gunLookAt.UpdateLookAt((Vector2)transform.position + _dir);
     }
 
+    
     private Vector2 GetHitPoint(Vector2 _dir) {
 
-        Vector2 targetPos = _dir * maxRaycastDistance;
+        Vector2 targetPos = (Vector2)transform.position + (_dir * maxRaycastDistance);
 
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, targetPos, maxRaycastDistance, rayLayers);
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, _dir, maxRaycastDistance, rayLayers);
 
+        //if we hit a collider between the shooter and targetPos, than that collision point is the targetPos
         if (hit.collider != null)
         {
             targetPos = hit.point;
