@@ -5,9 +5,20 @@ using System.Collections;
 public class ControlVelocity : MonoBehaviour {
 
     [SerializeField]
-    private float speed = 3;
+    private float originalSpeed = 3;
+
+    private float currentSpeed;
 
     private float speedMultiplier = 1;
+
+    [SerializeField]
+    private float tempSpeedAddedMuliplier = 0.35f;
+
+    [SerializeField]
+    private float tempReturnSpeed = 0.025f;
+
+    [SerializeField]
+    private float minTempOffsetValue = 0.05f;
 
     [SerializeField]
     private Vector2 direction;
@@ -20,13 +31,12 @@ public class ControlVelocity : MonoBehaviour {
 
     private  Coroutine updateDirectionalMovement;
 
-    private Coroutine updateNaturalMovement;
-
-    private Coroutine addSpeedOverTime;
+    private Coroutine returnSpeedToOriginal;
 
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        currentSpeed = originalSpeed;
     }
 
     public void StartDirectionalMovement()
@@ -51,9 +61,42 @@ public class ControlVelocity : MonoBehaviour {
             lastVelocity = rb.velocity;
 
             //add our own constant force
-            rb.velocity = direction * (speed * speedMultiplier);
+            rb.velocity = direction * (currentSpeed * speedMultiplier);
             yield return new WaitForFixedUpdate();
         }
+    }
+
+    //increases the speed with a multplier, then returns it to the original over time
+    public void TempSpeedIncrease()
+    {
+        currentSpeed = originalSpeed * (1 + tempSpeedAddedMuliplier);
+
+        if (returnSpeedToOriginal != null)
+            StopCoroutine(returnSpeedToOriginal);
+
+        returnSpeedToOriginal = StartCoroutine(ReturnSpeedToOriginal(tempReturnSpeed));
+    }
+
+    //decreases the speed with a multplier, then returns it to the original over time
+    public void TempSpeedDecrease()
+    {
+        currentSpeed = originalSpeed * (1 - tempSpeedAddedMuliplier);
+
+        if (returnSpeedToOriginal != null)
+            StopCoroutine(returnSpeedToOriginal);
+
+        returnSpeedToOriginal = StartCoroutine(ReturnSpeedToOriginal(tempReturnSpeed));
+    }
+
+    IEnumerator ReturnSpeedToOriginal(float _returnSpeed)
+    {
+        while (Mathf.Abs(currentSpeed - originalSpeed) > minTempOffsetValue)
+        {
+            currentSpeed = Mathf.Lerp(currentSpeed, originalSpeed, _returnSpeed);
+            yield return new WaitForFixedUpdate();
+        }
+
+        currentSpeed = originalSpeed;
     }
 
     public void AddVelocity(Vector2 _velocity) {
@@ -138,8 +181,13 @@ public class ControlVelocity : MonoBehaviour {
         get { return lastVelocity; }
     }
 
-    public float Speed {
-        get { return speed; }
+    public float OriginalSpeed
+    {
+        get { return originalSpeed; }
+    }
+
+    public float CurrentSpeed {
+        get { return currentSpeed; }
     }
 
     public float SpeedMultiplier

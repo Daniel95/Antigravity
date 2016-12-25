@@ -64,6 +64,8 @@ public class RevivedState : State
         bulletTime.StopBulletTime();
         plrAccess.controlVelocity.SetDirection(_dir * plrAccess.controlVelocity.GetMultiplierDir());
 
+        plrAccess.controlVelocity.TempSpeedIncrease();
+
         EnterLaunchedState();
     }
 

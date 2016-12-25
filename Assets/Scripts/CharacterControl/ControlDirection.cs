@@ -84,7 +84,7 @@ public class ControlDirection : MonoBehaviour {
         if (rayDir.x == 0 || rayDir.y == 0) {
 
             //if we are moving standard, it means we are going in a straight line
-            if (_movingStraight)
+            if(_movingStraight && (_currentDir.x == 0 || _currentDir.y == 0))
             {
                 //we dont want to overwrite our last dir with a zero, we use it determine which direction we should move next
                 //if our currentDir.x isn't 0, set is as our lastDir.x
@@ -98,6 +98,8 @@ public class ControlDirection : MonoBehaviour {
                 {
                     lastDir.y = Rounding.InvertOnNegativeCeil(_currentDir.y) * plrAcces.controlVelocity.GetMultiplierDir();
                 }
+
+                plrAcces.controlVelocity.TempSpeedDecrease();
             }
             else { //we are hitting a platform from an angle, use the angle to calculate which way we go next
 
@@ -113,6 +115,8 @@ public class ControlDirection : MonoBehaviour {
                 {
                     lastDir.y = Rounding.InvertOnNegativeCeil(velocityDir.y);
                 }
+
+                plrAcces.controlVelocity.TempSpeedIncrease();
             }
 
             //replace the dir on the axis that we dont have a collision with
@@ -128,25 +132,19 @@ public class ControlDirection : MonoBehaviour {
         }
         else //here we know we are hitting more than one wall, or no wall at all
         {
-
-            if (rayDir == Vector2.zero)
+            //if the direction is zero on the x, we know we hit a wall on the Y axis
+            if (_currentDir.x != 0)
             {
-                plrAcces.controlVelocity.SetDirection(plrAcces.controlVelocity.AdjustDirToMultiplier(lastDir));
+                lastDir.y = rayDir.y * -1;
+                newDir = new Vector2(0, lastDir.y);
             }
             else
             {
-                //if the direction is zero on the x, we know we hit a wall on the Y axis
-                if (_currentDir.x != 0)
-                {
-                    lastDir.y = rayDir.y * -1;
-                    newDir = new Vector2(0, lastDir.y);
-                }
-                else
-                {
-                    lastDir.x = rayDir.x * -1;
-                    newDir = new Vector2(lastDir.x, 0);
-                }
+                lastDir.x = rayDir.x * -1;
+                newDir = new Vector2(lastDir.x, 0);
             }
+
+            plrAcces.controlVelocity.TempSpeedDecrease();
         }
 
         return newDir;

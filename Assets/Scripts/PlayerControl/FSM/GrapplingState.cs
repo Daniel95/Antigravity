@@ -28,6 +28,8 @@ public class GrapplingState : State {
     {
         base.EnterState();
 
+        plrAccess.controlVelocity.TempSpeedIncrease();
+
         //when we switch our speed, also switch the direction of our velocity
         plrAccess.speedMultiplier.switchedMultiplier += FakeSwitchSpeed;
 
@@ -46,7 +48,7 @@ public class GrapplingState : State {
     {
         while (true)
         {
-            plrAccess.controlVelocity.SetVelocity(plrAccess.controlVelocity.GetVelocityDirection() * (plrAccess.controlVelocity.Speed * Mathf.Abs(plrAccess.controlVelocity.SpeedMultiplier)));
+            plrAccess.controlVelocity.SetVelocity(plrAccess.controlVelocity.GetVelocityDirection() * (plrAccess.controlVelocity.CurrentSpeed * Mathf.Abs(plrAccess.controlVelocity.SpeedMultiplier)));
 
             yield return new WaitForFixedUpdate();
         }
