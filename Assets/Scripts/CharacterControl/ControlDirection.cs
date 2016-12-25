@@ -63,8 +63,6 @@ public class ControlDirection : MonoBehaviour {
 
         Vector2 lookDir = plrAcces.controlVelocity.AdjustDirToMultiplier(lastDir);
 
-        print("lookDir: " + lookDir);
-
         //use the direction logic for our new dir, but invert it if our speed multiplier is also inverted
         plrAcces.controlVelocity.SetDirection(plrAcces.controlVelocity.AdjustDirToMultiplier(dirLogic));
 
@@ -80,8 +78,6 @@ public class ControlDirection : MonoBehaviour {
         //get the collision directions of the raycasts
         Vector2 rayDir = new Vector2(plrAcces.charRaycasting.CheckHorizontalDir(), plrAcces.charRaycasting.CheckVerticalDir());
 
-        print("raydir: " + rayDir);
-
         Vector2 newDir = new Vector2();
 
         //if we are not hitting a wall on both axis
@@ -90,22 +86,18 @@ public class ControlDirection : MonoBehaviour {
             //if we are moving standard, it means we are going in a straight line
             if (_movingStraight)
             {
-                print("_currentDir: " + _currentDir);
-                print("lastDir1: " + _currentDir);
                 //we dont want to overwrite our last dir with a zero, we use it determine which direction we should move next
                 //if our currentDir.x isn't 0, set is as our lastDir.x
                 if (_currentDir.x != 0)
                 {
-                    lastDir.x = Rounding.InvertOnNegativeCeil(_currentDir.x);
+                    lastDir.x = Rounding.InvertOnNegativeCeil(_currentDir.x) * plrAcces.controlVelocity.GetMultiplierDir();
                 }
 
                 //if our currentDir.y isn't 0, set is as our lastDir.y
                 if (_currentDir.y != 0)
                 {
-                    lastDir.y = Rounding.InvertOnNegativeCeil(_currentDir.y);
+                    lastDir.y = Rounding.InvertOnNegativeCeil(_currentDir.y) * plrAcces.controlVelocity.GetMultiplierDir();
                 }
-
-                print("lastDir2: " + _currentDir);
             }
             else { //we are hitting a platform from an angle, use the angle to calculate which way we go next
 
@@ -132,6 +124,7 @@ public class ControlDirection : MonoBehaviour {
             else {
                 newDir = new Vector2(lastDir.x, 0);
             }
+
         }
         else //here we know we are hitting more than one wall, or no wall at all
         {
@@ -142,7 +135,6 @@ public class ControlDirection : MonoBehaviour {
             }
             else
             {
-
                 //if the direction is zero on the x, we know we hit a wall on the Y axis
                 if (_currentDir.x != 0)
                 {
