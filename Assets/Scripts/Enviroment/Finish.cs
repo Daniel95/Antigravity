@@ -19,7 +19,7 @@ public class Finish : MonoBehaviour {
             }
             else
             {
-                print("reached end of game.");
+                SceneManager.LoadScene("MainMenu");
             }
         }
     }

@@ -39,6 +39,11 @@ public class ActivateWeapon : MonoBehaviour, IEventSystemHandler {
     //assign input functions to the input delegates of playerInput
     void OnEnable()
     {
+        GetComponent<Frames>().ExecuteAfterDelay(1, Subscribe);
+    }
+
+    void Subscribe()
+    {
         playerInputs.InputController.dragging += Dragging;
         playerInputs.InputController.cancelDrag += CancelDrag;
         playerInputs.InputController.release += Release;

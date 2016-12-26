@@ -33,16 +33,31 @@ public class PCInputs : InputsBase {
 
     private Vector2 startTouchPosition;
 
-    public override void StartUpdatingStandardInputs()
+    private Coroutine updatingKeyInputs;
+
+    public void StartUpdatingKeyInputs()
     {
-        updateStandardInputs = StartCoroutine(UpdateStandardInputs());
+        updatingKeyInputs = StartCoroutine(UpdateKeyInputs());
     }
 
-    public override void StopUpdatingStandardInputs()
+    public void StopUpdatingKeyInputs()
     {
-        if(updateStandardInputs != null)
+        if (updatingKeyInputs != null)
         {
-            StopCoroutine(updateStandardInputs);
+            StopCoroutine(updatingKeyInputs);
+        }
+    }
+
+    public override void StartUpdatingDragInputs()
+    {
+        updateDragInputs = StartCoroutine(UpdateDragInputs());
+    }
+
+    public override void StopUpdatingDragInputs()
+    {
+        if(updateDragInputs != null)
+        {
+            StopCoroutine(updateDragInputs);
         }
     }
 
@@ -137,24 +152,10 @@ public class PCInputs : InputsBase {
     }
 
     
-    IEnumerator UpdateStandardInputs()
+    IEnumerator UpdateDragInputs()
     {
         while (true)
         {
-            if (Input.GetKeyDown(jumpInput))
-            {
-                if (action != null)
-                {
-                    action();
-                }
-            }
-            else if (Input.GetKeyDown(flipSpeedInput)) {
-                if (flipSpeed != null)
-                {
-                    flipSpeed();
-                }
-            }
-
             if (Input.GetKeyDown(aimInput) && !InputDetect.CheckUICollision(Input.mousePosition))
             {
                 holding = true;
@@ -181,6 +182,29 @@ public class PCInputs : InputsBase {
                 {
                     if (dragging != null)
                         dragging(((Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition) - (Vector2)transform.position).normalized);
+                }
+            }
+
+            yield return null;
+        }
+    }
+
+    IEnumerator UpdateKeyInputs()
+    {
+        while (true)
+        {
+            if (Input.GetKeyDown(jumpInput))
+            {
+                if (action != null)
+                {
+                    action();
+                }
+            }
+            else if (Input.GetKeyDown(flipSpeedInput))
+            {
+                if (flipSpeed != null)
+                {
+                    flipSpeed();
                 }
             }
 

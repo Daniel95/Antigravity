@@ -19,16 +19,16 @@ public class MobileInputs : InputsBase {
 
     private Vector2 startTouchPosition;
 
-    public override void StartUpdatingStandardInputs()
+    public override void StartUpdatingDragInputs()
     {
-        updateStandardInputs = StartCoroutine(UpdateStandardInputs());
+        updateDragInputs = StartCoroutine(UpdateDragInputs());
     }
 
-    public override void StopUpdatingStandardInputs()
+    public override void StopUpdatingDragInputs()
     {
-        if (updateStandardInputs != null)
+        if (updateDragInputs != null)
         {
-            StopCoroutine(updateStandardInputs);
+            StopCoroutine(updateDragInputs);
         }
     }
 
@@ -124,7 +124,7 @@ public class MobileInputs : InputsBase {
         }
     }
 
-    IEnumerator UpdateStandardInputs()
+    IEnumerator UpdateDragInputs()
     {
         while (true)
         {

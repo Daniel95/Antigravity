@@ -3,14 +3,14 @@ using System;
 
 public class PlayerInputs : MonoBehaviour {
 
-    private enum InputFormat { PC, Mobile };
-
-    public enum InputType { Standard, JoyStick };
+    public enum InputType { Drag, JoyStick };
 
     [SerializeField]
-    private InputFormat inputFormatUsed;
+    private InputType defaultInputTypePC = InputType.Drag;
 
     [SerializeField]
+    private InputType defaultInputTypeMobile = InputType.JoyStick; 
+
     private InputType inputTypeUsed;
 
     private MobileInputs mobileInputs;
@@ -26,17 +26,34 @@ public class PlayerInputs : MonoBehaviour {
         inputController = GetInputController();
     }
 
-    public void StartInputs()
+    private void Start()
+    {
+        if (Platform.PlatformIsMobile())
+        {
+            inputTypeUsed = defaultInputTypeMobile;
+        }
+        else
+        {
+            inputTypeUsed = defaultInputTypePC;
+        }
+    }
+
+    public void StartShootInputs()
     {
         //assign to the right controls, given by inputTypeUsed 
-        if (inputTypeUsed == InputType.Standard)
+        if (inputTypeUsed == InputType.Drag)
         {
-            inputController.StartUpdatingStandardInputs();
+            inputController.StartUpdatingDragInputs();
         }
         else
         {
             inputController.StartUpdatingJoyStickInputs();
         }
+    }
+
+    public void StartKeyInputs()
+    {
+        pcInputs.StartUpdatingKeyInputs();
     }
 
     //used by other scripts to assign themselfes to input delegates
@@ -47,7 +64,7 @@ public class PlayerInputs : MonoBehaviour {
 
     private InputsBase GetInputController()
     {
-        if(inputFormatUsed == InputFormat.Mobile)
+        if (Platform.PlatformIsMobile())
         {
             return mobileInputs;
         }
@@ -59,15 +76,27 @@ public class PlayerInputs : MonoBehaviour {
 
     public void SwitchControlType()
     {
-        if (inputTypeUsed == InputType.Standard)
+        if (inputTypeUsed == InputType.Drag)
         {
-            inputController.StopUpdatingStandardInputs();
+            inputController.StopUpdatingDragInputs();
             inputController.StartUpdatingJoyStickInputs();
         }
         else
         {
             inputController.StopUpdatingJoyStickInputs();
-            inputController.StartUpdatingStandardInputs();
+            inputController.StartUpdatingDragInputs();
+        }
+    }
+
+    public InputType GetPlatformDefaultInputType()
+    {
+        if (Platform.PlatformIsMobile())
+        {
+            return defaultInputTypeMobile;
+        }
+        else
+        {
+            return defaultInputTypePC;
         }
     }
 }

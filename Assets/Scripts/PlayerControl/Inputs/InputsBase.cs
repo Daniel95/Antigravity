@@ -15,10 +15,10 @@ public class InputsBase : MonoBehaviour {
     public Action action;
 
     protected Coroutine updateJoyStickInputs;
-    protected Coroutine updateStandardInputs;
+    protected Coroutine updateDragInputs;
 
-    public virtual void StartUpdatingStandardInputs() { }
-    public virtual void StopUpdatingStandardInputs() { }
+    public virtual void StartUpdatingDragInputs() { }
+    public virtual void StopUpdatingDragInputs() { }
     public virtual void StartUpdatingJoyStickInputs() { }
     public virtual void StopUpdatingJoyStickInputs() { }
 }
