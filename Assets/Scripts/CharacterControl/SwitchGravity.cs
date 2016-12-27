@@ -4,9 +4,7 @@ using System.Collections;
 
 public class SwitchGravity : MonoBehaviour {
 
-    private ControlVelocity velocity;
-
-    private CharRaycasting raycasting;
+    private PlayerScriptAccess plrAcces;
 
     private Frames frames;
 
@@ -14,21 +12,25 @@ public class SwitchGravity : MonoBehaviour {
 
     private bool inBouncyTrigger;
 
+    private Vector2 lastDir;
+
 	// Use this for initialization
 	void Start () {
-        velocity = GetComponent<ControlVelocity>();
-        raycasting = GetComponent<CharRaycasting>();
+        plrAcces = GetComponent<PlayerScriptAccess>();
         frames = GetComponent<Frames>();
     }
 
-    public void StartGravitating() {
-        Vector2 raycastResults = new Vector2(raycasting.CheckHorizontalDir(), raycasting.CheckVerticalDir());
+    public void Jump()
+    {
+        plrAcces.controlVelocity.TempSpeedIncrease();
 
-        Vector2 newDir = new Vector2();
+        Vector2 raycastResults = new Vector2(plrAcces.charRaycasting.CheckHorizontalDir(), plrAcces.charRaycasting.CheckVerticalDir());
 
-        //check if we have raycast collision on only one axis, gravity wont work when we are in a corner
+        //check if we have raycast collision on only one axis, jumping wont work when we are in a corner
         if (raycastResults.x == 0 || raycastResults.y == 0)
         {
+            Vector2 newDir = new Vector2();
+
             //check the raycastdir, our newDir is the opposite of one of the axes
             if (raycastResults.x != 0)
             {
@@ -39,32 +41,58 @@ public class SwitchGravity : MonoBehaviour {
                 newDir.y = raycastResults.y * -1;
             }
 
-            velocity.SetDirection(velocity.AdjustDirToMultiplier(newDir + velocity.GetDirection()));
+            plrAcces.controlVelocity.SetDirection(plrAcces.controlVelocity.AdjustDirToMultiplier(newDir + plrAcces.controlVelocity.GetDirection()));
 
             if (switchedGravity != null)
                 switchedGravity();
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if(collision.transform.CompareTag(Tags.Bouncy) || inBouncyTrigger)
+    private void Bounce() {
+        plrAcces.controlVelocity.TempSpeedIncrease();
+
+        Vector2 raycastResults = new Vector2(plrAcces.charRaycasting.CheckHorizontalDir(), plrAcces.charRaycasting.CheckVerticalDir());
+
+        if (raycastResults.x != 0 || raycastResults.y != 0)
         {
-            frames.ExecuteAfterDelay(1, StartGravitating);
+            Vector2 newDir = plrAcces.controlVelocity.AdjustDirToMultiplier(lastDir);
+
+            //check the raycastdir, our newDir is the opposite of one of the axes
+            if (raycastResults.x != 0)
+            {
+                newDir.x *= -1;
+            }
+            if (raycastResults.y != 0)
+            {
+                newDir.y *= -1;
+            }
+
+            plrAcces.controlVelocity.SetDirection(newDir);
+
+            if (switchedGravity != null)
+                switchedGravity();
         }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.transform.CompareTag(Tags.Bouncy))
-        {
-            inBouncyTrigger = true;
+        if (collision.transform.CompareTag(Tags.Bouncy)) {
+            if (collision.isTrigger)
+            {
+                inBouncyTrigger = true;
+            }
+            else
+            {
+                lastDir = plrAcces.controlVelocity.GetLastVelocity.normalized;
+
+                frames.ExecuteAfterDelay(4, Bounce);
+            }
         }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.transform.CompareTag(Tags.Bouncy))
+        if (inBouncyTrigger && collision.isTrigger && collision.transform.CompareTag(Tags.Bouncy))
         {
             inBouncyTrigger = false;
         }

@@ -17,8 +17,20 @@ public class InputsBase : MonoBehaviour {
     protected Coroutine updateJoyStickInputs;
     protected Coroutine updateDragInputs;
 
+    protected bool touched;
+    protected bool isDragging;
+
     public virtual void StartUpdatingDragInputs() { }
     public virtual void StopUpdatingDragInputs() { }
     public virtual void StartUpdatingJoyStickInputs() { }
     public virtual void StopUpdatingJoyStickInputs() { }
+
+    public void ResetTouched()
+    {
+        touched = isDragging = false;
+
+        if (cancelDrag != null)
+            cancelDrag();
+    }
 }
+

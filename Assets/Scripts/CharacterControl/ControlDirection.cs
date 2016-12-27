@@ -39,7 +39,9 @@ public class ControlDirection : MonoBehaviour {
 
     public void CancelLogicDirection()
     {
-        StopCoroutine(waitRigidbodyCorrectionFrames);
+        if(waitRigidbodyCorrectionFrames != null) {
+            StopCoroutine(waitRigidbodyCorrectionFrames);
+        }
     }
 
     IEnumerator WaitRigidbodyCorrectionFrames(Vector2 _currentDir, Vector2 _lastVelocity, bool _movingStraight)
@@ -132,16 +134,23 @@ public class ControlDirection : MonoBehaviour {
         }
         else //here we know we are hitting more than one wall, or no wall at all
         {
-            //if the direction is zero on the x, we know we hit a wall on the Y axis
-            if (_currentDir.x != 0)
+            if (rayDir == Vector2.zero)
             {
-                lastDir.y = rayDir.y * -1;
-                newDir = new Vector2(0, lastDir.y);
+                plrAcces.controlVelocity.SetDirection(plrAcces.controlVelocity.AdjustDirToMultiplier(lastDir));
             }
             else
             {
-                lastDir.x = rayDir.x * -1;
-                newDir = new Vector2(lastDir.x, 0);
+                //if the direction is zero on the x, we know we hit a wall on the Y axis
+                if (_currentDir.x != 0)
+                {
+                    lastDir.y = rayDir.y * -1;
+                    newDir = new Vector2(0, lastDir.y);
+                }
+                else
+                {
+                    lastDir.x = rayDir.x * -1;
+                    newDir = new Vector2(lastDir.x, 0);
+                }
             }
 
             plrAcces.controlVelocity.TempSpeedDecrease();

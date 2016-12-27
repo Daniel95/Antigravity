@@ -59,7 +59,7 @@ public class StateMachine : MonoBehaviour {
         }
 
         //clear the currentActiveState list so we no longer update any states.
-        currentActiveStates.Clear(); ;
+        currentActiveStates.Clear();
     }
 
     private void OnCollisionEnter2D(Collision2D coll) {

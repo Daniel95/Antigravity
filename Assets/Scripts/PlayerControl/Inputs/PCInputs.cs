@@ -28,9 +28,6 @@ public class PCInputs : InputsBase {
     [SerializeField]
     private float minDistToDrag = 1;
 
-    private bool touched;
-    private bool isDragging;
-
     private Vector2 startTouchPosition;
 
     private Coroutine updatingKeyInputs;

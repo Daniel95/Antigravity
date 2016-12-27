@@ -59,6 +59,8 @@ public class ControlVelocity : MonoBehaviour {
         while (true)
         {
             lastVelocity = rb.velocity;
+            //print(lastVelocity);
+
 
             //add our own constant force
             rb.velocity = direction * (currentSpeed * speedMultiplier);
@@ -101,11 +103,13 @@ public class ControlVelocity : MonoBehaviour {
 
     public void AddVelocity(Vector2 _velocity) {
         lastVelocity = rb.velocity;
+
         rb.velocity += _velocity;
     }
 
     public void SetVelocity(Vector2 _velocity) {
         lastVelocity = rb.velocity;
+
         rb.velocity = _velocity;
     }
 

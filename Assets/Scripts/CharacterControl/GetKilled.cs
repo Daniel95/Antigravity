@@ -29,9 +29,9 @@ public class GetKilled : MonoBehaviour, IKillable {
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.transform.CompareTag(Tags.Killer))
+        if (!collision.isTrigger && collision.transform.CompareTag(Tags.Killer))
         {
             if (die != null)
                 die();

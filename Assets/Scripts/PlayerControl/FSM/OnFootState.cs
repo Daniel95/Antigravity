@@ -31,16 +31,22 @@ public class OnFootState : State {
 
     private void Jump()
     {
-        plrAccess.switchGravity.StartGravitating();
+        plrAccess.switchGravity.Jump();
     }
 
     private void ExitState()
     {
+        stateMachine.ActivateState(StateID.GrapplingState);
+        stateMachine.DeactivateState(StateID.OnFootState);
+    }
+
+    public override void ResetState()
+    {
+        base.ResetState();
+
         plrAccess.playerInputs.InputController.action -= Jump;
 
         grapplingHook.StartedGrappleLocking -= ExitState;
-        stateMachine.ActivateState(StateID.GrapplingState);
-        stateMachine.DeactivateState(StateID.OnFootState);
     }
 
     public override void OnTrigEnter2D(Collider2D collider)

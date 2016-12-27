@@ -14,9 +14,6 @@ public class MobileInputs : InputsBase {
     [SerializeField]
     private float minDistToDrag = 1;
 
-    private bool touched;
-    private bool isDragging;
-
     private Vector2 startTouchPosition;
 
     public override void StartUpdatingDragInputs()

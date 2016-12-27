@@ -4,6 +4,9 @@ using System.Collections;
 public class RevivedState : State
 {
     [SerializeField]
+    private int framesInActiveAfterRespawning = 20;
+
+    [SerializeField]
     private GameObject gun;
 
     [SerializeField]
@@ -19,12 +22,16 @@ public class RevivedState : State
 
     private bool bulletTimeActive;
 
+    private Frames frames;
+
     protected override void Awake()
     {
         base.Awake();
 
         plrAccess = GetComponent<PlayerScriptAccess>();
 
+        frames = GetComponent<Frames>();
+        
         activateWeapon = GetComponent<ActivateWeapon>();
         lookAt = gun.GetComponent<LookAt>();
         bulletTime = GetComponent<BulletTime>();
@@ -36,13 +43,23 @@ public class RevivedState : State
 
         plrAccess.controlDirection.CancelLogicDirection();
 
+        //make sure to reset the current touched input. If we are busy shooting, we reset the values and release;
+        plrAccess.playerInputs.InputController.ResetTouched();
+
         //deactivate the weapon so we no longer shoot when we click/tab
         activateWeapon.enabled = false;
 
+        //set our direction to zero so we dont move
+        plrAccess.controlVelocity.SetDirection(Vector2.zero);
+
+        //wait a few frames so the player dont start moving immediatly if he panic clicked right after he respawned
+        frames.ExecuteAfterDelay(framesInActiveAfterRespawning, SubscribeToAimInput);
+    }
+
+    private void SubscribeToAimInput()
+    {
         plrAccess.playerInputs.InputController.dragging += Dragging;
         plrAccess.playerInputs.InputController.release += Release;
-
-        plrAccess.controlVelocity.SetDirection(Vector2.zero);
     }
 
     private void Dragging(Vector2 _dir)

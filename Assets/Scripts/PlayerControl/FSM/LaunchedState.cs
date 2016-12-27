@@ -29,22 +29,19 @@ public class LaunchedState : State
 
     private void EnterGrapplingState()
     {
-        GeneralStateCleanUp();
-
         stateMachine.ActivateState(StateID.GrapplingState);
         stateMachine.DeactivateState(StateID.LaunchedState);
     }
 
     private void EnterOnFootState()
     {
-        GeneralStateCleanUp();
-
         stateMachine.ActivateState(StateID.OnFootState);
         stateMachine.DeactivateState(StateID.LaunchedState);
     }
 
-    private void GeneralStateCleanUp()
+    public override void ResetState()
     {
+        base.ResetState();
         //unsubscripte from all relevant delegates
         grapplingHook.StartedGrappleLocking -= EnterGrapplingState;
     }
@@ -54,7 +51,7 @@ public class LaunchedState : State
         base.OnTrigEnter2D(collider);
 
         //only register a collision when the other collider isn't a trigger. we use our own main collider as a trigger
-        if (!collider.isTrigger)
+        if (!collider.isTrigger && !collider.CompareTag(Tags.Bouncy))
         {
             plrAccess.controlDirection.ActivateLogicDirection(plrAccess.controlVelocity.GetLastVelocity.normalized);
 

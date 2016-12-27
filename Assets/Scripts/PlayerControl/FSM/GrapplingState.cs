@@ -19,6 +19,7 @@ public class GrapplingState : State {
     protected override void Awake()
     {
         base.Awake();
+
         grapplingHook = GetComponent<GrapplingHook>();
         plrAccess = GetComponent<PlayerScriptAccess>();
         gunLookAt = gun.GetComponent<LookAt>();
@@ -77,21 +78,21 @@ public class GrapplingState : State {
     }
 
     private void EnterLaunchedState() {
-        GeneralStateCleanUp();
 
         stateMachine.ActivateState(StateID.LaunchedState);
         stateMachine.DeactivateState(StateID.GrapplingState);
     }
 
     private void EnterOnFootState() {
-        GeneralStateCleanUp();
 
         stateMachine.ActivateState(StateID.OnFootState);
         stateMachine.DeactivateState(StateID.GrapplingState);
     }
 
-    private void GeneralStateCleanUp()
+    public override void ResetState()
     {
+        base.ResetState();
+
         //unsubscripte from all relevant delegates
         plrAccess.speedMultiplier.switchedMultiplier -= FakeSwitchSpeed;
         grapplingHook.StoppedGrappleLocking -= EnterLaunchedState;
@@ -111,12 +112,20 @@ public class GrapplingState : State {
     {
         base.OnTrigEnter2D(collider);
 
-        //only register a collision when the other collider isn't a trigger. we use our own main collider as a trigger
+        //only register a collision when the other collider isn't a trigger. we use our own main collider as a trigger.
         if (!collider.isTrigger)
         {
-            plrAccess.controlDirection.ActivateLogicDirection(plrAccess.controlVelocity.GetDirection());
 
-            EnterOnFootState();
+            if(collider.CompareTag(Tags.Bouncy))
+            {
+                plrAccess.controlVelocity.SetDirection(plrAccess.controlVelocity.GetVelocityDirection());
+                EnterLaunchedState();
+            }
+            else
+            {
+                plrAccess.controlDirection.ActivateLogicDirection(plrAccess.controlVelocity.GetDirection());
+                EnterOnFootState();
+            }
         }
     }
 }
