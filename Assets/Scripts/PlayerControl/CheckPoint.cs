@@ -8,6 +8,8 @@ public class Checkpoint : MonoBehaviour {
 
     private StateMachine stateMachine;
 
+    private TriggerCollisions triggerCollisions;
+
     private Vector2 lastCheckpointLocation;
 
     private bool checkpointReached;
@@ -16,15 +18,22 @@ public class Checkpoint : MonoBehaviour {
     {
         stateMachine = GetComponent<StateMachine>();
         revivedState = GetComponent<RevivedState>();
+        triggerCollisions = GetComponent<TriggerCollisions>();
+
+        triggerCollisions.onTriggerEnterTrigger += OnTriggerEnterTrigger;
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerEnterTrigger(Collider2D collider)
     {
-        if (collision.isTrigger && collision.transform.CompareTag(Tags.CheckPoint)) {
+        print("Hit: " + collider.name);
+
+        if (collider.transform.CompareTag(Tags.CheckPoint))
+        {
             checkpointReached = true;
 
-            lastCheckpointLocation = collision.transform.position;
+            lastCheckpointLocation = collider.transform.position;
 
+            //activate the revived state and StartMovingToCenterCheckPoint
             ActivateRevivedState();
             revivedState.IsInPosition = false;
             revivedState.StartMovingToCenterCheckPoint(lastCheckpointLocation);
@@ -41,7 +50,6 @@ public class Checkpoint : MonoBehaviour {
     //put the player in the revived state
     private void ActivateRevivedState()
     {
-        stateMachine.DeactivateAllStates();
         stateMachine.ActivateState(StateID.RevivedState);
     }
 

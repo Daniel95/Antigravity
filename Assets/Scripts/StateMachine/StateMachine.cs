@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
 
 public enum StateID
@@ -11,86 +12,94 @@ public enum StateID
 
 public class StateMachine : MonoBehaviour {
 
+    private TriggerCollisions triggerCollisions;
+
     private Dictionary<StateID, State> states = new Dictionary<StateID, State>();
 
-    private List<State> currentActiveStates = new List<State>();
+    private State activeState;
 
-    void Update()
+    private Coroutine acting;
+
+    private void Awake()
     {
-        //for every state in currentActiveStates, activate the methods:
-        //act: act like this state wants us to.
+        triggerCollisions = GetComponent<TriggerCollisions>();
 
-        for (int i = 0; i < currentActiveStates.Count; i++) {
-            currentActiveStates[i].Act();
+        triggerCollisions.onTriggerEnterCollision += OnTriggerEnterCollider;
+        triggerCollisions.onTriggerEnterTrigger += OnTriggerEnterTrigger;
+
+        triggerCollisions.onTriggerExitCollision += OnTriggerExitCollider;
+        triggerCollisions.onTriggerExitTrigger += OnTriggerExitTrigger;
+    }
+
+    public void StartStateMachine(StateID _stateID)
+    {
+        if(acting != null)
+        {
+            StopStateMachine();
+        }
+
+        //assign the state we start with
+        activeState = states[_stateID];
+
+        activeState.EnterState();
+
+        //start acting
+        acting = StartCoroutine(Acting());
+    }
+
+    public void StopStateMachine()
+    {
+        StopCoroutine(acting);
+    }
+
+    IEnumerator Acting()
+    {
+        while(true)
+        {
+            activeState.Act();
+            yield return null;
         }
     }
 
     public void ActivateState(StateID _stateID)
     {
-        //we add the new state to currentActive
-        currentActiveStates.Add(states[_stateID]);
+        //reset our current state, before assigning a new state
+        activeState.ResetState();
 
-        //then activate the last state in the list (the new one) 
-        currentActiveStates[currentActiveStates.Count - 1].EnterState();
+        activeState = states[_stateID];
+
+        activeState.EnterState();
     }
 
-    public void DeactivateState(StateID _stateID)
+    private void OnTriggerEnterCollider(Collider2D _collider)
     {
-        //we loop throught the list until we find the right state,
-        //and then we activate the Reset method, in case we need to reset anything before we deactivate this state.
-        for (int i = 0; i < currentActiveStates.Count; i++)
+        if (activeState != null)
         {
-            if (currentActiveStates[i] == states[_stateID])
-            {
-                currentActiveStates[i].ResetState();
-            }
+            activeState.OnTriggerEnterCollider(_collider);
         }
-
-        //we remove the state from currentActiveStates
-        currentActiveStates.Remove(states[_stateID]);
     }
 
-    public void DeactivateAllStates()
+    private void OnTriggerEnterTrigger(Collider2D _collider)
     {
-        //reset all states
-        for (int i = 0; i < currentActiveStates.Count; i++)
+        if (activeState != null)
         {
-            currentActiveStates[i].ResetState();
-        }
-
-        //clear the currentActiveState list so we no longer update any states.
-        currentActiveStates.Clear();
-    }
-
-    private void OnCollisionEnter2D(Collision2D coll) {
-
-        for (int i = 0; i < currentActiveStates.Count; i++)
-        {
-            currentActiveStates[i].OnCollEnter2D(coll);
+            activeState.OnTriggerEnterTrigger(_collider);
         }
     }
 
-    private void OnCollisionExit2D(Collision2D coll) {
-
-        for (int i = 0; i < currentActiveStates.Count; i++)
-        {
-            currentActiveStates[i].OnCollExit2D(coll);
-        }
-    }
-
-    private void OnTriggerEnter2D(Collider2D collider)
+    private void OnTriggerExitCollider(Collider2D _collider)
     {
-        for (int i = 0; i < currentActiveStates.Count; i++)
+        if (activeState != null)
         {
-            currentActiveStates[i].OnTrigEnter2D(collider);
+            activeState.OnTriggerExitCollider(_collider);
         }
     }
 
-    private void OnTriggerExit2D(Collider2D collider)
+    private void OnTriggerExitTrigger(Collider2D _collider)
     {
-        for (int i = 0; i < currentActiveStates.Count; i++)
+        if (activeState != null)
         {
-            currentActiveStates[i].OnTrigExit2D(collider);
+            activeState.OnTriggerExitTrigger(_collider);
         }
     }
 

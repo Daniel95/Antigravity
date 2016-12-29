@@ -80,13 +80,11 @@ public class GrapplingState : State {
     private void EnterLaunchedState() {
 
         stateMachine.ActivateState(StateID.LaunchedState);
-        stateMachine.DeactivateState(StateID.GrapplingState);
     }
 
     private void EnterOnFootState() {
 
         stateMachine.ActivateState(StateID.OnFootState);
-        stateMachine.DeactivateState(StateID.GrapplingState);
     }
 
     public override void ResetState()
@@ -108,24 +106,19 @@ public class GrapplingState : State {
         plrAccess.controlVelocity.StartDirectionalMovement();
     }
 
-    public override void OnTrigEnter2D(Collider2D collider)
+    public override void OnTriggerEnterCollider(Collider2D collider)
     {
-        base.OnTrigEnter2D(collider);
+        base.OnTriggerEnterCollider(collider);
 
-        //only register a collision when the other collider isn't a trigger. we use our own main collider as a trigger.
-        if (!collider.isTrigger)
+        if (collider.CompareTag(Tags.Bouncy))
         {
-
-            if(collider.CompareTag(Tags.Bouncy))
-            {
-                plrAccess.controlVelocity.SetDirection(plrAccess.controlVelocity.GetVelocityDirection());
-                EnterLaunchedState();
-            }
-            else
-            {
-                plrAccess.controlDirection.ActivateLogicDirection(plrAccess.controlVelocity.GetDirection());
-                EnterOnFootState();
-            }
+            plrAccess.controlVelocity.SetDirection(plrAccess.controlVelocity.GetVelocityDirection());
+            EnterLaunchedState();
+        }
+        else
+        {
+            plrAccess.controlDirection.ActivateLogicDirection(plrAccess.controlVelocity.GetDirection());
+            EnterOnFootState();
         }
     }
 }

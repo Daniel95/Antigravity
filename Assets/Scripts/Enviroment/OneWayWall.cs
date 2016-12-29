@@ -20,7 +20,7 @@ public class OneWayWall : MonoBehaviour {
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag(Tags.Player))
+        if (collision.isTrigger && collision.CompareTag(Tags.Player))
         {
             if(IsToTheRight(collision.transform.position))
             {

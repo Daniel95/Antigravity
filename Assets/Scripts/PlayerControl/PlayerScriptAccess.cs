@@ -16,6 +16,8 @@ public class PlayerScriptAccess : MonoBehaviour {
     public SpeedMultiplier speedMultiplier;
     [HideInInspector]
     public PlayerInputs playerInputs;
+    [HideInInspector]
+    public TriggerCollisions triggerCollisions;
 
     void Awake() {
         charRaycasting = GetComponent<CharRaycasting>();
@@ -24,5 +26,6 @@ public class PlayerScriptAccess : MonoBehaviour {
         switchGravity = GetComponent<SwitchGravity>();
         speedMultiplier = GetComponent<SpeedMultiplier>();
         playerInputs = GetComponent<PlayerInputs>();
+        triggerCollisions = GetComponent<TriggerCollisions>();
     }
 }

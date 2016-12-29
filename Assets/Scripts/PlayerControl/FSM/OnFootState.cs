@@ -37,7 +37,6 @@ public class OnFootState : State {
     private void ExitState()
     {
         stateMachine.ActivateState(StateID.GrapplingState);
-        stateMachine.DeactivateState(StateID.OnFootState);
     }
 
     public override void ResetState()
@@ -49,13 +48,10 @@ public class OnFootState : State {
         grapplingHook.StartedGrappleLocking -= ExitState;
     }
 
-    public override void OnTrigEnter2D(Collider2D collider)
+    public override void OnTriggerEnterCollider(Collider2D collider)
     {
-        //only register a collision when the other collider isn't a trigger. we use our own main collider as a trigger
-        if (!collider.isTrigger) {
-            plrAccess.controlDirection.ActivateLogicDirection(plrAccess.controlVelocity.GetDirection());
-        }
+        base.OnTriggerEnterCollider(collider);
 
-        base.OnTrigEnter2D(collider);
+        plrAccess.controlDirection.ActivateLogicDirection(plrAccess.controlVelocity.GetDirection());
     }
 }

@@ -19,7 +19,7 @@ public class PlayerCharacter : MonoBehaviour
     {
         AssignStates();
 
-        stateMachine.ActivateState(StateID.LaunchedState);
+        stateMachine.StartStateMachine(StateID.LaunchedState);
     }
 
     void AssignStates()

@@ -24,8 +24,6 @@ public class RevivedState : State
 
     private bool bulletTimeActive;
 
-    private Frames frames;
-
     //the first time we hit a checkpoint, we will be moving towards the center of it, once we reached the center we are in position and can fire ourselfes.
     private bool isInPosition;
 
@@ -34,8 +32,6 @@ public class RevivedState : State
         base.Awake();
 
         plrAccess = GetComponent<PlayerScriptAccess>();
-
-        frames = GetComponent<Frames>();
         
         activateWeapon = GetComponent<ActivateWeapon>();
         lookAt = gun.GetComponent<LookAt>();
@@ -128,7 +124,6 @@ public class RevivedState : State
         plrAccess.playerInputs.InputController.release -= Release;
 
         stateMachine.ActivateState(StateID.LaunchedState);
-        stateMachine.DeactivateState(StateID.RevivedState);
     }
 
     public bool IsInPosition

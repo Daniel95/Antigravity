@@ -18,6 +18,10 @@ public class SwitchGravity : MonoBehaviour {
 	void Start () {
         plrAcces = GetComponent<PlayerScriptAccess>();
         frames = GetComponent<Frames>();
+
+        plrAcces.triggerCollisions.onTriggerEnterCollision += OnTriggerEnterCollision;
+        plrAcces.triggerCollisions.onTriggerEnterTrigger += OnTriggerEnterTrigger;
+        plrAcces.triggerCollisions.onTriggerExitTrigger += OnTriggerExitTrigger;
     }
 
     public void Jump()
@@ -74,27 +78,29 @@ public class SwitchGravity : MonoBehaviour {
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerEnterCollision(Collider2D collider)
     {
-        if (collision.transform.CompareTag(Tags.Bouncy)) {
+        if (collider.CompareTag(Tags.Bouncy) || inBouncyTrigger)
+        {
             //if we hit a non trigger collider with the bounce tag, we bounce
-            if (!collision.isTrigger)
-            {
-                lastDir = plrAcces.controlVelocity.GetVelocityDirection();
+            lastDir = plrAcces.controlVelocity.GetVelocityDirection();
 
-                frames.ExecuteAfterDelay(4, Bounce);
-            }
-            else //otherwise we just say that we are currently in a bouncy trigger, in case we hit a non trigger collider
-            {
-
-                inBouncyTrigger = true;
-            }
+            frames.ExecuteAfterDelay(4, Bounce);
         }
     }
 
-    private void OnTriggerExit2D(Collider2D collision)
+    private void OnTriggerEnterTrigger(Collider2D collider)
     {
-        if (inBouncyTrigger && collision.isTrigger && collision.transform.CompareTag(Tags.Bouncy))
+        if (!inBouncyTrigger && collider.CompareTag(Tags.Bouncy))
+        {
+            //if we hit a trigger we say that we are currently in a bouncy trigger, in case we hit a non trigger collider
+            inBouncyTrigger = true;
+        }
+    }
+
+    private void OnTriggerExitTrigger(Collider2D collider)
+    {
+        if (inBouncyTrigger && collider.transform.CompareTag(Tags.Bouncy))
         {
             inBouncyTrigger = false;
         }

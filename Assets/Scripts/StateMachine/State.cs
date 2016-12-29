@@ -22,11 +22,11 @@ public abstract class State : MonoBehaviour {
     //when we act according to our state
     public virtual void Act() { }
 
-    public virtual void OnCollEnter2D(Collision2D coll) { }
+    public virtual void OnTriggerEnterTrigger(Collider2D collider) { }
 
-    public virtual void OnCollExit2D(Collision2D coll) { }
+    public virtual void OnTriggerEnterCollider(Collider2D collider) { }
 
-    public virtual void OnTrigEnter2D(Collider2D collider) { }
+    public virtual void OnTriggerExitTrigger(Collider2D collider) { }
 
-    public virtual void OnTrigExit2D(Collider2D collider) { }
+    public virtual void OnTriggerExitCollider(Collider2D collider) { }
 }
