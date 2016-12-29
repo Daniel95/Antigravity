@@ -88,20 +88,19 @@ public class ControlDirection : MonoBehaviour {
             //if we are moving standard, it means we are going in a straight line
             if(_movingStraight && (_currentDir.x == 0 || _currentDir.y == 0))
             {
+
                 //we dont want to overwrite our last dir with a zero, we use it determine which direction we should move next
                 //if our currentDir.x isn't 0, set is as our lastDir.x
                 if (_currentDir.x != 0)
                 {
                     lastDir.x = Rounding.InvertOnNegativeCeil(_currentDir.x) * plrAcces.controlVelocity.GetMultiplierDir();
-                }
+                };
 
                 //if our currentDir.y isn't 0, set is as our lastDir.y
                 if (_currentDir.y != 0)
                 {
                     lastDir.y = Rounding.InvertOnNegativeCeil(_currentDir.y) * plrAcces.controlVelocity.GetMultiplierDir();
                 }
-
-                plrAcces.controlVelocity.TempSpeedDecrease();
             }
             else { //we are hitting a platform from an angle, use the angle to calculate which way we go next
 
@@ -152,8 +151,6 @@ public class ControlDirection : MonoBehaviour {
                     newDir = new Vector2(lastDir.x, 0);
                 }
             }
-
-            plrAcces.controlVelocity.TempSpeedDecrease();
         }
 
         return newDir;

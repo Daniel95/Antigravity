@@ -77,15 +77,17 @@ public class SwitchGravity : MonoBehaviour {
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.transform.CompareTag(Tags.Bouncy)) {
-            if (collision.isTrigger)
+            //if we hit a non trigger collider with the bounce tag, we bounce
+            if (!collision.isTrigger)
             {
-                inBouncyTrigger = true;
-            }
-            else
-            {
-                lastDir = plrAcces.controlVelocity.GetLastVelocity.normalized;
+                lastDir = plrAcces.controlVelocity.GetVelocityDirection();
 
                 frames.ExecuteAfterDelay(4, Bounce);
+            }
+            else //otherwise we just say that we are currently in a bouncy trigger, in case we hit a non trigger collider
+            {
+
+                inBouncyTrigger = true;
             }
         }
     }

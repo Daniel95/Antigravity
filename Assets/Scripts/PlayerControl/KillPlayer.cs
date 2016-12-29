@@ -3,13 +3,13 @@ using UnityEngine.SceneManagement;
 
 public class KillPlayer : MonoBehaviour
 {
-    private CheckPoint checkPoint;
+    private Checkpoint checkpoint;
 
     private GetKilled getKilled;
 
     private void Start()
     {
-        checkPoint = GetComponent<CheckPoint>();
+        checkpoint = GetComponent<Checkpoint>();
 
         getKilled = GetComponent<GetKilled>();
         getKilled.die += PlayerDies;
@@ -18,9 +18,9 @@ public class KillPlayer : MonoBehaviour
     private void PlayerDies()
     {
         //check if the player checked a checkpoint, of not, reload the scene
-        if (checkPoint.CheckPointReached)
+        if (checkpoint.CheckPointReached)
         {
-            checkPoint.Revive();
+            checkpoint.Revive();
         }
         else
         {

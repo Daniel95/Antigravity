@@ -2,38 +2,51 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CheckPoint : MonoBehaviour {
+public class Checkpoint : MonoBehaviour {
+
+    private RevivedState revivedState;
 
     private StateMachine stateMachine;
 
     private Vector2 lastCheckpointLocation;
 
-    private bool checkPointReached;
+    private bool checkpointReached;
 
     private void Start()
     {
         stateMachine = GetComponent<StateMachine>();
+        revivedState = GetComponent<RevivedState>();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.isTrigger && collision.transform.CompareTag(Tags.CheckPoint)) {
-            checkPointReached = true;
+            checkpointReached = true;
+
             lastCheckpointLocation = collision.transform.position;
+
+            ActivateRevivedState();
+            revivedState.IsInPosition = false;
+            revivedState.StartMovingToCenterCheckPoint(lastCheckpointLocation);
         }
     }
 
     public void Revive()
     {
-        //put the player in the revived state
-        stateMachine.DeactivateAllStates();
-        stateMachine.ActivateState(StateID.RevivedState);
+        ActivateRevivedState();
 
         transform.position = lastCheckpointLocation;
     }
 
+    //put the player in the revived state
+    private void ActivateRevivedState()
+    {
+        stateMachine.DeactivateAllStates();
+        stateMachine.ActivateState(StateID.RevivedState);
+    }
+
     public bool CheckPointReached
     {
-        get { return checkPointReached; }
+        get { return checkpointReached; }
     }
 }

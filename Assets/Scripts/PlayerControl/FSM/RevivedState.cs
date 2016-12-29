@@ -4,17 +4,19 @@ using System.Collections;
 public class RevivedState : State
 {
     [SerializeField]
-    private int framesInActiveAfterRespawning = 20;
-
-    [SerializeField]
     private GameObject gun;
 
     [SerializeField]
     private int startDirectionRayLength = 50;
 
+    [SerializeField]
+    private int launchDelayWhenRespawning = 20;
+
     private PlayerScriptAccess plrAccess;
 
     private ActivateWeapon activateWeapon;
+
+    private MoveTowards moveTowards;
 
     private LookAt lookAt;
 
@@ -23,6 +25,9 @@ public class RevivedState : State
     private bool bulletTimeActive;
 
     private Frames frames;
+
+    //the first time we hit a checkpoint, we will be moving towards the center of it, once we reached the center we are in position and can fire ourselfes.
+    private bool isInPosition;
 
     protected override void Awake()
     {
@@ -35,6 +40,7 @@ public class RevivedState : State
         activateWeapon = GetComponent<ActivateWeapon>();
         lookAt = gun.GetComponent<LookAt>();
         bulletTime = GetComponent<BulletTime>();
+        moveTowards = GetComponent<MoveTowards>();
     }
 
     public override void EnterState()
@@ -49,11 +55,39 @@ public class RevivedState : State
         //deactivate the weapon so we no longer shoot when we click/tab
         activateWeapon.enabled = false;
 
-        //set our direction to zero so we dont move
+        //set our direction to zero so our velocityController doesn't move us
         plrAccess.controlVelocity.SetDirection(Vector2.zero);
 
         //wait a few frames so the player dont start moving immediatly if he panic clicked right after he respawned
-        frames.ExecuteAfterDelay(framesInActiveAfterRespawning, SubscribeToAimInput);
+        StartCoroutine(DelayLaunchingInput());
+        //frames.ExecuteAfterDelay(launchDelayWhenRespawning, SubscribeToAimInput);
+    }
+
+    //delay the launching input for the following reasons:
+    //the moment you die the player could be clicking, which would instantly launch the player once he is revived.
+    //when we hit a checkpoint the player moves to the center, we must wait for the player to reach the center before he can fire himself
+    IEnumerator DelayLaunchingInput()
+    {
+        int framesCounter = launchDelayWhenRespawning;
+
+        while (framesCounter < 0 || !isInPosition)
+        {
+            framesCounter--;
+            yield return new WaitForFixedUpdate();
+        }
+
+        SubscribeToAimInput();
+    }
+
+    public void StartMovingToCenterCheckPoint(Vector2 _checkPointPosition)
+    {
+        moveTowards.reachedDestination += ReachedPosition;
+        moveTowards.StartMoving(_checkPointPosition);
+    }
+
+    private void ReachedPosition()
+    {
+        isInPosition = true;
     }
 
     private void SubscribeToAimInput()
@@ -62,6 +96,7 @@ public class RevivedState : State
         plrAccess.playerInputs.InputController.release += Release;
     }
 
+    //while dragging, we point towards the given direction
     private void Dragging(Vector2 _dir)
     {
         if (!bulletTime.BulletTimeActive)
@@ -74,6 +109,7 @@ public class RevivedState : State
         lookAt.UpdateLookAt((Vector2)transform.position + _dir);
     }
 
+    //when we release, we launch ourselfs to the recieved direction
     private void Release(Vector2 _dir)
     {
         activateWeapon.enabled = true;
@@ -93,5 +129,10 @@ public class RevivedState : State
 
         stateMachine.ActivateState(StateID.LaunchedState);
         stateMachine.DeactivateState(StateID.RevivedState);
+    }
+
+    public bool IsInPosition
+    {
+        set { isInPosition = value; }
     }
 }
