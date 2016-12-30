@@ -25,7 +25,6 @@ public class Checkpoint : MonoBehaviour {
 
     private void OnTriggerEnterTrigger(Collider2D collider)
     {
-        print("Hit: " + collider.name);
 
         if (collider.transform.CompareTag(Tags.CheckPoint))
         {

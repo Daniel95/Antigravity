@@ -7,12 +7,16 @@ public class TriggerCollisions : MonoBehaviour {
 
     private List<Collider2D> currentlyCollidingTriggers = new List<Collider2D>();
 
+    //when a trigger enters a non-trigger collider
     public Action<Collider2D> onTriggerEnterCollision;
 
+    //when a trigger enters a trigger collider
     public Action<Collider2D> onTriggerEnterTrigger;
 
+    //when a trigger exits a non-trigger collider
     public Action<Collider2D> onTriggerExitCollision;
 
+    //when a trigger exits a trigger collider
     public Action<Collider2D> onTriggerExitTrigger;
 
     public void OnTriggerEnter2D(Collider2D collider)
