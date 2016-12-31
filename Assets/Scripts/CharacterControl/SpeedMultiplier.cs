@@ -2,7 +2,7 @@
 using System;
 using System.Collections;
 
-public class SpeedMultiplier : MonoBehaviour
+public class SpeedMultiplier : MonoBehaviour, ITriggerer
 {
     [SerializeField]
     private float startMultiplier = 1;
@@ -28,6 +28,10 @@ public class SpeedMultiplier : MonoBehaviour
     private Coroutine moveMultiplier;
 
     private float lastTarget;
+
+    //used by action trigger to decide when to stop the instructions/tutorial
+    public Action activateTrigger { get; set; }
+    public Action stopTrigger { get; set; }
 
     void Start()
     {
@@ -89,6 +93,9 @@ public class SpeedMultiplier : MonoBehaviour
 
     public void SmoothFlipMultiplier()
     {
+        if (stopTrigger != null)
+            stopTrigger();
+
         float newTarget = originalSpeedMultiplier * -1;
 
         if (moveMultiplier != null)

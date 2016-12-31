@@ -30,9 +30,12 @@ public class BulletTime : MonoBehaviour {
         }
 
         bulletTimeActive = true;
-        aimRay.enabled = true;
 
+        //activate the line renderer
+        aimRay.enabled = true;
         updateLineRendererPositions = StartCoroutine(UpdateLineRendererPositions());
+
+        //slow down the time
         moveTimeScale = StartCoroutine(MoveTimeScale(bulletTimeTimeScale, slowDownTime));
     }
 
@@ -52,7 +55,6 @@ public class BulletTime : MonoBehaviour {
             Time.timeScale = Mathf.Lerp(Time.timeScale, _target, _time);
             yield return new WaitForFixedUpdate();
         }
-
     }
 
     public void StopBulletTime()
@@ -65,7 +67,7 @@ public class BulletTime : MonoBehaviour {
             bulletTimeActive = false;
             aimRay.enabled = false;
 
-            moveTimeScale = StartCoroutine(MoveTimeScale(1, slowDownTime));
+            StopCoroutine(MoveTimeScale(1, slowDownTime));
             Time.timeScale = 1;
         }
     }

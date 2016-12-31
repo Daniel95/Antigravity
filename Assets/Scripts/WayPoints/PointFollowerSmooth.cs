@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PointFollowerSmooth : MonoBehaviour, ITrigger {
+public class PointFollowerSmooth : MonoBehaviour, ITriggerable {
 
     [SerializeField]
     private bool activateSelf = true;
@@ -27,20 +27,15 @@ public class PointFollowerSmooth : MonoBehaviour, ITrigger {
         wayPoints = GetComponent<WayPoints>();
 
         if (activateSelf)
-            Activate();
+            TriggerActivate();
     }
 
-    public void Activate()
+    public void StartFollowingWaypoint()
     {
         if (moveToPos != null)
-            Stop();
+            TriggerStop();
 
         moveToPos = StartCoroutine(MoveToPos(wayPoints.GetCurrentPoint()));
-    }
-
-    public void Stop()
-    {
-        StopCoroutine(moveToPos);
     }
 
     IEnumerator MoveToPos(Vector2 _pos)
@@ -69,5 +64,15 @@ public class PointFollowerSmooth : MonoBehaviour, ITrigger {
     private void GoToNextPoint()
     {
         moveToPos = StartCoroutine(MoveToPos(wayPoints.GetNextPoint()));
+    }
+
+    public void TriggerActivate()
+    {
+        StartFollowingWaypoint();
+    }
+
+    public void TriggerStop()
+    {
+        StopCoroutine(moveToPos);
     }
 }

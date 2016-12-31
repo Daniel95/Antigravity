@@ -208,16 +208,4 @@ public class PCInputs : InputsBase {
             yield return null;
         }
     }
-
-    public void Action()
-    {
-        if (action != null)
-            action();
-    }
-
-    public void FlipSpeed()
-    {
-        if (flipSpeed != null)
-            flipSpeed();
-    }
 }

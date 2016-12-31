@@ -2,7 +2,7 @@
 using System;
 using System.Collections;
 
-public class SwitchGravity : MonoBehaviour {
+public class SwitchGravity : MonoBehaviour, ITriggerer {
 
     private PlayerScriptAccess plrAcces;
 
@@ -14,8 +14,12 @@ public class SwitchGravity : MonoBehaviour {
 
     private Vector2 lastDir;
 
-	// Use this for initialization
-	void Start () {
+    //used by action trigger to decide when to start the instructions/tutorial, and when to stop it
+    public Action activateTrigger { get; set; }
+    public Action stopTrigger { get; set; }
+
+    // Use this for initialization
+    void Start () {
         plrAcces = GetComponent<PlayerScriptAccess>();
         frames = GetComponent<Frames>();
 
@@ -26,6 +30,9 @@ public class SwitchGravity : MonoBehaviour {
 
     public void Jump()
     {
+        if (stopTrigger != null)
+            stopTrigger();
+
         plrAcces.controlVelocity.TempSpeedIncrease();
 
         Vector2 raycastResults = new Vector2(plrAcces.charRaycasting.CheckHorizontalDir(), plrAcces.charRaycasting.CheckVerticalDir());

@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
-public class RevivedState : State
+public class RevivedState : State, ITriggerer
 {
     [SerializeField]
     private GameObject gun;
@@ -26,6 +27,10 @@ public class RevivedState : State
 
     //the first time we hit a checkpoint, we will be moving towards the center of it, once we reached the center we are in position and can fire ourselfes.
     private bool isInPosition;
+
+    //used by action trigger to decide when to start the instructions/tutorial, and when to stop it
+    public Action activateTrigger { get; set; }
+    public Action stopTrigger { get; set; }
 
     protected override void Awake()
     {
@@ -56,7 +61,6 @@ public class RevivedState : State
 
         //wait a few frames so the player dont start moving immediatly if he panic clicked right after he respawned
         StartCoroutine(DelayLaunchingInput());
-        //frames.ExecuteAfterDelay(launchDelayWhenRespawning, SubscribeToAimInput);
     }
 
     //delay the launching input for the following reasons:
@@ -84,6 +88,9 @@ public class RevivedState : State
     private void ReachedPosition()
     {
         isInPosition = true;
+
+        if (activateTrigger != null)
+            activateTrigger();
     }
 
     private void SubscribeToAimInput()
@@ -120,6 +127,9 @@ public class RevivedState : State
 
     private void EnterLaunchedState()
     {
+        if (stopTrigger != null)
+            stopTrigger();
+
         plrAccess.playerInputs.InputController.dragging -= Dragging;
         plrAccess.playerInputs.InputController.release -= Release;
 

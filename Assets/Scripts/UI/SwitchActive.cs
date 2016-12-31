@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class SwitchActive : MonoBehaviour
+public class SwitchActive : MonoBehaviour, ITriggerable
 {
     [SerializeField]
     private Element[] elements;
@@ -9,18 +9,30 @@ public class SwitchActive : MonoBehaviour
     {
         for (int i = 0; i < elements.Length; i++)
         {
-            if (elements[i].gameObject.activeSelf)
-                elements[i].gameObject.SetActive(false);
-            else
-                elements[i].gameObject.SetActive(true);
+            //switch the current state
+            elements[i].gameObject.SetActive(!elements[i].gameObject.activeSelf);
+
+            //then assing the nextState as the opposite of the new currenState
+            elements[i].nextState = !elements[i].gameObject.activeSelf;
         }
     }
 
-    public void SwitchToGivenState() {
+    public void SwitchToNextState() {
         for (int i = 0; i < elements.Length; i++)
         {
             elements[i].gameObject.SetActive(elements[i].nextState);
-            elements[i].nextState = !elements[i].nextState;
+
+            elements[i].nextState = !elements[i].gameObject.activeSelf;
+        }
+    }
+
+    public void SwitchToState(bool _state)
+    {
+        for (int i = 0; i < elements.Length; i++)
+        {
+            elements[i].gameObject.SetActive(_state);
+
+            elements[i].nextState = !elements[i].gameObject.activeSelf;
         }
     }
 
@@ -28,5 +40,15 @@ public class SwitchActive : MonoBehaviour
     private struct Element {
         public GameObject gameObject;
         public bool nextState;
+    }
+
+    public void TriggerActivate()
+    {
+        SwitchToState(true);
+    }
+
+    public void TriggerStop()
+    {
+        SwitchToState(false);
     }
 }

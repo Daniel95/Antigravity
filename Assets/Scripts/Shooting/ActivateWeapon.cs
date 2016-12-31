@@ -57,21 +57,29 @@ public class ActivateWeapon : MonoBehaviour, IEventSystemHandler {
 
     private void Dragging(Vector2 _dir)
     {
-        weapons[weaponIndex].Dragging(GetHitPoint(_dir), spawnTransform.position);
-        gunLookAt.UpdateLookAt((Vector2)transform.position + _dir);
+        if (!TimeManagement.isPauzed())
+        {
+            weapons[weaponIndex].Dragging(GetHitPoint(_dir), spawnTransform.position);
+            gunLookAt.UpdateLookAt((Vector2)transform.position + _dir);
+        }
     }
 
     private void CancelDrag()
     {
-        weapons[weaponIndex].Cancel();
+        if (!TimeManagement.isPauzed())
+        {
+            weapons[weaponIndex].Cancel();
+        }
     }
 
     private void Release(Vector2 _dir)
     {
-        weapons[weaponIndex].Release(GetHitPoint(_dir), spawnTransform.position);
-        gunLookAt.UpdateLookAt((Vector2)transform.position + _dir);
+        if (!TimeManagement.isPauzed())
+        {
+            weapons[weaponIndex].Release(GetHitPoint(_dir), spawnTransform.position);
+            gunLookAt.UpdateLookAt((Vector2)transform.position + _dir);
+        }
     }
-
     
     private Vector2 GetHitPoint(Vector2 _dir) {
 

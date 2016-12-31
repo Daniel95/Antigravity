@@ -15,6 +15,7 @@ public class PlayerStarter : MonoBehaviour {
     {
         plrAcces.controlVelocity.StartDirectionalMovement();
         plrAcces.playerInputs.StartShootInputs();
+        StartPlayerKeyInputs();
     }
 
     public void StartPlayerMovement()

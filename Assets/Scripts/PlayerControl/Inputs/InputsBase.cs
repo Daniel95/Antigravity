@@ -32,5 +32,17 @@ public class InputsBase : MonoBehaviour {
         if (cancelDrag != null)
             cancelDrag();
     }
+
+    public void Action()
+    {
+        if (action != null)
+            action();
+    }
+
+    public void FlipSpeed()
+    {
+        if (flipSpeed != null)
+            flipSpeed();
+    }
 }
 

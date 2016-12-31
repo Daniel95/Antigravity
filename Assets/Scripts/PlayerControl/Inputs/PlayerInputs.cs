@@ -99,4 +99,14 @@ public class PlayerInputs : MonoBehaviour {
             return defaultInputTypePC;
         }
     }
+
+    public void Action()
+    {
+        inputController.Action();
+    }
+
+    public void Reverse()
+    {
+        inputController.FlipSpeed();
+    }
 }
