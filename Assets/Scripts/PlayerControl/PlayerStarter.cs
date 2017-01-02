@@ -30,9 +30,6 @@ public class PlayerStarter : MonoBehaviour {
 
     public void StartPlayerKeyInputs()
     {
-        if(!Platform.PlatformIsMobile())
-        {
-            plrAcces.playerInputs.StartKeyInputs();
-        }
+        plrAcces.playerInputs.StartKeyInputs();
     }
 }

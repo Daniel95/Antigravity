@@ -22,7 +22,9 @@ public class LaunchedState : State
         base.EnterState();
 
         //subscribe to StartedGrappleLocking, so we know when we should start grappling and exit this state
-        grapplingHook.StartedGrappleLocking += EnterGrapplingState;
+        grapplingHook.startedGrappleLocking += EnterGrapplingState;
+
+        print("enter launched state");
 
         directionIndicator.PointToCeilVelocityDir();
     }
@@ -40,8 +42,9 @@ public class LaunchedState : State
     public override void ResetState()
     {
         base.ResetState();
+
         //unsubscripte from all relevant delegates
-        grapplingHook.StartedGrappleLocking -= EnterGrapplingState;
+        grapplingHook.startedGrappleLocking -= EnterGrapplingState;
     }
 
     public override void OnTriggerEnterCollider(Collider2D collider)

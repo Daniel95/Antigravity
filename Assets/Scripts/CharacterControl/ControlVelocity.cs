@@ -59,8 +59,6 @@ public class ControlVelocity : MonoBehaviour {
         while (true)
         {
             lastVelocity = rb.velocity;
-            //print(lastVelocity);
-
 
             //add our own constant force
             rb.velocity = direction * (currentSpeed * speedMultiplier);
@@ -174,6 +172,16 @@ public class ControlVelocity : MonoBehaviour {
     public Vector2 GetCeilVelocityDirection() {
         Vector2 velocityNormalized = GetVelocity.normalized;
         return new Vector2(Rounding.InvertOnNegativeCeil(velocityNormalized.x), Rounding.InvertOnNegativeCeil(velocityNormalized.y));
+    }
+
+    public void SetSpeed(float _newSpeed)
+    {
+        if(returnSpeedToOriginal != null)
+        {
+            StopCoroutine(returnSpeedToOriginal);
+        }
+
+        currentSpeed = _newSpeed;
     }
 
     public Vector2 GetVelocity {

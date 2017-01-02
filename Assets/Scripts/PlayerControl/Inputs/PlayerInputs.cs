@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System;
 
-public class PlayerInputs : MonoBehaviour {
+public class PlayerInputs : MonoBehaviour, ITriggerable {
 
     public enum InputType { Drag, JoyStick };
 
@@ -38,6 +38,18 @@ public class PlayerInputs : MonoBehaviour {
         }
     }
 
+    public void TriggerActivate()
+    {
+        StartShootInputs();
+        StartKeyInputs();
+    }
+
+    public void TriggerStop()
+    {
+        StopShootInputs();
+        StopKeyInputs();
+    }
+
     public void StartShootInputs()
     {
         //assign to the right controls, given by inputTypeUsed 
@@ -51,9 +63,32 @@ public class PlayerInputs : MonoBehaviour {
         }
     }
 
+    public void StopShootInputs()
+    {
+        //stop the right controls, given by inputTypeUsed 
+        if (inputTypeUsed == InputType.Drag)
+        {
+            inputController.StopUpdatingDragInputs();
+        }
+        else
+        {
+            inputController.StopUpdatingJoyStickInputs();
+        }
+    }
+
     public void StartKeyInputs()
     {
-        pcInputs.StartUpdatingKeyInputs();
+        if (!Platform.PlatformIsMobile()) {
+            pcInputs.StartUpdatingKeyInputs();
+        }
+    }
+
+    public void StopKeyInputs()
+    {
+        if (!Platform.PlatformIsMobile())
+        {
+            pcInputs.StopUpdatingKeyInputs();
+        }
     }
 
     //used by other scripts to assign themselfes to input delegates
@@ -102,6 +137,7 @@ public class PlayerInputs : MonoBehaviour {
 
     public void Action()
     {
+        print("action");
         inputController.Action();
     }
 

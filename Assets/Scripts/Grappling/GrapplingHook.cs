@@ -2,7 +2,7 @@
 using System;
 using System.Collections;
 
-public class GrapplingHook : MonoBehaviour, IWeapon {
+public class GrapplingHook : MonoBehaviour, IWeapon, ITriggerer {
 
     [SerializeField]
     private GameObject grappleProjectilePrefab;
@@ -19,8 +19,8 @@ public class GrapplingHook : MonoBehaviour, IWeapon {
     private Coroutine holdGrappleCoroutine;
 
     //other scripts can subscribe to know when the grapple locks and unlocks
-    public Action StartedGrappleLocking;
-    public Action StoppedGrappleLocking;
+    public Action startedGrappleLocking;
+    public Action stoppedGrappleLocking;
 
     //our current grapple data
     private GameObject grappleProjectileGObj;
@@ -32,10 +32,12 @@ public class GrapplingHook : MonoBehaviour, IWeapon {
 
     private BulletTime bulletTime;
 
-    //use the direction to determine which direction we go when we land
-    //private Vector2 currentDirection;
+    //used by action trigger to decide when to start the instructions/tutorial, and when to stop it
+    public Action activateTrigger { get; set; }
+    public Action stopTrigger { get; set; }
 
     void Start() {
+
         distanceJoint = GetComponent<DistanceJoint2D>();
         distanceJoint.enabled = false;
 
@@ -93,8 +95,6 @@ public class GrapplingHook : MonoBehaviour, IWeapon {
     private void ShootGrappleHook(Vector2 _destination, Vector2 _spawnPosition) {
         currentGrapplingHookState = GrapplingHookStates.busyShooting;
 
-        //currentDirection = _direction;
-
         grappleProjectileGObj.SetActive(true);
         grappleProjectileGObj.transform.position = _spawnPosition;
 
@@ -125,9 +125,16 @@ public class GrapplingHook : MonoBehaviour, IWeapon {
 
             grappleProjectileScript.reachedDestination -= EnterGrappleLock;
 
+            if (stopTrigger != null)
+            {
+                stopTrigger();
+            }
+
             //activate distanceJoint2D
-            if (StartedGrappleLocking != null)
-                StartedGrappleLocking();
+            if (startedGrappleLocking != null)
+            {
+                startedGrappleLocking();
+            }
 
             distanceJoint.enabled = true;
 
@@ -143,8 +150,8 @@ public class GrapplingHook : MonoBehaviour, IWeapon {
     //used to cancel grapple locking if we are currently locked, also cancels the grapplingstate
     public void ExitGrappleLock() {
 
-        if (StoppedGrappleLocking != null)
-            StoppedGrappleLocking();
+        if (stoppedGrappleLocking != null)
+            stoppedGrappleLocking();
 
         grappleProjectileScript.reachedDestination -= EnterGrappleLock;
         distanceJoint.enabled = false;
@@ -183,12 +190,6 @@ public class GrapplingHook : MonoBehaviour, IWeapon {
         lineRenderer.enabled = false;
         StopCoroutine(lineUpdateCoroutine);
     }
-
-    /*
-    public Vector2 Direction
-    {
-        get { return currentDirection; }
-    }*/
 
     public Vector2 Destination
     {

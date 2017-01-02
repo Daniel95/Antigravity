@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 
-public class GrapplingState : State {
+public class GrapplingState : State, ITriggerer {
 
     [SerializeField]
     private GameObject gun;
@@ -15,6 +16,10 @@ public class GrapplingState : State {
     private Coroutine slingMovement;
 
     private Vector2 direction;
+
+    //used by action trigger to decide when to start the instructions/tutorial, and when to stop it
+    public Action activateTrigger { get; set; }
+    public Action stopTrigger { get; set; }
 
     protected override void Awake()
     {
@@ -39,10 +44,11 @@ public class GrapplingState : State {
         slingMovement = StartCoroutine(SlingMovement());
 
         //exit the state when the grapple has released itself
-        grapplingHook.StoppedGrappleLocking += EnterLaunchedState;
+        grapplingHook.stoppedGrappleLocking += EnterLaunchedState;
 
         //subscribe to the space input, so we know when to exit our grapple
         plrAccess.playerInputs.InputController.action += ExitGrapple;
+
     }
 
     IEnumerator SlingMovement()
@@ -63,7 +69,7 @@ public class GrapplingState : State {
     {
         base.Act();
 
-        if (plrAccess.controlVelocity.GetVelocity == Vector2.zero) {
+        if (plrAccess.controlVelocity.GetVelocity == Vector2.zero && plrAccess.controlVelocity.CurrentSpeed != 0) {
             plrAccess.controlDirection.ActivateLogicDirection(direction);
             EnterOnFootState();
         }
@@ -73,6 +79,10 @@ public class GrapplingState : State {
     }
 
     private void ExitGrapple() {
+
+        if (stopTrigger != null)
+            stopTrigger();
+
         plrAccess.controlVelocity.SetDirection(direction = plrAccess.controlVelocity.GetVelocityDirection());
         EnterLaunchedState();
     }
@@ -93,7 +103,7 @@ public class GrapplingState : State {
 
         //unsubscripte from all relevant delegates
         plrAccess.speedMultiplier.switchedMultiplier -= FakeSwitchSpeed;
-        grapplingHook.StoppedGrappleLocking -= EnterLaunchedState;
+        grapplingHook.stoppedGrappleLocking -= EnterLaunchedState;
         plrAccess.playerInputs.InputController.action -= ExitGrapple;
 
         grapplingHook.ExitGrappleLock();

@@ -194,6 +194,8 @@ public class PCInputs : InputsBase {
             {
                 if (action != null)
                 {
+                    print("jump");
+
                     action();
                 }
             }

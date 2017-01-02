@@ -23,7 +23,7 @@ public class OnFootState : State {
         base.EnterState();
 
         //subscribe to StartedGrappleLocking, so we know when we should start grappling and exit this state
-        grapplingHook.StartedGrappleLocking += ExitState;
+        grapplingHook.startedGrappleLocking += ExitState;
 
         //subscribe to the space input, so we know when to jump
         plrAccess.playerInputs.InputController.action += Jump;
@@ -45,7 +45,7 @@ public class OnFootState : State {
 
         plrAccess.playerInputs.InputController.action -= Jump;
 
-        grapplingHook.StartedGrappleLocking -= ExitState;
+        grapplingHook.startedGrappleLocking -= ExitState;
     }
 
     public override void OnTriggerEnterCollider(Collider2D collider)
