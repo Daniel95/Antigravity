@@ -37,7 +37,12 @@ public class TriggerBase : MonoBehaviour {
                 //then loop through each Itrigger in the list and activate it.
                 for (int i = 0; i < objectsWithTriggers[obj].Count; i++)
                 {
-                    objectsWithTriggers[obj][i].TriggerActivate();
+                    //only activate the trigger, if the object isn't already triggered
+                    if (!objectsWithTriggers[obj][i].triggered)
+                    {
+                        objectsWithTriggers[obj][i].triggered = true;
+                        objectsWithTriggers[obj][i].TriggerActivate();
+                    }
                 }
             }
         }
@@ -54,7 +59,12 @@ public class TriggerBase : MonoBehaviour {
                 //then loop through each Itrigger in the list and activate it.
                 for (int i = 0; i < objectsWithTriggers[obj].Count; i++)
                 {
-                    objectsWithTriggers[obj][i].TriggerStop();
+                    //only stop the trigger, if the object was previously triggered
+                    if (objectsWithTriggers[obj][i].triggered)
+                    {
+                        objectsWithTriggers[obj][i].triggered = false;
+                        objectsWithTriggers[obj][i].TriggerStop();
+                    }
                 }
             }
         }

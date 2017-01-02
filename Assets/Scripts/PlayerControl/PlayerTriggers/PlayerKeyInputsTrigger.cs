@@ -4,12 +4,13 @@ using UnityEngine;
 
 public class PlayerKeyInputsTrigger : MonoBehaviour, ITriggerable
 {
+    public bool triggered { get; set; }
+
     [SerializeField]
     private PlayerInputs plrInputs;
 
     public void TriggerActivate()
     {
-        print("start key inputs");
         plrInputs.StartKeyInputs();
     }
 

@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PointFollowerSmooth : MonoBehaviour, ITriggerable {
 
+    public bool triggered { get; set; }
+
     [SerializeField]
     private bool activateSelf = true;
 

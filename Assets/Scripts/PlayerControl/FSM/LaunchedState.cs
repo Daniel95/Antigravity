@@ -24,8 +24,6 @@ public class LaunchedState : State
         //subscribe to StartedGrappleLocking, so we know when we should start grappling and exit this state
         grapplingHook.startedGrappleLocking += EnterGrapplingState;
 
-        print("enter launched state");
-
         directionIndicator.PointToCeilVelocityDir();
     }
 

@@ -69,13 +69,7 @@ public class MobileInputs : InputsBase {
                 {
                     touched = false;
 
-                    //if we release on an UI element, cancel it
-                    if (InputDetect.CheckUICollision(Input.GetTouch(0).position))
-                    {
-                        if (cancelDrag != null)
-                            cancelDrag();
-                    }
-                    else if (release != null)
+                    if (release != null)
                     {
                         //if we are dragging, use the normalized value of the start and end pos
                         if (isDragging)
@@ -134,17 +128,8 @@ public class MobileInputs : InputsBase {
                 if (Input.GetTouch(0).phase == TouchPhase.Ended) {
                     touched = false;
 
-                    //check if we are not releasing on a UI element.
-                    if (InputDetect.CheckUICollision(Input.GetTouch(0).position))
-                    {
-                        if (release != null)
-                            release(((Vector2)Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position) - (Vector2)transform.position).normalized);
-                    }
-                    else
-                    {
-                        if (release != null)
-                            release(((Vector2)Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position) - (Vector2)transform.position).normalized);
-                    }
+                    if (release != null)
+                        release(((Vector2)Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position) - (Vector2)transform.position).normalized);
                 }
                 else
                 {

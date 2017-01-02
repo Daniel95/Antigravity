@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerShootControlsTrigger : MonoBehaviour, ITriggerable
 {
+    public bool triggered { get; set; }
+
     [SerializeField]
     private PlayerInputs plrInputs;
 

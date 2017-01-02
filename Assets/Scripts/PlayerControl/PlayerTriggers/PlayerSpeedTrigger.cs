@@ -4,23 +4,22 @@ using UnityEngine;
 
 public class PlayerSpeedTrigger : MonoBehaviour, ITriggerable {
 
+    public bool triggered { get; set; }
+
     [SerializeField]
     private ControlVelocity controlVelocity;
 
-    [SerializeField]
-    private bool setVelocityToDirection;
+    private Vector2 lastDirection;
 
     public void TriggerActivate()
     {
+        lastDirection = controlVelocity.GetVelocityDirection();
         controlVelocity.SetSpeed(0);
     }
 
     public void TriggerStop()
     {
-        if (setVelocityToDirection)
-        {
-            controlVelocity.SetVelocity(controlVelocity.GetDirection() * controlVelocity.OriginalSpeed);
-        }
+        controlVelocity.SetVelocity(lastDirection * controlVelocity.OriginalSpeed);
 
         controlVelocity.SetSpeed(controlVelocity.OriginalSpeed);
     }

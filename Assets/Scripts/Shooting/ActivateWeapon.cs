@@ -2,7 +2,7 @@
 using UnityEngine.EventSystems;
 using System.Collections.Generic;
 
-public class ActivateWeapon : MonoBehaviour, IEventSystemHandler {
+public class ActivateWeapon : MonoBehaviour {
 
     [SerializeField]
     private LayerMask rayLayers;
@@ -59,7 +59,7 @@ public class ActivateWeapon : MonoBehaviour, IEventSystemHandler {
     {
         if (!TimeManagement.isPauzed())
         {
-            weapons[weaponIndex].Dragging(GetHitPoint(_dir), spawnTransform.position);
+            weapons[weaponIndex].Dragging(GetDestinationPoint(_dir), spawnTransform.position);
             gunLookAt.UpdateLookAt((Vector2)transform.position + _dir);
         }
     }
@@ -76,12 +76,15 @@ public class ActivateWeapon : MonoBehaviour, IEventSystemHandler {
     {
         if (!TimeManagement.isPauzed())
         {
-            weapons[weaponIndex].Release(GetHitPoint(_dir), spawnTransform.position);
+            weapons[weaponIndex].Release(GetDestinationPoint(_dir), spawnTransform.position);
             gunLookAt.UpdateLookAt((Vector2)transform.position + _dir);
         }
     }
-    
-    private Vector2 GetHitPoint(Vector2 _dir) {
+
+    //get the destination of the projectile, 
+    //if it hits a wall then the point of collision with the wall will be its destination, 
+    //otherwise the destination will be decided by the maxDistance
+    private Vector2 GetDestinationPoint(Vector2 _dir) {
 
         Vector2 targetPos = (Vector2)transform.position + (_dir * maxRaycastDistance);
 

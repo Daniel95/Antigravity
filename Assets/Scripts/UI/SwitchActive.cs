@@ -2,6 +2,9 @@
 
 public class SwitchActive : MonoBehaviour, ITriggerable
 {
+
+    public bool triggered { get; set; }
+
     [SerializeField]
     private Element[] elements;
 
@@ -44,11 +47,11 @@ public class SwitchActive : MonoBehaviour, ITriggerable
 
     public void TriggerActivate()
     {
-        SwitchToState(true);
+        SwitchToNextState();
     }
 
     public void TriggerStop()
     {
-        SwitchToState(false);
+        SwitchToNextState();
     }
 }

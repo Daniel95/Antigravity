@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PauzeTime : MonoBehaviour, ITriggerable {
 
+    public bool triggered { get; set; }
+
     private TimeManagement timeManagement;
 
     private void Start()

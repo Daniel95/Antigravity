@@ -3,6 +3,8 @@ using System;
 
 public class PlayerInputs : MonoBehaviour, ITriggerable {
 
+    public bool triggered { get; set; }
+
     public enum InputType { Drag, JoyStick };
 
     [SerializeField]
@@ -109,6 +111,7 @@ public class PlayerInputs : MonoBehaviour, ITriggerable {
         }
     }
 
+    //switches the control type between Drag & Joystick
     public void SwitchControlType()
     {
         if (inputTypeUsed == InputType.Drag)
@@ -137,7 +140,6 @@ public class PlayerInputs : MonoBehaviour, ITriggerable {
 
     public void Action()
     {
-        print("action");
         inputController.Action();
     }
 
