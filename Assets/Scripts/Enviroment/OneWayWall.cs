@@ -16,13 +16,14 @@ public class OneWayWall : MonoBehaviour {
     private void Start()
     {
         ourCollider.isTrigger = true;
+        gameObject.layer = LayerMask.NameToLayer(ignoreRaycastLayer);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.isTrigger && collision.CompareTag(Tags.Player))
+        if (collision.CompareTag(Tags.Player))
         {
-            if(IsToTheRight(collision.transform.position))
+            if (IsToTheRight(collision.transform.position))
             {
                 ourCollider.isTrigger = false;
                 gameObject.layer = LayerMask.NameToLayer(defaultLayer);

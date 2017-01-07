@@ -120,7 +120,7 @@ public class RevivedState : State, ITriggerer
         bulletTime.StopBulletTime();
         plrAccess.controlVelocity.SetDirection(_dir * plrAccess.controlVelocity.GetMultiplierDir());
 
-        plrAccess.controlVelocity.TempSpeedIncrease();
+        plrAccess.controlSpeed.TempSpeedIncrease();
 
         EnterLaunchedState();
     }

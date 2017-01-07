@@ -44,12 +44,12 @@ public class ActionTrigger : TriggerBase {
 
     //activate and stop the triggers
 
-    private void ActivateTrigger()
+    public void ActivateTrigger()
     {
         ActivateTriggers();
     }
 
-    private void StopTrigger()
+    public void StopTrigger()
     {
         StopTriggers();
     }

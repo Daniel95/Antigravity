@@ -12,13 +12,10 @@ public class ControlVelocity : MonoBehaviour {
     private float speedMultiplier = 1;
 
     [SerializeField]
-    private float tempSpeedAddedMuliplier = 0.35f;
+    private float maxSpeed = 5;
 
     [SerializeField]
-    private float tempReturnSpeed = 0.025f;
-
-    [SerializeField]
-    private float minTempOffsetValue = 0.05f;
+    private float minSpeedOffsetValue = 0.05f;
 
     [SerializeField]
     private Vector2 direction;
@@ -66,31 +63,17 @@ public class ControlVelocity : MonoBehaviour {
         }
     }
 
-    //increases the speed with a multplier, then returns it to the original over time
-    public void TempSpeedIncrease()
+    public void StartReturnSpeedToOriginal(float _returnSpeed)
     {
-        currentSpeed = originalSpeed * (1 + tempSpeedAddedMuliplier);
-
         if (returnSpeedToOriginal != null)
             StopCoroutine(returnSpeedToOriginal);
 
-        returnSpeedToOriginal = StartCoroutine(ReturnSpeedToOriginal(tempReturnSpeed));
-    }
-
-    //decreases the speed with a multplier, then returns it to the original over time
-    public void TempSpeedDecrease()
-    {
-        currentSpeed = originalSpeed * (1 - tempSpeedAddedMuliplier);
-
-        if (returnSpeedToOriginal != null)
-            StopCoroutine(returnSpeedToOriginal);
-
-        returnSpeedToOriginal = StartCoroutine(ReturnSpeedToOriginal(tempReturnSpeed));
+        returnSpeedToOriginal = StartCoroutine(ReturnSpeedToOriginal(_returnSpeed));
     }
 
     IEnumerator ReturnSpeedToOriginal(float _returnSpeed)
     {
-        while (Mathf.Abs(currentSpeed - originalSpeed) > minTempOffsetValue)
+        while (Mathf.Abs(currentSpeed - originalSpeed) > minSpeedOffsetValue)
         {
             currentSpeed = Mathf.Lerp(currentSpeed, originalSpeed, _returnSpeed);
             yield return new WaitForFixedUpdate();
@@ -182,6 +165,11 @@ public class ControlVelocity : MonoBehaviour {
         }
 
         currentSpeed = _newSpeed;
+
+        if (currentSpeed > maxSpeed)
+        {
+            currentSpeed = maxSpeed;
+        }
     }
 
     public Vector2 GetVelocity {
@@ -191,6 +179,11 @@ public class ControlVelocity : MonoBehaviour {
     public Vector2 GetLastVelocity
     {
         get { return lastVelocity; }
+    }
+
+    public float MaxSpeed
+    {
+        get { return maxSpeed; }
     }
 
     public float OriginalSpeed

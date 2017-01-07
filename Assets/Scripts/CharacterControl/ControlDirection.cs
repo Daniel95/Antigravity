@@ -13,6 +13,8 @@ public class ControlDirection : MonoBehaviour {
 
     private Coroutine waitRigidbodyCorrectionFrames;
 
+    private Vector2 currentDir;
+
     void Start() {
         plrAcces = GetComponent<PlayerScriptAccess>();
 
@@ -34,6 +36,8 @@ public class ControlDirection : MonoBehaviour {
     }
 
     public void ActivateLogicDirection(Vector2 _currentDir) {
+        CancelLogicDirection();
+
         waitRigidbodyCorrectionFrames = StartCoroutine(WaitRigidbodyCorrectionFrames(_currentDir, plrAcces.controlVelocity.GetLastVelocity, plrAcces.controlVelocity.CheckMovingStandard()));
     }
 
@@ -46,17 +50,21 @@ public class ControlDirection : MonoBehaviour {
 
     IEnumerator WaitRigidbodyCorrectionFrames(Vector2 _currentDir, Vector2 _lastVelocity, bool _movingStraight)
     {
-        Vector2 oldDir = plrAcces.controlVelocity.GetDirection();
+        if(_currentDir != Vector2.zero)
+        {
+            currentDir = _currentDir;
+        }
 
         //reset the direction, so the next few frames we are having collision we dont move while we are having collsion
         plrAcces.controlVelocity.SetDirection(new Vector2(0, 0));
 
         yield return new WaitForFixedUpdate();
         yield return new WaitForFixedUpdate();
+        yield return new WaitForFixedUpdate();
 
-        plrAcces.controlVelocity.SetDirection(oldDir);
+        plrAcces.controlVelocity.SetDirection(currentDir);
 
-        ApplyLogicDirection(_currentDir, _lastVelocity, _movingStraight);
+        ApplyLogicDirection(currentDir, _lastVelocity, _movingStraight);
     }
 
     private void ApplyLogicDirection(Vector2 _currentDir, Vector2 _lastVelocity, bool _movingStraight)
@@ -117,7 +125,7 @@ public class ControlDirection : MonoBehaviour {
                     lastDir.y = Rounding.InvertOnNegativeCeil(velocityDir.y);
                 }
 
-                plrAcces.controlVelocity.TempSpeedIncrease();
+                plrAcces.controlSpeed.TempSpeedIncrease();
             }
 
             //replace the dir on the axis that we dont have a collision with
@@ -139,6 +147,7 @@ public class ControlDirection : MonoBehaviour {
             }
             else
             {
+
                 //if the direction is zero on the x, we know we hit a wall on the Y axis
                 if (_currentDir.x != 0)
                 {

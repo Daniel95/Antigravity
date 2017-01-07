@@ -43,38 +43,37 @@ public class SwitchGravity : MonoBehaviour, ITriggerer {
 
     private void OnDisable()
     {
-        plrAcces.triggerCollisions.onTriggerEnterCollision += OnTriggerEnterCollision;
-        plrAcces.triggerCollisions.onTriggerEnterTrigger += OnTriggerEnterTrigger;
-        plrAcces.triggerCollisions.onTriggerExitTrigger += OnTriggerExitTrigger;
+        plrAcces.triggerCollisions.onTriggerEnterCollision -= OnTriggerEnterCollision;
+        plrAcces.triggerCollisions.onTriggerEnterTrigger -= OnTriggerEnterTrigger;
+        plrAcces.triggerCollisions.onTriggerExitTrigger -= OnTriggerExitTrigger;
     }
 
     public void Jump()
     {
-
         if (stopTrigger != null) {
             stopTrigger();
         }
 
-        plrAcces.controlVelocity.TempSpeedIncrease();
+        plrAcces.controlSpeed.TempSpeedIncrease();
 
         Vector2 raycastResults = new Vector2(plrAcces.charRaycasting.CheckHorizontalDir(), plrAcces.charRaycasting.CheckVerticalDir());
 
         //check if we have raycast collision on only one axis, jumping wont work when we are in a corner
         if (raycastResults.x == 0 || raycastResults.y == 0)
         {
-            Vector2 newDir = new Vector2();
+            Vector2 newDir = plrAcces.controlVelocity.GetDirection();
 
             //check the raycastdir, our newDir is the opposite of one of the axes
             if (raycastResults.x != 0)
             {
                 newDir.x = raycastResults.x * -1;
             }
-            else
+            else if(raycastResults.y != 0)
             {
                 newDir.y = raycastResults.y * -1;
             }
 
-            plrAcces.controlVelocity.SetDirection(plrAcces.controlVelocity.AdjustDirToMultiplier(newDir + plrAcces.controlVelocity.GetDirection()));
+            plrAcces.controlVelocity.SetDirection(plrAcces.controlVelocity.AdjustDirToMultiplier(newDir));
 
             if (switchedGravity != null)
                 switchedGravity();
@@ -82,7 +81,7 @@ public class SwitchGravity : MonoBehaviour, ITriggerer {
     }
 
     private void Bounce() {
-        plrAcces.controlVelocity.TempSpeedIncrease();
+        plrAcces.controlSpeed.TempSpeedIncrease();
 
         Vector2 raycastResults = new Vector2(plrAcces.charRaycasting.CheckHorizontalDir(), plrAcces.charRaycasting.CheckVerticalDir());
 

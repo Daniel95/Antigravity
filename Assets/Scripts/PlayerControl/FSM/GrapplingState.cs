@@ -34,7 +34,7 @@ public class GrapplingState : State, ITriggerer {
     {
         base.EnterState();
 
-        plrAccess.controlVelocity.TempSpeedIncrease();
+        plrAccess.controlSpeed.TempSpeedIncrease();
 
         //when we switch our speed, also switch the direction of our velocity
         plrAccess.speedMultiplier.switchedMultiplier += FakeSwitchSpeed;
