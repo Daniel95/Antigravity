@@ -101,6 +101,10 @@ public class ControlVelocity : MonoBehaviour {
     public Vector2 AdjustDirToMultiplier(Vector2 _dir) {
         Vector2 directionDifference = direction - _dir;
 
+        //print("org dir: " + direction);
+        //print("new dir: " + _dir);
+        //print("directionDifference: " + directionDifference);
+
         int multiplierDir = GetMultiplierDir();
 
         //only adjust the direction to multiplierDir if the direction has changed

@@ -119,7 +119,7 @@ public class GrapplingState : State, ITriggerer {
 
         if(plrAccess.controlTakeOff.CheckToBounce(collision))
         {
-            plrAccess.controlVelocity.SetDirection(plrAccess.controlVelocity.GetVelocityDirection());
+            plrAccess.controlVelocity.SetDirection(lastVelocity.normalized);
             print(lastVelocity);
             print(lastVelocity.normalized);
             plrAccess.controlTakeOff.Bounce(lastVelocity.normalized, plrAccess.collisionDirection.GetUpdatedCollDir(collision));
@@ -127,7 +127,7 @@ public class GrapplingState : State, ITriggerer {
         }
         else
         {
-            plrAccess.controlDirection.ApplyLogicDirection(plrAccess.controlVelocity.GetVelocityDirection(), plrAccess.collisionDirection.GetUpdatedCollDir(collision));
+            plrAccess.controlDirection.ApplyLogicDirection(lastVelocity.normalized, plrAccess.collisionDirection.GetUpdatedCollDir(collision));
             EnterOnFootState();
         }
     }

@@ -116,6 +116,7 @@ public class RevivedState : State, ITriggerer
         activateWeapon.enabled = true;
 
         bulletTime.StopBulletTime();
+        plrAccess.speedMultiplier.MakeMultiplierPositive();
         plrAccess.controlVelocity.SetDirection(_dir * plrAccess.controlVelocity.GetMultiplierDir());
 
         plrAccess.controlSpeed.TempSpeedIncrease();

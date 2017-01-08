@@ -40,6 +40,8 @@ public class ControlDirection : MonoBehaviour {
 
         Vector2 lookDir = plrAccess.controlVelocity.AdjustDirToMultiplier(lastDir);
 
+        //print("adjusted dirlogic: " + plrAccess.controlVelocity.AdjustDirToMultiplier(dirLogic));
+
         //use the direction logic for our new dir, but invert it if our speed multiplier is also inverted
         plrAccess.controlVelocity.SetDirection(plrAccess.controlVelocity.AdjustDirToMultiplier(dirLogic));
 
@@ -56,6 +58,7 @@ public class ControlDirection : MonoBehaviour {
 
         //if we are not hitting a wall on both axis
         if (_collDir.x == 0 || _collDir.y == 0) {
+
 
             //if we are moving standard, it means we are going in a straight line
             if(plrAccess.controlVelocity.CheckMovingStandard() && (_currentDir.x == 0 || _currentDir.y == 0))
@@ -78,13 +81,13 @@ public class ControlDirection : MonoBehaviour {
 
                 if (_currentDir.x != 0)
                 {
-                    lastDir.x = Rounding.InvertOnNegativeCeil(_currentDir.x);
+                    lastDir.x = Rounding.InvertOnNegativeCeil(_currentDir.x) * plrAccess.controlVelocity.GetMultiplierDir();
                 }
 
                 //if our currentDir.y isn't 0, set is as our lastDir.y
                 if (_currentDir.y != 0)
                 {
-                    lastDir.y = Rounding.InvertOnNegativeCeil(_currentDir.y);
+                    lastDir.y = Rounding.InvertOnNegativeCeil(_currentDir.y) * plrAccess.controlVelocity.GetMultiplierDir();
                 }
 
                 plrAccess.controlSpeed.TempSpeedIncrease();
