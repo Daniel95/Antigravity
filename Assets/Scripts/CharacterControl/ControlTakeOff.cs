@@ -29,8 +29,6 @@ public class ControlTakeOff : MonoBehaviour, ITriggerer {
 
         Vector2 collisionDir = plrAcces.collisionDirection.GetCurrentCollDir();
 
-        print("collisiondir: " + collisionDir);
-
         //check if we have raycast collision on only one axis, jumping wont work when we are in a corner
         if (collisionDir.x == 0 || collisionDir.y == 0)
         {

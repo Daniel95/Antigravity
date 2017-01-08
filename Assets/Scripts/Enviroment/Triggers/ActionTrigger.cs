@@ -8,12 +8,6 @@ public class ActionTrigger : TriggerBase {
     [SerializeField]
     private MonoBehaviour triggererScript;
 
-    [SerializeField]
-    private bool listenToStartInstructions = true;
-
-    [SerializeField]
-    private bool listenToEndInstructions = true;
-
     private ITriggerer triggerController;
 
     private void Awake()
@@ -26,20 +20,16 @@ public class ActionTrigger : TriggerBase {
     {
         //subscribe to the triggerController
 
-        if(listenToStartInstructions)
-            triggerController.activateTrigger += ActivateTrigger;
+        triggerController.activateTrigger += ActivateTrigger;
 
-        if (listenToEndInstructions)
-            triggerController.stopTrigger += StopTrigger;
+        triggerController.stopTrigger += StopTrigger;
     }
 
     private void OnDisable()
     {
-        if (listenToStartInstructions)
-            triggerController.activateTrigger -= ActivateTrigger;
+        triggerController.activateTrigger -= ActivateTrigger;
 
-        if (listenToEndInstructions)
-            triggerController.stopTrigger -= StopTrigger;
+        triggerController.stopTrigger -= StopTrigger;
     }
 
     //activate and stop the triggers

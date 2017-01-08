@@ -19,19 +19,20 @@ public class GetKilled : MonoBehaviour, IKillable {
         inKillerTrigger = false;
     }
 
+
     //when we collide with something while in the killing trigger, we die
-    private void OnTriggerStay2D(Collider2D collision)
+    private void OnCollisionStay2D(Collision2D collision)
     {
-        if (!collision.isTrigger && inKillerTrigger)
+        if (inKillerTrigger)
         {
-            if(die != null)
+            if (die != null)
                 die();
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (!collision.isTrigger && collision.transform.CompareTag(Tags.Killer))
+        if (collision.transform.CompareTag(Tags.Killer))
         {
             if (die != null)
                 die();

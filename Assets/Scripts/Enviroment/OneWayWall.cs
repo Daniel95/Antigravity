@@ -41,13 +41,6 @@ public class OneWayWall : MonoBehaviour {
     {
         Vector3 targetDir = _position - (Vector2)transform.position;
 
-        if (VectorMath.AngleDir(transform.forward, targetDir, transform.up) > 0)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return VectorMath.AngleDir(transform.forward, targetDir, transform.up) > 0;
     }
 }
