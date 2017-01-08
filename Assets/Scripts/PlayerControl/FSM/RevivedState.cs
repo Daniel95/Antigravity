@@ -48,8 +48,6 @@ public class RevivedState : State, ITriggerer
     {
         base.EnterState();
 
-        plrAccess.controlDirection.CancelLogicDirection();
-
         //make sure to reset the current touched input. If we are busy shooting, we reset the values and release;
         plrAccess.playerInputs.InputController.ResetTouched();
 

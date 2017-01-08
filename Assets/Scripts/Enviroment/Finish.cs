@@ -5,12 +5,9 @@ using UnityEngine.SceneManagement;
 
 public class Finish : MonoBehaviour {
 
-    [SerializeField]
-    private string playerTag = "Player";
-
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.transform.CompareTag(playerTag) && collision.isTrigger)
+        if (collision.transform.CompareTag(Tags.Player))
         {
             //check if the next scene exists
             if (SceneManager.GetActiveScene().buildIndex + 1 < SceneManager.sceneCountInBuildSettings)

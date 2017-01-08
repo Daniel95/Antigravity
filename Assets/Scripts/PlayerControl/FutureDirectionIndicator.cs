@@ -33,14 +33,14 @@ public class FutureDirectionIndicator : MonoBehaviour {
         if (plrAccess != null) {
             plrAccess.controlDirection.finishedDirectionLogic -= PointToControlledDir;
             plrAccess.speedMultiplier.switchedMultiplier -= PointToCeilVelocityDir;
-            plrAccess.switchGravity.switchedGravity -= PointToCeilVelocityDir;
+            plrAccess.controlTakeOff.tookOff -= PointToCeilVelocityDir;
         }
     }
 
     void SubscribeToDelegates() {
         plrAccess.controlDirection.finishedDirectionLogic += PointToControlledDir;
         plrAccess.speedMultiplier.switchedMultiplier += PointToCeilVelocityDir;
-        plrAccess.switchGravity.switchedGravity += PointToCeilVelocityDir;
+        plrAccess.controlTakeOff.tookOff += PointToCeilVelocityDir;
     }
 
     public void PointToControlledDir(Vector2 _futureDir)

@@ -12,24 +12,11 @@ public enum StateID
 
 public class StateMachine : MonoBehaviour {
 
-    private TriggerCollisions triggerCollisions;
-
     private Dictionary<StateID, State> states = new Dictionary<StateID, State>();
 
     private State activeState;
 
     private Coroutine acting;
-
-    private void Awake()
-    {
-        triggerCollisions = GetComponent<TriggerCollisions>();
-
-        triggerCollisions.onTriggerEnterCollision += OnTriggerEnterCollider;
-        triggerCollisions.onTriggerEnterTrigger += OnTriggerEnterTrigger;
-
-        triggerCollisions.onTriggerExitCollision += OnTriggerExitCollider;
-        triggerCollisions.onTriggerExitTrigger += OnTriggerExitTrigger;
-    }
 
     public void StartStateMachine(StateID _stateID)
     {
@@ -71,35 +58,35 @@ public class StateMachine : MonoBehaviour {
         activeState.EnterState();
     }
 
-    private void OnTriggerEnterCollider(Collider2D _collider)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
         if (activeState != null)
         {
-            activeState.OnTriggerEnterCollider(_collider);
+            activeState.OnCollEnter(collision);
         }
     }
 
-    private void OnTriggerEnterTrigger(Collider2D _collider)
+    private void OnCollisionExit2D(Collision2D collision)
     {
         if (activeState != null)
         {
-            activeState.OnTriggerEnterTrigger(_collider);
+            activeState.OnCollExit(collision);
         }
     }
 
-    private void OnTriggerExitCollider(Collider2D _collider)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         if (activeState != null)
         {
-            activeState.OnTriggerExitCollider(_collider);
+            activeState.OnTrigEnter(collision);
         }
     }
 
-    private void OnTriggerExitTrigger(Collider2D _collider)
+    private void OnTriggerExit2D(Collider2D collision)
     {
         if (activeState != null)
         {
-            activeState.OnTriggerExitTrigger(_collider);
+            activeState.OnTrigExit(collision);
         }
     }
 

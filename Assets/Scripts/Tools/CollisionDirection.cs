@@ -4,44 +4,59 @@ using UnityEngine;
 
 public class CollisionDirection : MonoBehaviour {
 
-    [SerializeField]
-    private Collider2D colliderToCheck;
+    //saves the collider and the rounded direction
+    private Dictionary<Collider2D, Vector2> savedCollisions = new Dictionary<Collider2D, Vector2>();
 
-    private void OnTriggerEnter2D(Collision2D collision)
+    //get the rounded direction of the collisions
+    //each collision will be repesented by its highest axis (x or y)
+    public Vector2 GetUpdatedCollDir(Collision2D _collision)
     {
-        print(collision.contacts[0].point);
+        //save the new collision we recieveds
+        SaveNewCollision(_collision);
+
+        return GetCurrentCollDir();
     }
 
-    /*
-    public Vector2 GetCollisionDirection(Collider2D _collider)
+    //get the current rounded direction of each
+    public Vector2 GetCurrentCollDir()
     {
-        Vector2 direction = Vector2.zero;
+        Vector2 combinedRoundedCollDir = new Vector2();
 
-
-        Vector3 contactPoint = collision.contacts[0].point;
-        Vector3 center = colliderToCheck.bounds.center;
-
-        if (contactPoint.y > center.y && //checks that circle is on top of rectangle
-            (contactPoint.x < center.x + RectWidth / 2 && contactPoint.x > center.x - RectWidth / 2))
+        //check each saved collision for a direction
+        foreach (KeyValuePair<Collider2D, Vector2> collision in savedCollisions)
         {
-            collideFromTop = true;
-        }
-        else if (contactPoint.y < center.y &&
-            (contactPoint.x < center.x + RectWidth / 2 && contactPoint.x > center.x - RectWidth / 2))
-        {
-            collideFromBottom = true;
-        }
-        else if (contactPoint.x > center.x &&
-            (contactPoint.y < center.y + RectHeight / 2 && contactPoint.y > center.y - RectHeight / 2))
-        {
-            collideFromRight = true;
-        }
-        else if (contactPoint.x < center.x &&
-            (contactPoint.y < center.y + RectHeight / 2 && contactPoint.y > center.y - RectHeight / 2))
-        {
-            collideFromLeft = true;
+            combinedRoundedCollDir += collision.Value;
         }
 
-        return direction;
-    }*/
+        return combinedRoundedCollDir;
+    }
+
+    //save a new collision in the savedCollisions dictionary
+    //the collider and the collisionDirection is saved
+    private void SaveNewCollision(Collision2D _collision)
+    {
+        Vector2 roundedCollDir = new Vector2();
+
+        Vector2 contactPoint = _collision.contacts[0].point;
+
+        Vector2 offset = (contactPoint - (Vector2)transform.position).normalized;
+
+        //the collision will be repesented by its highest axis (x or y)
+        if (Mathf.Abs(offset.x) > Mathf.Abs(offset.y))
+        {
+            roundedCollDir.x = Rounding.InvertOnNegativeCeil(offset.x);
+        }
+        else
+        {
+            roundedCollDir.y = Rounding.InvertOnNegativeCeil(offset.y);
+        }
+
+        savedCollisions.Add(_collision.collider, roundedCollDir);
+    }
+
+    //remove a saved collision from savedCollisions once we exit
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        savedCollisions.Remove(collision.collider);
+    }
 }

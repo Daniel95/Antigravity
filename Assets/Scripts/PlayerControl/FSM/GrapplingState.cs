@@ -15,7 +15,7 @@ public class GrapplingState : State, ITriggerer {
 
     private Coroutine slingMovement;
 
-    private Vector2 direction;
+    private Vector2 lastVelocity;
 
     //used by action trigger to decide when to start the instructions/tutorial, and when to stop it
     public Action activateTrigger { get; set; }
@@ -55,7 +55,7 @@ public class GrapplingState : State, ITriggerer {
     {
         while (true)
         {
-            plrAccess.controlVelocity.SetVelocity(plrAccess.controlVelocity.GetVelocityDirection() * (plrAccess.controlVelocity.CurrentSpeed * Mathf.Abs(plrAccess.controlVelocity.SpeedMultiplier)));
+            plrAccess.controlVelocity.SetVelocity(lastVelocity = plrAccess.controlVelocity.GetVelocityDirection() * (plrAccess.controlVelocity.CurrentSpeed * Mathf.Abs(plrAccess.controlVelocity.SpeedMultiplier)));
 
             yield return new WaitForFixedUpdate();
         }
@@ -70,7 +70,7 @@ public class GrapplingState : State, ITriggerer {
         base.Act();
 
         if (plrAccess.controlVelocity.GetVelocity == Vector2.zero && plrAccess.controlVelocity.CurrentSpeed != 0) {
-            plrAccess.controlDirection.ActivateLogicDirection(direction);
+            plrAccess.controlDirection.ApplyLogicDirection(plrAccess.controlVelocity.GetVelocityDirection(), plrAccess.collisionDirection.GetCurrentCollDir());
             EnterOnFootState();
         }
 
@@ -83,7 +83,7 @@ public class GrapplingState : State, ITriggerer {
         if (stopTrigger != null)
             stopTrigger();
 
-        plrAccess.controlVelocity.SetDirection(direction = plrAccess.controlVelocity.GetVelocityDirection());
+        plrAccess.controlVelocity.SetDirection(plrAccess.controlVelocity.GetVelocityDirection());
         EnterLaunchedState();
     }
 
@@ -111,23 +111,23 @@ public class GrapplingState : State, ITriggerer {
         //return to the normal movement
         StopCoroutine(slingMovement);
         plrAccess.speedMultiplier.MakeMultiplierPositive();
-
-        //reactivate the normal movement when in exiting grappling state
-        plrAccess.controlVelocity.StartDirectionalMovement();
     }
 
-    public override void OnTriggerEnterCollider(Collider2D collider)
+    public override void OnCollEnter(Collision2D collision)
     {
-        base.OnTriggerEnterCollider(collider);
+        base.OnCollEnter(collision);
 
-        if (collider.CompareTag(Tags.Bouncy))
+        if(plrAccess.controlTakeOff.CheckToBounce(collision))
         {
             plrAccess.controlVelocity.SetDirection(plrAccess.controlVelocity.GetVelocityDirection());
+            print(lastVelocity);
+            print(lastVelocity.normalized);
+            plrAccess.controlTakeOff.Bounce(lastVelocity.normalized, plrAccess.collisionDirection.GetUpdatedCollDir(collision));
             EnterLaunchedState();
         }
         else
         {
-            plrAccess.controlDirection.ActivateLogicDirection(plrAccess.controlVelocity.GetDirection());
+            plrAccess.controlDirection.ApplyLogicDirection(plrAccess.controlVelocity.GetVelocityDirection(), plrAccess.collisionDirection.GetUpdatedCollDir(collision));
             EnterOnFootState();
         }
     }

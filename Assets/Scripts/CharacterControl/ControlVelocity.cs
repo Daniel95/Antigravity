@@ -20,8 +20,6 @@ public class ControlVelocity : MonoBehaviour {
     [SerializeField]
     private Vector2 direction;
 
-    private Vector2 lastVelocity;
-
     private float originalTargetSpeed;
 
     private Rigidbody2D rb;
@@ -55,8 +53,6 @@ public class ControlVelocity : MonoBehaviour {
     {
         while (true)
         {
-            lastVelocity = rb.velocity;
-
             //add our own constant force
             rb.velocity = direction * (currentSpeed * speedMultiplier);
             yield return new WaitForFixedUpdate();
@@ -83,14 +79,10 @@ public class ControlVelocity : MonoBehaviour {
     }
 
     public void AddVelocity(Vector2 _velocity) {
-        lastVelocity = rb.velocity;
-
         rb.velocity += _velocity;
     }
 
     public void SetVelocity(Vector2 _velocity) {
-        lastVelocity = rb.velocity;
-
         rb.velocity = _velocity;
     }
 
@@ -149,11 +141,11 @@ public class ControlVelocity : MonoBehaviour {
 
     //returns the realtime direction of the velocity
     public Vector2 GetVelocityDirection() {
-        return GetVelocity.normalized;
+        return rb.velocity.normalized;
     }
 
     public Vector2 GetCeilVelocityDirection() {
-        Vector2 velocityNormalized = GetVelocity.normalized;
+        Vector2 velocityNormalized = rb.velocity.normalized;
         return new Vector2(Rounding.InvertOnNegativeCeil(velocityNormalized.x), Rounding.InvertOnNegativeCeil(velocityNormalized.y));
     }
 
@@ -174,11 +166,6 @@ public class ControlVelocity : MonoBehaviour {
 
     public Vector2 GetVelocity {
         get { return rb.velocity; }
-    }
-
-    public Vector2 GetLastVelocity
-    {
-        get { return lastVelocity; }
     }
 
     public float MaxSpeed

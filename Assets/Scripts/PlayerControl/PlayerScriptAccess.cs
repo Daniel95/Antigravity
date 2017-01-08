@@ -5,31 +5,27 @@ using System.Collections;
 public class PlayerScriptAccess : MonoBehaviour {
 
     [HideInInspector]
-    public CharRaycasting charRaycasting;
-    [HideInInspector]
     public ControlVelocity controlVelocity;
     [HideInInspector]
     public ControlDirection controlDirection;
     [HideInInspector]
     public ControlSpeed controlSpeed;
     [HideInInspector]
-    public SwitchGravity switchGravity;
+    public ControlTakeOff controlTakeOff;
     [HideInInspector]
     public SpeedMultiplier speedMultiplier;
     [HideInInspector]
     public PlayerInputs playerInputs;
     [HideInInspector]
-    public TriggerCollisions triggerCollisions;
-
+    public CollisionDirection collisionDirection;
 
     void Awake() {
-        charRaycasting = GetComponent<CharRaycasting>();
         controlVelocity = GetComponent<ControlVelocity>();
         controlDirection = GetComponent<ControlDirection>();
         controlSpeed = GetComponent<ControlSpeed>();
-        switchGravity = GetComponent<SwitchGravity>();
+        controlTakeOff = GetComponent<ControlTakeOff>();
         speedMultiplier = GetComponent<SpeedMultiplier>();
         playerInputs = GetComponent<PlayerInputs>();
-        triggerCollisions = GetComponent<TriggerCollisions>();
+        collisionDirection = GetComponent<CollisionDirection>();
     }
 }

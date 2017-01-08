@@ -6,7 +6,7 @@ public class ColliderTrigger : TriggerBase {
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.isTrigger && collision.CompareTag(Tags.Player))
+        if (collision.transform.CompareTag(Tags.Player))
         {
             ActivateTriggers();
         }

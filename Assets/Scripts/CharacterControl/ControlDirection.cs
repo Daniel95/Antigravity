@@ -4,7 +4,7 @@ using System.Collections;
 
 public class ControlDirection : MonoBehaviour {
 
-    private PlayerScriptAccess plrAcces;
+    private PlayerScriptAccess plrAccess;
 
     //the last directions before it was set to zero
     private Vector2 lastDir;
@@ -13,12 +13,10 @@ public class ControlDirection : MonoBehaviour {
 
     private Coroutine waitRigidbodyCorrectionFrames;
 
-    private Vector2 currentDir;
-
     void Start() {
-        plrAcces = GetComponent<PlayerScriptAccess>();
+        plrAccess = GetComponent<PlayerScriptAccess>();
 
-        lastDir = plrAcces.controlVelocity.GetDirection();
+        lastDir = plrAccess.controlVelocity.GetDirection();
 
         if (lastDir.x == 0)
             lastDir.x = 1;
@@ -35,46 +33,15 @@ public class ControlDirection : MonoBehaviour {
         });
     }
 
-    public void ActivateLogicDirection(Vector2 _currentDir) {
-        CancelLogicDirection();
-
-        waitRigidbodyCorrectionFrames = StartCoroutine(WaitRigidbodyCorrectionFrames(_currentDir, plrAcces.controlVelocity.GetLastVelocity, plrAcces.controlVelocity.CheckMovingStandard()));
-    }
-
-    public void CancelLogicDirection()
+    public void ApplyLogicDirection(Vector2 _currentDir, Vector2 _collDir)
     {
-        if(waitRigidbodyCorrectionFrames != null) {
-            StopCoroutine(waitRigidbodyCorrectionFrames);
-        }
-    }
+        //our next direction we are going to move towards, depending on our currentdirection, and the direction of our collision(s)
+        Vector2 dirLogic = DirectionLogic(_currentDir, _collDir);
 
-    IEnumerator WaitRigidbodyCorrectionFrames(Vector2 _currentDir, Vector2 _lastVelocity, bool _movingStraight)
-    {
-        if(_currentDir != Vector2.zero)
-        {
-            currentDir = _currentDir;
-        }
-
-        //reset the direction, so the next few frames we are having collision we dont move while we are having collsion
-        plrAcces.controlVelocity.SetDirection(new Vector2(0, 0));
-
-        yield return new WaitForFixedUpdate();
-        yield return new WaitForFixedUpdate();
-        yield return new WaitForFixedUpdate();
-
-        plrAcces.controlVelocity.SetDirection(currentDir);
-
-        ApplyLogicDirection(currentDir, _lastVelocity, _movingStraight);
-    }
-
-    private void ApplyLogicDirection(Vector2 _currentDir, Vector2 _lastVelocity, bool _movingStraight)
-    {
-        Vector2 dirLogic = DirectionLogic(_currentDir, _lastVelocity, _movingStraight);
-
-        Vector2 lookDir = plrAcces.controlVelocity.AdjustDirToMultiplier(lastDir);
+        Vector2 lookDir = plrAccess.controlVelocity.AdjustDirToMultiplier(lastDir);
 
         //use the direction logic for our new dir, but invert it if our speed multiplier is also inverted
-        plrAcces.controlVelocity.SetDirection(plrAcces.controlVelocity.AdjustDirToMultiplier(dirLogic));
+        plrAccess.controlVelocity.SetDirection(plrAccess.controlVelocity.AdjustDirToMultiplier(dirLogic));
 
         if (finishedDirectionLogic != null)
         {
@@ -83,54 +50,49 @@ public class ControlDirection : MonoBehaviour {
     }
 
     //the logic we use to control the players direction using raycasts after we had collision with another object
-    private Vector2 DirectionLogic(Vector2 _currentDir, Vector2 _velocity, bool _movingStraight)
-    {
-        //get the collision directions of the raycasts
-        Vector2 rayDir = new Vector2(plrAcces.charRaycasting.CheckHorizontalDir(), plrAcces.charRaycasting.CheckVerticalDir());
-
+    private Vector2 DirectionLogic(Vector2 _currentDir, Vector2 _collDir)
+    {     
         Vector2 newDir = new Vector2();
 
         //if we are not hitting a wall on both axis
-        if (rayDir.x == 0 || rayDir.y == 0) {
+        if (_collDir.x == 0 || _collDir.y == 0) {
 
             //if we are moving standard, it means we are going in a straight line
-            if(_movingStraight && (_currentDir.x == 0 || _currentDir.y == 0))
+            if(plrAccess.controlVelocity.CheckMovingStandard() && (_currentDir.x == 0 || _currentDir.y == 0))
             {
 
                 //we dont want to overwrite our last dir with a zero, we use it determine which direction we should move next
                 //if our currentDir.x isn't 0, set is as our lastDir.x
                 if (_currentDir.x != 0)
                 {
-                    lastDir.x = Rounding.InvertOnNegativeCeil(_currentDir.x) * plrAcces.controlVelocity.GetMultiplierDir();
+                    lastDir.x = Rounding.InvertOnNegativeCeil(_currentDir.x) * plrAccess.controlVelocity.GetMultiplierDir();
                 };
 
                 //if our currentDir.y isn't 0, set is as our lastDir.y
                 if (_currentDir.y != 0)
                 {
-                    lastDir.y = Rounding.InvertOnNegativeCeil(_currentDir.y) * plrAcces.controlVelocity.GetMultiplierDir();
+                    lastDir.y = Rounding.InvertOnNegativeCeil(_currentDir.y) * plrAccess.controlVelocity.GetMultiplierDir();
                 }
             }
             else { //we are hitting a platform from an angle, use the angle to calculate which way we go next
 
-                Vector2 velocityDir = _velocity.normalized;
-
-                if (velocityDir.x != 0)
+                if (_currentDir.x != 0)
                 {
-                    lastDir.x = Rounding.InvertOnNegativeCeil(velocityDir.x);
+                    lastDir.x = Rounding.InvertOnNegativeCeil(_currentDir.x);
                 }
 
                 //if our currentDir.y isn't 0, set is as our lastDir.y
-                if (velocityDir.y != 0)
+                if (_currentDir.y != 0)
                 {
-                    lastDir.y = Rounding.InvertOnNegativeCeil(velocityDir.y);
+                    lastDir.y = Rounding.InvertOnNegativeCeil(_currentDir.y);
                 }
 
-                plrAcces.controlSpeed.TempSpeedIncrease();
+                plrAccess.controlSpeed.TempSpeedIncrease();
             }
 
             //replace the dir on the axis that we dont have a collision with
             //example: if we hit something under us, move to the left or right, depeding on our lastDir
-            if (rayDir.x != 0)
+            if (_collDir.x != 0)
             {
                 newDir = new Vector2(0, lastDir.y);
             }
@@ -141,9 +103,9 @@ public class ControlDirection : MonoBehaviour {
         }
         else //here we know we are hitting more than one wall, or no wall at all
         {
-            if (rayDir == Vector2.zero)
+            if (_collDir == Vector2.zero)
             {
-                plrAcces.controlVelocity.SetDirection(plrAcces.controlVelocity.AdjustDirToMultiplier(lastDir));
+                plrAccess.controlVelocity.SetDirection(plrAccess.controlVelocity.AdjustDirToMultiplier(lastDir));
             }
             else
             {
@@ -151,12 +113,12 @@ public class ControlDirection : MonoBehaviour {
                 //if the direction is zero on the x, we know we hit a wall on the Y axis
                 if (_currentDir.x != 0)
                 {
-                    lastDir.y = rayDir.y * -1;
+                    lastDir.y = _collDir.y * -1;
                     newDir = new Vector2(0, lastDir.y);
                 }
                 else
                 {
-                    lastDir.x = rayDir.x * -1;
+                    lastDir.x = _collDir.x * -1;
                     newDir = new Vector2(lastDir.x, 0);
                 }
             }

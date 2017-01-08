@@ -8,8 +8,6 @@ public class Checkpoint : MonoBehaviour {
 
     private StateMachine stateMachine;
 
-    private TriggerCollisions triggerCollisions;
-
     private Vector2 lastCheckpointLocation;
 
     private bool checkpointReached;
@@ -18,19 +16,15 @@ public class Checkpoint : MonoBehaviour {
     {
         stateMachine = GetComponent<StateMachine>();
         revivedState = GetComponent<RevivedState>();
-        triggerCollisions = GetComponent<TriggerCollisions>();
-
-        triggerCollisions.onTriggerEnterTrigger += OnTriggerEnterTrigger;
     }
 
-    private void OnTriggerEnterTrigger(Collider2D collider)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-
-        if (collider.transform.CompareTag(Tags.CheckPoint))
+        if (collision.transform.CompareTag(Tags.CheckPoint))
         {
             checkpointReached = true;
 
-            lastCheckpointLocation = collider.transform.position;
+            lastCheckpointLocation = collision.transform.position;
 
             //activate the revived state and StartMovingToCenterCheckPoint
             ActivateRevivedState();

@@ -7,27 +7,21 @@ public class Killer : MonoBehaviour {
     //tells the IKillable interface when it is in the killingTrigger
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.isTrigger) {
+        IKillable killAble = collision.gameObject.GetComponent<IKillable>();
 
-            IKillable killAble = collision.gameObject.GetComponent<IKillable>();
-
-            if (killAble != null)
-            {
-                killAble.EnteringKillingTrigger();
-            }
+        if (killAble != null)
+        {
+            killAble.EnteringKillingTrigger();
         }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.isTrigger)
-        {
-            IKillable killAble = collision.gameObject.GetComponent<IKillable>();
+        IKillable killAble = collision.gameObject.GetComponent<IKillable>();
 
-            if (killAble != null)
-            {
-                killAble.ExitingKillingTrigger();
-            }
+        if (killAble != null)
+        {
+            killAble.ExitingKillingTrigger();
         }
     }
 }

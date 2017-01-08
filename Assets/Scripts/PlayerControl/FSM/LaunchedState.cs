@@ -21,6 +21,9 @@ public class LaunchedState : State
     {
         base.EnterState();
 
+        //reactivate the normal movement
+        plrAccess.controlVelocity.StartDirectionalMovement();
+
         //subscribe to StartedGrappleLocking, so we know when we should start grappling and exit this state
         grapplingHook.startedGrappleLocking += EnterGrapplingState;
 
@@ -45,13 +48,17 @@ public class LaunchedState : State
         grapplingHook.startedGrappleLocking -= EnterGrapplingState;
     }
 
-    public override void OnTriggerEnterCollider(Collider2D collider)
+    public override void OnCollEnter(Collision2D collision)
     {
-        base.OnTriggerEnterCollider(collider);
+        base.OnCollEnter(collision);
 
-        if(!collider.CompareTag(Tags.Bouncy))
+        if (plrAccess.controlTakeOff.CheckToBounce(collision))
         {
-            plrAccess.controlDirection.ActivateLogicDirection(plrAccess.controlVelocity.GetLastVelocity.normalized);
+            plrAccess.controlTakeOff.Bounce(plrAccess.controlVelocity.GetDirection(), plrAccess.collisionDirection.GetUpdatedCollDir(collision));
+        }
+        else
+        {
+            plrAccess.controlDirection.ApplyLogicDirection(plrAccess.controlVelocity.GetDirection(), plrAccess.collisionDirection.GetUpdatedCollDir(collision));
 
             EnterOnFootState();
         }
