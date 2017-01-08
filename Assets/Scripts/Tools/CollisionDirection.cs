@@ -7,6 +7,13 @@ public class CollisionDirection : MonoBehaviour {
     //saves the collider and the rounded direction
     private Dictionary<Collider2D, Vector2> savedCollisions = new Dictionary<Collider2D, Vector2>();
 
+    private CharRaycasting charRaycasting;
+
+    private void Awake()
+    {
+        charRaycasting = GetComponent<CharRaycasting>();
+    }
+
     //get the rounded direction of the collisions
     //each collision will be repesented by its highest axis (x or y)
     public Vector2 GetUpdatedCollDir(Collision2D _collision)
@@ -26,6 +33,13 @@ public class CollisionDirection : MonoBehaviour {
         foreach (KeyValuePair<Collider2D, Vector2> collision in savedCollisions)
         {
             combinedRoundedCollDir += collision.Value;
+        }
+
+        //when collision overshoots and we no longer collide with a object, even if it looks if we do,
+        //use raycasting instead as a backup plan
+        if(combinedRoundedCollDir == Vector2.zero)
+        {
+            combinedRoundedCollDir = new Vector2(charRaycasting.CheckHorizontalDir(), charRaycasting.CheckVerticalDir());
         }
 
         return combinedRoundedCollDir;
