@@ -11,7 +11,7 @@ public class Killer : MonoBehaviour {
 
         if (killAble != null)
         {
-            killAble.EnteringKillingTrigger();
+            killAble.EnteringKillingTrigger(transform.tag);
         }
     }
 
@@ -21,7 +21,7 @@ public class Killer : MonoBehaviour {
 
         if (killAble != null)
         {
-            killAble.ExitingKillingTrigger();
+            killAble.ExitingKillingTrigger(transform.tag);
         }
     }
 }

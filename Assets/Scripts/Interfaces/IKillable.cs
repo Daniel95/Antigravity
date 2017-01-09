@@ -2,7 +2,7 @@
 
 public interface IKillable
 {
-    void EnteringKillingTrigger();
+    void EnteringKillingTrigger(string _killerTag);
 
-    void ExitingKillingTrigger();
+    void ExitingKillingTrigger(string _killerTag);
 }

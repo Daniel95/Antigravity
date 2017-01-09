@@ -5,14 +5,11 @@ public class KillPlayer : MonoBehaviour
 {
     private Checkpoint checkpoint;
 
-    private GetKilled getKilled;
-
     private void Start()
     {
         checkpoint = GetComponent<Checkpoint>();
 
-        getKilled = GetComponent<GetKilled>();
-        getKilled.die += PlayerDies;
+        GetComponent<GetKilled>().die += PlayerDies;
     }
 
     private void PlayerDies()
