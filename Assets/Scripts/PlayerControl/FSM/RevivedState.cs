@@ -13,9 +13,11 @@ public class RevivedState : State, ITriggerer
     [SerializeField]
     private int launchDelayWhenRespawning = 20;
 
-    private PlayerScriptAccess plrAccess;
+    private CharScriptAccess charAccess;
 
-    private ActivateWeapon activateWeapon;
+    private PlayerInputs playerInputs;
+
+    private PlayerActivateWeapon playerActivateWeapon;
 
     private MoveTowards moveTowards;
 
@@ -36,12 +38,13 @@ public class RevivedState : State, ITriggerer
     {
         base.Awake();
 
-        plrAccess = GetComponent<PlayerScriptAccess>();
-        
-        activateWeapon = GetComponent<ActivateWeapon>();
+        charAccess = GetComponent<CharScriptAccess>();
+
+        playerActivateWeapon = GetComponent<PlayerActivateWeapon>();
         lookAt = gun.GetComponent<LookAt>();
         bulletTime = GetComponent<BulletTime>();
         moveTowards = GetComponent<MoveTowards>();
+        playerInputs = GetComponent<PlayerInputs>();
     }
 
     public override void EnterState()
@@ -49,13 +52,12 @@ public class RevivedState : State, ITriggerer
         base.EnterState();
 
         //make sure to reset the current touched input. If we are busy shooting, we reset the values and release;
-        plrAccess.playerInputs.InputController.ResetTouched();
+        playerInputs.InputController.ResetTouched();
 
-        //deactivate the weapon so we no longer shoot when we click/tab
-        activateWeapon.enabled = false;
+        playerActivateWeapon.StopWeaponInput();
 
         //set our direction to zero so our velocityController doesn't move us
-        plrAccess.controlVelocity.SetDirection(Vector2.zero);
+        charAccess.controlVelocity.SetDirection(Vector2.zero);
 
         //wait a few frames so the player dont start moving immediatly if he panic clicked right after he respawned
         StartCoroutine(DelayLaunchingInput());
@@ -93,8 +95,8 @@ public class RevivedState : State, ITriggerer
 
     private void SubscribeToAimInput()
     {
-        plrAccess.playerInputs.InputController.dragging += Dragging;
-        plrAccess.playerInputs.InputController.release += Release;
+        playerInputs.InputController.dragging += Dragging;
+        playerInputs.InputController.release += Release;
     }
 
     //while dragging, we point towards the given direction
@@ -113,13 +115,13 @@ public class RevivedState : State, ITriggerer
     //when we release, we launch ourselfs to the recieved direction
     private void Release(Vector2 _dir)
     {
-        activateWeapon.enabled = true;
+        playerActivateWeapon.StartWeaponInput();
 
         bulletTime.StopBulletTime();
-        plrAccess.speedMultiplier.MakeMultiplierPositive();
-        plrAccess.controlVelocity.SetDirection(_dir * plrAccess.controlVelocity.GetMultiplierDir());
+        charAccess.speedMultiplier.MakeMultiplierPositive();
+        charAccess.controlVelocity.SetDirection(_dir * charAccess.controlVelocity.GetMultiplierDir());
 
-        plrAccess.controlSpeed.TempSpeedIncrease();
+        charAccess.controlSpeed.TempSpeedIncrease();
 
         EnterLaunchedState();
     }
@@ -129,8 +131,8 @@ public class RevivedState : State, ITriggerer
         if (stopTrigger != null)
             stopTrigger();
 
-        plrAccess.playerInputs.InputController.dragging -= Dragging;
-        plrAccess.playerInputs.InputController.release -= Release;
+        playerInputs.InputController.dragging -= Dragging;
+        playerInputs.InputController.release -= Release;
 
         stateMachine.ActivateState(StateID.LaunchedState);
     }

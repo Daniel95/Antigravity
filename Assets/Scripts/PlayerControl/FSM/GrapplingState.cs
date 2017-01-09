@@ -9,7 +9,9 @@ public class GrapplingState : State, ITriggerer {
 
     private GrapplingHook grapplingHook;
 
-    private PlayerScriptAccess plrAccess;
+    private CharScriptAccess charAccess;
+
+    private PlayerInputs playerInputs;
 
     private LookAt gunLookAt;
 
@@ -26,7 +28,8 @@ public class GrapplingState : State, ITriggerer {
         base.Awake();
 
         grapplingHook = GetComponent<GrapplingHook>();
-        plrAccess = GetComponent<PlayerScriptAccess>();
+        charAccess = GetComponent<CharScriptAccess>();
+        playerInputs = GetComponent<PlayerInputs>();
         gunLookAt = gun.GetComponent<LookAt>();
     }
 
@@ -34,20 +37,20 @@ public class GrapplingState : State, ITriggerer {
     {
         base.EnterState();
 
-        plrAccess.controlSpeed.TempSpeedIncrease();
+        charAccess.controlSpeed.TempSpeedIncrease();
 
         //when we switch our speed, also switch the direction of our velocity
-        plrAccess.speedMultiplier.switchedMultiplier += FakeSwitchSpeed;
+        charAccess.speedMultiplier.switchedMultiplier += FakeSwitchSpeed;
 
         //activate a different direction movement when in this state
-        plrAccess.controlVelocity.StopDirectionalMovement();
+        charAccess.controlVelocity.StopDirectionalMovement();
         slingMovement = StartCoroutine(SlingMovement());
 
         //exit the state when the grapple has released itself
         grapplingHook.stoppedGrappleLocking += EnterLaunchedState;
 
         //subscribe to the space input, so we know when to exit our grapple
-        plrAccess.playerInputs.InputController.action += ExitGrapple;
+        playerInputs.InputController.action += ExitGrapple;
 
     }
 
@@ -55,22 +58,22 @@ public class GrapplingState : State, ITriggerer {
     {
         while (true)
         {
-            plrAccess.controlVelocity.SetVelocity(lastVelocity = plrAccess.controlVelocity.GetVelocityDirection() * (plrAccess.controlVelocity.CurrentSpeed * Mathf.Abs(plrAccess.controlVelocity.SpeedMultiplier)));
+            charAccess.controlVelocity.SetVelocity(lastVelocity = charAccess.controlVelocity.GetVelocityDirection() * (charAccess.controlVelocity.CurrentSpeed * Mathf.Abs(charAccess.controlVelocity.SpeedMultiplier)));
 
             yield return new WaitForFixedUpdate();
         }
     }
 
     private void FakeSwitchSpeed() {
-        plrAccess.controlVelocity.SwitchVelocityDirection();
+        charAccess.controlVelocity.SwitchVelocityDirection();
     }
 
     public override void Act()
     {
         base.Act();
 
-        if (plrAccess.controlVelocity.GetVelocity == Vector2.zero && plrAccess.controlVelocity.CurrentSpeed != 0) {
-            plrAccess.controlDirection.ApplyLogicDirection(plrAccess.controlVelocity.GetVelocityDirection(), plrAccess.collisionDirection.GetCurrentCollDir());
+        if (charAccess.controlVelocity.GetVelocity == Vector2.zero && charAccess.controlVelocity.CurrentSpeed != 0) {
+            charAccess.controlDirection.ApplyLogicDirection(charAccess.controlVelocity.GetVelocityDirection(), charAccess.collisionDirection.GetCurrentCollDir());
             EnterOnFootState();
         }
 
@@ -83,7 +86,7 @@ public class GrapplingState : State, ITriggerer {
         if (stopTrigger != null)
             stopTrigger();
 
-        plrAccess.controlVelocity.SetDirection(plrAccess.controlVelocity.GetVelocityDirection());
+        charAccess.controlVelocity.SetDirection(charAccess.controlVelocity.GetVelocityDirection());
         EnterLaunchedState();
     }
 
@@ -102,29 +105,29 @@ public class GrapplingState : State, ITriggerer {
         base.ResetState();
 
         //unsubscripte from all relevant delegates
-        plrAccess.speedMultiplier.switchedMultiplier -= FakeSwitchSpeed;
+        charAccess.speedMultiplier.switchedMultiplier -= FakeSwitchSpeed;
         grapplingHook.stoppedGrappleLocking -= EnterLaunchedState;
-        plrAccess.playerInputs.InputController.action -= ExitGrapple;
+        playerInputs.InputController.action -= ExitGrapple;
 
         grapplingHook.ExitGrappleLock();
 
         //return to the normal movement
         StopCoroutine(slingMovement);
-        plrAccess.speedMultiplier.MakeMultiplierPositive();
+        charAccess.speedMultiplier.MakeMultiplierPositive();
     }
 
     public override void OnCollEnter(Collision2D collision)
     {
         base.OnCollEnter(collision);
 
-        if(plrAccess.controlTakeOff.CheckToBounce(collision))
+        if(charAccess.controlTakeOff.CheckToBounce(collision))
         {
-            plrAccess.controlTakeOff.Bounce(lastVelocity.normalized, plrAccess.collisionDirection.GetUpdatedCollDir(collision));
+            charAccess.controlTakeOff.Bounce(lastVelocity.normalized, charAccess.collisionDirection.GetUpdatedCollDir(collision));
             EnterLaunchedState();
         }
         else
         {
-            plrAccess.controlDirection.ApplyLogicDirection(lastVelocity.normalized, plrAccess.collisionDirection.GetUpdatedCollDir(collision));
+            charAccess.controlDirection.ApplyLogicDirection(lastVelocity.normalized, charAccess.collisionDirection.GetUpdatedCollDir(collision));
             EnterOnFootState();
         }
     }

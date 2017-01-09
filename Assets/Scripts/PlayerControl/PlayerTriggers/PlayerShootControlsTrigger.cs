@@ -7,15 +7,27 @@ public class PlayerShootControlsTrigger : MonoBehaviour, ITriggerable
     public bool triggered { get; set; }
 
     [SerializeField]
-    private PlayerInputs plrInputs;
+    private GameObject player;
+
+    private PlayerInputs playerInputs;
+
+    private PlayerStarter playerStarter;
+
+    private void Start()
+    {
+        playerInputs = player.GetComponent<PlayerInputs>();
+        playerStarter = player.GetComponent<PlayerStarter>();
+    }
 
     public void TriggerActivate()
     {
-        plrInputs.StartShootInputs();
+        playerInputs.StartShootInputs();
+        playerStarter.StartPlayerShootInputs();
     }
 
     public void TriggerStop()
     {
-        plrInputs.StopShootInputs();
+        playerInputs.StopShootInputs();
+        playerStarter.StartPlayerShootInputs();
     }
 }

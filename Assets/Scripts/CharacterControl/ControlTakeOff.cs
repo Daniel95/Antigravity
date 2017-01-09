@@ -7,7 +7,7 @@ public class ControlTakeOff : MonoBehaviour, ITriggerer {
     [SerializeField]
     private int stopCollDirFramesAfterJump = 2;
 
-    private PlayerScriptAccess plrAcces;
+    private CharScriptAccess plrAcces;
 
     private Frames frames;
 
@@ -15,15 +15,13 @@ public class ControlTakeOff : MonoBehaviour, ITriggerer {
 
     private bool inBouncyTrigger;
 
-    private bool jumpedFrame;
-
     //used by action trigger to decide when to start the instructions/tutorial, and when to stop it
     public Action activateTrigger { get; set; }
     public Action stopTrigger { get; set; }
 
     // Use this for initialization
     void Start () {
-        plrAcces = GetComponent<PlayerScriptAccess>();
+        plrAcces = GetComponent<CharScriptAccess>();
         frames = GetComponent<Frames>();
     }
 
@@ -57,13 +55,10 @@ public class ControlTakeOff : MonoBehaviour, ITriggerer {
             if (tookOff != null)
                 tookOff();
 
-            jumpedFrame = true;
+            //the 2 frames after we jump controlDirection is not allowed to change the direction.
+            plrAcces.controlDirection.CanChangeDir = false;
 
-            //the 2 frames after we jump we cant detect any collision.
-            frames.ExecuteAfterDelay(stopCollDirFramesAfterJump, () =>
-            {
-                jumpedFrame = false;
-            });
+            frames.ExecuteAfterDelay(stopCollDirFramesAfterJump, plrAcces.controlDirection.ResetCanChangeDir);
         }
     }
 
@@ -109,10 +104,5 @@ public class ControlTakeOff : MonoBehaviour, ITriggerer {
         {
             inBouncyTrigger = false;
         }
-    }
-
-    public bool JumpedFrame
-    {
-        get { return jumpedFrame; }
     }
 }

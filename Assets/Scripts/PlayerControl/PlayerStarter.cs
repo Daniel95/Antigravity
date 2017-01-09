@@ -4,32 +4,41 @@ using UnityEngine;
 
 public class PlayerStarter : MonoBehaviour {
 
-    private PlayerScriptAccess plrAcces;
+    private CharScriptAccess charAccess;
+    private PlayerActivateWeapon playerActivateWeapon;
+    private PlayerInputs playerInputs;
 
     private void Awake()
     {
-        plrAcces = GetComponent<PlayerScriptAccess>();
+        charAccess = GetComponent<CharScriptAccess>();
+        playerInputs = GetComponent<PlayerInputs>();
+        playerActivateWeapon = GetComponent<PlayerActivateWeapon>();
     }
 
     public void StartStandardPlayerInputs()
     {
-        plrAcces.controlVelocity.StartDirectionalMovement();
-        plrAcces.playerInputs.StartShootInputs();
+        StartPlayerMovement();
+        StartPlayerShootInputs();
         StartPlayerKeyInputs();
+
+        //activate the reverse input for the player
+        playerInputs.InputController.flipSpeed += charAccess.speedMultiplier.SmoothFlipMultiplier;
     }
 
     public void StartPlayerMovement()
     {
-        plrAcces.controlVelocity.StartDirectionalMovement();
+        charAccess.controlVelocity.StartDirectionalMovement();
     }
 
     public void StartPlayerShootInputs()
     {
-        plrAcces.playerInputs.StartShootInputs();
+        playerInputs.StartShootInputs();
+
+        playerActivateWeapon.StartWeaponInput();
     } 
 
     public void StartPlayerKeyInputs()
     {
-        plrAcces.playerInputs.StartKeyInputs();
+        playerInputs.StartKeyInputs();
     }
 }

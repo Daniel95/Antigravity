@@ -4,7 +4,7 @@ using System.Collections;
 
 public class ControlDirection : MonoBehaviour {
 
-    private PlayerScriptAccess plrAccess;
+    private CharScriptAccess charAccess;
 
     //the last directions before it was set to zero
     private Vector2 lastDir;
@@ -15,11 +15,13 @@ public class ControlDirection : MonoBehaviour {
 
     private CharRaycasting charRaycasting;
 
+    private bool canChangeDir = true;
+
     void Start() {
-        plrAccess = GetComponent<PlayerScriptAccess>();
+        charAccess = GetComponent<CharScriptAccess>();
         charRaycasting = GetComponent<CharRaycasting>();
 
-        lastDir = plrAccess.controlVelocity.GetDirection();
+        lastDir = charAccess.controlVelocity.GetDirection();
 
         if (lastDir.x == 0)
             lastDir.x = 1;
@@ -39,15 +41,15 @@ public class ControlDirection : MonoBehaviour {
     public void ApplyLogicDirection(Vector2 _currentDir, Vector2 _collDir)
     {
         //we cant adjust our diretion based on our collision and raycast directions right after we jumped.
-        if(!plrAccess.controlTakeOff.JumpedFrame)
+        if(canChangeDir)
         {
             //our next direction we are going to move towards, depending on our currentdirection, and the direction of our collision(s)
             Vector2 dirLogic = DirectionLogic(_currentDir, _collDir);
 
-            Vector2 lookDir = plrAccess.controlVelocity.AdjustDirToMultiplier(lastDir);
+            Vector2 lookDir = charAccess.controlVelocity.AdjustDirToMultiplier(lastDir);
 
             //use the direction logic for our new dir, but invert it if our speed multiplier is also inverted
-            plrAccess.controlVelocity.SetDirection(plrAccess.controlVelocity.AdjustDirToMultiplier(dirLogic));
+            charAccess.controlVelocity.SetDirection(charAccess.controlVelocity.AdjustDirToMultiplier(dirLogic));
 
             if (finishedDirectionLogic != null)
             {
@@ -69,36 +71,36 @@ public class ControlDirection : MonoBehaviour {
         if (rayHitDir.x == 0 || rayHitDir.y == 0) {
 
             //if we are moving standard, it means we are going in a straight line
-            if(plrAccess.controlVelocity.CheckMovingStandard() && (_currentDir.x == 0 || _currentDir.y == 0))
+            if(charAccess.controlVelocity.CheckMovingStandard() && (_currentDir.x == 0 || _currentDir.y == 0))
             {
 
                 //we dont want to overwrite our last dir with a zero, we use it determine which direction we should move next
                 //if our currentDir.x isn't 0, set is as our lastDir.x
                 if (_currentDir.x != 0)
                 {
-                    lastDir.x = Rounding.InvertOnNegativeCeil(_currentDir.x) * plrAccess.controlVelocity.GetMultiplierDir();
+                    lastDir.x = Rounding.InvertOnNegativeCeil(_currentDir.x) * charAccess.controlVelocity.GetMultiplierDir();
                 };
 
                 //if our currentDir.y isn't 0, set is as our lastDir.y
                 if (_currentDir.y != 0)
                 {
-                    lastDir.y = Rounding.InvertOnNegativeCeil(_currentDir.y) * plrAccess.controlVelocity.GetMultiplierDir();
+                    lastDir.y = Rounding.InvertOnNegativeCeil(_currentDir.y) * charAccess.controlVelocity.GetMultiplierDir();
                 }
             }
             else { //we are hitting a platform from an angle, use the angle to calculate which way we go next
 
                 if (_currentDir.x != 0)
                 {
-                    lastDir.x = Rounding.InvertOnNegativeCeil(_currentDir.x) * plrAccess.controlVelocity.GetMultiplierDir();
+                    lastDir.x = Rounding.InvertOnNegativeCeil(_currentDir.x) * charAccess.controlVelocity.GetMultiplierDir();
                 }
 
                 //if our currentDir.y isn't 0, set is as our lastDir.y
                 if (_currentDir.y != 0)
                 {
-                    lastDir.y = Rounding.InvertOnNegativeCeil(_currentDir.y) * plrAccess.controlVelocity.GetMultiplierDir();
+                    lastDir.y = Rounding.InvertOnNegativeCeil(_currentDir.y) * charAccess.controlVelocity.GetMultiplierDir();
                 }
 
-                plrAccess.controlSpeed.TempSpeedIncrease();
+                charAccess.controlSpeed.TempSpeedIncrease();
             }
 
             //replace the dir on the axis that we dont have a collision with
@@ -116,7 +118,7 @@ public class ControlDirection : MonoBehaviour {
         {
             if (rayHitDir == Vector2.zero)
             {
-                plrAccess.controlVelocity.SetDirection(plrAccess.controlVelocity.AdjustDirToMultiplier(lastDir));
+                charAccess.controlVelocity.SetDirection(charAccess.controlVelocity.AdjustDirToMultiplier(lastDir));
             }
             else
             {
@@ -136,5 +138,16 @@ public class ControlDirection : MonoBehaviour {
         }
 
         return newDir;
+    }
+
+    public bool CanChangeDir
+    {
+        get { return canChangeDir; }
+        set { canChangeDir = value; }
+    }
+
+    public void ResetCanChangeDir()
+    {
+        canChangeDir = true;
     }
 }

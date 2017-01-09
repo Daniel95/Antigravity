@@ -4,7 +4,7 @@ using System.Collections;
 public class LaunchedState : State
 {
 
-    private PlayerScriptAccess plrAccess;
+    private CharScriptAccess charAccess;
     private GrapplingHook grapplingHook;
 
     private FutureDirectionIndicator directionIndicator;
@@ -13,7 +13,7 @@ public class LaunchedState : State
     {
         base.Awake();
         directionIndicator = GetComponent<FutureDirectionIndicator>();
-        plrAccess = GetComponent<PlayerScriptAccess>();
+        charAccess = GetComponent<CharScriptAccess>();
         grapplingHook = GetComponent<GrapplingHook>();
     }
 
@@ -22,7 +22,7 @@ public class LaunchedState : State
         base.EnterState();
 
         //reactivate the normal movement
-        plrAccess.controlVelocity.StartDirectionalMovement();
+        charAccess.controlVelocity.StartDirectionalMovement();
 
         //subscribe to StartedGrappleLocking, so we know when we should start grappling and exit this state
         grapplingHook.startedGrappleLocking += EnterGrapplingState;
@@ -52,13 +52,13 @@ public class LaunchedState : State
     {
         base.OnCollEnter(collision);
 
-        if (plrAccess.controlTakeOff.CheckToBounce(collision))
+        if (charAccess.controlTakeOff.CheckToBounce(collision))
         {
-            plrAccess.controlTakeOff.Bounce(plrAccess.controlVelocity.GetDirection(), plrAccess.collisionDirection.GetUpdatedCollDir(collision));
+            charAccess.controlTakeOff.Bounce(charAccess.controlVelocity.GetDirection(), charAccess.collisionDirection.GetUpdatedCollDir(collision));
         }
         else
         {
-            plrAccess.controlDirection.ApplyLogicDirection(plrAccess.controlVelocity.GetDirection(), plrAccess.collisionDirection.GetUpdatedCollDir(collision));
+            charAccess.controlDirection.ApplyLogicDirection(charAccess.controlVelocity.GetDirection(), charAccess.collisionDirection.GetUpdatedCollDir(collision));
 
             EnterOnFootState();
         }

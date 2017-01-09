@@ -18,8 +18,6 @@ public class SpeedMultiplier : MonoBehaviour, ITriggerer
 
     private ControlVelocity velocity;
 
-    private PlayerInputs playerInputs;
-
     public Action switchedMultiplier;
 
     //the original speed multiplier, not affected by any rules of setSpeed
@@ -37,9 +35,6 @@ public class SpeedMultiplier : MonoBehaviour, ITriggerer
     {
         velocity = GetComponent<ControlVelocity>();
         velocity.SpeedMultiplier = originalSpeedMultiplier = startMultiplier;
-
-        playerInputs = GetComponent<PlayerInputs>();
-        playerInputs.InputController.flipSpeed += SmoothFlipMultiplier;
     }
 
     public void SetSpeedMultiplier(float _newMultiplierSpeed)

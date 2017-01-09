@@ -4,10 +4,14 @@ using System.Collections.Generic;
 
 public enum StateID
 {
+    //player
     OnFootState = 0,
     GrapplingState = 1,
     LaunchedState = 2,
     RevivedState = 3,
+
+    //enemy
+    PatrollingState = 4,
 }
 
 public class StateMachine : MonoBehaviour {

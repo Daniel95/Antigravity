@@ -2,7 +2,7 @@
 using System.Collections;
 
 //contains some general character scripts that are commonly used by other scripts
-public class PlayerScriptAccess : MonoBehaviour {
+public class CharScriptAccess : MonoBehaviour {
 
     [HideInInspector]
     public ControlVelocity controlVelocity;
@@ -15,8 +15,6 @@ public class PlayerScriptAccess : MonoBehaviour {
     [HideInInspector]
     public SpeedMultiplier speedMultiplier;
     [HideInInspector]
-    public PlayerInputs playerInputs;
-    [HideInInspector]
     public CollisionDirection collisionDirection;
 
     void Awake() {
@@ -25,7 +23,6 @@ public class PlayerScriptAccess : MonoBehaviour {
         controlSpeed = GetComponent<ControlSpeed>();
         controlTakeOff = GetComponent<ControlTakeOff>();
         speedMultiplier = GetComponent<SpeedMultiplier>();
-        playerInputs = GetComponent<PlayerInputs>();
         collisionDirection = GetComponent<CollisionDirection>();
     }
 }

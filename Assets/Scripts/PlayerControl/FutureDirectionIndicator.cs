@@ -7,7 +7,7 @@ public class FutureDirectionIndicator : MonoBehaviour {
     [SerializeField]
     private Transform arrowTransform;
 
-    private PlayerScriptAccess plrAccess;
+    private CharScriptAccess charAccess;
     private LookAt lookAt;
 
     private Vector2 lookDir;
@@ -16,37 +16,37 @@ public class FutureDirectionIndicator : MonoBehaviour {
 
     void Start() {
         lookAt = arrowTransform.GetComponent<LookAt>();
-        plrAccess = GetComponent<PlayerScriptAccess>();
+        charAccess = GetComponent<CharScriptAccess>();
         frames = GetComponent<Frames>();
-        lookDir = plrAccess.controlVelocity.GetCeilVelocityDirection();
+        lookDir = charAccess.controlVelocity.GetCeilVelocityDirection();
 
         SubscribeToDelegates();
     }
 
     void OnEnable() {
-        if (plrAccess != null)
+        if (charAccess != null)
             SubscribeToDelegates();
     }
 
     void OnDisable()
     {
-        if (plrAccess != null) {
-            plrAccess.controlDirection.finishedDirectionLogic -= PointToControlledDir;
-            plrAccess.speedMultiplier.switchedMultiplier -= PointToCeilVelocityDir;
-            plrAccess.controlTakeOff.tookOff -= PointToCeilVelocityDir;
+        if (charAccess != null) {
+            charAccess.controlDirection.finishedDirectionLogic -= PointToControlledDir;
+            charAccess.speedMultiplier.switchedMultiplier -= PointToCeilVelocityDir;
+            charAccess.controlTakeOff.tookOff -= PointToCeilVelocityDir;
         }
     }
 
     void SubscribeToDelegates() {
-        plrAccess.controlDirection.finishedDirectionLogic += PointToControlledDir;
-        plrAccess.speedMultiplier.switchedMultiplier += PointToCeilVelocityDir;
-        plrAccess.controlTakeOff.tookOff += PointToCeilVelocityDir;
+        charAccess.controlDirection.finishedDirectionLogic += PointToControlledDir;
+        charAccess.speedMultiplier.switchedMultiplier += PointToCeilVelocityDir;
+        charAccess.controlTakeOff.tookOff += PointToCeilVelocityDir;
     }
 
     public void PointToControlledDir(Vector2 _futureDir)
     {
 
-        lookDir = _futureDir * plrAccess.controlVelocity.GetMultiplierDir();
+        lookDir = _futureDir * charAccess.controlVelocity.GetMultiplierDir();
 
         lookAt.UpdateLookAt((Vector2)transform.position + lookDir);
     }
@@ -57,7 +57,7 @@ public class FutureDirectionIndicator : MonoBehaviour {
     }
 
     private void UpdateCeilVelocityDir() {
-        Vector2 velocityDir = plrAccess.controlVelocity.GetCeilVelocityDirection();
+        Vector2 velocityDir = charAccess.controlVelocity.GetCeilVelocityDirection();
 
         //don't update the dir when its new value is zero
         if (velocityDir.x != 0)

@@ -18,16 +18,12 @@ public class ActivateWeapon : MonoBehaviour {
 
     private LookAt gunLookAt;
 
-    private PlayerInputs playerInputs;
-
     private List<IWeapon> weapons = new List<IWeapon>();
 
     private int weaponIndex;
 
     private void Awake()
     {
-        playerInputs = GetComponent<PlayerInputs>();
-
         gunLookAt = gun.GetComponent<LookAt>();
 
         foreach (IWeapon weapon in GetComponents<IWeapon>())
@@ -36,26 +32,7 @@ public class ActivateWeapon : MonoBehaviour {
         }
     }
 
-    //assign input functions to the input delegates of playerInput
-    void OnEnable()
-    {
-        GetComponent<Frames>().ExecuteAfterDelay(1, Subscribe);
-    }
-
-    void Subscribe()
-    {
-        playerInputs.InputController.dragging += Dragging;
-        playerInputs.InputController.cancelDrag += CancelDrag;
-        playerInputs.InputController.release += Release;
-    }
-
-    void OnDisable() {
-        playerInputs.InputController.dragging -= Dragging;
-        playerInputs.InputController.cancelDrag -= CancelDrag;
-        playerInputs.InputController.release -= Release;
-    }
-
-    private void Dragging(Vector2 _dir)
+    public void Dragging(Vector2 _dir)
     {
         if (!TimeManagement.isPauzed())
         {
@@ -64,7 +41,7 @@ public class ActivateWeapon : MonoBehaviour {
         }
     }
 
-    private void CancelDrag()
+    public void CancelDrag()
     {
         if (!TimeManagement.isPauzed())
         {
@@ -72,7 +49,7 @@ public class ActivateWeapon : MonoBehaviour {
         }
     }
 
-    private void Release(Vector2 _dir)
+    public void Release(Vector2 _dir)
     {
         if (!TimeManagement.isPauzed())
         {
