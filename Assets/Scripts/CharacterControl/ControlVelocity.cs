@@ -7,6 +7,7 @@ public class ControlVelocity : MonoBehaviour {
     [SerializeField]
     private float originalSpeed = 3;
 
+    [SerializeField]
     private float currentSpeed;
 
     private float speedMultiplier = 1;
@@ -100,10 +101,6 @@ public class ControlVelocity : MonoBehaviour {
     //also only inverts a dir when it has changed
     public Vector2 AdjustDirToMultiplier(Vector2 _dir) {
         Vector2 directionDifference = direction - _dir;
-
-        //print("org dir: " + direction);
-        //print("new dir: " + _dir);
-        //print("directionDifference: " + directionDifference);
 
         int multiplierDir = GetMultiplierDir();
 

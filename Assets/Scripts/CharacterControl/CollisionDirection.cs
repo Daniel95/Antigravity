@@ -35,6 +35,9 @@ public class CollisionDirection : MonoBehaviour {
             combinedRoundedCollDir += collision.Value;
         }
 
+        //make sure the combinedRoundedCollDir axises are never above 1 or below -1
+        combinedRoundedCollDir = new Vector2(Mathf.Clamp(combinedRoundedCollDir.x, -1, 1), Mathf.Clamp(combinedRoundedCollDir.y, -1, 1));
+
         //when collision overshoots and we no longer collide with a object, even if it looks if we do,
         //use raycasting instead as a backup plan
         if(combinedRoundedCollDir == Vector2.zero)

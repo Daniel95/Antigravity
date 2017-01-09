@@ -4,11 +4,18 @@ using System.Collections;
 
 public class ControlTakeOff : MonoBehaviour, ITriggerer {
 
+    [SerializeField]
+    private int stopCollDirFramesAfterJump = 2;
+
     private PlayerScriptAccess plrAcces;
+
+    private Frames frames;
 
     public Action tookOff;
 
     private bool inBouncyTrigger;
+
+    private bool jumpedFrame;
 
     //used by action trigger to decide when to start the instructions/tutorial, and when to stop it
     public Action activateTrigger { get; set; }
@@ -17,6 +24,7 @@ public class ControlTakeOff : MonoBehaviour, ITriggerer {
     // Use this for initialization
     void Start () {
         plrAcces = GetComponent<PlayerScriptAccess>();
+        frames = GetComponent<Frames>();
     }
 
     public void Jump()
@@ -48,6 +56,14 @@ public class ControlTakeOff : MonoBehaviour, ITriggerer {
 
             if (tookOff != null)
                 tookOff();
+
+            jumpedFrame = true;
+
+            //the 2 frames after we jump we cant detect any collision.
+            frames.ExecuteAfterDelay(stopCollDirFramesAfterJump, () =>
+            {
+                jumpedFrame = false;
+            });
         }
     }
 
@@ -93,5 +109,10 @@ public class ControlTakeOff : MonoBehaviour, ITriggerer {
         {
             inBouncyTrigger = false;
         }
+    }
+
+    public bool JumpedFrame
+    {
+        get { return jumpedFrame; }
     }
 }

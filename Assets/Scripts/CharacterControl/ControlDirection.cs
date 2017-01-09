@@ -38,17 +38,21 @@ public class ControlDirection : MonoBehaviour {
 
     public void ApplyLogicDirection(Vector2 _currentDir, Vector2 _collDir)
     {
-        //our next direction we are going to move towards, depending on our currentdirection, and the direction of our collision(s)
-        Vector2 dirLogic = DirectionLogic(_currentDir, _collDir);
-
-        Vector2 lookDir = plrAccess.controlVelocity.AdjustDirToMultiplier(lastDir);
-
-        //use the direction logic for our new dir, but invert it if our speed multiplier is also inverted
-        plrAccess.controlVelocity.SetDirection(plrAccess.controlVelocity.AdjustDirToMultiplier(dirLogic));
-
-        if (finishedDirectionLogic != null)
+        //we cant adjust our diretion based on our collision and raycast directions right after we jumped.
+        if(!plrAccess.controlTakeOff.JumpedFrame)
         {
-            finishedDirectionLogic(lookDir);
+            //our next direction we are going to move towards, depending on our currentdirection, and the direction of our collision(s)
+            Vector2 dirLogic = DirectionLogic(_currentDir, _collDir);
+
+            Vector2 lookDir = plrAccess.controlVelocity.AdjustDirToMultiplier(lastDir);
+
+            //use the direction logic for our new dir, but invert it if our speed multiplier is also inverted
+            plrAccess.controlVelocity.SetDirection(plrAccess.controlVelocity.AdjustDirToMultiplier(dirLogic));
+
+            if (finishedDirectionLogic != null)
+            {
+                finishedDirectionLogic(lookDir);
+            }
         }
     }
 
