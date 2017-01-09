@@ -13,8 +13,11 @@ public class ControlDirection : MonoBehaviour {
 
     private Coroutine waitRigidbodyCorrectionFrames;
 
+    private CharRaycasting charRaycasting;
+
     void Start() {
         plrAccess = GetComponent<PlayerScriptAccess>();
+        charRaycasting = GetComponent<CharRaycasting>();
 
         lastDir = plrAccess.controlVelocity.GetDirection();
 
@@ -54,8 +57,12 @@ public class ControlDirection : MonoBehaviour {
     {     
         Vector2 newDir = new Vector2();
 
+        //use raycasting for to detect if we are in a corner.
+        //when colliding the rigidbody position correction can overshoot which means we exit collision, even thought it looks like we are still colliding
+        Vector2 rayHitDir = new Vector2(charRaycasting.CheckHorizontalMiddleDir(), charRaycasting.CheckVerticalMiddleDir());
+
         //if we are not hitting a wall on both axis
-        if (_collDir.x == 0 || _collDir.y == 0) {
+        if (rayHitDir.x == 0 || rayHitDir.y == 0) {
 
             //if we are moving standard, it means we are going in a straight line
             if(plrAccess.controlVelocity.CheckMovingStandard() && (_currentDir.x == 0 || _currentDir.y == 0))
@@ -103,7 +110,7 @@ public class ControlDirection : MonoBehaviour {
         }
         else //here we know we are hitting more than one wall, or no wall at all
         {
-            if (_collDir == Vector2.zero)
+            if (rayHitDir == Vector2.zero)
             {
                 plrAccess.controlVelocity.SetDirection(plrAccess.controlVelocity.AdjustDirToMultiplier(lastDir));
             }
@@ -113,12 +120,12 @@ public class ControlDirection : MonoBehaviour {
                 //if the direction is zero on the x, we know we hit a wall on the Y axis
                 if (_currentDir.x != 0)
                 {
-                    lastDir.y = _collDir.y * -1;
+                    lastDir.y = rayHitDir.y * -1;
                     newDir = new Vector2(0, lastDir.y);
                 }
                 else
                 {
-                    lastDir.x = _collDir.x * -1;
+                    lastDir.x = rayHitDir.x * -1;
                     newDir = new Vector2(lastDir.x, 0);
                 }
             }

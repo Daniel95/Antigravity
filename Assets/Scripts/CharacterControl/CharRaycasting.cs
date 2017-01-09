@@ -10,28 +10,37 @@ public class CharRaycasting : MonoBehaviour {
     private bool showDebugRays = false;
 
     [SerializeField]
-    private Transform upperLeftCornerPoint;
+    private Transform topRightCornerPoint;
     [SerializeField]
-    private Transform upperRightCornerPoint;
+    private Transform topLeftCornerPoint;
     [SerializeField]
     private Transform bottomRightCornerPoint;
     [SerializeField]
     private Transform bottomLeftCornerPoint;
 
     [SerializeField]
-    private float rayLength = 5;
+    private Transform midRightPoint;
+    [SerializeField]
+    private Transform midLeftPoint;
+    [SerializeField]
+    private Transform midTopPoint;
+    [SerializeField]
+    private Transform midBottomPoint;
+
+    [SerializeField]
+    private float rayLength = 0.1f;
 
     //a class that makes it simple to use raycasting in other scripts
 
-    public bool CheckRaycastsUp()
+    public bool CheckRayCornersUp()
     {
-        if (CheckIntersectionRaycast(upperLeftCornerPoint.position, Quaternion.Euler(0, 0, -45) * transform.up, upperRightCornerPoint.position, Quaternion.Euler(0, 0, 45) * transform.up))
+        if (CheckIntersectionRaycast(topLeftCornerPoint.position, Quaternion.Euler(0, 0, -45) * transform.up, topRightCornerPoint.position, Quaternion.Euler(0, 0, 45) * transform.up))
             return true;
 
         return false;
     }
 
-    public bool CheckRaycastsDown()
+    public bool CheckRayCornersDown()
     {
         if (CheckIntersectionRaycast(bottomLeftCornerPoint.position, Quaternion.Euler(0, 0, 45) * -transform.up, bottomRightCornerPoint.position, Quaternion.Euler(0, 0, -45) * -transform.up))
             return true;
@@ -39,17 +48,17 @@ public class CharRaycasting : MonoBehaviour {
         return false;
     }
 
-    public bool CheckRaycastsLeft()
+    public bool CheckRayCornerLeft()
     {
-        if (CheckIntersectionRaycast(upperLeftCornerPoint.position, Quaternion.Euler(0, 0, 45) * -transform.right, bottomLeftCornerPoint.position, Quaternion.Euler(0, 0, -45) * -transform.right))
+        if (CheckIntersectionRaycast(topLeftCornerPoint.position, Quaternion.Euler(0, 0, 45) * -transform.right, bottomLeftCornerPoint.position, Quaternion.Euler(0, 0, -45) * -transform.right))
             return true;
 
         return false;
     }
 
-    public bool CheckRaycastsRight()
+    public bool CheckRayCornerRight()
     {
-        if (CheckIntersectionRaycast(upperRightCornerPoint.position, Quaternion.Euler(0, 0, -45) * transform.right, bottomRightCornerPoint.position, Quaternion.Euler(0, 0, 45) * transform.right))
+        if (CheckIntersectionRaycast(topRightCornerPoint.position, Quaternion.Euler(0, 0, -45) * transform.right, bottomRightCornerPoint.position, Quaternion.Euler(0, 0, 45) * transform.right))
             return true;
 
         return false;
@@ -71,22 +80,44 @@ public class CharRaycasting : MonoBehaviour {
     }
 
     //returns 1, 0 or -1 for the raycast results
-    public int CheckVerticalDir() {
+    public int CheckVerticalCornersDir() {
 
-        if (CheckRaycastsUp())
+        if (CheckRayCornersUp())
             return 1;
-        else if (CheckRaycastsDown())
+        else if (CheckRayCornersDown())
             return -1;
         else
             return 0;
     }
 
     //returns 1, 0 or -1 for the raycast results
-    public int CheckHorizontalDir()
+    public int CheckHorizontalCornersDir()
     {
-        if (CheckRaycastsRight())
+        if (CheckRayCornerRight())
             return 1;
-        else if (CheckRaycastsLeft())
+        else if (CheckRayCornerLeft())
+            return -1;
+        else
+            return 0;
+    }
+
+    //returns 1, 0 or -1 for the raycast results
+    public int CheckVerticalMiddleDir()
+    {
+        if (Physics2D.Raycast(midTopPoint.position, new Vector2(0, 1), rayLength, layers))
+            return 1;
+        if (Physics2D.Raycast(midBottomPoint.position, new Vector2(0, -1), rayLength, layers))
+            return -1;
+        else
+            return 0;
+    }
+
+    //returns 1, 0 or -1 for the raycast results
+    public int CheckHorizontalMiddleDir()
+    {
+        if (Physics2D.Raycast(midRightPoint.position, new Vector2(1, 0), rayLength, layers))
+            return 1;
+        if (Physics2D.Raycast(midLeftPoint.position, new Vector2(-1, 0), rayLength, layers))
             return -1;
         else
             return 0;
@@ -102,20 +133,26 @@ public class CharRaycasting : MonoBehaviour {
         while (true)
         {
             //up
-            Debug.DrawRay(upperLeftCornerPoint.position, (Quaternion.Euler(0, 0, -45) * transform.up) * rayLength);
-            Debug.DrawRay(upperRightCornerPoint.position, (Quaternion.Euler(0, 0, 45) * transform.up) * rayLength);
+            Debug.DrawRay(topLeftCornerPoint.position, (Quaternion.Euler(0, 0, -45) * transform.up) * rayLength);
+            Debug.DrawRay(topRightCornerPoint.position, (Quaternion.Euler(0, 0, 45) * transform.up) * rayLength);
 
             //down
             Debug.DrawRay(bottomLeftCornerPoint.position, (Quaternion.Euler(0, 0, 45) * -transform.up) * rayLength);
             Debug.DrawRay(bottomRightCornerPoint.position, (Quaternion.Euler(0, 0, -45) * -transform.up) * rayLength);
 
             //left
-            Debug.DrawRay(upperLeftCornerPoint.position, (Quaternion.Euler(0, 0, 45) * -transform.right) * rayLength);
+            Debug.DrawRay(topLeftCornerPoint.position, (Quaternion.Euler(0, 0, 45) * -transform.right) * rayLength);
             Debug.DrawRay(bottomLeftCornerPoint.position, (Quaternion.Euler(0, 0, -45) * -transform.right) * rayLength);
 
             //right
-            Debug.DrawRay(upperRightCornerPoint.position, (Quaternion.Euler(0, 0, -45) * transform.right) * rayLength);
+            Debug.DrawRay(topRightCornerPoint.position, (Quaternion.Euler(0, 0, -45) * transform.right) * rayLength);
             Debug.DrawRay(bottomRightCornerPoint.position, (Quaternion.Euler(0, 0, 45) * transform.right) * rayLength);
+
+            //middle
+            Debug.DrawRay(midRightPoint.position, new Vector2(1, 0) * rayLength);
+            Debug.DrawRay(midLeftPoint.position, new Vector2(-1, 0) * rayLength);
+            Debug.DrawRay(midTopPoint.position, new Vector2(0, 1) * rayLength);
+            Debug.DrawRay(midBottomPoint.position, new Vector2(0, -1) * rayLength);
             yield return new WaitForFixedUpdate();
         }
     }

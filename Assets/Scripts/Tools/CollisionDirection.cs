@@ -39,7 +39,7 @@ public class CollisionDirection : MonoBehaviour {
         //use raycasting instead as a backup plan
         if(combinedRoundedCollDir == Vector2.zero)
         {
-            combinedRoundedCollDir = new Vector2(charRaycasting.CheckHorizontalDir(), charRaycasting.CheckVerticalDir());
+            combinedRoundedCollDir = new Vector2(charRaycasting.CheckHorizontalCornersDir(), charRaycasting.CheckVerticalCornersDir());
         }
 
         return combinedRoundedCollDir;

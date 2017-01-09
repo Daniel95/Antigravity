@@ -5,42 +5,38 @@ using UnityEngine;
 public class OneWayWall : MonoBehaviour {
 
     [SerializeField]
+    private string defaultLayer = "Default";
+
+    [SerializeField]
+    private string ignoreRaycastLayer = "Ignore Raycast";
+
+    [SerializeField]
     private Collider2D ourCollider;
 
-    [SerializeField]
-    private string defaultLayer;
+    private OneWayDetection oneWayDetection;
 
-    [SerializeField]
-    private string ignoreRaycastLayer;
+    private void OnEnable()
+    {
+        oneWayDetection = GetComponent<OneWayDetection>();
+        oneWayDetection.detectedRight += DetectedRight;
+        oneWayDetection.detectedLeft += DetectedLeft;
+    }
 
-    private void Start()
+    private void OnDisable()
+    {
+        oneWayDetection.detectedRight -= DetectedRight;
+        oneWayDetection.detectedLeft -= DetectedLeft;
+    }
+
+    private void DetectedRight(Collider2D collider)
+    {
+        ourCollider.isTrigger = false;
+        gameObject.layer = LayerMask.NameToLayer(defaultLayer);
+    }
+
+    private void DetectedLeft(Collider2D collider)
     {
         ourCollider.isTrigger = true;
         gameObject.layer = LayerMask.NameToLayer(ignoreRaycastLayer);
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.CompareTag(Tags.Player))
-        {
-            if (IsToTheRight(collision.transform.position))
-            {
-                ourCollider.isTrigger = false;
-                gameObject.layer = LayerMask.NameToLayer(defaultLayer);
-            }
-            else
-            {
-                ourCollider.isTrigger = true;
-                gameObject.layer = LayerMask.NameToLayer(ignoreRaycastLayer);
-            }
-        }
-    }
-
-    //returns if the given position is to the right (local), or not
-    private bool IsToTheRight(Vector2 _position)
-    {
-        Vector3 targetDir = _position - (Vector2)transform.position;
-
-        return VectorMath.AngleDir(transform.forward, targetDir, transform.up) > 0;
     }
 }
