@@ -45,6 +45,7 @@ public class RevivedState : State, ITriggerer
         bulletTime = GetComponent<BulletTime>();
         moveTowards = GetComponent<MoveTowards>();
         playerInputs = GetComponent<PlayerInputs>();
+        GetComponent<ControlVelocity>();
     }
 
     public override void EnterState()
@@ -56,7 +57,8 @@ public class RevivedState : State, ITriggerer
 
         playerActivateWeapon.StopWeaponInput();
 
-        //set our direction to zero so our velocityController doesn't move us
+        //Reset our movement
+        charAccess.controlVelocity.SetVelocity(Vector2.zero);
         charAccess.controlVelocity.SetDirection(Vector2.zero);
 
         //wait a few frames so the player dont start moving immediatly if he panic clicked right after he respawned

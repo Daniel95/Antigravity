@@ -35,7 +35,14 @@ public class PlayerStarter : MonoBehaviour {
         playerInputs.StartShootInputs();
 
         playerActivateWeapon.StartWeaponInput();
-    } 
+    }
+
+    public void StopPlayerShootInputs()
+    {
+        playerInputs.StopShootInputs();
+
+        playerActivateWeapon.StopWeaponInput();
+    }
 
     public void StartPlayerKeyInputs()
     {

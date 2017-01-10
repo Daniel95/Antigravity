@@ -9,6 +9,8 @@ public class ControlTakeOff : MonoBehaviour, ITriggerer {
 
     private CharScriptAccess plrAcces;
 
+    private CharRaycasting charRaycasting;
+
     private Frames frames;
 
     public Action tookOff;
@@ -23,6 +25,8 @@ public class ControlTakeOff : MonoBehaviour, ITriggerer {
     void Start () {
         plrAcces = GetComponent<CharScriptAccess>();
         frames = GetComponent<Frames>();
+
+        charRaycasting = GetComponent<CharRaycasting>();
     }
 
     public void Jump()
@@ -34,6 +38,14 @@ public class ControlTakeOff : MonoBehaviour, ITriggerer {
         plrAcces.controlSpeed.TempSpeedIncrease();
 
         Vector2 collisionDir = plrAcces.collisionDirection.GetCurrentCollDir();
+
+        //if collisiondir is zero, it may be because we are barely not colliding, while it looks like we are.
+        //as a backup plan we use raycasting if this happens so we can still jump
+        if (collisionDir == Vector2.zero)
+        {
+            collisionDir = new Vector2(charRaycasting.CheckHorizontalMiddleDir(), charRaycasting.CheckVerticalMiddleDir());
+        }
+
 
         //check if we have raycast collision on only one axis, jumping wont work when we are in a corner
         if (collisionDir.x == 0 || collisionDir.y == 0)
