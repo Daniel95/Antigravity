@@ -86,7 +86,6 @@ public class GrapplingState : State, ITriggerer {
         if (stopTrigger != null)
             stopTrigger();
 
-        charAccess.controlVelocity.SetDirection(charAccess.controlVelocity.GetVelocityDirection());
         EnterLaunchedState();
     }
 
@@ -103,6 +102,8 @@ public class GrapplingState : State, ITriggerer {
     public override void ResetState()
     {
         base.ResetState();
+
+        charAccess.controlVelocity.SetDirection(charAccess.controlVelocity.GetVelocityDirection());
 
         //unsubscripte from all relevant delegates
         charAccess.speedMultiplier.switchedMultiplier -= FakeSwitchSpeed;

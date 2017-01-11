@@ -30,13 +30,13 @@ public class OneWayWall : MonoBehaviour {
 
     private void DetectedRight(Collider2D collider)
     {
-        ourCollider.isTrigger = false;
+        Physics2D.IgnoreCollision(ourCollider, collider, false);
         gameObject.layer = LayerMask.NameToLayer(defaultLayer);
     }
 
     private void DetectedLeft(Collider2D collider)
     {
-        ourCollider.isTrigger = true;
+        Physics2D.IgnoreCollision(ourCollider, collider, true);
         gameObject.layer = LayerMask.NameToLayer(ignoreRaycastLayer);
     }
 }

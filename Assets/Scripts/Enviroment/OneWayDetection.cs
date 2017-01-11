@@ -4,16 +4,8 @@ using UnityEngine;
 
 public class OneWayDetection : MonoBehaviour {
 
-    [SerializeField]
-    private string ignoreRaycastLayer = "Ignore Raycast";
-
     public Action<Collider2D> detectedRight;
     public Action<Collider2D> detectedLeft;
-
-    private void Start()
-    {
-        gameObject.layer = LayerMask.NameToLayer(ignoreRaycastLayer);
-    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {

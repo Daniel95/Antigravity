@@ -18,6 +18,8 @@ public class GrapplingHook : MonoBehaviour, IWeapon, ITriggerer {
     private Coroutine lineUpdateCoroutine;
     private Coroutine holdGrappleCoroutine;
 
+    private Coroutine grappleAnchorUpdate;
+
     //other scripts can subscribe to know when the grapple locks and unlocks
     public Action startedGrappleLocking;
     public Action stoppedGrappleLocking;
@@ -140,10 +142,25 @@ public class GrapplingHook : MonoBehaviour, IWeapon, ITriggerer {
 
             distanceJoint.connectedAnchor = grappleProjectileGObj.transform.position;
             distanceJoint.distance = distance;
+
+            //keep updating the grapple anchor if the object we are attached to is MoveAble
+            if (grappleProjectileScript.CollidedWithMoveAble())
+            {
+                grappleAnchorUpdate = StartCoroutine(GrappleAnchorUpdate());
+            }
         }
         else {
             //else we exit the grapplehook and pull it back to the player
             ExitGrappleLock();
+        }
+    }
+
+    IEnumerator GrappleAnchorUpdate()
+    {
+        while(true)
+        {
+            distanceJoint.connectedAnchor = grappleProjectileGObj.transform.position;
+            yield return new WaitForFixedUpdate();
         }
     }
 
@@ -158,6 +175,9 @@ public class GrapplingHook : MonoBehaviour, IWeapon, ITriggerer {
 
         if (holdGrappleCoroutine != null)
             StopCoroutine(holdGrappleCoroutine);
+
+        if (grappleAnchorUpdate != null)
+            StopCoroutine(grappleAnchorUpdate);
 
         PullBack();
     }

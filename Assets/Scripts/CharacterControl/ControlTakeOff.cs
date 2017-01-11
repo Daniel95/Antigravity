@@ -46,7 +46,6 @@ public class ControlTakeOff : MonoBehaviour, ITriggerer {
             collisionDir = new Vector2(charRaycasting.CheckHorizontalMiddleDir(), charRaycasting.CheckVerticalMiddleDir());
         }
 
-
         //check if we have raycast collision on only one axis, jumping wont work when we are in a corner
         if (collisionDir.x == 0 || collisionDir.y == 0)
         {
