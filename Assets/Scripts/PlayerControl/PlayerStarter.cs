@@ -15,37 +15,46 @@ public class PlayerStarter : MonoBehaviour {
         playerActivateWeapon = GetComponent<PlayerActivateWeapon>();
     }
 
+    private void Start()
+    {
+        //activate the reverse input for the player
+        //only gets fired if the inputs systems delegate is active too
+        playerInputs.reverse += charAccess.speedMultiplier.SmoothFlipMultiplier;
+
+        playerInputs.SetHoldInput(true);
+
+        GetComponent<PlayerActivateSlowTime>().SetSlowTimeInput(true);
+    }
+
     public void StartStandardPlayerInputs()
     {
-        StartPlayerMovement();
-        StartPlayerShootInputs();
-        StartPlayerKeyInputs();
-
-        //activate the reverse input for the player
-        playerInputs.InputController.flipSpeed += charAccess.speedMultiplier.SmoothFlipMultiplier;
+        SetPlayerMovement(true);
+        SetPlayerShootInputs(true);
+        SetPlayerActionInput(true);
+        SetPlayerReverseInput(true);
     }
 
-    public void StartPlayerMovement()
+    public void SetPlayerMovement(bool _move)
     {
-        charAccess.controlVelocity.StartDirectionalMovement();
+        if(_move)
+            charAccess.controlVelocity.StartDirectionalMovement();
+        else
+            charAccess.controlVelocity.StopDirectionalMovement();
     }
 
-    public void StartPlayerShootInputs()
+    public void SetPlayerActionInput(bool _input)
     {
-        playerInputs.StartShootInputs();
-
-        playerActivateWeapon.StartWeaponInput();
+        playerInputs.SetActionInput(_input);
     }
 
-    public void StopPlayerShootInputs()
+    public void SetPlayerReverseInput(bool _input)
     {
-        playerInputs.StopShootInputs();
-
-        playerActivateWeapon.StopWeaponInput();
+        playerInputs.SetReverseInput(_input);
     }
 
-    public void StartPlayerKeyInputs()
+    public void SetPlayerShootInputs(bool _input)
     {
-        playerInputs.StartKeyInputs();
+        playerInputs.SetShootInput(_input);
+        playerActivateWeapon.SetWeaponInput(_input);
     }
 }

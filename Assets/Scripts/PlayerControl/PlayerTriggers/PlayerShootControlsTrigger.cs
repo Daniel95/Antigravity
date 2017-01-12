@@ -18,11 +18,11 @@ public class PlayerShootControlsTrigger : MonoBehaviour, ITriggerable
 
     public void TriggerActivate()
     {
-        playerStarter.StartPlayerShootInputs();
+        playerStarter.SetPlayerShootInputs(true);
     }
 
     public void TriggerStop()
     {
-        playerStarter.StopPlayerShootInputs();
+        playerStarter.SetPlayerShootInputs(false);
     }
 }

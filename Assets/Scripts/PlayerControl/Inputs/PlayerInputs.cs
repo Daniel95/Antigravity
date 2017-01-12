@@ -5,146 +5,176 @@ public class PlayerInputs : MonoBehaviour, ITriggerable {
 
     public bool triggered { get; set; }
 
-    public enum InputType { Drag, JoyStick };
+    private InputController inputController;
 
-    [SerializeField]
-    private InputType defaultInputTypePC = InputType.Drag;
+    //shoot inputs
+    public Action<Vector2> dragging;
+    public Action<Vector2> releaseInDir;
+    public Action release;
+    public Action holding;
+    public Action tappedExpired;
+    public Action cancelDrag;
 
-    [SerializeField]
-    private InputType defaultInputTypeMobile = InputType.JoyStick; 
+    //movement inputs
+    public Action action;
+    public Action reverse;
 
-    private InputType inputTypeUsed;
-
-    private MobileInputs mobileInputs;
-
-    private PCInputs pcInputs;
-
-    private InputsBase inputController;
-
-    void Awake()
+    private void Awake()
     {
-        mobileInputs = GetComponent<MobileInputs>();
-        pcInputs = GetComponent<PCInputs>();
-        inputController = GetInputController();
-    }
-
-    private void Start()
-    {
-        if (Platform.PlatformIsMobile())
-        {
-            inputTypeUsed = defaultInputTypeMobile;
-        }
-        else
-        {
-            inputTypeUsed = defaultInputTypePC;
-        }
+        inputController = GetComponent<InputController>();
+        inputController.RetrieveInputTarget();
+        SetInputs(true);
     }
 
     public void TriggerActivate()
     {
-        StartShootInputs();
-        StartKeyInputs();
+        SetShootInput(true);
+        SetActionInput(true);
+        SetReverseInput(true);
     }
 
     public void TriggerStop()
     {
-        StopShootInputs();
-        StopKeyInputs();
+        SetShootInput(false);
+        SetActionInput(false);
+        SetReverseInput(false);
     }
 
-    public void StartShootInputs()
+    public void SetInputs(bool _input)
     {
-        //assign to the right controls, given by inputTypeUsed 
-        if (inputTypeUsed == InputType.Drag)
+        inputController.InputTarget.SetInputs(_input);
+    }
+
+    public void SetActionInput(bool _inputState)
+    {
+        if(_inputState)
         {
-            inputController.StartUpdatingDragInputs();
+            inputController.InputTarget.action += Action;
+        }
+        else if(!_inputState)
+        {
+            inputController.InputTarget.action -= Action;
+        }
+    }
+
+    public void SetReverseInput(bool _inputState)
+    {
+        if (_inputState)
+        {
+            inputController.InputTarget.reverse += Reverse;
+        }
+        else if (!_inputState)
+        {
+            inputController.InputTarget.reverse -= Reverse;
+        }
+    }
+
+    public void SetHoldInput(bool _inputState)
+    {
+        if(_inputState)
+        {
+            inputController.InputTarget.holding += holding;
         }
         else
         {
-            inputController.StartUpdatingJoyStickInputs();
+            inputController.InputTarget.holding -= holding;
         }
     }
 
-    public void StopShootInputs()
+    public void SetShootInput(bool _inputState)
     {
-        //stop the right controls, given by inputTypeUsed 
-        if (inputTypeUsed == InputType.Drag)
+        if (_inputState)
         {
-            inputController.StopUpdatingDragInputs();
+            if(inputController.InputTarget.release == null)
+                inputController.InputTarget.release += Release;
+
+            if (inputController.InputTarget.releaseInDir == null)
+                inputController.InputTarget.releaseInDir += ReleaseInDir;
+
+            if (inputController.InputTarget.dragging == null)
+                inputController.InputTarget.dragging += Dragging;
+
+            if (inputController.InputTarget.cancelDrag == null)
+                inputController.InputTarget.cancelDrag += CancelDrag;
+
+            if (inputController.InputTarget.tappedExpired == null)
+                inputController.InputTarget.tappedExpired += TappedExpired;
         }
-        else
+        else if (!_inputState)
         {
-            inputController.StopUpdatingJoyStickInputs();
+            inputController.InputTarget.release -= Release;
+            inputController.InputTarget.dragging -= Dragging;
+            inputController.InputTarget.cancelDrag -= CancelDrag;
+            inputController.InputTarget.tappedExpired -= TappedExpired;
         }
     }
 
-    public void StartKeyInputs()
+    public void ResetTouched()
     {
-        if (!Platform.PlatformIsMobile()) {
-            pcInputs.StartUpdatingKeyInputs();
+        inputController.InputTarget.ResetTouched();
+    }
+
+    private void Release()
+    {
+        if (release != null)
+        {
+            release();
         }
     }
 
-    public void StopKeyInputs()
+    private void ReleaseInDir(Vector2 _dir)
     {
-        if (!Platform.PlatformIsMobile())
+        if(releaseInDir != null)
         {
-            pcInputs.StopUpdatingKeyInputs();
+            releaseInDir(_dir);
         }
     }
 
-    //used by other scripts to assign themselfes to input delegates
-    public InputsBase InputController
+    private void TappedExpired()
     {
-        get { return inputController; }
-    }
-
-    private InputsBase GetInputController()
-    {
-        if (Platform.PlatformIsMobile())
+        if(tappedExpired != null)
         {
-            return mobileInputs;
-        }
-        else
-        {
-            return pcInputs;
+            tappedExpired();
         }
     }
 
-    //switches the control type between Drag & Joystick
-    public void SwitchControlType()
+    private void Dragging(Vector2 _dir)
     {
-        if (inputTypeUsed == InputType.Drag)
+        if (dragging != null)
         {
-            inputController.StopUpdatingDragInputs();
-            inputController.StartUpdatingJoyStickInputs();
-        }
-        else
-        {
-            inputController.StopUpdatingJoyStickInputs();
-            inputController.StartUpdatingDragInputs();
+            dragging(_dir);
         }
     }
 
-    public InputType GetPlatformDefaultInputType()
+    private void CancelDrag()
     {
-        if (Platform.PlatformIsMobile())
+        if(cancelDrag != null)
         {
-            return defaultInputTypeMobile;
-        }
-        else
-        {
-            return defaultInputTypePC;
+            cancelDrag();
         }
     }
 
-    public void Action()
+    private void Holding()
     {
-        inputController.Action();
+        if(holding != null)
+        {
+            holding();
+        }
     }
 
-    public void Reverse()
+    private void Action()
     {
-        inputController.FlipSpeed();
+        if (action != null)
+        {
+            action();
+        }
     }
-}
+
+    private void Reverse()
+    {
+        if (reverse != null)
+        {
+            reverse();
+        }
+    }
+} 

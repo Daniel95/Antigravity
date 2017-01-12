@@ -6,5 +6,5 @@ public interface IWeapon
 
     void Release(Vector2 _destination, Vector2 _spawnPosition);
 
-    void Cancel();
+    void CancelDragging();
 }

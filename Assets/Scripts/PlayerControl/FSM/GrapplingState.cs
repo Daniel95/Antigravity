@@ -47,11 +47,10 @@ public class GrapplingState : State, ITriggerer {
         slingMovement = StartCoroutine(SlingMovement());
 
         //exit the state when the grapple has released itself
-        grapplingHook.stoppedGrappleLocking += EnterLaunchedState;
+        grapplingHook.stoppedGrappleLocking += ExitGrapple;
 
         //subscribe to the space input, so we know when to exit our grapple
-        playerInputs.InputController.action += ExitGrapple;
-
+        playerInputs.action += ExitGrapple;
     }
 
     IEnumerator SlingMovement()
@@ -83,6 +82,8 @@ public class GrapplingState : State, ITriggerer {
 
     private void ExitGrapple() {
 
+        charAccess.controlVelocity.SetDirection(charAccess.controlVelocity.GetVelocityDirection());
+
         if (stopTrigger != null)
             stopTrigger();
 
@@ -103,12 +104,10 @@ public class GrapplingState : State, ITriggerer {
     {
         base.ResetState();
 
-        charAccess.controlVelocity.SetDirection(charAccess.controlVelocity.GetVelocityDirection());
-
         //unsubscripte from all relevant delegates
         charAccess.speedMultiplier.switchedMultiplier -= FakeSwitchSpeed;
-        grapplingHook.stoppedGrappleLocking -= EnterLaunchedState;
-        playerInputs.InputController.action -= ExitGrapple;
+        grapplingHook.stoppedGrappleLocking -= ExitGrapple;
+        playerInputs.action -= ExitGrapple;
 
         grapplingHook.ExitGrappleLock();
 

@@ -4,45 +4,36 @@ using System.Collections;
 
 public class InputsBase : MonoBehaviour {
 
+    public Action tappedExpired;
+
     public Action<Vector2> dragging;
 
-    public Action<Vector2> release;
+    public Action release;
+
+    public Action<Vector2> releaseInDir;
 
     public Action cancelDrag;
 
-    public Action flipSpeed;
+    public Action holding;
+
+    public Action reverse;
 
     public Action action;
 
-    protected Coroutine updateJoyStickInputs;
-    protected Coroutine updateDragInputs;
+    public Coroutine inputUpdate;
 
-    protected bool touched;
-    protected bool isDragging;
+    public enum TouchStates { Holding, Dragging, Tapped, None }
 
-    public virtual void StartUpdatingDragInputs() { }
-    public virtual void StopUpdatingDragInputs() { }
-    public virtual void StartUpdatingJoyStickInputs() { }
-    public virtual void StopUpdatingJoyStickInputs() { }
+    public TouchStates touchState = TouchStates.None;
 
-    public void ResetTouched()
+    public virtual void SetInputs(bool _input) { }
+
+    public virtual void ResetTouched()
     {
-        touched = isDragging = false;
+        touchState = TouchStates.None;
 
         if (cancelDrag != null)
             cancelDrag();
-    }
-
-    public void Action()
-    {
-        if (action != null)
-            action();
-    }
-
-    public void FlipSpeed()
-    {
-        if (flipSpeed != null)
-            flipSpeed();
     }
 }
 

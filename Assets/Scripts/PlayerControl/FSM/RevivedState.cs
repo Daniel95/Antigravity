@@ -23,7 +23,7 @@ public class RevivedState : State, ITriggerer
 
     private LookAt lookAt;
 
-    private BulletTime bulletTime;
+    private AimRay aimRay;
 
     private bool bulletTimeActive;
 
@@ -42,7 +42,7 @@ public class RevivedState : State, ITriggerer
 
         playerActivateWeapon = GetComponent<PlayerActivateWeapon>();
         lookAt = gun.GetComponent<LookAt>();
-        bulletTime = GetComponent<BulletTime>();
+        aimRay = GetComponent<AimRay>();
         moveTowards = GetComponent<MoveTowards>();
         playerInputs = GetComponent<PlayerInputs>();
         GetComponent<ControlVelocity>();
@@ -53,9 +53,9 @@ public class RevivedState : State, ITriggerer
         base.EnterState();
 
         //make sure to reset the current touched input. If we are busy shooting, we reset the values and release;
-        playerInputs.InputController.ResetTouched();
+        playerInputs.ResetTouched();
 
-        playerActivateWeapon.StopWeaponInput();
+        playerActivateWeapon.SetWeaponInput(false);
 
         //Reset our movement
         charAccess.controlVelocity.SetVelocity(Vector2.zero);
@@ -97,29 +97,29 @@ public class RevivedState : State, ITriggerer
 
     private void SubscribeToAimInput()
     {
-        playerInputs.InputController.dragging += Dragging;
-        playerInputs.InputController.release += Release;
+        playerInputs.dragging += Aiming;
+        playerInputs.releaseInDir += LaunchInDir;
     }
 
     //while dragging, we point towards the given direction
-    private void Dragging(Vector2 _dir)
+    private void Aiming(Vector2 _dir)
     {
-        if (!bulletTime.BulletTimeActive)
+        if (!aimRay.AimRayActive)
         {
-            bulletTime.StartBulletTime();
+            aimRay.StartAimRay((Vector2)transform.position + (_dir * startDirectionRayLength));
         }
 
-        bulletTime.SetRayDestination = (Vector2)transform.position + (_dir * startDirectionRayLength);
+        aimRay.SetRayDestination = (Vector2)transform.position + (_dir * startDirectionRayLength);
 
         lookAt.UpdateLookAt((Vector2)transform.position + _dir);
     }
 
     //when we release, we launch ourselfs to the recieved direction
-    private void Release(Vector2 _dir)
+    private void LaunchInDir(Vector2 _dir)
     {
-        playerActivateWeapon.StartWeaponInput();
+        playerActivateWeapon.SetWeaponInput(true);
 
-        bulletTime.StopBulletTime();
+        aimRay.StopAimRay();
         charAccess.speedMultiplier.MakeMultiplierPositive();
         charAccess.controlVelocity.SetDirection(_dir * charAccess.controlVelocity.GetMultiplierDir());
 
@@ -133,8 +133,8 @@ public class RevivedState : State, ITriggerer
         if (stopTrigger != null)
             stopTrigger();
 
-        playerInputs.InputController.dragging -= Dragging;
-        playerInputs.InputController.release -= Release;
+        playerInputs.dragging -= Aiming;
+        playerInputs.releaseInDir -= LaunchInDir;
 
         stateMachine.ActivateState(StateID.LaunchedState);
     }

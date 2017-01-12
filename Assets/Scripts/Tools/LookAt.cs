@@ -7,4 +7,9 @@ public class LookAt : MonoBehaviour {
     {
         transform.right = _lookAtPos - (Vector2)transform.position;
     }
+
+    public Vector2 CurrentLookDir
+    {
+        get { return transform.right + transform.position; }
+    }
 }

@@ -22,9 +22,12 @@ public class ActivateWeapon : MonoBehaviour {
 
     private int weaponIndex;
 
+    private FutureDirectionIndicator futureDirIndicator;
+
     private void Awake()
     {
         gunLookAt = gun.GetComponent<LookAt>();
+        futureDirIndicator = GetComponent<FutureDirectionIndicator>();
 
         foreach (IWeapon weapon in GetComponents<IWeapon>())
         {
@@ -32,7 +35,7 @@ public class ActivateWeapon : MonoBehaviour {
         }
     }
 
-    public void Dragging(Vector2 _dir)
+    public void Aiming(Vector2 _dir)
     {
         if (!TimeManagement.isPauzed())
         {
@@ -41,15 +44,16 @@ public class ActivateWeapon : MonoBehaviour {
         }
     }
 
-    public void CancelDrag()
+    public void CancelAiming()
     {
         if (!TimeManagement.isPauzed())
         {
-            weapons[weaponIndex].Cancel();
+            weapons[weaponIndex].CancelDragging();
+            futureDirIndicator.PointToCeilVelocityDir();
         }
     }
 
-    public void Release(Vector2 _dir)
+    public void Shoot(Vector2 _dir)
     {
         if (!TimeManagement.isPauzed())
         {

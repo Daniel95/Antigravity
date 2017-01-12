@@ -32,7 +32,7 @@ public class GrapplingHook : MonoBehaviour, IWeapon, ITriggerer {
 
     private GrapplingHookStates currentGrapplingHookState = GrapplingHookStates.inactive;
 
-    private BulletTime bulletTime;
+    private AimRay aimRay;
 
     //used by action trigger to decide when to start the instructions/tutorial, and when to stop it
     public Action activateTrigger { get; set; }
@@ -45,7 +45,7 @@ public class GrapplingHook : MonoBehaviour, IWeapon, ITriggerer {
 
         lineRenderer = GetComponent<LineRenderer>();
 
-        bulletTime = GetComponent<BulletTime>();
+        aimRay = GetComponent<AimRay>();
 
         grappleProjectileGObj = Instantiate(grappleProjectilePrefab, Vector2.zero, new Quaternion(0, 0, 0, 0)) as GameObject;
         grappleProjectileScript = grappleProjectileGObj.GetComponent<GrappleProjectile>();
@@ -53,21 +53,21 @@ public class GrapplingHook : MonoBehaviour, IWeapon, ITriggerer {
     }
 
     public void Dragging(Vector2 _destination, Vector2 _spawnPosition) {
-        if (!bulletTime.BulletTimeActive) {
-            bulletTime.StartBulletTime();
+        if (!aimRay.AimRayActive) {
+            aimRay.StartAimRay(_destination);
         }
 
-        bulletTime.SetRayDestination = _destination;
+        aimRay.SetRayDestination = _destination;
     }
 
-    public void Cancel()
+    //cancel aiming
+    public void CancelDragging()
     {
         StopBulletTime();
-        ExitGrappleLock();
     }
 
     void StopBulletTime() {
-        bulletTime.StopBulletTime();
+        aimRay.StopAimRay();
     }
 
     //spawns the grapple projectile and activates its moveTowards script

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerKeyInputsTrigger : MonoBehaviour, ITriggerable
+public class PlayerInputsTrigger : MonoBehaviour, ITriggerable
 {
     public bool triggered { get; set; }
 
@@ -11,11 +11,11 @@ public class PlayerKeyInputsTrigger : MonoBehaviour, ITriggerable
 
     public void TriggerActivate()
     {
-        plrInputs.StartKeyInputs();
+        plrInputs.SetInputs(true);
     }
 
     public void TriggerStop()
     {
-        plrInputs.StopKeyInputs();
+        plrInputs.SetInputs(false);
     }
 }

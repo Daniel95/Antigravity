@@ -13,17 +13,19 @@ public class PlayerActivateWeapon : MonoBehaviour {
         playerInputs = GetComponent<PlayerInputs>();
     }
 
-    public void StartWeaponInput()
+    public void SetWeaponInput(bool _input)
     {
-        playerInputs.InputController.dragging += activateWeapon.Dragging;
-        playerInputs.InputController.cancelDrag += activateWeapon.CancelDrag;
-        playerInputs.InputController.release += activateWeapon.Release;
-    }
-
-    public void StopWeaponInput()
-    {
-        playerInputs.InputController.dragging -= activateWeapon.Dragging;
-        playerInputs.InputController.cancelDrag -= activateWeapon.CancelDrag;
-        playerInputs.InputController.release -= activateWeapon.Release;
+        if(_input)
+        {
+            playerInputs.dragging += activateWeapon.Aiming;
+            playerInputs.cancelDrag += activateWeapon.CancelAiming;
+            playerInputs.releaseInDir += activateWeapon.Shoot;
+        }
+        else
+        {
+            playerInputs.dragging -= activateWeapon.Aiming;
+            playerInputs.cancelDrag -= activateWeapon.CancelAiming;
+            playerInputs.releaseInDir -= activateWeapon.Shoot;
+        }
     }
 }
