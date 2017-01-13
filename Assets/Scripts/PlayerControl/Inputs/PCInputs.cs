@@ -56,6 +56,8 @@ public class PCInputs : InputsBase {
             if (Input.GetKeyDown(aimInput) && !InputDetect.CheckUICollision(Input.mousePosition))
             {
                 touchState = TouchStates.Tapped;
+
+                startDownTime = Time.time;
             }
 
             if (touchState != TouchStates.None)
@@ -63,37 +65,38 @@ public class PCInputs : InputsBase {
                 //not yet released
                 if (!Input.GetKeyUp(aimInput))
                 {
-                    if (touchState == TouchStates.Tapped)
+                    if (Time.time - startDownTime > timebeforeTappedExpired)
                     {
-                        if (tappedExpired != null)
+                        if(touchState == TouchStates.Tapped && tappedExpired != null)
                         {
                             tappedExpired();
                         }
-                    }
 
-                    if (Vector2.Distance(Camera.main.ScreenToWorldPoint(Input.mousePosition), transform.position) > minDistFromPlayer) {
-
-                        touchState = TouchStates.Dragging;
-
-                        if (dragging != null)
-                            dragging(((Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition) - (Vector2)transform.position).normalized);
-                    }
-                    else if (touchState != TouchStates.Holding)
-                    {
-
-                        if (touchState == TouchStates.Dragging)
+                        if (Vector2.Distance(Camera.main.ScreenToWorldPoint(Input.mousePosition), transform.position) > minDistFromPlayer)
                         {
-                            if (cancelDrag != null)
-                            {
-                                cancelDrag();
-                            }
+
+                            touchState = TouchStates.Dragging;
+
+                            if (dragging != null)
+                                dragging(((Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition) - (Vector2)transform.position).normalized);
                         }
-
-                        touchState = TouchStates.Holding;
-
-                        if (holding != null)
+                        else if (touchState != TouchStates.Holding)
                         {
-                            holding();
+
+                            if (touchState == TouchStates.Dragging)
+                            {
+                                if (cancelDrag != null)
+                                {
+                                    cancelDrag();
+                                }
+                            }
+
+                            touchState = TouchStates.Holding;
+
+                            if (holding != null)
+                            {
+                                holding();
+                            }
                         }
                     }
                 }

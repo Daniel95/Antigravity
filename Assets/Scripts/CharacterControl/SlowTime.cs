@@ -51,7 +51,9 @@ public class SlowTime : MonoBehaviour {
             yield return new WaitForFixedUpdate();
         }
 
-        if(reachedTarget != null)
+        Time.timeScale = _target;
+
+        if (reachedTarget != null)
         {
             reachedTarget();
         }
@@ -67,7 +69,6 @@ public class SlowTime : MonoBehaviour {
 
             slowTimeActive = false;
 
-            StopCoroutine(MoveTimeScale(1, slowDownTime));
             Time.timeScale = 1;
         }
     }

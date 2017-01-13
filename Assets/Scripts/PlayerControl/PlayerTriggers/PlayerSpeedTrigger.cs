@@ -19,6 +19,8 @@ public class PlayerSpeedTrigger : MonoBehaviour, ITriggerable {
 
     public void TriggerStop()
     {
+        controlVelocity.SetDirection(lastDirection);
+
         controlVelocity.SetVelocity(lastDirection * controlVelocity.OriginalSpeed);
 
         controlVelocity.SetSpeed(controlVelocity.OriginalSpeed);

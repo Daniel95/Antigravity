@@ -91,7 +91,6 @@ public class GrapplingState : State, ITriggerer {
     }
 
     private void EnterLaunchedState() {
-
         stateMachine.ActivateState(StateID.LaunchedState);
     }
 

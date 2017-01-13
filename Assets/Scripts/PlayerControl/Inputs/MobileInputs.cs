@@ -12,12 +12,7 @@ public class MobileInputs : InputsBase {
     private DragDirIndicator dragDirIndicator;
 
     [SerializeField]
-    private float minDistToDrag = 1;
-
-    [SerializeField]
-    private float timebeforeHold = 0.25f;
-
-    private float startTouchTime;
+    private float minDistToDrag = 0.75f;
 
     private Vector2 startTouchPosition;
 
@@ -62,7 +57,7 @@ public class MobileInputs : InputsBase {
                 touchState = TouchStates.Tapped;
 
                 startTouchPosition = Input.GetTouch(0).position;
-                startTouchTime = Time.time;
+                startDownTime = Time.time;
             }
 
             if (touchState != TouchStates.None)
@@ -70,8 +65,7 @@ public class MobileInputs : InputsBase {
                 //if we haven't released yet
                 if (Input.GetTouch(0).phase != TouchPhase.Ended)
                 {
-                    //check the distane between the touch position and the start position to check if we are dragging 
-                    if (Vector2.Distance(Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position), Camera.main.ScreenToWorldPoint(startTouchPosition)) > minDistToDrag)
+                    if(Time.time - startDownTime > timebeforeTappedExpired)
                     {
                         if (touchState == TouchStates.Tapped)
                         {
@@ -81,47 +75,42 @@ public class MobileInputs : InputsBase {
                             }
                         }
 
-                        joyStickGObj.SetActive(true);
-                        Vector2 touchWorldPos = Camera.main.ScreenToWorldPoint(startTouchPosition);
-
-                        //z = 0
-                        joyStickGObj.transform.position = new Vector3(touchWorldPos.x, touchWorldPos.y, -4);
-
-                        Vector2 dir = (Input.GetTouch(0).position - startTouchPosition).normalized;
-                        dragDirIndicator.SetDragDir(dir);
-
-                        touchState = TouchStates.Dragging;
-
-                        if (dragging != null)
-                            dragging(dir);
-                    }
-                    //if the distance is too small, and we are touched the screen for a certain amount of time, we are holding
-                    else if (Time.time - startTouchTime > timebeforeHold && touchState != TouchStates.Holding)
-                    {
-
-                        if (touchState == TouchStates.Tapped)
+                        //check the distane between the touch position and the start position to check if we are dragging 
+                        if (Vector2.Distance(Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position), Camera.main.ScreenToWorldPoint(startTouchPosition)) > minDistToDrag)
                         {
-                            if (tappedExpired != null)
-                            {
-                                tappedExpired();
-                            }
+                            joyStickGObj.SetActive(true);
+                            Vector2 touchWorldPos = Camera.main.ScreenToWorldPoint(startTouchPosition);
+
+                            //z = 0
+                            joyStickGObj.transform.position = new Vector3(touchWorldPos.x, touchWorldPos.y, -4);
+
+                            Vector2 dir = (Input.GetTouch(0).position - startTouchPosition).normalized;
+                            dragDirIndicator.SetDragDir(dir);
+
+                            touchState = TouchStates.Dragging;
+
+                            if (dragging != null)
+                                dragging(dir);
                         }
-
-                        if(touchState == TouchStates.Dragging)
+                        //if the distance is too small, and we are touched the screen for a certain amount of time, we are holding
+                        else if (Time.time - startDownTime > timebeforeTappedExpired && touchState != TouchStates.Holding)
                         {
-                            if (cancelDrag != null)
+                            if (touchState == TouchStates.Dragging)
                             {
-                                cancelDrag();
+                                if (cancelDrag != null)
+                                {
+                                    cancelDrag();
+                                }
                             }
-                        }
 
-                        joyStickGObj.SetActive(false);
+                            joyStickGObj.SetActive(false);
 
-                        touchState = TouchStates.Holding;
+                            touchState = TouchStates.Holding;
 
-                        if (holding != null)
-                        {
-                            holding();
+                            if (holding != null)
+                            {
+                                holding();
+                            }
                         }
                     }
                 } 

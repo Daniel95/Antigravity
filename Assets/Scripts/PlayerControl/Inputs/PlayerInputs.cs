@@ -85,6 +85,7 @@ public class PlayerInputs : MonoBehaviour, ITriggerable {
     {
         if (_inputState)
         {
+
             if(inputController.InputTarget.release == null)
                 inputController.InputTarget.release += Release;
 

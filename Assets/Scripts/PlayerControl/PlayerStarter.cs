@@ -7,23 +7,14 @@ public class PlayerStarter : MonoBehaviour {
     private CharScriptAccess charAccess;
     private PlayerActivateWeapon playerActivateWeapon;
     private PlayerInputs playerInputs;
+    private PlayerActivateSlowTime playerActivateSlowTime;
 
     private void Awake()
     {
         charAccess = GetComponent<CharScriptAccess>();
         playerInputs = GetComponent<PlayerInputs>();
         playerActivateWeapon = GetComponent<PlayerActivateWeapon>();
-    }
-
-    private void Start()
-    {
-        //activate the reverse input for the player
-        //only gets fired if the inputs systems delegate is active too
-        playerInputs.reverse += charAccess.speedMultiplier.SmoothFlipMultiplier;
-
-        playerInputs.SetHoldInput(true);
-
-        GetComponent<PlayerActivateSlowTime>().SetSlowTimeInput(true);
+        playerActivateSlowTime = GetComponent<PlayerActivateSlowTime>();
     }
 
     public void StartStandardPlayerInputs()
@@ -32,6 +23,7 @@ public class PlayerStarter : MonoBehaviour {
         SetPlayerShootInputs(true);
         SetPlayerActionInput(true);
         SetPlayerReverseInput(true);
+        SetPlayerSlowTimeInput(true);
     }
 
     public void SetPlayerMovement(bool _move)
@@ -49,7 +41,17 @@ public class PlayerStarter : MonoBehaviour {
 
     public void SetPlayerReverseInput(bool _input)
     {
+        //activate the reverse input for the player
+        playerInputs.reverse += charAccess.speedMultiplier.SmoothFlipMultiplier;
+
         playerInputs.SetReverseInput(_input);
+    }
+
+    public void SetPlayerSlowTimeInput(bool _input)
+    {
+        playerInputs.SetHoldInput(_input);
+
+        playerActivateSlowTime.SetSlowTimeInput(_input);
     }
 
     public void SetPlayerShootInputs(bool _input)

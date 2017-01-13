@@ -26,6 +26,13 @@ public class InputsBase : MonoBehaviour {
 
     public TouchStates touchState = TouchStates.None;
 
+    [SerializeField]
+    protected float timebeforeTappedExpired = 0.15f;
+
+    protected float startDownTime;
+
+    protected bool tappedIsExpired;
+
     public virtual void SetInputs(bool _input) { }
 
     public virtual void ResetTouched()
