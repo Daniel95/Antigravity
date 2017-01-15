@@ -10,6 +10,6 @@ public class KillEnemy : MonoBehaviour
 
     private void EnemyDies()
     {
-        Destroy(gameObject);
+        Destroy(transform.parent.gameObject);
     }
 }

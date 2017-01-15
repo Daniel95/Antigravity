@@ -22,9 +22,9 @@ public class InputsBase : MonoBehaviour {
 
     public Coroutine inputUpdate;
 
-    public enum TouchStates { Holding, Dragging, Tapped, None }
+    protected enum TouchStates { Holding, Dragging, Tapped, None }
 
-    public TouchStates touchState = TouchStates.None;
+    protected TouchStates touchState = TouchStates.None;
 
     [SerializeField]
     protected float timebeforeTappedExpired = 0.15f;
@@ -37,8 +37,6 @@ public class InputsBase : MonoBehaviour {
 
     public virtual void ResetTouched()
     {
-        touchState = TouchStates.None;
-
         if (cancelDrag != null)
             cancelDrag();
     }

@@ -26,6 +26,16 @@ public class PlayerStarter : MonoBehaviour {
         SetPlayerSlowTimeInput(true);
     }
 
+    public void StartMazeLvlPlayerInputs()
+    {
+        SetPlayerMovement(true);
+        SetPlayerShootInputs(true);
+        SetPlayerReverseInput(true);
+        SetPlayerDoubleReverseInput(true);
+
+        SetPlayerSlowTimeInput(true);
+    }
+
     public void SetPlayerMovement(bool _move)
     {
         if(_move)
@@ -45,6 +55,11 @@ public class PlayerStarter : MonoBehaviour {
         playerInputs.reverse += charAccess.speedMultiplier.SmoothFlipMultiplier;
 
         playerInputs.SetReverseInput(_input);
+    }
+
+    private void SetPlayerDoubleReverseInput(bool _input)
+    {
+        playerInputs.SetDoubleReverseInput(_input);
     }
 
     public void SetPlayerSlowTimeInput(bool _input)

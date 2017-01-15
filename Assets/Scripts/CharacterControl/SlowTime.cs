@@ -41,6 +41,7 @@ public class SlowTime : MonoBehaviour {
     private void SlowlyReturnToNormal()
     {
         moveTimeScale = StartCoroutine(MoveTimeScale(1, returnSpeed));
+        reachedTarget -= SlowlyReturnToNormal;
     }
 
     IEnumerator MoveTimeScale(float _target, float _time)

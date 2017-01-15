@@ -5,13 +5,11 @@ using System.Collections;
 public class ControlTakeOff : MonoBehaviour, ITriggerer {
 
     [SerializeField]
-    private int stopCollDirFramesAfterJump = 2;
+    private float instaJumpStrength = 0.05f;
 
     private CharScriptAccess plrAcces;
 
     private CharRaycasting charRaycasting;
-
-    private Frames frames;
 
     public Action tookOff;
 
@@ -24,7 +22,6 @@ public class ControlTakeOff : MonoBehaviour, ITriggerer {
     // Use this for initialization
     void Start () {
         plrAcces = GetComponent<CharScriptAccess>();
-        frames = GetComponent<Frames>();
 
         charRaycasting = GetComponent<CharRaycasting>();
     }
@@ -38,12 +35,13 @@ public class ControlTakeOff : MonoBehaviour, ITriggerer {
         plrAcces.controlSpeed.TempSpeedIncrease();
 
         Vector2 collisionDir = plrAcces.collisionDirection.GetCurrentCollDir();
+        Vector2 rayDir = new Vector2(charRaycasting.CheckHorizontalMiddleDir(), charRaycasting.CheckVerticalMiddleDir());
 
         //if collisiondir is zero, it may be because we are barely not colliding, while it looks like we are.
         //as a backup plan we use raycasting if this happens so we can still jump
         if (collisionDir == Vector2.zero)
         {
-            collisionDir = new Vector2(charRaycasting.CheckHorizontalMiddleDir(), charRaycasting.CheckVerticalMiddleDir());
+            collisionDir = rayDir;
         }
 
         //check if we have raycast collision on only one axis, jumping wont work when we are in a corner
@@ -63,13 +61,13 @@ public class ControlTakeOff : MonoBehaviour, ITriggerer {
 
             plrAcces.controlVelocity.SetDirection(plrAcces.controlVelocity.AdjustDirToMultiplier(newDir));
 
+            if(rayDir.x == 0 || rayDir.y == 0)
+            {
+                transform.position += (Vector3)(plrAcces.controlVelocity.GetDirection() * (instaJumpStrength * plrAcces.controlVelocity.SpeedMultiplier));
+            }
+
             if (tookOff != null)
                 tookOff();
-
-            //the 2 frames after we jump controlDirection is not allowed to change the direction.
-            plrAcces.controlDirection.CanChangeDir = false;
-
-            frames.ExecuteAfterDelay(stopCollDirFramesAfterJump, plrAcces.controlDirection.ResetCanChangeDir);
         }
     }
 

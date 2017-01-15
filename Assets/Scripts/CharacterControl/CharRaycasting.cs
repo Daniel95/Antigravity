@@ -59,7 +59,7 @@ public class CharRaycasting : MonoBehaviour {
     }
 
     private bool CheckDoubleRaycast(Vector2 _rayOrigin1, Vector2 _rayOrigin2, Vector2 _direction, float _rayLength) {
-        if (Physics2D.Raycast(_rayOrigin1, _direction, _rayLength, layers) || Physics2D.Raycast(_rayOrigin2, _direction, _rayLength, layers))
+        if (CheckRaycastOther(_rayOrigin1, _direction, _rayLength, layers) || CheckRaycastOther(_rayOrigin2, _direction, _rayLength, layers))
             return true;
 
         return false;
@@ -67,7 +67,7 @@ public class CharRaycasting : MonoBehaviour {
 
     private bool CheckIntersectionRaycast(Vector2 _rayOrigin1, Vector2 _direction1, Vector2 _rayOrigin2, Vector2 _direction2, float _rayLength)
     {
-        if (Physics2D.Raycast(_rayOrigin1, _direction1, _rayLength, layers) || Physics2D.Raycast(_rayOrigin2, _direction2, _rayLength, layers))
+        if (CheckRaycastOther(_rayOrigin1, _direction1, _rayLength, layers) || CheckRaycastOther(_rayOrigin2, _direction2, _rayLength, layers))
             return true;
         
         return false;
@@ -98,9 +98,9 @@ public class CharRaycasting : MonoBehaviour {
     //returns 1, 0 or -1 for the raycast results
     public int CheckVerticalMiddleDir()
     {
-        if (Physics2D.Raycast(transform.position, new Vector2(0, 1), middleRayLength, layers))
+        if (CheckRaycastOther(transform.position, new Vector2(0, 1), middleRayLength, layers))
             return 1;
-        if (Physics2D.Raycast(transform.position, new Vector2(0, -1), middleRayLength, layers))
+        if (CheckRaycastOther(transform.position, new Vector2(0, -1), middleRayLength, layers))
             return -1;
         else
             return 0;
@@ -109,12 +109,28 @@ public class CharRaycasting : MonoBehaviour {
     //returns 1, 0 or -1 for the raycast results
     public int CheckHorizontalMiddleDir()
     {
-        if (Physics2D.Raycast(transform.position, new Vector2(1, 0), middleRayLength, layers))
+        if (CheckRaycastOther(transform.position, new Vector2(1, 0), middleRayLength, layers))
             return 1;
-        if (Physics2D.Raycast(transform.position, new Vector2(-1, 0), middleRayLength, layers))
+        if (CheckRaycastOther(transform.position, new Vector2(-1, 0), middleRayLength, layers))
             return -1;
         else
             return 0;
+    }
+
+    //checks if the raycast doesn't hit myself, and if it hits something
+    private bool CheckRaycastOther(Vector2 _startPos, Vector2 _dir, float _length, LayerMask _layers)
+    {
+        RaycastHit2D[] hits = Physics2D.RaycastAll(_startPos, _dir, _length, _layers);
+
+        for (int i = 0; i < hits.Length; i++)
+        {
+            if(hits[i].collider.gameObject != gameObject)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     void Start() {

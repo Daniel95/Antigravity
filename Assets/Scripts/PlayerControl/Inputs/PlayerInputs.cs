@@ -69,6 +69,18 @@ public class PlayerInputs : MonoBehaviour, ITriggerable {
         }
     }
 
+    public void SetDoubleReverseInput(bool _inputState)
+    {
+        if (_inputState)
+        {
+            inputController.InputTarget.action += Reverse;
+        }
+        else if (!_inputState)
+        {
+            inputController.InputTarget.action -= Reverse;
+        }
+    }
+
     public void SetHoldInput(bool _inputState)
     {
         if(_inputState)
