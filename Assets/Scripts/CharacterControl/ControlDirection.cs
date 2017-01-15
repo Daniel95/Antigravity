@@ -64,6 +64,7 @@ public class ControlDirection : MonoBehaviour {
         //if we are not hitting a wall on both axis or are not moving in an angle
         if ((rayHitDir.x == 0 || rayHitDir.y == 0)) {
 
+            //if we are not in a corner, but still touch objects from both axises, invert our dir
             if (_collDir.x != 0 && _collDir.y != 0)
             {
                 newDir = lastDir = _currentDir * -1;
