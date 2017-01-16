@@ -28,8 +28,8 @@ public class SpeedMultiplier : MonoBehaviour, ITriggerer
     private float _lastTarget;
 
     //used by action trigger to decide when to stop the instructions/tutorial
-    public Action activateTrigger { get; set; }
-    public Action stopTrigger { get; set; }
+    public Action ActivateTrigger { get; set; }
+    public Action StopTrigger { get; set; }
 
     void Start()
     {
@@ -95,8 +95,8 @@ public class SpeedMultiplier : MonoBehaviour, ITriggerer
     /// </summary>
     public void SmoothFlipMultiplier()
     {
-        if (stopTrigger != null)
-            stopTrigger();
+        if (StopTrigger != null)
+            StopTrigger();
 
         float newTarget = _originalSpeedMultiplier * -1;
 

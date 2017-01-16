@@ -2,7 +2,7 @@
 
 public interface ITriggerable
 {
-    bool triggered { get; set; }
+    bool Triggered { get; set; }
 
     void TriggerActivate();
 

@@ -2,5 +2,5 @@
 
 public interface IBoostAble
 {
-    void BoostSpeed(float _newSpeed, float _returnSpeed);
+    void BoostSpeed(float newSpeed, float returnSpeed);
 }

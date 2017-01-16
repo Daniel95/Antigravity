@@ -16,88 +16,88 @@ public enum StateID
 
 public class StateMachine : MonoBehaviour {
 
-    private Dictionary<StateID, State> states = new Dictionary<StateID, State>();
+    private Dictionary<StateID, State> _states = new Dictionary<StateID, State>();
 
-    private State activeState;
+    private State _activeState;
 
-    private Coroutine acting;
+    private Coroutine _acting;
 
-    public void StartStateMachine(StateID _stateID)
+    public void StartStateMachine(StateID stateId)
     {
-        if(acting != null)
+        if(_acting != null)
         {
             StopStateMachine();
         }
 
         //assign the state we start with
-        activeState = states[_stateID];
+        _activeState = _states[stateId];
 
-        activeState.EnterState();
+        _activeState.EnterState();
 
         //start acting
-        acting = StartCoroutine(Acting());
+        _acting = StartCoroutine(Acting());
     }
 
     public void StopStateMachine()
     {
-        StopCoroutine(acting);
+        StopCoroutine(_acting);
     }
 
     IEnumerator Acting()
     {
         while(true)
         {
-            activeState.Act();
+            _activeState.Act();
             yield return null;
         }
     }
 
-    public void ActivateState(StateID _stateID)
+    public void ActivateState(StateID stateId)
     {
         //reset our current state, before assigning a new state
-        activeState.ResetState();
+        _activeState.ResetState();
 
-        activeState = states[_stateID];
+        _activeState = _states[stateId];
 
-        activeState.EnterState();
+        _activeState.EnterState();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (activeState != null)
+        if (_activeState != null)
         {
-            activeState.OnCollEnter(collision);
+            _activeState.OnCollEnter(collision);
         }
     }
 
     private void OnCollisionExit2D(Collision2D collision)
     {
-        if (activeState != null)
+        if (_activeState != null)
         {
-            activeState.OnCollExit(collision);
+            _activeState.OnCollExit(collision);
         }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (activeState != null)
+        if (_activeState != null)
         {
-            activeState.OnTrigEnter(collision);
+            _activeState.OnTrigEnter(collision);
         }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (activeState != null)
+        if (_activeState != null)
         {
-            activeState.OnTrigExit(collision);
+            _activeState.OnTrigExit(collision);
         }
     }
 
     //at the start of the game, we put all the states scripts here that we might need for this object.
     //the scripts we add here are limited to those that inherit from State.
     public void AssignState(StateID _stateID, State _state) {
-        states.Add(_stateID, _state);
+        _states.Add(_stateID, _state);
     }
 }
 

@@ -8,16 +8,16 @@ public class SpeedSlider : MonoBehaviour, IDragHandler
     [SerializeField]
     private SpeedMultiplier speedMultiplier;
 
-    private Scrollbar bar;
+    private Scrollbar _bar;
 
     // Use this for initialization
     void Awake()
     {
-        bar = GetComponent<Scrollbar>();
+        _bar = GetComponent<Scrollbar>();
     }
 
     public void OnDrag(PointerEventData data)
     {
-        speedMultiplier.SetSpeedMultiplierPercentage(bar.value);
+        speedMultiplier.SetSpeedMultiplierPercentage(_bar.value);
     }
 }

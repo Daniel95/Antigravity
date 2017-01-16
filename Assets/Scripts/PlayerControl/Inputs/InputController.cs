@@ -4,33 +4,33 @@ using UnityEngine;
 
 public class InputController : MonoBehaviour {
 
-    private MobileInputs mobileInputs;
+    private MobileInputs _mobileInputs;
 
-    private PCInputs pcInputs;
+    private PCInputs _pcInputs;
 
-    private InputsBase inputTarget;
+    private InputsBase _inputTarget;
 
     public void RetrieveInputTarget()
     {
-        mobileInputs = GetComponent<MobileInputs>();
-        pcInputs = GetComponent<PCInputs>();
-        inputTarget = GetInputTarget();
+        _mobileInputs = GetComponent<MobileInputs>();
+        _pcInputs = GetComponent<PCInputs>();
+        _inputTarget = GetInputTarget();
     }
 
     public InputsBase InputTarget
     {
-        get { return inputTarget; }
+        get { return _inputTarget; }
     }
 
     private InputsBase GetInputTarget()
     {
         if (Platform.PlatformIsMobile())
         {
-            return mobileInputs;
+            return _mobileInputs;
         }
         else
         {
-            return pcInputs;
+            return _pcInputs;
         }
     }
 }

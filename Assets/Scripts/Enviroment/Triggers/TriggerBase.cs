@@ -8,13 +8,13 @@ public class TriggerBase : MonoBehaviour {
     private List<GameObject> objsToActivate;
 
     //the triggers with a reference to its gameobject, so that we can check if its gameobject is active before we activate the triggers
-    private Dictionary<GameObject, List<ITriggerable>> objectsTriggersToActivate = new Dictionary<GameObject, List<ITriggerable>>();
+    private Dictionary<GameObject, List<ITriggerable>> _objectsTriggersToActivate = new Dictionary<GameObject, List<ITriggerable>>();
 
     [SerializeField]
     private List<GameObject> objsToStop;
 
     //the triggers with a reference to its gameobject, so that we can check if its gameobject is active before we activate the triggers
-    private Dictionary<GameObject, List<ITriggerable>> objectsTriggersToStop = new Dictionary<GameObject, List<ITriggerable>>();
+    private Dictionary<GameObject, List<ITriggerable>> _objectsTriggersToStop = new Dictionary<GameObject, List<ITriggerable>>();
 
     private void Start()
     {
@@ -28,7 +28,7 @@ public class TriggerBase : MonoBehaviour {
                 triggersInObj.Add(trigger);
             }
 
-            objectsTriggersToActivate.Add(obj, triggersInObj);
+            _objectsTriggersToActivate.Add(obj, triggersInObj);
         }
 
         //save all the triggers to stop in the objectsTriggersToStop, so we can stop them later
@@ -42,48 +42,54 @@ public class TriggerBase : MonoBehaviour {
                 triggersInObj.Add(trigger);
             }
 
-            objectsTriggersToStop.Add(obj, triggersInObj);
+            _objectsTriggersToStop.Add(obj, triggersInObj);
         }
     }
 
+    /// <summary>
+    /// Activates all saved triggers that are activeInHierarchy.
+    /// </summary>
     protected void ActivateTriggers()
     {
-        foreach (GameObject obj in objectsTriggersToActivate.Keys)
+        foreach (GameObject obj in _objectsTriggersToActivate.Keys)
         {
             //only activate the triggers on the object if the object is active and its parents are active
             if (obj.activeInHierarchy)
             {
                 //use each key in the dict to get the value, which is an List<Itrigger>      
                 //then loop through each Itrigger in the list and activate it.
-                for (int i = 0; i < objectsTriggersToActivate[obj].Count; i++)
+                for (int i = 0; i < _objectsTriggersToActivate[obj].Count; i++)
                 {
                     //only activate the trigger, if the object isn't already triggered
-                    if (!objectsTriggersToActivate[obj][i].triggered)
+                    if (!_objectsTriggersToActivate[obj][i].Triggered)
                     {
-                        objectsTriggersToActivate[obj][i].triggered = true;
-                        objectsTriggersToActivate[obj][i].TriggerActivate();
+                        _objectsTriggersToActivate[obj][i].Triggered = true;
+                        _objectsTriggersToActivate[obj][i].TriggerActivate();
                     }
                 }
             }
         }
     }
 
+    /// <summary>
+    /// Stops all saved triggers that are activeInHierarchy.
+    /// </summary>
     protected void StopTriggers()
     {
-        foreach (GameObject obj in objectsTriggersToStop.Keys)
+        foreach (GameObject obj in _objectsTriggersToStop.Keys)
         {
             //only activate the triggers on the object if the object is active and its parents are active
             if (obj.activeInHierarchy)
             {
                 //use each key in the dict to get the value, which is an List<Itrigger>
                 //then loop through each Itrigger in the list and activate it.
-                for (int i = 0; i < objectsTriggersToStop[obj].Count; i++)
+                for (int i = 0; i < _objectsTriggersToStop[obj].Count; i++)
                 {
                     //only stop the trigger, if the object was previously triggered
-                    if (objectsTriggersToStop[obj][i].triggered)
+                    if (_objectsTriggersToStop[obj][i].Triggered)
                     {
-                        objectsTriggersToStop[obj][i].triggered = false;
-                        objectsTriggersToStop[obj][i].TriggerStop();
+                        _objectsTriggersToStop[obj][i].Triggered = false;
+                        _objectsTriggersToStop[obj][i].TriggerStop();
                     }
                 }
             }

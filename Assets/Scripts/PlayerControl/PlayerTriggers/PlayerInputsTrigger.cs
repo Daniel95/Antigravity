@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class PlayerInputsTrigger : MonoBehaviour, ITriggerable
 {
-    public bool triggered { get; set; }
+    public bool Triggered { get; set; }
 
     [SerializeField]
     private GameObject player;
 
-    private PlayerStarter playerStarter;
+    private PlayerStarter _playerStarter;
 
-    private PlayerInputs playerInputs;
+    private PlayerInputs _playerInputs;
 
     private enum InputType { All, Shoot, Action, Reverse, Hold };
 
@@ -20,8 +20,8 @@ public class PlayerInputsTrigger : MonoBehaviour, ITriggerable
 
     private void Awake()
     {
-        playerStarter = player.GetComponent<PlayerStarter>();
-        playerInputs = player.GetComponent<PlayerInputs>();
+        _playerStarter = player.GetComponent<PlayerStarter>();
+        _playerInputs = player.GetComponent<PlayerInputs>();
     }
 
     public void TriggerActivate()
@@ -44,23 +44,23 @@ public class PlayerInputsTrigger : MonoBehaviour, ITriggerable
     {
         if(_inputType == InputType.All)
         {
-            playerInputs.SetInputs(_inputState);
+            _playerInputs.SetInputs(_inputState);
         }
         else if (_inputType == InputType.Shoot)
         {
-            playerStarter.SetPlayerShootInputs(_inputState);
+            _playerStarter.SetPlayerShootInputs(_inputState);
         }
         else if (_inputType == InputType.Action)
         {
-            playerStarter.SetPlayerActionInput(_inputState);
+            _playerStarter.SetPlayerActionInput(_inputState);
         }
         else if (_inputType == InputType.Reverse)
         {
-            playerStarter.SetPlayerReverseInput(_inputState);
+            _playerStarter.SetPlayerReverseInput(_inputState);
         }
         else if (_inputType == InputType.Hold)
         {
-            playerStarter.SetPlayerSlowTimeInput(_inputState);
+            _playerStarter.SetPlayerSlowTimeInput(_inputState);
         }
     }
 }

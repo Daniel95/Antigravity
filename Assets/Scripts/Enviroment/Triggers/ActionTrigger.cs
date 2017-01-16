@@ -8,28 +8,28 @@ public class ActionTrigger : TriggerBase {
     [SerializeField]
     private MonoBehaviour triggererScript;
 
-    private ITriggerer triggerController;
+    private ITriggerer _triggerController;
 
     private void Awake()
     {
         //save the interface from the selected scriptObject
-        triggerController = triggererScript as ITriggerer;
+        _triggerController = triggererScript as ITriggerer;
     }
 
     private void OnEnable()
     {
         //subscribe to the triggerController
 
-        triggerController.activateTrigger += ActivateTrigger;
+        _triggerController.ActivateTrigger += ActivateTrigger;
 
-        triggerController.stopTrigger += StopTrigger;
+        _triggerController.StopTrigger += StopTrigger;
     }
 
     private void OnDisable()
     {
-        triggerController.activateTrigger -= ActivateTrigger;
+        _triggerController.ActivateTrigger -= ActivateTrigger;
 
-        triggerController.stopTrigger -= StopTrigger;
+        _triggerController.StopTrigger -= StopTrigger;
     }
 
     //activate and stop the triggers

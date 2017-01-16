@@ -17,8 +17,8 @@ public class TimeManagement : MonoBehaviour {
         }
     }
 
-    public void SetTimeScale(int _time) {
-        Time.timeScale = _time;
+    public void SetTimeScale(int time) {
+        Time.timeScale = time;
     }
 
     public void ResetTimeScale()

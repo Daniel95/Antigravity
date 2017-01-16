@@ -13,38 +13,36 @@ public class RevivedState : State, ITriggerer
     [SerializeField]
     private int launchDelayWhenRespawning = 20;
 
-    private CharScriptAccess charAccess;
+    private CharScriptAccess _charAccess;
 
-    private PlayerInputs playerInputs;
+    private PlayerInputs _playerInputs;
 
-    private PlayerActivateWeapon playerActivateWeapon;
+    private PlayerActivateWeapon _playerActivateWeapon;
 
-    private MoveTowards moveTowards;
+    private MoveTowards _moveTowards;
 
-    private LookAt lookAt;
+    private LookAt _lookAt;
 
-    private AimRay aimRay;
-
-    private bool bulletTimeActive;
+    private AimRay _aimRay;
 
     //the first time we hit a checkpoint, we will be moving towards the center of it, once we reached the center we are in position and can fire ourselfes.
-    private bool isInPosition;
+    private bool _isInPosition;
 
     //used by action trigger to decide when to start the instructions/tutorial, and when to stop it
-    public Action activateTrigger { get; set; }
-    public Action stopTrigger { get; set; }
+    public Action ActivateTrigger { get; set; }
+    public Action StopTrigger { get; set; }
 
     protected override void Awake()
     {
         base.Awake();
 
-        charAccess = GetComponent<CharScriptAccess>();
+        _charAccess = GetComponent<CharScriptAccess>();
 
-        playerActivateWeapon = GetComponent<PlayerActivateWeapon>();
-        lookAt = gun.GetComponent<LookAt>();
-        aimRay = GetComponent<AimRay>();
-        moveTowards = GetComponent<MoveTowards>();
-        playerInputs = GetComponent<PlayerInputs>();
+        _playerActivateWeapon = GetComponent<PlayerActivateWeapon>();
+        _lookAt = gun.GetComponent<LookAt>();
+        _aimRay = GetComponent<AimRay>();
+        _moveTowards = GetComponent<MoveTowards>();
+        _playerInputs = GetComponent<PlayerInputs>();
         GetComponent<ControlVelocity>();
     }
 
@@ -53,13 +51,13 @@ public class RevivedState : State, ITriggerer
         base.EnterState();
 
         //make sure to reset the current touched input. If we are busy shooting, we reset the values and release;
-        playerInputs.ResetTouched();
+        _playerInputs.ResetTouched();
 
-        playerActivateWeapon.SetWeaponInput(false);
+        _playerActivateWeapon.SetWeaponInput(false);
 
         //Reset our movement
-        charAccess.ControlVelocity.SetVelocity(Vector2.zero);
-        charAccess.ControlVelocity.SetDirection(Vector2.zero);
+        _charAccess.ControlVelocity.SetVelocity(Vector2.zero);
+        _charAccess.ControlVelocity.SetDirection(Vector2.zero);
 
         //wait a few frames so the player dont start moving immediatly if he panic clicked right after he respawned
         StartCoroutine(DelayLaunchingInput());
@@ -72,7 +70,7 @@ public class RevivedState : State, ITriggerer
     {
         int framesCounter = launchDelayWhenRespawning;
 
-        while (framesCounter < 0 || !isInPosition)
+        while (framesCounter < 0 || !_isInPosition)
         {
             framesCounter--;
             yield return new WaitForFixedUpdate();
@@ -83,64 +81,64 @@ public class RevivedState : State, ITriggerer
 
     public void StartMovingToCenterCheckPoint(Vector2 _checkPointPosition)
     {
-        moveTowards.reachedDestination += ReachedPosition;
-        moveTowards.StartMoving(_checkPointPosition);
+        _moveTowards.ReachedDestination += ReachedPosition;
+        _moveTowards.StartMoving(_checkPointPosition);
     }
 
     private void ReachedPosition()
     {
-        isInPosition = true;
+        _isInPosition = true;
 
-        if (activateTrigger != null)
-            activateTrigger();
+        if (ActivateTrigger != null)
+            ActivateTrigger();
     }
 
     private void SubscribeToAimInput()
     {
-        playerInputs.dragging += Aiming;
-        playerInputs.releaseInDir += LaunchInDir;
+        _playerInputs.Dragging += Aiming;
+        _playerInputs.ReleaseInDir += LaunchInDir;
     }
 
     //while dragging, we point towards the given direction
-    private void Aiming(Vector2 _dir)
+    private void Aiming(Vector2 dir)
     {
-        if (!aimRay.AimRayActive)
+        if (!_aimRay.AimRayActive)
         {
-            aimRay.StartAimRay((Vector2)transform.position + (_dir * startDirectionRayLength));
+            _aimRay.StartAimRay((Vector2)transform.position + (dir * startDirectionRayLength));
         }
 
-        aimRay.SetRayDestination = (Vector2)transform.position + (_dir * startDirectionRayLength);
+        _aimRay.RayDestination = (Vector2)transform.position + (dir * startDirectionRayLength);
 
-        lookAt.UpdateLookAt((Vector2)transform.position + _dir);
+        _lookAt.UpdateLookAt((Vector2)transform.position + dir);
     }
 
     //when we release, we launch ourselfs to the recieved direction
-    private void LaunchInDir(Vector2 _dir)
+    private void LaunchInDir(Vector2 dir)
     {
-        playerActivateWeapon.SetWeaponInput(true);
+        _playerActivateWeapon.SetWeaponInput(true);
 
-        aimRay.StopAimRay();
-        charAccess.SpeedMultiplier.MakeMultiplierPositive();
-        charAccess.ControlVelocity.SetDirection(_dir * charAccess.ControlVelocity.GetMultiplierDir());
+        _aimRay.StopAimRay();
+        _charAccess.SpeedMultiplier.MakeMultiplierPositive();
+        _charAccess.ControlVelocity.SetDirection(dir * _charAccess.ControlVelocity.GetMultiplierDir());
 
-        charAccess.ControlSpeed.TempSpeedIncrease();
+        _charAccess.ControlSpeed.TempSpeedIncrease();
 
         EnterLaunchedState();
     }
 
     private void EnterLaunchedState()
     {
-        if (stopTrigger != null)
-            stopTrigger();
+        if (StopTrigger != null)
+            StopTrigger();
 
-        playerInputs.dragging -= Aiming;
-        playerInputs.releaseInDir -= LaunchInDir;
+        _playerInputs.Dragging -= Aiming;
+        _playerInputs.ReleaseInDir -= LaunchInDir;
 
-        stateMachine.ActivateState(StateID.LaunchedState);
+        StateMachine.ActivateState(StateID.LaunchedState);
     }
 
     public bool IsInPosition
     {
-        set { isInPosition = value; }
+        set { _isInPosition = value; }
     }
 }

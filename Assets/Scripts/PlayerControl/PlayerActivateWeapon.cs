@@ -4,28 +4,28 @@ using UnityEngine;
 
 public class PlayerActivateWeapon : MonoBehaviour {
 
-    private ActivateWeapon activateWeapon;
-    private PlayerInputs playerInputs;
+    private ActivateWeapon _activateWeapon;
+    private PlayerInputs _playerInputs;
 
     private void Start()
     {
-        activateWeapon = GetComponent<ActivateWeapon>();
-        playerInputs = GetComponent<PlayerInputs>();
+        _activateWeapon = GetComponent<ActivateWeapon>();
+        _playerInputs = GetComponent<PlayerInputs>();
     }
 
     public void SetWeaponInput(bool _input)
     {
         if(_input)
         {
-            playerInputs.dragging += activateWeapon.Aiming;
-            playerInputs.cancelDrag += activateWeapon.CancelAiming;
-            playerInputs.releaseInDir += activateWeapon.Shoot;
+            _playerInputs.Dragging += _activateWeapon.Aiming;
+            _playerInputs.CancelDrag += _activateWeapon.CancelAiming;
+            _playerInputs.ReleaseInDir += _activateWeapon.Shoot;
         }
         else
         {
-            playerInputs.dragging -= activateWeapon.Aiming;
-            playerInputs.cancelDrag -= activateWeapon.CancelAiming;
-            playerInputs.releaseInDir -= activateWeapon.Shoot;
+            _playerInputs.Dragging -= _activateWeapon.Aiming;
+            _playerInputs.CancelDrag -= _activateWeapon.CancelAiming;
+            _playerInputs.ReleaseInDir -= _activateWeapon.Shoot;
         }
     }
 }

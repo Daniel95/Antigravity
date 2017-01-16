@@ -4,32 +4,32 @@ using UnityEngine;
 
 public class Checkpoint : MonoBehaviour {
 
-    private RevivedState revivedState;
+    private RevivedState _revivedState;
 
-    private StateMachine stateMachine;
+    private StateMachine _stateMachine;
 
-    private Vector2 lastCheckpointLocation;
+    private Vector2 _lastCheckpointLocation;
 
-    private bool checkpointReached;
+    private bool _checkpointReached;
 
     private void Start()
     {
-        stateMachine = GetComponent<StateMachine>();
-        revivedState = GetComponent<RevivedState>();
+        _stateMachine = GetComponent<StateMachine>();
+        _revivedState = GetComponent<RevivedState>();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.transform.CompareTag(Tags.CheckPoint))
         {
-            checkpointReached = true;
+            _checkpointReached = true;
 
-            lastCheckpointLocation = collision.transform.position;
+            _lastCheckpointLocation = collision.transform.position;
 
             //activate the revived state and StartMovingToCenterCheckPoint
             ActivateRevivedState();
-            revivedState.IsInPosition = false;
-            revivedState.StartMovingToCenterCheckPoint(lastCheckpointLocation);
+            _revivedState.IsInPosition = false;
+            _revivedState.StartMovingToCenterCheckPoint(_lastCheckpointLocation);
         }
     }
 
@@ -37,17 +37,19 @@ public class Checkpoint : MonoBehaviour {
     {
         ActivateRevivedState();
 
-        transform.position = lastCheckpointLocation;
+        transform.position = _lastCheckpointLocation;
     }
 
-    //put the player in the revived state
+    /// <summary>
+    /// put the player in the revived state.
+    /// </summary>
     private void ActivateRevivedState()
     {
-        stateMachine.ActivateState(StateID.RevivedState);
+        _stateMachine.ActivateState(StateID.RevivedState);
     }
 
     public bool CheckPointReached
     {
-        get { return checkpointReached; }
+        get { return _checkpointReached; }
     }
 }

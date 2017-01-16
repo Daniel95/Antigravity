@@ -10,41 +10,41 @@ public class MoveTowards : MonoBehaviour {
     [SerializeField]
     private float minReachedDistance = 0.5f;
 
-    public Action reachedDestination;
+    public Action ReachedDestination;
 
-    private Coroutine moveTo;
+    private Coroutine _moveTo;
 
-    public void StartMoving(Vector2 _destination) {
+    public void StartMoving(Vector2 destination) {
         //if we are still busy moving towards something, cancel it
-        if (moveTo != null) {
+        if (_moveTo != null) {
             StopMoving();
         }
 
-        moveTo = StartCoroutine(MoveTo(_destination));
+        _moveTo = StartCoroutine(MoveTo(destination));
     }
 
     //moves itself to the destination with a const force, activates reachedDestination delegate when the distance is small enough
-    IEnumerator MoveTo(Vector2 _destination) {
+    IEnumerator MoveTo(Vector2 destination) {
 
-        while (Vector2.Distance(transform.position, _destination) > minReachedDistance) {
-            transform.position = Vector2.MoveTowards(transform.position, _destination, speed);
+        while (Vector2.Distance(transform.position, destination) > minReachedDistance) {
+            transform.position = Vector2.MoveTowards(transform.position, destination, speed);
             yield return new WaitForFixedUpdate();
         }
 
-        moveTo = null;
+        _moveTo = null;
 
-        transform.position = _destination;
+        transform.position = destination;
 
-        if (reachedDestination != null)
-            reachedDestination();
+        if (ReachedDestination != null)
+            ReachedDestination();
     }
 
     public void StopMoving() {
-        StopCoroutine(moveTo);
-        moveTo = null;
+        StopCoroutine(_moveTo);
+        _moveTo = null;
     }
 
     void OnDestroy() {
-        reachedDestination = null;
+        ReachedDestination = null;
     }
 }

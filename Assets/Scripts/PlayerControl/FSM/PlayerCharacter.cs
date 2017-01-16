@@ -4,12 +4,12 @@ using System.Collections;
 
 public class PlayerCharacter : MonoBehaviour
 {
-    private StateMachine stateMachine;
+    private StateMachine _stateMachine;
 
     // Use this for initialization
     void Start()
     {
-        stateMachine = GetComponent<StateMachine>();
+        _stateMachine = GetComponent<StateMachine>();
 
         //wait 1 frame before we start the player statemachine, so all scripts have time to retrieve all their needed info
         GetComponent<Frames>().ExecuteAfterDelay(1,StartPlayerStatemachine);
@@ -19,14 +19,14 @@ public class PlayerCharacter : MonoBehaviour
     {
         AssignStates();
 
-        stateMachine.StartStateMachine(StateID.OnFootState);
+        _stateMachine.StartStateMachine(StateID.OnFootState);
     }
 
     void AssignStates()
     {
-        stateMachine.AssignState(StateID.OnFootState, GetComponent<OnFootState>());
-        stateMachine.AssignState(StateID.LaunchedState, GetComponent<LaunchedState>());
-        stateMachine.AssignState(StateID.GrapplingState, GetComponent<GrapplingState>());
-        stateMachine.AssignState(StateID.RevivedState, GetComponent<RevivedState>());
+        _stateMachine.AssignState(StateID.OnFootState, GetComponent<OnFootState>());
+        _stateMachine.AssignState(StateID.LaunchedState, GetComponent<LaunchedState>());
+        _stateMachine.AssignState(StateID.GrapplingState, GetComponent<GrapplingState>());
+        _stateMachine.AssignState(StateID.RevivedState, GetComponent<RevivedState>());
     }
 }

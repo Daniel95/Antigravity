@@ -16,10 +16,10 @@ public class CollisionDirection : MonoBehaviour {
 
     //get the rounded direction of the collisions
     //each collision will be repesented by its highest axis (x or y)
-    public Vector2 GetUpdatedCollDir(Collision2D _collision)
+    public Vector2 GetUpdatedCollDir(Collision2D collision)
     {
         //save the new collision we recieveds
-        SaveNewCollision(_collision);
+        SaveNewCollision(collision);
 
         return GetCurrentCollDir();
     }
@@ -50,11 +50,11 @@ public class CollisionDirection : MonoBehaviour {
 
     //save a new collision in the savedCollisions dictionary
     //the collider and the collisionDirection is saved
-    private void SaveNewCollision(Collision2D _collision)
+    private void SaveNewCollision(Collision2D collision)
     {
         Vector2 roundedCollDir = new Vector2();
 
-        Vector2 contactPoint = _collision.contacts[0].point;
+        Vector2 contactPoint = collision.contacts[0].point;
 
         Vector2 offset = (contactPoint - (Vector2)transform.position).normalized;
 
@@ -68,7 +68,7 @@ public class CollisionDirection : MonoBehaviour {
             roundedCollDir.y = Rounding.InvertOnNegativeCeil(offset.y);
         }
 
-        savedCollisions.Add(_collision.collider, roundedCollDir);
+        savedCollisions.Add(collision.collider, roundedCollDir);
     }
 
     //remove a saved collision from savedCollisions once we exit

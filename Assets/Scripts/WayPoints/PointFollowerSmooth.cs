@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PointFollowerSmooth : MonoBehaviour, ITriggerable {
 
-    public bool triggered { get; set; }
+    public bool Triggered { get; set; }
 
     [SerializeField]
     private bool activateSelf = true;
@@ -18,15 +18,15 @@ public class PointFollowerSmooth : MonoBehaviour, ITriggerable {
     [SerializeField]
     private float speed = 0.1f;
 
-    private WayPoints wayPoints;
+    private WayPoints _wayPoints;
 
-    private Coroutine moveToPos;
+    private Coroutine _moveToPos;
 
-    private Vector2 currentVelocity;
+    private Vector2 _currentVelocity;
 
     private void Start()
     {
-        wayPoints = GetComponent<WayPoints>();
+        _wayPoints = GetComponent<WayPoints>();
 
         if (activateSelf)
             TriggerActivate();
@@ -34,10 +34,10 @@ public class PointFollowerSmooth : MonoBehaviour, ITriggerable {
 
     public void StartFollowingWaypoint()
     {
-        if (moveToPos != null)
+        if (_moveToPos != null)
             TriggerStop();
 
-        moveToPos = StartCoroutine(MoveToPos(wayPoints.GetCurrentPoint()));
+        _moveToPos = StartCoroutine(MoveToPos(_wayPoints.GetCurrentPoint()));
     }
 
     IEnumerator MoveToPos(Vector2 _pos)
@@ -48,12 +48,12 @@ public class PointFollowerSmooth : MonoBehaviour, ITriggerable {
             Vector2 dir = (_pos - (Vector2)transform.position).normalized;
 
             //our velocity is dir * speed, minus currentVelocity so we dont speed up
-            Vector2 targetVelocity = (dir * speed) - currentVelocity;
+            Vector2 targetVelocity = (dir * speed) - _currentVelocity;
 
             //the bigger our massa, the slower we change our velocity
-            currentVelocity += targetVelocity / mass;
+            _currentVelocity += targetVelocity / mass;
 
-            transform.position += (Vector3)currentVelocity;
+            transform.position += (Vector3)_currentVelocity;
 
             yield return new WaitForFixedUpdate();
         }
@@ -65,7 +65,7 @@ public class PointFollowerSmooth : MonoBehaviour, ITriggerable {
 
     private void GoToNextPoint()
     {
-        moveToPos = StartCoroutine(MoveToPos(wayPoints.GetNextPoint()));
+        _moveToPos = StartCoroutine(MoveToPos(_wayPoints.GetNextPoint()));
     }
 
     public void TriggerActivate()
@@ -75,6 +75,6 @@ public class PointFollowerSmooth : MonoBehaviour, ITriggerable {
 
     public void TriggerStop()
     {
-        StopCoroutine(moveToPos);
+        StopCoroutine(_moveToPos);
     }
 }

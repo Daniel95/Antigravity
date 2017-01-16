@@ -8,18 +8,18 @@ public class ActivateButtonInput : MonoBehaviour {
     [SerializeField]
     private KeyCode keyInput;
 
-    private Button button;
+    private Button _button;
 
 	// Use this for initialization
 	void Start () {
-        button = GetComponent<Button>();
+        _button = GetComponent<Button>();
 	}
 
     private void Update()
     {
         if(Input.GetKeyDown(keyInput))
         {
-            button.onClick.Invoke();
+            _button.onClick.Invoke();
         }
     }
 }

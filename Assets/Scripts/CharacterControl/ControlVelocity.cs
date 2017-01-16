@@ -64,32 +64,32 @@ public class ControlVelocity : MonoBehaviour {
     /// <summary>
     /// Returns the speed to normal.
     /// </summary>
-    /// <param name="_returnSpeed"></param>
-    public void StartReturnSpeedToOriginal(float _returnSpeed)
+    /// <param name="returnSpeed"></param>
+    public void StartReturnSpeedToOriginal(float returnSpeed)
     {
         if (_returnSpeedToOriginal != null)
             StopCoroutine(_returnSpeedToOriginal);
 
-        _returnSpeedToOriginal = StartCoroutine(ReturnSpeedToOriginal(_returnSpeed));
+        _returnSpeedToOriginal = StartCoroutine(ReturnSpeedToOriginal(returnSpeed));
     }
 
-    IEnumerator ReturnSpeedToOriginal(float _returnSpeed)
+    IEnumerator ReturnSpeedToOriginal(float returnSpeed)
     {
         while (Mathf.Abs(currentSpeed - originalSpeed) > minSpeedOffsetValue)
         {
-            currentSpeed = Mathf.Lerp(currentSpeed, originalSpeed, _returnSpeed);
+            currentSpeed = Mathf.Lerp(currentSpeed, originalSpeed, returnSpeed);
             yield return new WaitForFixedUpdate();
         }
 
         currentSpeed = originalSpeed;
     }
 
-    public void AddVelocity(Vector2 _velocity) {
-        _rb.velocity += _velocity;
+    public void AddVelocity(Vector2 velocity) {
+        _rb.velocity += velocity;
     }
 
-    public void SetVelocity(Vector2 _velocity) {
-        _rb.velocity = _velocity;
+    public void SetVelocity(Vector2 velocity) {
+        _rb.velocity = velocity;
     }
 
     //switched to direction of the velocity
@@ -104,28 +104,28 @@ public class ControlVelocity : MonoBehaviour {
 
     //adjusts the given dir with the current multiplier,
     //also only inverts a dir when it has changed
-    public Vector2 AdjustDirToMultiplier(Vector2 _dir) {
-        Vector2 directionDifference = direction - _dir;
+    public Vector2 AdjustDirToMultiplier(Vector2 dir) {
+        Vector2 directionDifference = direction - dir;
 
         int multiplierDir = GetMultiplierDir();
 
         //only adjust the direction to multiplierDir if the direction has changed
         if (directionDifference.x != 0)
         {
-            _dir.x *= multiplierDir;
+            dir.x *= multiplierDir;
         }
         if (directionDifference.y != 0)
         {
-            _dir.y *= multiplierDir;
+            dir.y *= multiplierDir;
         }
 
-        return _dir;
+        return dir;
     }
 
     //set the direction without adjusting anything
-    public void SetDirection(Vector2 _dir)
+    public void SetDirection(Vector2 dir)
     {
-        direction = _dir;
+        direction = dir;
     }
 
     //returns the direction of the multiplier (1 or -1)
@@ -168,15 +168,15 @@ public class ControlVelocity : MonoBehaviour {
     /// <summary>
     /// Stop any speed modifiers (coroutines), and set the speed to the new value, or the max value if the new value is too large.
     /// </summary>
-    /// <param name="_newSpeed"></param>
-    public void SetSpeed(float _newSpeed)
+    /// <param name="newSpeed"></param>
+    public void SetSpeed(float newSpeed)
     {
         if(_returnSpeedToOriginal != null)
         {
             StopCoroutine(_returnSpeedToOriginal);
         }
 
-        currentSpeed = _newSpeed;
+        currentSpeed = newSpeed;
 
         if (currentSpeed > maxSpeed)
         {

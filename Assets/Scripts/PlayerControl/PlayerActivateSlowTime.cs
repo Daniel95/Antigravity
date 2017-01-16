@@ -18,13 +18,13 @@ public class PlayerActivateSlowTime : MonoBehaviour {
     {
         if (_input)
         {
-            playerInputs.tappedExpired += StartSlowTime;
-            playerInputs.release += StopSlowTime;
+            playerInputs.TappedExpired += StartSlowTime;
+            playerInputs.Release += StopSlowTime;
         }
         else
         {
-            playerInputs.tappedExpired -= StartSlowTime;
-            playerInputs.release -= StopSlowTime;
+            playerInputs.TappedExpired -= StartSlowTime;
+            playerInputs.Release -= StopSlowTime;
         }
     }
 

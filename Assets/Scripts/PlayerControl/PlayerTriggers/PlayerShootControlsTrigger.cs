@@ -4,25 +4,25 @@ using UnityEngine;
 
 public class PlayerShootControlsTrigger : MonoBehaviour, ITriggerable
 {
-    public bool triggered { get; set; }
+    public bool Triggered { get; set; }
 
     [SerializeField]
     private GameObject player;
 
-    private PlayerStarter playerStarter;
+    private PlayerStarter _playerStarter;
 
     private void Start()
     {
-        playerStarter = player.GetComponent<PlayerStarter>();
+        _playerStarter = player.GetComponent<PlayerStarter>();
     }
 
     public void TriggerActivate()
     {
-        playerStarter.SetPlayerShootInputs(true);
+        _playerStarter.SetPlayerShootInputs(true);
     }
 
     public void TriggerStop()
     {
-        playerStarter.SetPlayerShootInputs(false);
+        _playerStarter.SetPlayerShootInputs(false);
     }
 }

@@ -3,7 +3,7 @@ using System;
 
 public interface ITriggerer
 {
-    Action activateTrigger { get; set; }
+    Action ActivateTrigger { get; set; }
 
-    Action stopTrigger { get; set; }
+    Action StopTrigger { get; set; }
 }

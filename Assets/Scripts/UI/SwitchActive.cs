@@ -3,7 +3,7 @@
 public class SwitchActive : MonoBehaviour, ITriggerable
 {
 
-    public bool triggered { get; set; }
+    public bool Triggered { get; set; }
 
     [SerializeField]
     private Element[] elements;

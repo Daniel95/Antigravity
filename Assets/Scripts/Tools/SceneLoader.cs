@@ -3,14 +3,14 @@ using UnityEngine.SceneManagement;
 
 public class SceneLoader : MonoBehaviour
 {
-    public void LoadNewSceneName(string _sceneName)
+    public void LoadNewSceneName(string sceneName)
     {
-        SceneManager.LoadScene(_sceneName);
+        SceneManager.LoadScene(sceneName);
     }
 
-    public void LoadNewSceneNumber(int _sceneNumber)
+    public void LoadNewSceneNumber(int sceneNumber)
     {
-        SceneManager.LoadScene(_sceneNumber);
+        SceneManager.LoadScene(sceneNumber);
     }
 
     public void LoadNextScene()

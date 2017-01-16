@@ -3,18 +3,17 @@ using System.Collections;
 
 public class LaunchedState : State
 {
+    private CharScriptAccess _charAccess;
+    private GrapplingHook _grapplingHook;
 
-    private CharScriptAccess charAccess;
-    private GrapplingHook grapplingHook;
-
-    private FutureDirectionIndicator directionIndicator;
+    private FutureDirectionIndicator _directionIndicator;
 
     protected override void Awake()
     {
         base.Awake();
-        directionIndicator = GetComponent<FutureDirectionIndicator>();
-        charAccess = GetComponent<CharScriptAccess>();
-        grapplingHook = GetComponent<GrapplingHook>();
+        _directionIndicator = GetComponent<FutureDirectionIndicator>();
+        _charAccess = GetComponent<CharScriptAccess>();
+        _grapplingHook = GetComponent<GrapplingHook>();
     }
 
     public override void EnterState()
@@ -22,22 +21,22 @@ public class LaunchedState : State
         base.EnterState();
 
         //reactivate the normal movement
-        charAccess.ControlVelocity.StartDirectionalMovement();
+        _charAccess.ControlVelocity.StartDirectionalMovement();
 
         //subscribe to StartedGrappleLocking, so we know when we should start grappling and exit this state
-        grapplingHook.startedGrappleLocking += EnterGrapplingState;
+        _grapplingHook.StartedGrappleLocking += EnterGrapplingState;
 
-        directionIndicator.PointToCeilVelocityDir();
+        _directionIndicator.PointToCeilVelocityDir();
     }
 
     private void EnterGrapplingState()
     {
-        stateMachine.ActivateState(StateID.GrapplingState);
+        StateMachine.ActivateState(StateID.GrapplingState);
     }
 
     private void EnterOnFootState()
     {
-        stateMachine.ActivateState(StateID.OnFootState);
+        StateMachine.ActivateState(StateID.OnFootState);
     }
 
     public override void ResetState()
@@ -45,20 +44,20 @@ public class LaunchedState : State
         base.ResetState();
 
         //unsubscripte from all relevant delegates
-        grapplingHook.startedGrappleLocking -= EnterGrapplingState;
+        _grapplingHook.StartedGrappleLocking -= EnterGrapplingState;
     }
 
     public override void OnCollEnter(Collision2D collision)
     {
         base.OnCollEnter(collision);
 
-        if (charAccess.ControlTakeOff.CheckToBounce(collision))
+        if (_charAccess.ControlTakeOff.CheckToBounce(collision))
         {
-            charAccess.ControlTakeOff.Bounce(charAccess.ControlVelocity.GetDirection(), charAccess.CollisionDirection.GetUpdatedCollDir(collision));
+            _charAccess.ControlTakeOff.Bounce(_charAccess.ControlVelocity.GetDirection(), _charAccess.CollisionDirection.GetUpdatedCollDir(collision));
         }
         else
         {
-            charAccess.ControlDirection.ApplyLogicDirection(charAccess.ControlVelocity.GetDirection(), charAccess.CollisionDirection.GetUpdatedCollDir(collision));
+            _charAccess.ControlDirection.ApplyLogicDirection(_charAccess.ControlVelocity.GetDirection(), _charAccess.CollisionDirection.GetUpdatedCollDir(collision));
 
             EnterOnFootState();
         }

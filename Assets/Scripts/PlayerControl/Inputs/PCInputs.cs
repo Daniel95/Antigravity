@@ -16,13 +16,11 @@ public class PCInputs : InputsBase {
     [SerializeField]
     private float minDistFromPlayer = 6;
 
-    private Coroutine updatingKeyInputs;
-
-    public override void SetInputs(bool _input)
+    public override void SetInputs(bool input)
     {
-        base.SetInputs(_input);
+        base.SetInputs(input);
 
-        if (_input)
+        if (input)
         {
             inputUpdate = StartCoroutine(InputUpdate());
         }
@@ -32,86 +30,86 @@ public class PCInputs : InputsBase {
         }
     }
 
-    IEnumerator InputUpdate()
+    private IEnumerator InputUpdate()
     {
         while (true)
         {
             //key inputs
             if (Input.GetKeyDown(jumpInput))
             {
-                if (action != null)
+                if (Jump != null)
                 {
-                    action();
+                    Jump();
                 }
             }
             else if (Input.GetKeyDown(reverseSpeedInput))
             {
-                if (reverse != null)
+                if (Reverse != null)
                 {
-                    reverse();
+                    Reverse();
                 }
             }
 
             //mouse inputs
             if (Input.GetKeyDown(aimInput) && !InputDetect.CheckUICollision(Input.mousePosition))
             {
-                touchState = TouchStates.Tapped;
+                TouchState = TouchStates.Tapped;
 
-                startDownTime = Time.time;
+                StartDownTime = Time.time;
             }
 
-            if (touchState != TouchStates.None)
+            if (TouchState != TouchStates.None)
             {
                 //not yet released
                 if (!Input.GetKeyUp(aimInput))
                 {
-                    if (Time.time - startDownTime > timebeforeTappedExpired)
+                    if (Time.time - StartDownTime > TimebeforeTappedExpired)
                     {
-                        if(touchState == TouchStates.Tapped && tappedExpired != null)
+                        if(TouchState == TouchStates.Tapped && TappedExpired != null)
                         {
-                            tappedExpired();
+                            TappedExpired();
                         }
 
                         if (Vector2.Distance(Camera.main.ScreenToWorldPoint(Input.mousePosition), transform.position) > minDistFromPlayer)
                         {
 
-                            touchState = TouchStates.Dragging;
+                            TouchState = TouchStates.Dragging;
 
-                            if (dragging != null)
-                                dragging(((Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition) - (Vector2)transform.position).normalized);
+                            if (Dragging != null)
+                                Dragging(((Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition) - (Vector2)transform.position).normalized);
                         }
-                        else if (touchState != TouchStates.Holding)
+                        else if (TouchState != TouchStates.Holding)
                         {
 
-                            if (touchState == TouchStates.Dragging)
+                            if (TouchState == TouchStates.Dragging)
                             {
-                                if (cancelDrag != null)
+                                if (CancelDrag != null)
                                 {
-                                    cancelDrag();
+                                    CancelDrag();
                                 }
                             }
 
-                            touchState = TouchStates.Holding;
+                            TouchState = TouchStates.Holding;
 
-                            if (holding != null)
+                            if (Holding != null)
                             {
-                                holding();
+                                Holding();
                             }
                         }
                     }
                 }
                 else //released
                 {
-                    if (release != null)
-                        release();
+                    if (Release != null)
+                        Release();
 
-                    if (touchState != TouchStates.Holding)
+                    if (TouchState != TouchStates.Holding)
                     {
-                        if (release != null)
-                            releaseInDir(((Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition) - (Vector2)transform.position).normalized);
+                        if (Release != null)
+                            ReleaseInDir(((Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition) - (Vector2)transform.position).normalized);
                     }
 
-                    touchState = TouchStates.None;
+                    TouchState = TouchStates.None;
                 }
             }
 

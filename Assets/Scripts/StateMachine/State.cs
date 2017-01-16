@@ -3,13 +3,13 @@ using System.Collections.Generic;
 
 public abstract class State : MonoBehaviour {
 
-    protected StateMachine stateMachine;
+    protected StateMachine StateMachine;
 
     protected virtual void Awake() { }
 
     protected virtual void Start()
     {
-        stateMachine = GetComponent<StateMachine>();
+        StateMachine = GetComponent<StateMachine>();
     }
 
     //when we enter this state

@@ -3,26 +3,25 @@ using System;
 
 public class PlayerInputs : MonoBehaviour, ITriggerable {
 
-    public bool triggered { get; set; }
+    public bool Triggered { get; set; }
 
-    private InputController inputController;
+    private InputController _inputController;
 
-    //shoot inputs
-    public Action<Vector2> dragging;
-    public Action<Vector2> releaseInDir;
-    public Action release;
-    public Action holding;
-    public Action tappedExpired;
-    public Action cancelDrag;
+    public Action<Vector2> Dragging;
+    public Action<Vector2> ReleaseInDir;
+    public Action Release;
+    public Action Holding;
+    public Action TappedExpired;
+    public Action CancelDrag;
 
     //movement inputs
-    public Action action;
-    public Action reverse;
+    public Action Jump;
+    public Action Reverse;
 
     private void Awake()
     {
-        inputController = GetComponent<InputController>();
-        inputController.RetrieveInputTarget();
+        _inputController = GetComponent<InputController>();
+        _inputController.RetrieveInputTarget();
         SetInputs(true);
     }
 
@@ -40,154 +39,154 @@ public class PlayerInputs : MonoBehaviour, ITriggerable {
         SetReverseInput(false);
     }
 
-    public void SetInputs(bool _input)
+    public void SetInputs(bool input)
     {
-        inputController.InputTarget.SetInputs(_input);
+        _inputController.InputTarget.SetInputs(input);
     }
 
-    public void SetActionInput(bool _inputState)
+    public void SetActionInput(bool inputState)
     {
-        if(_inputState)
+        if(inputState)
         {
-            inputController.InputTarget.action += Action;
+            _inputController.InputTarget.Jump += CheckJump;
         }
-        else if(!_inputState)
+        else if(!inputState)
         {
-            inputController.InputTarget.action -= Action;
-        }
-    }
-
-    public void SetReverseInput(bool _inputState)
-    {
-        if (_inputState)
-        {
-            inputController.InputTarget.reverse += Reverse;
-        }
-        else if (!_inputState)
-        {
-            inputController.InputTarget.reverse -= Reverse;
+            _inputController.InputTarget.Jump -= CheckJump;
         }
     }
 
-    public void SetDoubleReverseInput(bool _inputState)
+    public void SetReverseInput(bool inputState)
     {
-        if (_inputState)
+        if (inputState)
         {
-            inputController.InputTarget.action += Reverse;
-        }
-        else if (!_inputState)
-        {
-            inputController.InputTarget.action -= Reverse;
-        }
-    }
-
-    public void SetHoldInput(bool _inputState)
-    {
-        if(_inputState)
-        {
-            inputController.InputTarget.holding += holding;
+            _inputController.InputTarget.Reverse += CheckReverse;
         }
         else
         {
-            inputController.InputTarget.holding -= holding;
+            _inputController.InputTarget.Reverse -= CheckReverse;
         }
     }
 
-    public void SetShootInput(bool _inputState)
+    public void SetDoubleReverseInput(bool inputState)
     {
-        if (_inputState)
+        if (inputState)
         {
-
-            if(inputController.InputTarget.release == null)
-                inputController.InputTarget.release += Release;
-
-            if (inputController.InputTarget.releaseInDir == null)
-                inputController.InputTarget.releaseInDir += ReleaseInDir;
-
-            if (inputController.InputTarget.dragging == null)
-                inputController.InputTarget.dragging += Dragging;
-
-            if (inputController.InputTarget.cancelDrag == null)
-                inputController.InputTarget.cancelDrag += CancelDrag;
-
-            if (inputController.InputTarget.tappedExpired == null)
-                inputController.InputTarget.tappedExpired += TappedExpired;
+            _inputController.InputTarget.Jump += CheckReverse;
         }
-        else if (!_inputState)
+        else
         {
-            inputController.InputTarget.release -= Release;
-            inputController.InputTarget.dragging -= Dragging;
-            inputController.InputTarget.cancelDrag -= CancelDrag;
-            inputController.InputTarget.tappedExpired -= TappedExpired;
+            _inputController.InputTarget.Jump -= CheckReverse;
+        }
+    }
+
+    public void SetHoldInput(bool inputState)
+    {
+        if(inputState)
+        {
+            _inputController.InputTarget.Holding += CheckHolding;
+        }
+        else
+        {
+            _inputController.InputTarget.Holding -= CheckHolding;
+        }
+    }
+
+    public void SetShootInput(bool inputState)
+    {
+        if (inputState)
+        {
+
+            if(_inputController.InputTarget.Release == null)
+                _inputController.InputTarget.Release += CheckRelease;
+
+            if (_inputController.InputTarget.ReleaseInDir == null)
+                _inputController.InputTarget.ReleaseInDir += CheckReleaseInDir;
+
+            if (_inputController.InputTarget.Dragging == null)
+                _inputController.InputTarget.Dragging += CheckDragging;
+
+            if (_inputController.InputTarget.CancelDrag == null)
+                _inputController.InputTarget.CancelDrag += CheckCancelDrag;
+
+            if (_inputController.InputTarget.TappedExpired == null)
+                _inputController.InputTarget.TappedExpired += CheckTappedExpired;
+        }
+        else
+        {
+            _inputController.InputTarget.Release -= CheckRelease;
+            _inputController.InputTarget.Dragging -= CheckDragging;
+            _inputController.InputTarget.CancelDrag -= CheckCancelDrag;
+            _inputController.InputTarget.TappedExpired -= CheckTappedExpired;
         }
     }
 
     public void ResetTouched()
     {
-        inputController.InputTarget.ResetTouched();
+        _inputController.InputTarget.ResetTouched();
     }
 
-    private void Release()
+    private void CheckRelease()
     {
-        if (release != null)
+        if (Release != null)
         {
-            release();
+            Release();
         }
     }
 
-    private void ReleaseInDir(Vector2 _dir)
+    private void CheckReleaseInDir(Vector2 dir)
     {
-        if(releaseInDir != null)
+        if(ReleaseInDir != null)
         {
-            releaseInDir(_dir);
+            ReleaseInDir(dir);
         }
     }
 
-    private void TappedExpired()
+    private void CheckTappedExpired()
     {
-        if(tappedExpired != null)
+        if(TappedExpired != null)
         {
-            tappedExpired();
+            TappedExpired();
         }
     }
 
-    private void Dragging(Vector2 _dir)
+    private void CheckDragging(Vector2 dir)
     {
-        if (dragging != null)
+        if (Dragging != null)
         {
-            dragging(_dir);
+            Dragging(dir);
         }
     }
 
-    private void CancelDrag()
+    private void CheckCancelDrag()
     {
-        if(cancelDrag != null)
+        if(CancelDrag != null)
         {
-            cancelDrag();
+            CancelDrag();
         }
     }
 
-    private void Holding()
+    private void CheckHolding()
     {
-        if(holding != null)
+        if(Holding != null)
         {
-            holding();
+            Holding();
         }
     }
 
-    private void Action()
+    private void CheckJump()
     {
-        if (action != null)
+        if (Jump != null)
         {
-            action();
+            Jump();
         }
     }
 
-    private void Reverse()
+    private void CheckReverse()
     {
-        if (reverse != null)
+        if (Reverse != null)
         {
-            reverse();
+            Reverse();
         }
     }
 } 

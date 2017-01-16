@@ -3,21 +3,21 @@ using System.Collections;
 
 public class OnFootState : State {
 
-    private CharScriptAccess charAccess;
-    private PlayerInputs playerInputs;
-    private GrapplingHook grapplingHook;
+    private CharScriptAccess _charAccess;
+    private PlayerInputs _playerInputs;
+    private GrapplingHook _grapplingHook;
 
     protected override void Awake()
     {
         base.Awake();
-        grapplingHook = GetComponent<GrapplingHook>();
-        playerInputs = GetComponent<PlayerInputs>();
+        _grapplingHook = GetComponent<GrapplingHook>();
+        _playerInputs = GetComponent<PlayerInputs>();
     }
 
     protected override void Start()
     {
         base.Start();
-        charAccess = GetComponent<CharScriptAccess>();
+        _charAccess = GetComponent<CharScriptAccess>();
     }
 
     public override void EnterState()
@@ -25,45 +25,45 @@ public class OnFootState : State {
         base.EnterState();
 
         //reactivate the normal movement
-        charAccess.ControlVelocity.StartDirectionalMovement();
+        _charAccess.ControlVelocity.StartDirectionalMovement();
 
         //subscribe to StartedGrappleLocking, so we know when we should start grappling and exit this state
-        grapplingHook.startedGrappleLocking += ExitState;
+        _grapplingHook.StartedGrappleLocking += ExitState;
 
         //subscribe to the space input, so we know when to jump
-        playerInputs.action += Jump;
+        _playerInputs.Jump += Jump;
     }
 
     private void Jump()
     {
-        charAccess.ControlTakeOff.Jump();
+        _charAccess.ControlTakeOff.Jump();
     }
 
     private void ExitState()
     {
-        stateMachine.ActivateState(StateID.GrapplingState);
+        StateMachine.ActivateState(StateID.GrapplingState);
     }
 
     public override void ResetState()
     {
         base.ResetState();
 
-        playerInputs.action -= Jump;
+        _playerInputs.Jump -= Jump;
 
-        grapplingHook.startedGrappleLocking -= ExitState;
+        _grapplingHook.StartedGrappleLocking -= ExitState;
     }
 
     public override void OnCollEnter(Collision2D collision)
     {
         base.OnCollEnter(collision);
 
-        if (charAccess.ControlTakeOff.CheckToBounce(collision))
+        if (_charAccess.ControlTakeOff.CheckToBounce(collision))
         {
-            charAccess.ControlTakeOff.Bounce(charAccess.ControlVelocity.GetDirection(), charAccess.CollisionDirection.GetUpdatedCollDir(collision));
+            _charAccess.ControlTakeOff.Bounce(_charAccess.ControlVelocity.GetDirection(), _charAccess.CollisionDirection.GetUpdatedCollDir(collision));
         }
         else
         {
-            charAccess.ControlDirection.ApplyLogicDirection(charAccess.ControlVelocity.GetDirection(), charAccess.CollisionDirection.GetUpdatedCollDir(collision));
+            _charAccess.ControlDirection.ApplyLogicDirection(_charAccess.ControlVelocity.GetDirection(), _charAccess.CollisionDirection.GetUpdatedCollDir(collision));
         }
     }
 }

@@ -16,31 +16,31 @@ public class ActivateWeapon : MonoBehaviour {
     [SerializeField]
     private Transform spawnTransform;
 
-    private LookAt gunLookAt;
+    private LookAt _gunLookAt;
 
-    private List<IWeapon> weapons = new List<IWeapon>();
+    private List<IWeapon> _weapons = new List<IWeapon>();
 
-    private int weaponIndex;
+    private int _weaponIndex;
 
-    private FutureDirectionIndicator futureDirIndicator;
+    private FutureDirectionIndicator _futureDirIndicator;
 
     private void Awake()
     {
-        gunLookAt = gun.GetComponent<LookAt>();
-        futureDirIndicator = GetComponent<FutureDirectionIndicator>();
+        _gunLookAt = gun.GetComponent<LookAt>();
+        _futureDirIndicator = GetComponent<FutureDirectionIndicator>();
 
         foreach (var weapon in GetComponents<IWeapon>())
         {
-            weapons.Add(weapon);
+            _weapons.Add(weapon);
         }
     }
 
-    public void Aiming(Vector2 _dir)
+    public void Aiming(Vector2 dir)
     {
         if (!TimeManagement.isPauzed())
         {
-            weapons[weaponIndex].Dragging(GetDestinationPoint(_dir), spawnTransform.position);
-            gunLookAt.UpdateLookAt((Vector2)transform.position + _dir);
+            _weapons[_weaponIndex].Dragging(GetDestinationPoint(dir), spawnTransform.position);
+            _gunLookAt.UpdateLookAt((Vector2)transform.position + dir);
         }
     }
 
@@ -48,28 +48,33 @@ public class ActivateWeapon : MonoBehaviour {
     {
         if (!TimeManagement.isPauzed())
         {
-            weapons[weaponIndex].CancelDragging();
-            futureDirIndicator.PointToCeilVelocityDir();
+            _weapons[_weaponIndex].CancelDragging();
+            _futureDirIndicator.PointToCeilVelocityDir();
         }
     }
 
-    public void Shoot(Vector2 _dir)
+    public void Shoot(Vector2 dir)
     {
         if (!TimeManagement.isPauzed())
         {
-            weapons[weaponIndex].Release(GetDestinationPoint(_dir), spawnTransform.position);
-            gunLookAt.UpdateLookAt((Vector2)transform.position + _dir);
+            _weapons[_weaponIndex].Release(GetDestinationPoint(dir), spawnTransform.position);
+            _gunLookAt.UpdateLookAt((Vector2)transform.position + dir);
         }
     }
 
-    //get the destination of the projectile, 
-    //if it hits a wall then the point of collision with the wall will be its destination, 
-    //otherwise the destination will be decided by the maxDistance
-    private Vector2 GetDestinationPoint(Vector2 _dir) {
+   
+    /// <summary>
+    /// Get the destination of the projectile,  
+    /// if it hits a wall then the point of collision with the wall will be its destination, 
+    /// otherwise the destination will be decided by the maxDistance.
+    /// </summary>
+    /// <param name="dir"></param>
+    /// <returns></returns>
+    private Vector2 GetDestinationPoint(Vector2 dir) {
 
-        Vector2 targetPos = (Vector2)transform.position + (_dir * maxRaycastDistance);
+        Vector2 targetPos = (Vector2)transform.position + (dir * maxRaycastDistance);
 
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, _dir, maxRaycastDistance, rayLayers);
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, dir, maxRaycastDistance, rayLayers);
 
         //if we hit a collider between the shooter and targetPos, than that collision point is the targetPos
         if (hit.collider != null)
@@ -82,12 +87,12 @@ public class ActivateWeapon : MonoBehaviour {
 
     void ChangeWeapon(int _change)
     {
-        weaponIndex += _change;
+        _weaponIndex += _change;
 
-        if (weaponIndex < 0)
-            weaponIndex = weapons.Count - 1;
+        if (_weaponIndex < 0)
+            _weaponIndex = _weapons.Count - 1;
 
-        else if (weaponIndex > weapons.Count - 1)
-            weaponIndex = 0;
+        else if (_weaponIndex > _weapons.Count - 1)
+            _weaponIndex = 0;
     }
 }

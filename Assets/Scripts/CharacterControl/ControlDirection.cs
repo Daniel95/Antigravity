@@ -39,12 +39,12 @@ public class ControlDirection : MonoBehaviour {
     /// <summary>
     /// apply the next logic direction (game logic), to our controlVelocity script.
     /// </summary>
-    /// <param name="_currentDir"></param>
-    /// <param name="_collDir"></param>
-    public void ApplyLogicDirection(Vector2 _currentDir, Vector2 _collDir)
+    /// <param name="currentDir"></param>
+    /// <param name="collDir"></param>
+    public void ApplyLogicDirection(Vector2 currentDir, Vector2 collDir)
     {
         //our next direction we are going to move towards, depending on our currentdirection, and the direction of our collision(s)
-        Vector2 dirLogic = DirectionLogic(_currentDir, _collDir);
+        Vector2 dirLogic = DirectionLogic(currentDir, collDir);
 
         Vector2 lookDir = _charAccess.ControlVelocity.AdjustDirToMultiplier(_lastDir);
 
@@ -60,10 +60,10 @@ public class ControlDirection : MonoBehaviour {
     /// <summary>
     /// the logic we use to control the players direction using collision directions and raycasts collisions, after we have collision with another object
     /// </summary>
-    /// <param name="_currentDir"></param>
-    /// <param name="_collDir"></param>
+    /// <param name="currentDir"></param>
+    /// <param name="collDir"></param>
     /// <returns></returns>
-    private Vector2 DirectionLogic(Vector2 _currentDir, Vector2 _collDir)
+    private Vector2 DirectionLogic(Vector2 currentDir, Vector2 collDir)
     {     
         Vector2 newDir = new Vector2();
 
@@ -75,41 +75,34 @@ public class ControlDirection : MonoBehaviour {
         if ((rayHitDir.x == 0 || rayHitDir.y == 0)) {
 
             //if we are not in a corner, but still touch objects from both axises, invert our dir
-            if (_collDir.x != 0 && _collDir.y != 0)
+            if (collDir.x != 0 && collDir.y != 0)
             {
-                newDir = _lastDir = _currentDir * -1;
+                newDir = _lastDir = currentDir * -1;
             }
             else
             {
 
                 //we dont want to overwrite our last dir with a zero, we use it determine which direction we should move next
                 //if our currentDir.x isn't 0, set is as our lastDir.x
-                if (_currentDir.x != 0)
+                if (currentDir.x != 0)
                 {
-                    _lastDir.x = Rounding.InvertOnNegativeCeil(_currentDir.x) * _charAccess.ControlVelocity.GetMultiplierDir();
+                    _lastDir.x = Rounding.InvertOnNegativeCeil(currentDir.x) * _charAccess.ControlVelocity.GetMultiplierDir();
                 }
 
                 //if our currentDir.y isn't 0, set is as our lastDir.y
-                if (_currentDir.y != 0)
+                if (currentDir.y != 0)
                 {
-                    _lastDir.y = Rounding.InvertOnNegativeCeil(_currentDir.y) * _charAccess.ControlVelocity.GetMultiplierDir();
+                    _lastDir.y = Rounding.InvertOnNegativeCeil(currentDir.y) * _charAccess.ControlVelocity.GetMultiplierDir();
                 }
 
-                if (!_charAccess.ControlVelocity.CheckMovingStandard() || (_currentDir.x != 0 && _currentDir.y != 0))
+                if (!_charAccess.ControlVelocity.CheckMovingStandard() || (currentDir.x != 0 && currentDir.y != 0))
                 {
                     _charAccess.ControlSpeed.TempSpeedIncrease();
                 }
 
                 //replace the dir on the axis that we dont have a collision with
                 //example: if we hit something under us, move to the left or right, depeding on our lastDir
-                if (_collDir.x != 0)
-                {
-                    newDir = new Vector2(0, _lastDir.y);
-                }
-                else
-                {
-                    newDir = new Vector2(_lastDir.x, 0);
-                }
+                newDir = collDir.x != 0 ? new Vector2(0, _lastDir.y) : new Vector2(_lastDir.x, 0);
             }
 
         }
@@ -122,16 +115,8 @@ public class ControlDirection : MonoBehaviour {
             }
             else
             {
-                if((_currentDir.x * _charAccess.ControlVelocity.GetMultiplierDir()) == rayHitDir.x)
-                {
 
-                } else
-                {
-
-                }
-
-
-                if ((_currentDir.x * _charAccess.ControlVelocity.GetMultiplierDir()) == rayHitDir.x)
+                if ((currentDir.x * _charAccess.ControlVelocity.GetMultiplierDir()) == rayHitDir.x)
                 {
                     _lastDir.y = rayHitDir.y * -1;
                     _lastDir.x = rayHitDir.x;

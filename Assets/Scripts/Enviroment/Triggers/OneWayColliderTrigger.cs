@@ -4,17 +4,17 @@ using UnityEngine;
 
 public class OneWayColliderTrigger : TriggerBase {
 
-    private OneWayDetection oneWayDetection;
+    private OneWayDetection _oneWayDetection;
 
     private void OnEnable()
     {
-        oneWayDetection = GetComponent<OneWayDetection>();
-        oneWayDetection.detectedRight += CheckCollider;
+        _oneWayDetection = GetComponent<OneWayDetection>();
+        _oneWayDetection.DetectedRight += CheckCollider;
     }
 
     private void OnDisable()
     {
-        oneWayDetection.detectedRight -= CheckCollider;
+        _oneWayDetection.DetectedRight -= CheckCollider;
     }
 
     private void CheckCollider(Collider2D collider)

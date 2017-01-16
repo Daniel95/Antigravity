@@ -13,17 +13,17 @@ public class GetKilled : MonoBehaviour, IKillable {
 
     private bool _inKillerTrigger;
 
-    public void EnteringKillingTrigger(string _killerTag)
+    public void EnteringKillingTrigger(string killerTag)
     {
-        if (CheckDeadliness(_killerTag))
+        if (CheckDeadliness(killerTag))
         {
             _inKillerTrigger = true;
         }
     }
 
-    public void ExitingKillingTrigger(string _killerTag)
+    public void ExitingKillingTrigger(string killerTag)
     {
-        if (CheckDeadliness(_killerTag))
+        if (CheckDeadliness(killerTag))
         {
             _inKillerTrigger = false;
         }
@@ -54,13 +54,13 @@ public class GetKilled : MonoBehaviour, IKillable {
     /// <summary>
     /// check if this tag is deadly to us
     /// </summary>
-    /// <param name="_killerTag"></param>
+    /// <param name="killerTag"></param>
     /// <returns></returns>
-    private bool CheckDeadliness(string _killerTag)
+    private bool CheckDeadliness(string killerTag)
     {
         for (int i = 0; i < deadlyTags.Length; i++)
         {
-            if (_killerTag == deadlyTags[i])
+            if (killerTag == deadlyTags[i])
             {
                 return true;
             }

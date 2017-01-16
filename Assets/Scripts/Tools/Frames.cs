@@ -4,23 +4,23 @@ using System;
 
 public class Frames : MonoBehaviour {
 
-    public static bool CheckInterval(int _intervalLength)
+    public static bool CheckInterval(int intervalLength)
     {
-        if (Time.frameCount % _intervalLength == 0)
+        if (Time.frameCount % intervalLength == 0)
             return true;
         else
             return false;
     }
 
-    public void ExecuteAfterDelay(int _framesToWait, Action _action) {
-        StartCoroutine(DelayExecute(_framesToWait, _action));
+    public void ExecuteAfterDelay(int framesToWait, Action action) {
+        StartCoroutine(DelayExecute(framesToWait, action));
     }
 
-    IEnumerator DelayExecute(int _framesToWait, Action _action) {
-        for (int i = 0; i < _framesToWait; i++) {
+    IEnumerator DelayExecute(int framesToWait, Action action) {
+        for (int i = 0; i < framesToWait; i++) {
             yield return new WaitForFixedUpdate();
         }
 
-        _action();
+        action();
     }
 }

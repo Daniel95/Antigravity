@@ -52,14 +52,14 @@ public class CharRaycasting : MonoBehaviour {
         return CheckIntersectionRaycast(topRightCornerPoint.position, Quaternion.Euler(0, 0, -45) * transform.right, bottomRightCornerPoint.position, Quaternion.Euler(0, 0, 45) * transform.right, cornerRayLength);
     }
 
-    private bool CheckDoubleRaycast(Vector2 _rayOrigin1, Vector2 _rayOrigin2, Vector2 _direction, float _rayLength)
+    private bool CheckDoubleRaycast(Vector2 rayOrigin1, Vector2 rayOrigin2, Vector2 direction, float rayLength)
     {
-        return CheckRaycastOther(_rayOrigin1, _direction, _rayLength, layers) || CheckRaycastOther(_rayOrigin2, _direction, _rayLength, layers);
+        return CheckRaycastOther(rayOrigin1, direction, rayLength, layers) || CheckRaycastOther(rayOrigin2, direction, rayLength, layers);
     }
 
-    private bool CheckIntersectionRaycast(Vector2 _rayOrigin1, Vector2 _direction1, Vector2 _rayOrigin2, Vector2 _direction2, float _rayLength)
+    private bool CheckIntersectionRaycast(Vector2 rayOrigin1, Vector2 direction1, Vector2 rayOrigin2, Vector2 direction2, float rayLength)
     {
-        return CheckRaycastOther(_rayOrigin1, _direction1, _rayLength, layers) || CheckRaycastOther(_rayOrigin2, _direction2, _rayLength, layers);
+        return CheckRaycastOther(rayOrigin1, direction1, rayLength, layers) || CheckRaycastOther(rayOrigin2, direction2, rayLength, layers);
     }
 
     /// <summary>

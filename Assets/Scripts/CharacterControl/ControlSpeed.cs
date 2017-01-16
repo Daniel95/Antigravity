@@ -51,12 +51,12 @@ public class ControlSpeed : MonoBehaviour, IBoostAble {
     /// <summary>
     /// boosts with a certain amount.
     /// </summary>
-    /// <param name="_newSpeed"></param>
-    /// <param name="_returnSpeed"></param>
-    public void BoostSpeed(float _newSpeed, float _returnSpeed)
+    /// <param name="newSpeed"></param>
+    /// <param name="returnSpeed"></param>
+    public void BoostSpeed(float newSpeed, float returnSpeed)
     {
-        _velocity.SetSpeed(_newSpeed);
+        _velocity.SetSpeed(newSpeed);
 
-        _velocity.StartReturnSpeedToOriginal(_returnSpeed);
+        _velocity.StartReturnSpeedToOriginal(returnSpeed);
     }
 }

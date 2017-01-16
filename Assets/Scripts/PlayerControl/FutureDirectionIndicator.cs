@@ -7,69 +7,72 @@ public class FutureDirectionIndicator : MonoBehaviour {
     [SerializeField]
     private Transform arrowTransform;
 
-    private CharScriptAccess charAccess;
-    private LookAt lookAt;
+    private CharScriptAccess _charAccess;
 
-    private Vector2 lookDir;
+    private LookAt _lookAt;
 
-    private Frames frames;
+    private Vector2 _lookDir;
+
+    private Frames _frames;
 
     void Start() {
-        lookAt = arrowTransform.GetComponent<LookAt>();
-        charAccess = GetComponent<CharScriptAccess>();
-        frames = GetComponent<Frames>();
-        lookDir = charAccess.ControlVelocity.GetCeilVelocityDirection();
+        _lookAt = arrowTransform.GetComponent<LookAt>();
+        _charAccess = GetComponent<CharScriptAccess>();
+        _frames = GetComponent<Frames>();
+        _lookDir = _charAccess.ControlVelocity.GetCeilVelocityDirection();
 
         SubscribeToDelegates();
     }
 
     void OnEnable() {
-        if (charAccess != null)
+        if (_charAccess != null)
             SubscribeToDelegates();
     }
 
     void OnDisable()
     {
-        if (charAccess != null) {
-            charAccess.ControlDirection.FinishedDirectionLogic -= PointToControlledDir;
-            charAccess.SpeedMultiplier.SwitchedMultiplier -= PointToCeilVelocityDir;
-            charAccess.ControlTakeOff.TookOff -= PointToCeilVelocityDir;
+        if (_charAccess != null) {
+            _charAccess.ControlDirection.FinishedDirectionLogic -= PointToControlledDir;
+            _charAccess.SpeedMultiplier.SwitchedMultiplier -= PointToCeilVelocityDir;
+            _charAccess.ControlTakeOff.TookOff -= PointToCeilVelocityDir;
         }
     }
 
     void SubscribeToDelegates() {
-        charAccess.ControlDirection.FinishedDirectionLogic += PointToControlledDir;
-        charAccess.SpeedMultiplier.SwitchedMultiplier += PointToCeilVelocityDir;
-        charAccess.ControlTakeOff.TookOff += PointToCeilVelocityDir;
+        _charAccess.ControlDirection.FinishedDirectionLogic += PointToControlledDir;
+        _charAccess.SpeedMultiplier.SwitchedMultiplier += PointToCeilVelocityDir;
+        _charAccess.ControlTakeOff.TookOff += PointToCeilVelocityDir;
     }
 
-    public void PointToControlledDir(Vector2 _futureDir)
+    private void PointToControlledDir(Vector2 _futureDir)
     {
 
-        lookDir = _futureDir * charAccess.ControlVelocity.GetMultiplierDir();
+        _lookDir = _futureDir * _charAccess.ControlVelocity.GetMultiplierDir();
 
-        lookAt.UpdateLookAt((Vector2)transform.position + lookDir);
+        _lookAt.UpdateLookAt((Vector2)transform.position + _lookDir);
     }
-    
-    //look at the the ceiled values of our current normalized velocity 
+
+    /// <summary>
+    /// look at the the ceiled values of our current normalized velocity.
+    /// </summary>
     public void PointToCeilVelocityDir() {
-        frames.ExecuteAfterDelay(1, UpdateCeilVelocityDir);
+        _frames.ExecuteAfterDelay(1, UpdateCeilVelocityDir);
     }
 
     private void UpdateCeilVelocityDir() {
-        Vector2 velocityDir = charAccess.ControlVelocity.GetCeilVelocityDirection();
+        Vector2 velocityDir = _charAccess.ControlVelocity.GetCeilVelocityDirection();
 
         //don't update the dir when its new value is zero
         if (velocityDir.x != 0)
         {
-            lookDir.x = velocityDir.x;
+            _lookDir.x = velocityDir.x;
         }
         if (velocityDir.y != 0)
         {
-            lookDir.y = velocityDir.y;
+            _lookDir.y = velocityDir.y;
         }
 
-        lookAt.UpdateLookAt((Vector2)transform.position + lookDir);
+        _lookAt.UpdateLookAt((Vector2)transform.position + _lookDir);
     }
 
     private void UpdateLookDir(Vector2 _newLookDir)
@@ -77,11 +80,11 @@ public class FutureDirectionIndicator : MonoBehaviour {
         //don't update the dir when its new value is zero
         if (_newLookDir.x != 0)
         {
-            lookDir.x = _newLookDir.x;
+            _lookDir.x = _newLookDir.x;
         }
         if (_newLookDir.y != 0)
         {
-            lookDir.y = _newLookDir.y;
+            _lookDir.y = _newLookDir.y;
         }
     }
 }

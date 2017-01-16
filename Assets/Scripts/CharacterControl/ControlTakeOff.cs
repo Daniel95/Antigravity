@@ -16,8 +16,8 @@ public class ControlTakeOff : MonoBehaviour, ITriggerer {
     private bool _inBouncyTrigger;
 
     //used by action trigger to decide when to start the instructions/tutorial, and when to stop it
-    public Action activateTrigger { get; set; }
-    public Action stopTrigger { get; set; }
+    public Action ActivateTrigger { get; set; }
+    public Action StopTrigger { get; set; }
 
     // Use this for initialization
     void Start () {
@@ -32,8 +32,8 @@ public class ControlTakeOff : MonoBehaviour, ITriggerer {
     /// </summary>
     public void Jump()
     {
-        if (stopTrigger != null) {
-            stopTrigger();
+        if (StopTrigger != null) {
+            StopTrigger();
         }
 
         Vector2 collisionDir = _plrAcces.CollisionDirection.GetCurrentCollDir();

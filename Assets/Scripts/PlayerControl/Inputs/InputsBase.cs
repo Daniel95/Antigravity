@@ -4,41 +4,39 @@ using System.Collections;
 
 public class InputsBase : MonoBehaviour {
 
-    public Action tappedExpired;
+    public Action TappedExpired;
 
-    public Action<Vector2> dragging;
+    public Action<Vector2> Dragging;
 
-    public Action release;
+    public Action Release;
 
-    public Action<Vector2> releaseInDir;
+    public Action<Vector2> ReleaseInDir;
 
-    public Action cancelDrag;
+    public Action CancelDrag;
 
-    public Action holding;
+    public Action Holding;
 
-    public Action reverse;
+    public Action Reverse;
 
-    public Action action;
+    public Action Jump;
 
-    public Coroutine inputUpdate;
+    protected Coroutine inputUpdate;
 
     protected enum TouchStates { Holding, Dragging, Tapped, None }
 
-    protected TouchStates touchState = TouchStates.None;
+    protected TouchStates TouchState = TouchStates.None;
 
     [SerializeField]
-    protected float timebeforeTappedExpired = 0.15f;
+    protected float TimebeforeTappedExpired = 0.15f;
 
-    protected float startDownTime;
-
-    protected bool tappedIsExpired;
+    protected float StartDownTime;
 
     public virtual void SetInputs(bool _input) { }
 
     public virtual void ResetTouched()
     {
-        if (cancelDrag != null)
-            cancelDrag();
+        if (CancelDrag != null)
+            CancelDrag();
     }
 }
 

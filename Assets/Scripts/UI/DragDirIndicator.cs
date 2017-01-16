@@ -10,8 +10,8 @@ public class DragDirIndicator : MonoBehaviour {
     [SerializeField]
     private float distance;
 
-    public void SetDragDir(Vector2 _dir)
+    public void SetDragDir(Vector2 dir)
     {
-        indicator.position =  new Vector3(transform.position.x + _dir.x * distance, transform.position.y + _dir.y * distance, transform.position.z - 1);
+        indicator.position =  new Vector3(transform.position.x + dir.x * distance, transform.position.y + dir.y * distance, transform.position.z - 1);
     }
 }

@@ -13,30 +13,30 @@ public class OneWayWall : MonoBehaviour {
     [SerializeField]
     private Collider2D ourCollider;
 
-    private OneWayDetection oneWayDetection;
+    private OneWayDetection _oneWayDetection;
 
     private void OnEnable()
     {
-        oneWayDetection = GetComponent<OneWayDetection>();
-        oneWayDetection.detectedRight += DetectedRight;
-        oneWayDetection.detectedLeft += DetectedLeft;
+        _oneWayDetection = GetComponent<OneWayDetection>();
+        _oneWayDetection.DetectedRight += DetectedRight;
+        _oneWayDetection.DetectedLeft += DetectedLeft;
     }
 
     private void OnDisable()
     {
-        oneWayDetection.detectedRight -= DetectedRight;
-        oneWayDetection.detectedLeft -= DetectedLeft;
+        _oneWayDetection.DetectedRight -= DetectedRight;
+        _oneWayDetection.DetectedLeft -= DetectedLeft;
     }
 
-    private void DetectedRight(Collider2D collider)
+    private void DetectedRight(Collider2D collision)
     {
-        Physics2D.IgnoreCollision(ourCollider, collider, false);
+        Physics2D.IgnoreCollision(ourCollider, collision, false);
         gameObject.layer = LayerMask.NameToLayer(defaultLayer);
     }
 
-    private void DetectedLeft(Collider2D collider)
+    private void DetectedLeft(Collider2D collision)
     {
-        Physics2D.IgnoreCollision(ourCollider, collider, true);
+        Physics2D.IgnoreCollision(ourCollider, collision, true);
         gameObject.layer = LayerMask.NameToLayer(ignoreRaycastLayer);
     }
 }

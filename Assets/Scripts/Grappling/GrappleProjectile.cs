@@ -7,82 +7,82 @@ public class GrappleProjectile : MonoBehaviour {
     [SerializeField]
     private LayerMask hookAbleLayers;
 
-    public Action reachedDestination;
+    public Action ReachedDestination;
 
-    public Action grappleCanceled;
+    public Action GrappleCanceled;
 
-    private MoveTowards moveTowards;
+    private MoveTowards _moveTowards;
 
-    private Frames frames;
+    private Frames _frames;
 
-    private bool hookedToSurface;
+    private bool _hookedToSurface;
 
-    private Transform moveAbleObject;
+    private Transform _moveAbleObject;
 
-    private Vector2 offsetToMoveAble;
+    private Vector2 _offsetToMoveAble;
 
-    private Coroutine followMovingObject;
+    private Coroutine _followMovingObject;
 
     void Awake() {
-        moveTowards = GetComponent<MoveTowards>();
-        frames = GetComponent<Frames>();
+        _moveTowards = GetComponent<MoveTowards>();
+        _frames = GetComponent<Frames>();
     }
 
     public void GoToShootPos(Vector2 _destination) {
-        hookedToSurface = false;
+        _hookedToSurface = false;
 
-        moveTowards.reachedDestination = ReachedShootPos;
-        moveTowards.StartMoving(_destination);
+        _moveTowards.ReachedDestination = ReachedShootPos;
+        _moveTowards.StartMoving(_destination);
     }
 
     public void Return(Vector2 _destination)
     {
-        if (followMovingObject != null)
-            StopCoroutine(followMovingObject);
+        if (_followMovingObject != null)
+            StopCoroutine(_followMovingObject);
 
-        moveAbleObject = null;
+        _moveAbleObject = null;
 
-        moveTowards.reachedDestination = reachedDestination;
-        moveTowards.StartMoving(_destination);
+        _moveTowards.ReachedDestination = ReachedDestination;
+        _moveTowards.StartMoving(_destination);
     }
 
     void OnDisable()
     {
-        reachedDestination = null;
+        ReachedDestination = null;
     }
 
     private void ReachedShootPos()
     {
-        frames.ExecuteAfterDelay(1, CheckIfHooked);
+        _frames.ExecuteAfterDelay(1, CheckIfHooked);
     }
 
     private void CheckIfHooked()
     {
-        if (hookedToSurface)
+        if (_hookedToSurface)
         {
             //if we collided with a moveAble object, make sure the grappleProjectile follows the moving object
             if(CollidedWithMoveAble())
             {
-                followMovingObject = StartCoroutine(FollowMovingObject());
+                _followMovingObject = StartCoroutine(FollowMovingObject());
             }
 
-            if (reachedDestination != null)
-                reachedDestination();
+            if (ReachedDestination != null)
+                ReachedDestination();
         }
         else
         {
-            if (grappleCanceled != null)
-                grappleCanceled();
+            if (GrappleCanceled != null)
+                GrappleCanceled();
         }
     }
 
     IEnumerator FollowMovingObject()
     {
-        offsetToMoveAble = transform.position - moveAbleObject.transform.position;
+        _offsetToMoveAble = transform.position - _moveAbleObject.transform.position;
 
         while (true)
         {
-            transform.position = (Vector2)moveAbleObject.transform.position + offsetToMoveAble;
+            transform.position = (Vector2)_moveAbleObject.transform.position + _offsetToMoveAble;
             yield return new WaitForFixedUpdate();
         }
     }
@@ -92,11 +92,11 @@ public class GrappleProjectile : MonoBehaviour {
         //we hit a moveAble object, save the offset and 
         if (collision.transform.CompareTag(Tags.MoveAble))
         {
-            moveAbleObject = collision.transform;
+            _moveAbleObject = collision.transform;
         }
 
         if (((1 << collision.gameObject.layer) & hookAbleLayers) != 0) {
-            hookedToSurface = true;
+            _hookedToSurface = true;
         }
     }
 
@@ -104,17 +104,17 @@ public class GrappleProjectile : MonoBehaviour {
     {
         if (collision.transform.CompareTag(Tags.MoveAble))
         {
-            moveAbleObject = null;
+            _moveAbleObject = null;
         }
 
         if (((1 << collision.gameObject.layer) & hookAbleLayers) != 0)
         {
-            hookedToSurface = false;
+            _hookedToSurface = false;
         }
     }
 
     public bool CollidedWithMoveAble()
     {
-        return moveAbleObject != null;
+        return _moveAbleObject != null;
     }
 }

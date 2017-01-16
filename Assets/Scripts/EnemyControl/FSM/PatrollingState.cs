@@ -3,24 +3,24 @@ using System.Collections;
 
 public class PatrollingState : State
 {
-    private CharScriptAccess charAccess;
+    private CharScriptAccess _charAccess;
 
     protected override void Start()
     {
         base.Start();
-        charAccess = GetComponent<CharScriptAccess>();
+        _charAccess = GetComponent<CharScriptAccess>();
     }
 
     public override void EnterState()
     {
         base.EnterState();
 
-        charAccess.ControlVelocity.StartDirectionalMovement();
+        _charAccess.ControlVelocity.StartDirectionalMovement();
     }
 
     private void ExitState()
     {
-        stateMachine.ActivateState(StateID.GrapplingState);
+        StateMachine.ActivateState(StateID.GrapplingState);
     }
 
     public override void ResetState()
@@ -32,13 +32,13 @@ public class PatrollingState : State
     {
         base.OnCollEnter(collision);
 
-        if (charAccess.ControlTakeOff.CheckToBounce(collision))
+        if (_charAccess.ControlTakeOff.CheckToBounce(collision))
         {
-            charAccess.ControlTakeOff.Bounce(charAccess.ControlVelocity.GetDirection(), charAccess.CollisionDirection.GetUpdatedCollDir(collision));
+            _charAccess.ControlTakeOff.Bounce(_charAccess.ControlVelocity.GetDirection(), _charAccess.CollisionDirection.GetUpdatedCollDir(collision));
         }
         else
         {
-            charAccess.ControlDirection.ApplyLogicDirection(charAccess.ControlVelocity.GetDirection(), charAccess.CollisionDirection.GetUpdatedCollDir(collision));
+            _charAccess.ControlDirection.ApplyLogicDirection(_charAccess.ControlVelocity.GetDirection(), _charAccess.CollisionDirection.GetUpdatedCollDir(collision));
         }
     }
 }

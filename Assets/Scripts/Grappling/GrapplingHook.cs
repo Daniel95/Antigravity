@@ -11,142 +11,148 @@ public class GrapplingHook : MonoBehaviour, IWeapon, ITriggerer {
     private float minDistance = 0.3f;
 
     //variables to control the unity components
-    private LineRenderer lineRenderer;
-    private DistanceJoint2D distanceJoint;
+    private LineRenderer _lineRenderer;
+    private DistanceJoint2D _distanceJoint;
 
     //to save our LineUpdateCoroutine;
-    private Coroutine lineUpdateCoroutine;
-    private Coroutine holdGrappleCoroutine;
+    private Coroutine _lineUpdateCoroutine;
+    private Coroutine _holdGrappleCoroutine;
 
-    private Coroutine grappleAnchorUpdate;
+    private Coroutine _grappleAnchorUpdate;
 
     //other scripts can subscribe to know when the grapple locks and unlocks
-    public Action startedGrappleLocking;
-    public Action stoppedGrappleLocking;
+    public Action StartedGrappleLocking;
+    public Action StoppedGrappleLocking;
 
     //our current grapple data
-    private GameObject grappleProjectileGObj;
-    private GrappleProjectile grappleProjectileScript;
+    private GameObject _grappleProjectileGObj;
+    private GrappleProjectile _grappleProjectileScript;
 
-    private enum GrapplingHookStates { busyShooting, busyHolding, busyPullingBack, activate, inactive };
+    private enum GrapplingHookStates { BusyShooting, BusyHolding, BusyPullingBack, Activate, Inactive };
 
-    private GrapplingHookStates currentGrapplingHookState = GrapplingHookStates.inactive;
+    private GrapplingHookStates _currentGrapplingHookState = GrapplingHookStates.Inactive;
 
-    private AimRay aimRay;
+    private AimRay _aimRay;
 
     //used by action trigger to decide when to start the instructions/tutorial, and when to stop it
-    public Action activateTrigger { get; set; }
-    public Action stopTrigger { get; set; }
+    public Action ActivateTrigger { get; set; }
+    public Action StopTrigger { get; set; }
 
     void Start() {
 
-        distanceJoint = GetComponent<DistanceJoint2D>();
-        distanceJoint.enabled = false;
+        _distanceJoint = GetComponent<DistanceJoint2D>();
+        _distanceJoint.enabled = false;
 
-        lineRenderer = GetComponent<LineRenderer>();
+        _lineRenderer = GetComponent<LineRenderer>();
 
-        aimRay = GetComponent<AimRay>();
+        _aimRay = GetComponent<AimRay>();
 
-        grappleProjectileGObj = Instantiate(grappleProjectilePrefab, Vector2.zero, new Quaternion(0, 0, 0, 0)) as GameObject;
-        grappleProjectileScript = grappleProjectileGObj.GetComponent<GrappleProjectile>();
-        grappleProjectileGObj.SetActive(false);
+        _grappleProjectileGObj = Instantiate(grappleProjectilePrefab, Vector2.zero, new Quaternion(0, 0, 0, 0)) as GameObject;
+        _grappleProjectileScript = _grappleProjectileGObj.GetComponent<GrappleProjectile>();
+        _grappleProjectileGObj.SetActive(false);
     }
 
-    public void Dragging(Vector2 _destination, Vector2 _spawnPosition) {
-        if (!aimRay.AimRayActive) {
-            aimRay.StartAimRay(_destination);
+    public void Dragging(Vector2 destination, Vector2 spawnPosition) {
+        if (!_aimRay.AimRayActive) {
+            _aimRay.StartAimRay(destination);
         }
 
-        aimRay.SetRayDestination = _destination;
+        _aimRay.RayDestination = destination;
     }
 
-    //cancel aiming
+    /// <summary>
+    /// cancel aiming
+    /// </summary>
     public void CancelDragging()
     {
         StopBulletTime();
     }
 
     void StopBulletTime() {
-        aimRay.StopAimRay();
+        _aimRay.StopAimRay();
     }
 
-    //spawns the grapple projectile and activates its moveTowards script
-    public void Release(Vector2 _destination, Vector2 _spawnPosition) {
+    /// <summary>
+    /// spawns the grapple projectile and activates its moveTowards script
+    /// </summary>
+    /// <param name="destination"></param>
+    /// <param name="spawnPosition"></param>
+    public void Release(Vector2 destination, Vector2 spawnPosition) {
         StopBulletTime();
 
-        if (currentGrapplingHookState == GrapplingHookStates.inactive)
+        if (_currentGrapplingHookState == GrapplingHookStates.Inactive)
         {
-            ShootGrappleHook(_destination, _spawnPosition);
+            ShootGrappleHook(destination, spawnPosition);
         }
         //if we still have a grapple activate, deactivate it first before we shoot a new one
-        else if (currentGrapplingHookState == GrapplingHookStates.activate || currentGrapplingHookState == GrapplingHookStates.busyShooting)
+        else if (_currentGrapplingHookState == GrapplingHookStates.Activate || _currentGrapplingHookState == GrapplingHookStates.BusyShooting)
         {
-            holdGrappleCoroutine = StartCoroutine(HoldGrapple( _destination, _spawnPosition));
+            _holdGrappleCoroutine = StartCoroutine(HoldGrapple( destination, spawnPosition));
             PullBack();
         } 
     }
 
-    IEnumerator HoldGrapple(Vector2 _destination, Vector2 _spawnPosition) {
-        while (currentGrapplingHookState != GrapplingHookStates.inactive) {
+    IEnumerator HoldGrapple(Vector2 destination, Vector2 spawnPosition) {
+        while (_currentGrapplingHookState != GrapplingHookStates.Inactive) {
             yield return null;
         }
 
-        ShootGrappleHook(_destination, _spawnPosition);
+        ShootGrappleHook(destination, spawnPosition);
     }
 
-    private void ShootGrappleHook(Vector2 _destination, Vector2 _spawnPosition) {
-        currentGrapplingHookState = GrapplingHookStates.busyShooting;
+    private void ShootGrappleHook(Vector2 destination, Vector2 spawnPosition) {
+        _currentGrapplingHookState = GrapplingHookStates.BusyShooting;
 
-        grappleProjectileGObj.SetActive(true);
-        grappleProjectileGObj.transform.position = _spawnPosition;
+        _grappleProjectileGObj.SetActive(true);
+        _grappleProjectileGObj.transform.position = spawnPosition;
 
         //activate line renderer
-        lineRenderer.enabled = true;
-        lineUpdateCoroutine = StartCoroutine(UpdateLineRendererPositions());
+        _lineRenderer.enabled = true;
+        _lineUpdateCoroutine = StartCoroutine(UpdateLineRendererPositions());
 
-        grappleProjectileScript.reachedDestination = EnterGrappleLock;
-        grappleProjectileScript.grappleCanceled = ExitGrappleLock;
-        grappleProjectileScript.GoToShootPos(_destination);
+        _grappleProjectileScript.ReachedDestination = EnterGrappleLock;
+        _grappleProjectileScript.GrappleCanceled = ExitGrappleLock;
+        _grappleProjectileScript.GoToShootPos(destination);
     }
 
     IEnumerator UpdateLineRendererPositions() {
         while (true) {
-            lineRenderer.SetPosition(0, transform.position);
-            lineRenderer.SetPosition(1, grappleProjectileGObj.transform.position);
+            _lineRenderer.SetPosition(0, transform.position);
+            _lineRenderer.SetPosition(1, _grappleProjectileGObj.transform.position);
             yield return null;
         }
     }
 
     private void EnterGrappleLock()
     {
-        float distance = Vector2.Distance(transform.position, grappleProjectileGObj.transform.position);
+        float distance = Vector2.Distance(transform.position, _grappleProjectileGObj.transform.position);
         //only start grappleLocking when the distance to the player is above the minimal distance
         if (distance > minDistance)
         {
-            currentGrapplingHookState = GrapplingHookStates.activate;
+            _currentGrapplingHookState = GrapplingHookStates.Activate;
 
-            grappleProjectileScript.reachedDestination -= EnterGrappleLock;
+            _grappleProjectileScript.ReachedDestination -= EnterGrappleLock;
 
-            if (stopTrigger != null)
+            if (StopTrigger != null)
             {
-                stopTrigger();
+                StopTrigger();
             }
 
             //activate distanceJoint2D
-            if (startedGrappleLocking != null)
+            if (StartedGrappleLocking != null)
             {
-                startedGrappleLocking();
+                StartedGrappleLocking();
             }
 
-            distanceJoint.enabled = true;
+            _distanceJoint.enabled = true;
 
-            distanceJoint.connectedAnchor = grappleProjectileGObj.transform.position;
-            distanceJoint.distance = distance;
+            _distanceJoint.connectedAnchor = _grappleProjectileGObj.transform.position;
+            _distanceJoint.distance = distance;
 
             //keep updating the grapple anchor if the object we are attached to is MoveAble
-            if (grappleProjectileScript.CollidedWithMoveAble())
+            if (_grappleProjectileScript.CollidedWithMoveAble())
             {
-                grappleAnchorUpdate = StartCoroutine(GrappleAnchorUpdate());
+                _grappleAnchorUpdate = StartCoroutine(GrappleAnchorUpdate());
             }
         }
         else {
@@ -159,7 +165,7 @@ public class GrapplingHook : MonoBehaviour, IWeapon, ITriggerer {
     {
         while(true)
         {
-            distanceJoint.connectedAnchor = grappleProjectileGObj.transform.position;
+            _distanceJoint.connectedAnchor = _grappleProjectileGObj.transform.position;
             yield return new WaitForFixedUpdate();
         }
     }
@@ -167,17 +173,17 @@ public class GrapplingHook : MonoBehaviour, IWeapon, ITriggerer {
     //used to cancel grapple locking if we are currently locked, also cancels the grapplingstate
     public void ExitGrappleLock() {
 
-        if (stoppedGrappleLocking != null)
-            stoppedGrappleLocking();
+        if (StoppedGrappleLocking != null)
+            StoppedGrappleLocking();
 
-        grappleProjectileScript.reachedDestination -= EnterGrappleLock;
-        distanceJoint.enabled = false;
+        _grappleProjectileScript.ReachedDestination -= EnterGrappleLock;
+        _distanceJoint.enabled = false;
 
-        if (holdGrappleCoroutine != null)
-            StopCoroutine(holdGrappleCoroutine);
+        if (_holdGrappleCoroutine != null)
+            StopCoroutine(_holdGrappleCoroutine);
 
-        if (grappleAnchorUpdate != null)
-            StopCoroutine(grappleAnchorUpdate);
+        if (_grappleAnchorUpdate != null)
+            StopCoroutine(_grappleAnchorUpdate);
 
         PullBack();
     }
@@ -185,34 +191,34 @@ public class GrapplingHook : MonoBehaviour, IWeapon, ITriggerer {
     //pulls the grappling hook back to the player, once it reached the player set in inactive it
     void PullBack() {
         //only pullback when we aren't already pulling back and the we are not in the inactive state. 
-        if (currentGrapplingHookState != GrapplingHookStates.busyPullingBack && currentGrapplingHookState != GrapplingHookStates.inactive)
+        if (_currentGrapplingHookState != GrapplingHookStates.BusyPullingBack && _currentGrapplingHookState != GrapplingHookStates.Inactive)
         {
-            currentGrapplingHookState = GrapplingHookStates.busyPullingBack;
+            _currentGrapplingHookState = GrapplingHookStates.BusyPullingBack;
 
-            grappleProjectileScript.reachedDestination = DonePullingBack;
-            grappleProjectileScript.Return(transform.position);
+            _grappleProjectileScript.ReachedDestination = DonePullingBack;
+            _grappleProjectileScript.Return(transform.position);
         }
     }
 
     void DonePullingBack() {
-        grappleProjectileScript.reachedDestination -= DonePullingBack;
+        _grappleProjectileScript.ReachedDestination -= DonePullingBack;
         DestroyGrappleLock();
     }
 
     void DestroyGrappleLock()
     {
-        currentGrapplingHookState = GrapplingHookStates.inactive;
+        _currentGrapplingHookState = GrapplingHookStates.Inactive;
         StopLineRenderer();
-        grappleProjectileGObj.SetActive(false);
+        _grappleProjectileGObj.SetActive(false);
     }
 
     void StopLineRenderer() {
-        lineRenderer.enabled = false;
-        StopCoroutine(lineUpdateCoroutine);
+        _lineRenderer.enabled = false;
+        StopCoroutine(_lineUpdateCoroutine);
     }
 
     public Vector2 Destination
     {
-        get { return grappleProjectileGObj.transform.position; }
+        get { return _grappleProjectileGObj.transform.position; }
     }
 }

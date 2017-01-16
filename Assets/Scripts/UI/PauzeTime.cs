@@ -4,22 +4,22 @@ using UnityEngine;
 
 public class PauzeTime : MonoBehaviour, ITriggerable {
 
-    public bool triggered { get; set; }
+    public bool Triggered { get; set; }
 
-    private TimeManagement timeManagement;
+    private TimeManagement _timeManagement;
 
     private void Start()
     {
-        timeManagement = GetComponent<TimeManagement>();
+        _timeManagement = GetComponent<TimeManagement>();
     }
 
     public void TriggerActivate()
     {
-        timeManagement.SetTimeScale(0);
+        _timeManagement.SetTimeScale(0);
     }
 
     public void TriggerStop()
     {
-        timeManagement.SetTimeScale(1);
+        _timeManagement.SetTimeScale(1);
     }
 }

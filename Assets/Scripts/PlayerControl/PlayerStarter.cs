@@ -4,17 +4,17 @@ using UnityEngine;
 
 public class PlayerStarter : MonoBehaviour {
 
-    private CharScriptAccess charAccess;
-    private PlayerActivateWeapon playerActivateWeapon;
-    private PlayerInputs playerInputs;
-    private PlayerActivateSlowTime playerActivateSlowTime;
+    private CharScriptAccess _charAccess;
+    private PlayerActivateWeapon _playerActivateWeapon;
+    private PlayerInputs _playerInputs;
+    private PlayerActivateSlowTime _playerActivateSlowTime;
 
     private void Awake()
     {
-        charAccess = GetComponent<CharScriptAccess>();
-        playerInputs = GetComponent<PlayerInputs>();
-        playerActivateWeapon = GetComponent<PlayerActivateWeapon>();
-        playerActivateSlowTime = GetComponent<PlayerActivateSlowTime>();
+        _charAccess = GetComponent<CharScriptAccess>();
+        _playerInputs = GetComponent<PlayerInputs>();
+        _playerActivateWeapon = GetComponent<PlayerActivateWeapon>();
+        _playerActivateSlowTime = GetComponent<PlayerActivateSlowTime>();
     }
 
     public void StartStandardPlayerInputs()
@@ -39,39 +39,39 @@ public class PlayerStarter : MonoBehaviour {
     public void SetPlayerMovement(bool _move)
     {
         if(_move)
-            charAccess.ControlVelocity.StartDirectionalMovement();
+            _charAccess.ControlVelocity.StartDirectionalMovement();
         else
-            charAccess.ControlVelocity.StopDirectionalMovement();
+            _charAccess.ControlVelocity.StopDirectionalMovement();
     }
 
     public void SetPlayerActionInput(bool _input)
     {
-        playerInputs.SetActionInput(_input);
+        _playerInputs.SetActionInput(_input);
     }
 
     public void SetPlayerReverseInput(bool _input)
     {
         //activate the reverse input for the player
-        playerInputs.reverse += charAccess.SpeedMultiplier.SmoothFlipMultiplier;
+        _playerInputs.Reverse += _charAccess.SpeedMultiplier.SmoothFlipMultiplier;
 
-        playerInputs.SetReverseInput(_input);
+        _playerInputs.SetReverseInput(_input);
     }
 
     private void SetPlayerDoubleReverseInput(bool _input)
     {
-        playerInputs.SetDoubleReverseInput(_input);
+        _playerInputs.SetDoubleReverseInput(_input);
     }
 
     public void SetPlayerSlowTimeInput(bool _input)
     {
-        playerInputs.SetHoldInput(_input);
+        _playerInputs.SetHoldInput(_input);
 
-        playerActivateSlowTime.SetSlowTimeInput(_input);
+        _playerActivateSlowTime.SetSlowTimeInput(_input);
     }
 
     public void SetPlayerShootInputs(bool _input)
     {
-        playerInputs.SetShootInput(_input);
-        playerActivateWeapon.SetWeaponInput(_input);
+        _playerInputs.SetShootInput(_input);
+        _playerActivateWeapon.SetWeaponInput(_input);
     }
 }
