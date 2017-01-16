@@ -112,14 +112,22 @@ public class ControlDirection : MonoBehaviour {
             }
             else
             {
-
                 if((_currentDir.x * charAccess.controlVelocity.GetMultiplierDir()) == rayHitDir.x)
+                {
+
+                } else
+                {
+
+                }
+
+
+                if ((_currentDir.x * charAccess.controlVelocity.GetMultiplierDir()) == rayHitDir.x)
                 {
                     lastDir.y = rayHitDir.y * -1;
                     lastDir.x = rayHitDir.x;
                     newDir = new Vector2(0, lastDir.y);
                 }
-                else if((_currentDir.y * charAccess.controlVelocity.GetMultiplierDir()) == rayHitDir.y)
+                else
                 {
                     lastDir.x = rayHitDir.x * -1;
                     lastDir.y = rayHitDir.y;

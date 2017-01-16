@@ -32,8 +32,6 @@ public class ControlTakeOff : MonoBehaviour, ITriggerer {
             stopTrigger();
         }
 
-        plrAcces.controlSpeed.TempSpeedIncrease();
-
         Vector2 collisionDir = plrAcces.collisionDirection.GetCurrentCollDir();
         Vector2 rayDir = new Vector2(charRaycasting.CheckHorizontalMiddleDir(), charRaycasting.CheckVerticalMiddleDir());
 
@@ -47,6 +45,8 @@ public class ControlTakeOff : MonoBehaviour, ITriggerer {
         //check if we have raycast collision on only one axis, jumping wont work when we are in a corner
         if (collisionDir.x == 0 || collisionDir.y == 0)
         {
+            plrAcces.controlSpeed.TempSpeedIncrease();
+
             Vector2 newDir = plrAcces.controlVelocity.GetDirection();
 
             //check the raycastdir, our newDir is the opposite of one of the axes

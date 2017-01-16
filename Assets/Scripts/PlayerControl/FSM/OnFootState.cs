@@ -57,7 +57,7 @@ public class OnFootState : State {
     {
         base.OnCollEnter(collision);
 
-        if(charAccess.controlTakeOff.CheckToBounce(collision))
+        if (charAccess.controlTakeOff.CheckToBounce(collision))
         {
             charAccess.controlTakeOff.Bounce(charAccess.controlVelocity.GetDirection(), charAccess.collisionDirection.GetUpdatedCollDir(collision));
         }
