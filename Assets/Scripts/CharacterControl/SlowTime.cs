@@ -17,31 +17,35 @@ public class SlowTime : MonoBehaviour {
     [SerializeField]
     private float returnSpeed = 0.01f;
 
-    private Coroutine moveTimeScale;
+    private Coroutine _moveTimeScale;
 
-    private bool slowTimeActive;
+    private bool _slowTimeActive;
 
-    private Action reachedTarget;
+    private Action _reachedTarget;
 
+
+    /// <summary>
+    /// Starts slowing the time, after timescale reaches its minimum it returns to normal over time.
+    /// </summary>
     public void StartSlowTime()
     {
-        if (moveTimeScale != null)
+        if (_moveTimeScale != null)
         {
-            StopCoroutine(moveTimeScale);
+            StopCoroutine(_moveTimeScale);
         }
 
-        slowTimeActive = true;
+        _slowTimeActive = true;
 
-        reachedTarget += SlowlyReturnToNormal;
+        _reachedTarget += SlowlyReturnToNormal;
 
         //slow down the time
-        moveTimeScale = StartCoroutine(MoveTimeScale(slowTimeScale, slowDownTime));
+        _moveTimeScale = StartCoroutine(MoveTimeScale(slowTimeScale, slowDownTime));
     }
 
     private void SlowlyReturnToNormal()
     {
-        moveTimeScale = StartCoroutine(MoveTimeScale(1, returnSpeed));
-        reachedTarget -= SlowlyReturnToNormal;
+        _moveTimeScale = StartCoroutine(MoveTimeScale(1, returnSpeed));
+        _reachedTarget -= SlowlyReturnToNormal;
     }
 
     IEnumerator MoveTimeScale(float _target, float _time)
@@ -54,28 +58,34 @@ public class SlowTime : MonoBehaviour {
 
         Time.timeScale = _target;
 
-        if (reachedTarget != null)
+        if (_reachedTarget != null)
         {
-            reachedTarget();
+            _reachedTarget();
         }
     }
 
+    /// <summary>
+    /// Reset the time to normal.
+    /// </summary>
     public void StopSlowTime()
     {
-        if (slowTimeActive)
+        if (_slowTimeActive)
         {
-            reachedTarget -= SlowlyReturnToNormal;
+            _reachedTarget -= SlowlyReturnToNormal;
 
-            StopCoroutine(moveTimeScale);
+            StopCoroutine(_moveTimeScale);
 
-            slowTimeActive = false;
+            _slowTimeActive = false;
 
             Time.timeScale = 1;
         }
     }
 
+    /// <summary>
+    /// Check if SlowTime is active
+    /// </summary>
     public bool SlowTimeActive
     {
-        get { return slowTimeActive; }
+        get { return _slowTimeActive; }
     }
 }

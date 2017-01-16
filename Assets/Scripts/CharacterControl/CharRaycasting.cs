@@ -24,56 +24,48 @@ public class CharRaycasting : MonoBehaviour {
     [SerializeField]
     private float middleRayLength = 0.4f;
 
+    void Start()
+    {
+        if (showDebugRays)
+            StartCoroutine(DebugRays());
+    }
+
     //a class that makes it simple to use raycasting in other scripts
 
-    public bool CheckRayCornersUp()
+    private bool CheckRayCornersUp()
     {
-        if (CheckIntersectionRaycast(topLeftCornerPoint.position, Quaternion.Euler(0, 0, -45) * transform.up, topRightCornerPoint.position, Quaternion.Euler(0, 0, 45) * transform.up, cornerRayLength))
-            return true;
-
-        return false;
+        return CheckIntersectionRaycast(topLeftCornerPoint.position, Quaternion.Euler(0, 0, -45) * transform.up, topRightCornerPoint.position, Quaternion.Euler(0, 0, 45) * transform.up, cornerRayLength);
     }
 
-    public bool CheckRayCornersDown()
+    private bool CheckRayCornersDown()
     {
-        if (CheckIntersectionRaycast(bottomLeftCornerPoint.position, Quaternion.Euler(0, 0, 45) * -transform.up, bottomRightCornerPoint.position, Quaternion.Euler(0, 0, -45) * -transform.up, cornerRayLength))
-            return true;
-
-        return false;
+        return CheckIntersectionRaycast(bottomLeftCornerPoint.position, Quaternion.Euler(0, 0, 45) * -transform.up, bottomRightCornerPoint.position, Quaternion.Euler(0, 0, -45) * -transform.up, cornerRayLength);
     }
 
-    public bool CheckRayCornerLeft()
+    private bool CheckRayCornerLeft()
     {
-        if (CheckIntersectionRaycast(topLeftCornerPoint.position, Quaternion.Euler(0, 0, 45) * -transform.right, bottomLeftCornerPoint.position, Quaternion.Euler(0, 0, -45) * -transform.right, cornerRayLength))
-            return true;
-
-        return false;
+        return CheckIntersectionRaycast(topLeftCornerPoint.position, Quaternion.Euler(0, 0, 45) * -transform.right, bottomLeftCornerPoint.position, Quaternion.Euler(0, 0, -45) * -transform.right, cornerRayLength);
     }
 
-    public bool CheckRayCornerRight()
+    private bool CheckRayCornerRight()
     {
-        if (CheckIntersectionRaycast(topRightCornerPoint.position, Quaternion.Euler(0, 0, -45) * transform.right, bottomRightCornerPoint.position, Quaternion.Euler(0, 0, 45) * transform.right, cornerRayLength))
-            return true;
-
-        return false;
+        return CheckIntersectionRaycast(topRightCornerPoint.position, Quaternion.Euler(0, 0, -45) * transform.right, bottomRightCornerPoint.position, Quaternion.Euler(0, 0, 45) * transform.right, cornerRayLength);
     }
 
-    private bool CheckDoubleRaycast(Vector2 _rayOrigin1, Vector2 _rayOrigin2, Vector2 _direction, float _rayLength) {
-        if (CheckRaycastOther(_rayOrigin1, _direction, _rayLength, layers) || CheckRaycastOther(_rayOrigin2, _direction, _rayLength, layers))
-            return true;
-
-        return false;
+    private bool CheckDoubleRaycast(Vector2 _rayOrigin1, Vector2 _rayOrigin2, Vector2 _direction, float _rayLength)
+    {
+        return CheckRaycastOther(_rayOrigin1, _direction, _rayLength, layers) || CheckRaycastOther(_rayOrigin2, _direction, _rayLength, layers);
     }
 
     private bool CheckIntersectionRaycast(Vector2 _rayOrigin1, Vector2 _direction1, Vector2 _rayOrigin2, Vector2 _direction2, float _rayLength)
     {
-        if (CheckRaycastOther(_rayOrigin1, _direction1, _rayLength, layers) || CheckRaycastOther(_rayOrigin2, _direction2, _rayLength, layers))
-            return true;
-        
-        return false;
+        return CheckRaycastOther(_rayOrigin1, _direction1, _rayLength, layers) || CheckRaycastOther(_rayOrigin2, _direction2, _rayLength, layers);
     }
 
-    //returns 1, 0 or -1 for the raycast results
+    /// <summary>
+    /// check the raycast results of our vertical corners, between -1 and 1.
+    /// </summary>
+    /// <returns></returns>
     public int CheckVerticalCornersDir() {
 
         if (CheckRayCornersUp())
@@ -84,7 +76,10 @@ public class CharRaycasting : MonoBehaviour {
             return 0;
     }
 
-    //returns 1, 0 or -1 for the raycast results
+    /// <summary>
+    /// check the raycast results of our horizontal corners, between -1 and 1.
+    /// </summary>
+    /// <returns></returns>
     public int CheckHorizontalCornersDir()
     {
         if (CheckRayCornerRight())
@@ -95,7 +90,10 @@ public class CharRaycasting : MonoBehaviour {
             return 0;
     }
 
-    //returns 1, 0 or -1 for the raycast results
+    /// <summary>
+    /// check the raycast results of our vertical middle, between -1 and 1.
+    /// </summary>
+    /// <returns></returns>
     public int CheckVerticalMiddleDir()
     {
         if (CheckRaycastOther(transform.position, new Vector2(0, 1), middleRayLength, layers))
@@ -106,7 +104,10 @@ public class CharRaycasting : MonoBehaviour {
             return 0;
     }
 
-    //returns 1, 0 or -1 for the raycast results
+    /// <summary>
+    /// check the raycast results of our horizontal middle, between -1 and 1.
+    /// </summary>
+    /// <returns></returns>
     public int CheckHorizontalMiddleDir()
     {
         if (CheckRaycastOther(transform.position, new Vector2(1, 0), middleRayLength, layers))
@@ -117,7 +118,14 @@ public class CharRaycasting : MonoBehaviour {
             return 0;
     }
 
-    //checks if the raycast doesn't hit myself, and if it hits something
+    /// <summary>
+    /// checks if the raycast doesn't hit myself, and if it hits something.
+    /// </summary>
+    /// <param name="_startPos"></param>
+    /// <param name="_dir"></param>
+    /// <param name="_length"></param>
+    /// <param name="_layers"></param>
+    /// <returns></returns>
     private bool CheckRaycastOther(Vector2 _startPos, Vector2 _dir, float _length, LayerMask _layers)
     {
         RaycastHit2D[] hits = Physics2D.RaycastAll(_startPos, _dir, _length, _layers);
@@ -131,11 +139,6 @@ public class CharRaycasting : MonoBehaviour {
         }
 
         return false;
-    }
-
-    void Start() {
-        if(showDebugRays)
-            StartCoroutine(DebugRays());
     }
 
     IEnumerator DebugRays()

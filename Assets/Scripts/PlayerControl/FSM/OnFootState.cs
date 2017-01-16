@@ -25,7 +25,7 @@ public class OnFootState : State {
         base.EnterState();
 
         //reactivate the normal movement
-        charAccess.controlVelocity.StartDirectionalMovement();
+        charAccess.ControlVelocity.StartDirectionalMovement();
 
         //subscribe to StartedGrappleLocking, so we know when we should start grappling and exit this state
         grapplingHook.startedGrappleLocking += ExitState;
@@ -36,7 +36,7 @@ public class OnFootState : State {
 
     private void Jump()
     {
-        charAccess.controlTakeOff.Jump();
+        charAccess.ControlTakeOff.Jump();
     }
 
     private void ExitState()
@@ -57,13 +57,13 @@ public class OnFootState : State {
     {
         base.OnCollEnter(collision);
 
-        if (charAccess.controlTakeOff.CheckToBounce(collision))
+        if (charAccess.ControlTakeOff.CheckToBounce(collision))
         {
-            charAccess.controlTakeOff.Bounce(charAccess.controlVelocity.GetDirection(), charAccess.collisionDirection.GetUpdatedCollDir(collision));
+            charAccess.ControlTakeOff.Bounce(charAccess.ControlVelocity.GetDirection(), charAccess.CollisionDirection.GetUpdatedCollDir(collision));
         }
         else
         {
-            charAccess.controlDirection.ApplyLogicDirection(charAccess.controlVelocity.GetDirection(), charAccess.collisionDirection.GetUpdatedCollDir(collision));
+            charAccess.ControlDirection.ApplyLogicDirection(charAccess.ControlVelocity.GetDirection(), charAccess.CollisionDirection.GetUpdatedCollDir(collision));
         }
     }
 }

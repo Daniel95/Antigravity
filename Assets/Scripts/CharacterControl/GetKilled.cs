@@ -9,15 +9,15 @@ public class GetKilled : MonoBehaviour, IKillable {
     [SerializeField]
     private string[] deadlyTags;
 
-    public Action die;
+    public Action Die;
 
-    private bool inKillerTrigger;
+    private bool _inKillerTrigger;
 
     public void EnteringKillingTrigger(string _killerTag)
     {
         if (CheckDeadliness(_killerTag))
         {
-            inKillerTrigger = true;
+            _inKillerTrigger = true;
         }
     }
 
@@ -25,17 +25,17 @@ public class GetKilled : MonoBehaviour, IKillable {
     {
         if (CheckDeadliness(_killerTag))
         {
-            inKillerTrigger = false;
+            _inKillerTrigger = false;
         }
     }
 
     //when we collide with something while in the killing trigger, we die
     private void OnCollisionStay2D(Collision2D collision)
     {
-        if (inKillerTrigger)
+        if (_inKillerTrigger)
         {
-            if (die != null)
-                die();
+            if (Die != null)
+                Die();
         }
     }
 
@@ -45,13 +45,17 @@ public class GetKilled : MonoBehaviour, IKillable {
         {
             if (collision.transform.CompareTag(deadlyTags[i]))
             {
-                if (die != null)
-                    die();
+                if (Die != null)
+                    Die();
             }
         }
     }
 
-    //check if this tag is deadly to us
+    /// <summary>
+    /// check if this tag is deadly to us
+    /// </summary>
+    /// <param name="_killerTag"></param>
+    /// <returns></returns>
     private bool CheckDeadliness(string _killerTag)
     {
         for (int i = 0; i < deadlyTags.Length; i++)

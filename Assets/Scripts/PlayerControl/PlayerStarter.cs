@@ -39,9 +39,9 @@ public class PlayerStarter : MonoBehaviour {
     public void SetPlayerMovement(bool _move)
     {
         if(_move)
-            charAccess.controlVelocity.StartDirectionalMovement();
+            charAccess.ControlVelocity.StartDirectionalMovement();
         else
-            charAccess.controlVelocity.StopDirectionalMovement();
+            charAccess.ControlVelocity.StopDirectionalMovement();
     }
 
     public void SetPlayerActionInput(bool _input)
@@ -52,7 +52,7 @@ public class PlayerStarter : MonoBehaviour {
     public void SetPlayerReverseInput(bool _input)
     {
         //activate the reverse input for the player
-        playerInputs.reverse += charAccess.speedMultiplier.SmoothFlipMultiplier;
+        playerInputs.reverse += charAccess.SpeedMultiplier.SmoothFlipMultiplier;
 
         playerInputs.SetReverseInput(_input);
     }

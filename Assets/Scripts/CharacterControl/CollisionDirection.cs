@@ -7,11 +7,11 @@ public class CollisionDirection : MonoBehaviour {
     //saves the collider and the rounded direction
     private Dictionary<Collider2D, Vector2> savedCollisions = new Dictionary<Collider2D, Vector2>();
 
-    private CharRaycasting charRaycasting;
+    private CharRaycasting _charRaycasting;
 
     private void Awake()
     {
-        charRaycasting = GetComponent<CharRaycasting>();
+        _charRaycasting = GetComponent<CharRaycasting>();
     }
 
     //get the rounded direction of the collisions
@@ -42,7 +42,7 @@ public class CollisionDirection : MonoBehaviour {
         //use raycasting instead as a backup plan
         if(combinedRoundedCollDir == Vector2.zero)
         {
-            combinedRoundedCollDir = new Vector2(charRaycasting.CheckHorizontalCornersDir(), charRaycasting.CheckVerticalCornersDir());
+            combinedRoundedCollDir = new Vector2(_charRaycasting.CheckHorizontalCornersDir(), _charRaycasting.CheckVerticalCornersDir());
         }
 
         return combinedRoundedCollDir;

@@ -15,7 +15,7 @@ public class PatrollingState : State
     {
         base.EnterState();
 
-        charAccess.controlVelocity.StartDirectionalMovement();
+        charAccess.ControlVelocity.StartDirectionalMovement();
     }
 
     private void ExitState()
@@ -32,13 +32,13 @@ public class PatrollingState : State
     {
         base.OnCollEnter(collision);
 
-        if (charAccess.controlTakeOff.CheckToBounce(collision))
+        if (charAccess.ControlTakeOff.CheckToBounce(collision))
         {
-            charAccess.controlTakeOff.Bounce(charAccess.controlVelocity.GetDirection(), charAccess.collisionDirection.GetUpdatedCollDir(collision));
+            charAccess.ControlTakeOff.Bounce(charAccess.ControlVelocity.GetDirection(), charAccess.CollisionDirection.GetUpdatedCollDir(collision));
         }
         else
         {
-            charAccess.controlDirection.ApplyLogicDirection(charAccess.controlVelocity.GetDirection(), charAccess.collisionDirection.GetUpdatedCollDir(collision));
+            charAccess.ControlDirection.ApplyLogicDirection(charAccess.ControlVelocity.GetDirection(), charAccess.CollisionDirection.GetUpdatedCollDir(collision));
         }
     }
 }

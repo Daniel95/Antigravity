@@ -10,43 +10,53 @@ public class ControlSpeed : MonoBehaviour, IBoostAble {
     [SerializeField]
     private float returnSpeed = 0.1f;
 
-    private ControlVelocity velocity;
+    private ControlVelocity _velocity;
 
     private void Start()
     {
-        velocity = GetComponent<ControlVelocity>();
+        _velocity = GetComponent<ControlVelocity>();
     }
 
-    //increases the speed with a multplier, then returns it to the original over time
+    /// <summary>
+    /// increases the speed with a multplier, then returns it to the original over time
+    /// </summary>
     public void TempSpeedIncrease()
     {
-        float newSpeed = velocity.OriginalSpeed * (1 + tempSpeedAddedMuliplier);
+        float newSpeed = _velocity.OriginalSpeed * (1 + tempSpeedAddedMuliplier);
 
-        if(newSpeed > velocity.CurrentSpeed)
+        if(newSpeed > _velocity.CurrentSpeed)
         {
-            velocity.SetSpeed(newSpeed);
+            _velocity.SetSpeed(newSpeed);
 
-            velocity.StartReturnSpeedToOriginal(returnSpeed);
+            _velocity.StartReturnSpeedToOriginal(returnSpeed);
         }
     }
 
-    //decreases the speed with a multplier, then returns it to the original over time
+    /// <summary>
+    /// decreases the speed with a multplier, then returns it to the original over time
+    /// </summary>
     public void TempSpeedDecrease()
     {
-        float newSpeed = velocity.OriginalSpeed * (1 - tempSpeedAddedMuliplier);
+        float newSpeed = _velocity.OriginalSpeed * (1 - tempSpeedAddedMuliplier);
 
-        if (newSpeed < velocity.CurrentSpeed)
+        if (newSpeed < _velocity.CurrentSpeed)
         {
-            velocity.SetSpeed(newSpeed);
+            _velocity.SetSpeed(newSpeed);
 
-            velocity.StartReturnSpeedToOriginal(returnSpeed);
+            _velocity.StartReturnSpeedToOriginal(returnSpeed);
         }
     }
 
+
+    /// <summary>
+    /// boosts with a certain amount.
+    /// </summary>
+    /// <param name="_newSpeed"></param>
+    /// <param name="_returnSpeed"></param>
     public void BoostSpeed(float _newSpeed, float _returnSpeed)
     {
-        velocity.SetSpeed(_newSpeed);
+        _velocity.SetSpeed(_newSpeed);
 
-        velocity.StartReturnSpeedToOriginal(_returnSpeed);
+        _velocity.StartReturnSpeedToOriginal(_returnSpeed);
     }
 }

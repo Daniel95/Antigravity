@@ -9,7 +9,7 @@ public class KillPlayer : MonoBehaviour
     {
         checkpoint = GetComponent<Checkpoint>();
 
-        GetComponent<GetKilled>().die += PlayerDies;
+        GetComponent<GetKilled>().Die += PlayerDies;
     }
 
     private void PlayerDies()

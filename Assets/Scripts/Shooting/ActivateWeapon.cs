@@ -8,7 +8,7 @@ public class ActivateWeapon : MonoBehaviour {
     private LayerMask rayLayers;
     
     [SerializeField]
-    private int maxRaycastDistance = 40;
+    private const int maxRaycastDistance = 40;
 
     [SerializeField]
     private GameObject gun;
@@ -29,7 +29,7 @@ public class ActivateWeapon : MonoBehaviour {
         gunLookAt = gun.GetComponent<LookAt>();
         futureDirIndicator = GetComponent<FutureDirectionIndicator>();
 
-        foreach (IWeapon weapon in GetComponents<IWeapon>())
+        foreach (var weapon in GetComponents<IWeapon>())
         {
             weapons.Add(weapon);
         }

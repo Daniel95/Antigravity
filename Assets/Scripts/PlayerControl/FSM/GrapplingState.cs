@@ -37,13 +37,13 @@ public class GrapplingState : State, ITriggerer {
     {
         base.EnterState();
 
-        charAccess.controlSpeed.TempSpeedIncrease();
+        charAccess.ControlSpeed.TempSpeedIncrease();
 
         //when we switch our speed, also switch the direction of our velocity
-        charAccess.speedMultiplier.switchedMultiplier += FakeSwitchSpeed;
+        charAccess.SpeedMultiplier.SwitchedMultiplier += FakeSwitchSpeed;
 
         //activate a different direction movement when in this state
-        charAccess.controlVelocity.StopDirectionalMovement();
+        charAccess.ControlVelocity.StopDirectionalMovement();
         slingMovement = StartCoroutine(SlingMovement());
 
         //exit the state when the grapple has released itself
@@ -57,22 +57,22 @@ public class GrapplingState : State, ITriggerer {
     {
         while (true)
         {
-            charAccess.controlVelocity.SetVelocity(lastVelocity = charAccess.controlVelocity.GetVelocityDirection() * (charAccess.controlVelocity.CurrentSpeed * Mathf.Abs(charAccess.controlVelocity.SpeedMultiplier)));
+            charAccess.ControlVelocity.SetVelocity(lastVelocity = charAccess.ControlVelocity.GetVelocityDirection() * (charAccess.ControlVelocity.CurrentSpeed * Mathf.Abs(charAccess.ControlVelocity.SpeedMultiplier)));
 
             yield return new WaitForFixedUpdate();
         }
     }
 
     private void FakeSwitchSpeed() {
-        charAccess.controlVelocity.SwitchVelocityDirection();
+        charAccess.ControlVelocity.SwitchVelocityDirection();
     }
 
     public override void Act()
     {
         base.Act();
 
-        if (charAccess.controlVelocity.GetVelocity == Vector2.zero && charAccess.controlVelocity.CurrentSpeed != 0) {
-            charAccess.controlDirection.ApplyLogicDirection(charAccess.controlVelocity.GetVelocityDirection(), charAccess.collisionDirection.GetCurrentCollDir());
+        if (charAccess.ControlVelocity.GetVelocity == Vector2.zero && charAccess.ControlVelocity.CurrentSpeed != 0) {
+            charAccess.ControlDirection.ApplyLogicDirection(charAccess.ControlVelocity.GetVelocityDirection(), charAccess.CollisionDirection.GetCurrentCollDir());
             EnterOnFootState();
         }
 
@@ -82,7 +82,7 @@ public class GrapplingState : State, ITriggerer {
 
     private void ExitGrapple() {
 
-        charAccess.controlVelocity.SetDirection(charAccess.controlVelocity.GetVelocityDirection());
+        charAccess.ControlVelocity.SetDirection(charAccess.ControlVelocity.GetVelocityDirection());
 
         if (stopTrigger != null)
             stopTrigger();
@@ -104,7 +104,7 @@ public class GrapplingState : State, ITriggerer {
         base.ResetState();
 
         //unsubscripte from all relevant delegates
-        charAccess.speedMultiplier.switchedMultiplier -= FakeSwitchSpeed;
+        charAccess.SpeedMultiplier.SwitchedMultiplier -= FakeSwitchSpeed;
         grapplingHook.stoppedGrappleLocking -= ExitGrapple;
         playerInputs.action -= ExitGrapple;
 
@@ -112,21 +112,21 @@ public class GrapplingState : State, ITriggerer {
 
         //return to the normal movement
         StopCoroutine(slingMovement);
-        charAccess.speedMultiplier.MakeMultiplierPositive();
+        charAccess.SpeedMultiplier.MakeMultiplierPositive();
     }
 
     public override void OnCollEnter(Collision2D collision)
     {
         base.OnCollEnter(collision);
 
-        if(charAccess.controlTakeOff.CheckToBounce(collision))
+        if(charAccess.ControlTakeOff.CheckToBounce(collision))
         {
-            charAccess.controlTakeOff.Bounce(lastVelocity.normalized, charAccess.collisionDirection.GetUpdatedCollDir(collision));
+            charAccess.ControlTakeOff.Bounce(lastVelocity.normalized, charAccess.CollisionDirection.GetUpdatedCollDir(collision));
             EnterLaunchedState();
         }
         else
         {
-            charAccess.controlDirection.ApplyLogicDirection(lastVelocity.normalized, charAccess.collisionDirection.GetUpdatedCollDir(collision));
+            charAccess.ControlDirection.ApplyLogicDirection(lastVelocity.normalized, charAccess.CollisionDirection.GetUpdatedCollDir(collision));
             EnterOnFootState();
         }
     }

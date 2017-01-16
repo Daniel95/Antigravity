@@ -4,62 +4,72 @@ using System.Collections;
 
 public class ControlDirection : MonoBehaviour {
 
-    private CharScriptAccess charAccess;
+    private CharScriptAccess _charAccess;
 
     //the last directions before it was set to zero
-    private Vector2 lastDir;
+    private Vector2 _lastDir;
 
-    public Action<Vector2> finishedDirectionLogic;
+    public Action<Vector2> FinishedDirectionLogic;
 
-    private Coroutine waitRigidbodyCorrectionFrames;
+    private Coroutine _waitRigidbodyCorrectionFrames;
 
-    private CharRaycasting charRaycasting;
+    private CharRaycasting _charRaycasting;
 
     void Start() {
-        charAccess = GetComponent<CharScriptAccess>();
-        charRaycasting = GetComponent<CharRaycasting>();
+        _charAccess = GetComponent<CharScriptAccess>();
+        _charRaycasting = GetComponent<CharRaycasting>();
 
-        lastDir = charAccess.controlVelocity.GetDirection();
+        _lastDir = _charAccess.ControlVelocity.GetDirection();
 
-        if (lastDir.x == 0)
-            lastDir.x = 1;
-        if (lastDir.y == 0)
-            lastDir.y = 1;
+        if (_lastDir.x == 0)
+            _lastDir.x = 1;
+        if (_lastDir.y == 0)
+            _lastDir.y = 1;
 
         //wait one frame so all scripts are loaded, then send out a delegate with the direction, used by FutureDirectionIndicator
         GetComponent<Frames>().ExecuteAfterDelay(1, () =>
         {
-            if (finishedDirectionLogic != null)
+            if (FinishedDirectionLogic != null)
             {
-                finishedDirectionLogic(lastDir);
+                FinishedDirectionLogic(_lastDir);
             }
         });
     }
 
+    /// <summary>
+    /// apply the next logic direction (game logic), to our controlVelocity script.
+    /// </summary>
+    /// <param name="_currentDir"></param>
+    /// <param name="_collDir"></param>
     public void ApplyLogicDirection(Vector2 _currentDir, Vector2 _collDir)
     {
         //our next direction we are going to move towards, depending on our currentdirection, and the direction of our collision(s)
         Vector2 dirLogic = DirectionLogic(_currentDir, _collDir);
 
-        Vector2 lookDir = charAccess.controlVelocity.AdjustDirToMultiplier(lastDir);
+        Vector2 lookDir = _charAccess.ControlVelocity.AdjustDirToMultiplier(_lastDir);
 
         //use the direction logic for our new dir, but invert it if our speed multiplier is also inverted
-        charAccess.controlVelocity.SetDirection(charAccess.controlVelocity.AdjustDirToMultiplier(dirLogic));
+        _charAccess.ControlVelocity.SetDirection(_charAccess.ControlVelocity.AdjustDirToMultiplier(dirLogic));
 
-        if (finishedDirectionLogic != null)
+        if (FinishedDirectionLogic != null)
         {
-            finishedDirectionLogic(lookDir);
+            FinishedDirectionLogic(lookDir);
         }
     }
 
-    //the logic we use to control the players direction using raycasts after we had collision with another object
+    /// <summary>
+    /// the logic we use to control the players direction using collision directions and raycasts collisions, after we have collision with another object
+    /// </summary>
+    /// <param name="_currentDir"></param>
+    /// <param name="_collDir"></param>
+    /// <returns></returns>
     private Vector2 DirectionLogic(Vector2 _currentDir, Vector2 _collDir)
     {     
         Vector2 newDir = new Vector2();
 
         //use raycasting for to detect if we are in a corner.
         //when colliding the rigidbody position correction can overshoot which means we exit collision, even thought it looks like we are still colliding
-        Vector2 rayHitDir = new Vector2(charRaycasting.CheckHorizontalMiddleDir(), charRaycasting.CheckVerticalMiddleDir());
+        Vector2 rayHitDir = new Vector2(_charRaycasting.CheckHorizontalMiddleDir(), _charRaycasting.CheckVerticalMiddleDir());
 
         //if we are not hitting a wall on both axis or are not moving in an angle
         if ((rayHitDir.x == 0 || rayHitDir.y == 0)) {
@@ -67,7 +77,7 @@ public class ControlDirection : MonoBehaviour {
             //if we are not in a corner, but still touch objects from both axises, invert our dir
             if (_collDir.x != 0 && _collDir.y != 0)
             {
-                newDir = lastDir = _currentDir * -1;
+                newDir = _lastDir = _currentDir * -1;
             }
             else
             {
@@ -76,29 +86,29 @@ public class ControlDirection : MonoBehaviour {
                 //if our currentDir.x isn't 0, set is as our lastDir.x
                 if (_currentDir.x != 0)
                 {
-                    lastDir.x = Rounding.InvertOnNegativeCeil(_currentDir.x) * charAccess.controlVelocity.GetMultiplierDir();
+                    _lastDir.x = Rounding.InvertOnNegativeCeil(_currentDir.x) * _charAccess.ControlVelocity.GetMultiplierDir();
                 }
 
                 //if our currentDir.y isn't 0, set is as our lastDir.y
                 if (_currentDir.y != 0)
                 {
-                    lastDir.y = Rounding.InvertOnNegativeCeil(_currentDir.y) * charAccess.controlVelocity.GetMultiplierDir();
+                    _lastDir.y = Rounding.InvertOnNegativeCeil(_currentDir.y) * _charAccess.ControlVelocity.GetMultiplierDir();
                 }
 
-                if (!charAccess.controlVelocity.CheckMovingStandard() || (_currentDir.x != 0 && _currentDir.y != 0))
+                if (!_charAccess.ControlVelocity.CheckMovingStandard() || (_currentDir.x != 0 && _currentDir.y != 0))
                 {
-                    charAccess.controlSpeed.TempSpeedIncrease();
+                    _charAccess.ControlSpeed.TempSpeedIncrease();
                 }
 
                 //replace the dir on the axis that we dont have a collision with
                 //example: if we hit something under us, move to the left or right, depeding on our lastDir
                 if (_collDir.x != 0)
                 {
-                    newDir = new Vector2(0, lastDir.y);
+                    newDir = new Vector2(0, _lastDir.y);
                 }
                 else
                 {
-                    newDir = new Vector2(lastDir.x, 0);
+                    newDir = new Vector2(_lastDir.x, 0);
                 }
             }
 
@@ -108,11 +118,11 @@ public class ControlDirection : MonoBehaviour {
 
             if (rayHitDir == Vector2.zero)
             {
-                charAccess.controlVelocity.SetDirection(charAccess.controlVelocity.AdjustDirToMultiplier(lastDir));
+                _charAccess.ControlVelocity.SetDirection(_charAccess.ControlVelocity.AdjustDirToMultiplier(_lastDir));
             }
             else
             {
-                if((_currentDir.x * charAccess.controlVelocity.GetMultiplierDir()) == rayHitDir.x)
+                if((_currentDir.x * _charAccess.ControlVelocity.GetMultiplierDir()) == rayHitDir.x)
                 {
 
                 } else
@@ -121,17 +131,17 @@ public class ControlDirection : MonoBehaviour {
                 }
 
 
-                if ((_currentDir.x * charAccess.controlVelocity.GetMultiplierDir()) == rayHitDir.x)
+                if ((_currentDir.x * _charAccess.ControlVelocity.GetMultiplierDir()) == rayHitDir.x)
                 {
-                    lastDir.y = rayHitDir.y * -1;
-                    lastDir.x = rayHitDir.x;
-                    newDir = new Vector2(0, lastDir.y);
+                    _lastDir.y = rayHitDir.y * -1;
+                    _lastDir.x = rayHitDir.x;
+                    newDir = new Vector2(0, _lastDir.y);
                 }
                 else
                 {
-                    lastDir.x = rayHitDir.x * -1;
-                    lastDir.y = rayHitDir.y;
-                    newDir = new Vector2(lastDir.x, 0);
+                    _lastDir.x = rayHitDir.x * -1;
+                    _lastDir.y = rayHitDir.y;
+                    newDir = new Vector2(_lastDir.x, 0);
                 }
             }
         }

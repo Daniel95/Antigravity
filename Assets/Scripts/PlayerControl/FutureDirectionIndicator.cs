@@ -18,7 +18,7 @@ public class FutureDirectionIndicator : MonoBehaviour {
         lookAt = arrowTransform.GetComponent<LookAt>();
         charAccess = GetComponent<CharScriptAccess>();
         frames = GetComponent<Frames>();
-        lookDir = charAccess.controlVelocity.GetCeilVelocityDirection();
+        lookDir = charAccess.ControlVelocity.GetCeilVelocityDirection();
 
         SubscribeToDelegates();
     }
@@ -31,22 +31,22 @@ public class FutureDirectionIndicator : MonoBehaviour {
     void OnDisable()
     {
         if (charAccess != null) {
-            charAccess.controlDirection.finishedDirectionLogic -= PointToControlledDir;
-            charAccess.speedMultiplier.switchedMultiplier -= PointToCeilVelocityDir;
-            charAccess.controlTakeOff.tookOff -= PointToCeilVelocityDir;
+            charAccess.ControlDirection.FinishedDirectionLogic -= PointToControlledDir;
+            charAccess.SpeedMultiplier.SwitchedMultiplier -= PointToCeilVelocityDir;
+            charAccess.ControlTakeOff.TookOff -= PointToCeilVelocityDir;
         }
     }
 
     void SubscribeToDelegates() {
-        charAccess.controlDirection.finishedDirectionLogic += PointToControlledDir;
-        charAccess.speedMultiplier.switchedMultiplier += PointToCeilVelocityDir;
-        charAccess.controlTakeOff.tookOff += PointToCeilVelocityDir;
+        charAccess.ControlDirection.FinishedDirectionLogic += PointToControlledDir;
+        charAccess.SpeedMultiplier.SwitchedMultiplier += PointToCeilVelocityDir;
+        charAccess.ControlTakeOff.TookOff += PointToCeilVelocityDir;
     }
 
     public void PointToControlledDir(Vector2 _futureDir)
     {
 
-        lookDir = _futureDir * charAccess.controlVelocity.GetMultiplierDir();
+        lookDir = _futureDir * charAccess.ControlVelocity.GetMultiplierDir();
 
         lookAt.UpdateLookAt((Vector2)transform.position + lookDir);
     }
@@ -57,7 +57,7 @@ public class FutureDirectionIndicator : MonoBehaviour {
     }
 
     private void UpdateCeilVelocityDir() {
-        Vector2 velocityDir = charAccess.controlVelocity.GetCeilVelocityDirection();
+        Vector2 velocityDir = charAccess.ControlVelocity.GetCeilVelocityDirection();
 
         //don't update the dir when its new value is zero
         if (velocityDir.x != 0)

@@ -5,33 +5,33 @@ using UnityEngine;
 
 public class TriggerCollisions : MonoBehaviour {
 
-    private List<Collider2D> currentlyCollidingTriggers = new List<Collider2D>();
+    private List<Collider2D> _currentlyCollidingTriggers = new List<Collider2D>();
 
     //when a trigger enters a non-trigger collider
-    public Action<Collider2D> onTriggerEnterCollision;
+    public Action<Collider2D> OnTriggerEnterCollision;
 
     //when a trigger enters a trigger collider
-    public Action<Collider2D> onTriggerEnterTrigger;
+    public Action<Collider2D> OnTriggerEnterTrigger;
 
     //when a trigger exits a non-trigger collider
-    public Action<Collider2D> onTriggerExitCollision;
+    public Action<Collider2D> OnTriggerExitCollision;
 
     //when a trigger exits a trigger collider
-    public Action<Collider2D> onTriggerExitTrigger;
+    public Action<Collider2D> OnTriggerExitTrigger;
 
     public void OnTriggerEnter2D(Collider2D collider)
     {
         if (!collider.isTrigger)
         {
-            if (onTriggerEnterCollision != null)
-                onTriggerEnterCollision(collider);
+            if (OnTriggerEnterCollision != null)
+                OnTriggerEnterCollision(collider);
         }
         else if(!CheckAlreadyColliding(collider))
         {
-            if (onTriggerEnterTrigger != null)
-                onTriggerEnterTrigger(collider);
+            if (OnTriggerEnterTrigger != null)
+                OnTriggerEnterTrigger(collider);
 
-            currentlyCollidingTriggers.Add(collider);
+            _currentlyCollidingTriggers.Add(collider);
         }
     }
 
@@ -39,20 +39,20 @@ public class TriggerCollisions : MonoBehaviour {
     {
         if (!collider.isTrigger)
         {
-            if (onTriggerExitCollision != null)
-                onTriggerExitCollision(collider);
+            if (OnTriggerExitCollision != null)
+                OnTriggerExitCollision(collider);
         }
         else if(CheckAlreadyColliding(collider))
         {
-            if (onTriggerExitTrigger != null)
-                onTriggerExitTrigger(collider);
+            if (OnTriggerExitTrigger != null)
+                OnTriggerExitTrigger(collider);
 
-            currentlyCollidingTriggers.Remove(collider);
+            _currentlyCollidingTriggers.Remove(collider);
         }
     }
 
     private bool CheckAlreadyColliding(Collider2D _collider)
     {
-        return currentlyCollidingTriggers.Contains(_collider);
+        return _currentlyCollidingTriggers.Contains(_collider);
     }
 }

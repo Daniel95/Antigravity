@@ -7,20 +7,24 @@ public class AimRay : MonoBehaviour {
     [SerializeField]
     private LineRenderer line;
 
-    private Vector2 rayDestination;
+    private Vector2 _rayDestination;
 
-    private Coroutine updateLineRendererPositions;
+    private Coroutine _updateLineRendererPositions;
 
-    private bool aimRayActive;
+    private bool _aimRayActive;
 
     void Start()
     {
         line.enabled = false;
     }
 
+    /// <summary>
+    /// enables a ray visible ray that can be controlled with RayDestination.
+    /// </summary>
+    /// <param name="_destination"></param>
     public void StartAimRay(Vector2 _destination)
     {
-        aimRayActive = true;
+        _aimRayActive = true;
 
         //activate the line renderer
         line.enabled = true;
@@ -28,7 +32,7 @@ public class AimRay : MonoBehaviour {
         line.SetPosition(0, transform.position);
         line.SetPosition(1, _destination);
 
-        updateLineRendererPositions = StartCoroutine(UpdateLineRendererPositions());
+        _updateLineRendererPositions = StartCoroutine(UpdateLineRendererPositions());
     }
 
     IEnumerator UpdateLineRendererPositions()
@@ -36,29 +40,38 @@ public class AimRay : MonoBehaviour {
         while (true)
         {
             line.SetPosition(0, transform.position);
-            line.SetPosition(1, rayDestination);
+            line.SetPosition(1, _rayDestination);
             yield return null;
         }
     }
 
+    /// <summary>
+    /// stops the ray.
+    /// </summary>
     public void StopAimRay()
     {
-        if (aimRayActive)
+        if (_aimRayActive)
         {
-            StopCoroutine(updateLineRendererPositions);
+            StopCoroutine(_updateLineRendererPositions);
 
-            aimRayActive = false;
+            _aimRayActive = false;
             line.enabled = false;
         }
     }
 
-    public Vector2 SetRayDestination
+    /// <summary>
+    /// control the destination of the ray.
+    /// </summary>
+    public Vector2 RayDestination
     {
-        set { rayDestination = value; }
+        set { _rayDestination = value; }
     }
 
+    /// <summary>
+    /// check if the ray is already active.
+    /// </summary>
     public bool AimRayActive
     {
-        get { return aimRayActive; }
+        get { return _aimRayActive; }
     }
 }

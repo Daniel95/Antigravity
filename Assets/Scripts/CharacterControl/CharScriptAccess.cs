@@ -5,24 +5,24 @@ using System.Collections;
 public class CharScriptAccess : MonoBehaviour {
 
     [HideInInspector]
-    public ControlVelocity controlVelocity;
+    public ControlVelocity ControlVelocity;
     [HideInInspector]
-    public ControlDirection controlDirection;
+    public ControlDirection ControlDirection;
     [HideInInspector]
-    public ControlSpeed controlSpeed;
+    public ControlSpeed ControlSpeed;
     [HideInInspector]
-    public ControlTakeOff controlTakeOff;
+    public ControlTakeOff ControlTakeOff;
     [HideInInspector]
-    public SpeedMultiplier speedMultiplier;
+    public SpeedMultiplier SpeedMultiplier;
     [HideInInspector]
-    public CollisionDirection collisionDirection;
+    public CollisionDirection CollisionDirection;
 
     void Awake() {
-        controlVelocity = GetComponent<ControlVelocity>();
-        controlDirection = GetComponent<ControlDirection>();
-        controlSpeed = GetComponent<ControlSpeed>();
-        controlTakeOff = GetComponent<ControlTakeOff>();
-        speedMultiplier = GetComponent<SpeedMultiplier>();
-        collisionDirection = GetComponent<CollisionDirection>();
+        ControlVelocity = GetComponent<ControlVelocity>();
+        ControlDirection = GetComponent<ControlDirection>();
+        ControlSpeed = GetComponent<ControlSpeed>();
+        ControlTakeOff = GetComponent<ControlTakeOff>();
+        SpeedMultiplier = GetComponent<SpeedMultiplier>();
+        CollisionDirection = GetComponent<CollisionDirection>();
     }
 }

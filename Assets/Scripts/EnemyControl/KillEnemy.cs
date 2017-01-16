@@ -5,7 +5,7 @@ public class KillEnemy : MonoBehaviour
 {
     private void Start()
     {
-        GetComponent<GetKilled>().die += EnemyDies;
+        GetComponent<GetKilled>().Die += EnemyDies;
     }
 
     private void EnemyDies()

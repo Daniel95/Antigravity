@@ -10,7 +10,7 @@ public class ControlVelocity : MonoBehaviour {
     [SerializeField]
     private float currentSpeed;
 
-    private float speedMultiplier = 1;
+    private float _speedMultiplier = 1;
 
     [SerializeField]
     private float maxSpeed = 5;
@@ -21,32 +21,33 @@ public class ControlVelocity : MonoBehaviour {
     [SerializeField]
     private Vector2 direction;
 
-    private float originalTargetSpeed;
+    private Rigidbody2D _rb;
 
-    private Rigidbody2D rb;
+    private  Coroutine _updateDirectionalMovement;
 
-    private  Coroutine updateDirectionalMovement;
-
-    private Coroutine returnSpeedToOriginal;
+    private Coroutine _returnSpeedToOriginal;
 
     void Awake()
     {
-        rb = GetComponent<Rigidbody2D>();
+        _rb = GetComponent<Rigidbody2D>();
         currentSpeed = originalSpeed;
     }
 
+    /// <summary>
+    /// Starts moving the rigidbody towards the controlled direction. (GetDirection)
+    /// </summary>
     public void StartDirectionalMovement()
     {
         StopDirectionalMovement();
-        updateDirectionalMovement = StartCoroutine(UpdateDirectionalMovement());
+        _updateDirectionalMovement = StartCoroutine(UpdateDirectionalMovement());
     }
 
     public void StopDirectionalMovement()
     {
-        if (updateDirectionalMovement != null)
+        if (_updateDirectionalMovement != null)
         {
-            StopCoroutine(updateDirectionalMovement);
-            updateDirectionalMovement = null;
+            StopCoroutine(_updateDirectionalMovement);
+            _updateDirectionalMovement = null;
         }
     }
 
@@ -55,17 +56,21 @@ public class ControlVelocity : MonoBehaviour {
         while (true)
         {
             //add our own constant force
-            rb.velocity = direction * (currentSpeed * speedMultiplier);
+            _rb.velocity = direction * (currentSpeed * _speedMultiplier);
             yield return new WaitForFixedUpdate();
         }
     }
 
+    /// <summary>
+    /// Returns the speed to normal.
+    /// </summary>
+    /// <param name="_returnSpeed"></param>
     public void StartReturnSpeedToOriginal(float _returnSpeed)
     {
-        if (returnSpeedToOriginal != null)
-            StopCoroutine(returnSpeedToOriginal);
+        if (_returnSpeedToOriginal != null)
+            StopCoroutine(_returnSpeedToOriginal);
 
-        returnSpeedToOriginal = StartCoroutine(ReturnSpeedToOriginal(_returnSpeed));
+        _returnSpeedToOriginal = StartCoroutine(ReturnSpeedToOriginal(_returnSpeed));
     }
 
     IEnumerator ReturnSpeedToOriginal(float _returnSpeed)
@@ -80,11 +85,11 @@ public class ControlVelocity : MonoBehaviour {
     }
 
     public void AddVelocity(Vector2 _velocity) {
-        rb.velocity += _velocity;
+        _rb.velocity += _velocity;
     }
 
     public void SetVelocity(Vector2 _velocity) {
-        rb.velocity = _velocity;
+        _rb.velocity = _velocity;
     }
 
     //switched to direction of the velocity
@@ -127,7 +132,7 @@ public class ControlVelocity : MonoBehaviour {
     public int GetMultiplierDir()
     {
         int speedMultiplierDir = 1;
-        if (speedMultiplier < 0)
+        if (_speedMultiplier < 0)
         {
             speedMultiplierDir = -1;
         }
@@ -135,26 +140,40 @@ public class ControlVelocity : MonoBehaviour {
         return speedMultiplierDir;
     }
 
-    //returns our own controlled direction
+    /// <summary>
+    /// get our own controlled direction
+    /// </summary>
+    /// <returns></returns>
     public Vector2 GetDirection() {
         return direction;
     }
 
-    //returns the realtime direction of the velocity
+    /// <summary>
+    /// returns the realtime direction of the velocity.
+    /// </summary>
+    /// <returns></returns>
     public Vector2 GetVelocityDirection() {
-        return rb.velocity.normalized;
+        return _rb.velocity.normalized;
     }
 
+    /// <summary>
+    /// get the ceiled (inverted ceil on negative) version of our velocity direction.
+    /// </summary>
+    /// <returns></returns>
     public Vector2 GetCeilVelocityDirection() {
-        Vector2 velocityNormalized = rb.velocity.normalized;
+        Vector2 velocityNormalized = _rb.velocity.normalized;
         return new Vector2(Rounding.InvertOnNegativeCeil(velocityNormalized.x), Rounding.InvertOnNegativeCeil(velocityNormalized.y));
     }
 
+    /// <summary>
+    /// Stop any speed modifiers (coroutines), and set the speed to the new value, or the max value if the new value is too large.
+    /// </summary>
+    /// <param name="_newSpeed"></param>
     public void SetSpeed(float _newSpeed)
     {
-        if(returnSpeedToOriginal != null)
+        if(_returnSpeedToOriginal != null)
         {
-            StopCoroutine(returnSpeedToOriginal);
+            StopCoroutine(_returnSpeedToOriginal);
         }
 
         currentSpeed = _newSpeed;
@@ -166,7 +185,7 @@ public class ControlVelocity : MonoBehaviour {
     }
 
     public Vector2 GetVelocity {
-        get { return rb.velocity; }
+        get { return _rb.velocity; }
     }
 
     public float MaxSpeed
@@ -185,12 +204,12 @@ public class ControlVelocity : MonoBehaviour {
 
     public float SpeedMultiplier
     {
-        get { return speedMultiplier; }
-        set { speedMultiplier = value; }
+        get { return _speedMultiplier; }
+        set { _speedMultiplier = value; }
     }
 
     public bool CheckMovingStandard() {
-        return updateDirectionalMovement != null;
+        return _updateDirectionalMovement != null;
     }
 }
 

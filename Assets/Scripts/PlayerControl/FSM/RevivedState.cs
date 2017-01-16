@@ -58,8 +58,8 @@ public class RevivedState : State, ITriggerer
         playerActivateWeapon.SetWeaponInput(false);
 
         //Reset our movement
-        charAccess.controlVelocity.SetVelocity(Vector2.zero);
-        charAccess.controlVelocity.SetDirection(Vector2.zero);
+        charAccess.ControlVelocity.SetVelocity(Vector2.zero);
+        charAccess.ControlVelocity.SetDirection(Vector2.zero);
 
         //wait a few frames so the player dont start moving immediatly if he panic clicked right after he respawned
         StartCoroutine(DelayLaunchingInput());
@@ -120,10 +120,10 @@ public class RevivedState : State, ITriggerer
         playerActivateWeapon.SetWeaponInput(true);
 
         aimRay.StopAimRay();
-        charAccess.speedMultiplier.MakeMultiplierPositive();
-        charAccess.controlVelocity.SetDirection(_dir * charAccess.controlVelocity.GetMultiplierDir());
+        charAccess.SpeedMultiplier.MakeMultiplierPositive();
+        charAccess.ControlVelocity.SetDirection(_dir * charAccess.ControlVelocity.GetMultiplierDir());
 
-        charAccess.controlSpeed.TempSpeedIncrease();
+        charAccess.ControlSpeed.TempSpeedIncrease();
 
         EnterLaunchedState();
     }
