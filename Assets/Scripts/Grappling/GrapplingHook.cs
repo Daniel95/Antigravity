@@ -68,7 +68,7 @@ public class GrapplingHook : MonoBehaviour, IWeapon, ITriggerer {
         StopBulletTime();
     }
 
-    void StopBulletTime() {
+    private void StopBulletTime() {
         _aimRay.StopAimRay();
     }
 
@@ -212,7 +212,7 @@ public class GrapplingHook : MonoBehaviour, IWeapon, ITriggerer {
         _grappleProjectileGObj.SetActive(false);
     }
 
-    void StopLineRenderer() {
+    private void StopLineRenderer() {
         _lineRenderer.enabled = false;
         StopCoroutine(_lineUpdateCoroutine);
     }

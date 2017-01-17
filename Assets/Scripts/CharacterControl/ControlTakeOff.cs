@@ -22,10 +22,8 @@ public class ControlTakeOff : MonoBehaviour, ITriggerer {
     // Use this for initialization
     void Start () {
         _plrAcces = GetComponent<CharScriptAccess>();
-
         _charRaycasting = GetComponent<CharRaycasting>();
     }
-
 
     /// <summary>
     /// changes the direction of ControlVelocity, to create a jumping effect.
@@ -78,24 +76,24 @@ public class ControlTakeOff : MonoBehaviour, ITriggerer {
     /// <summary>
     /// Changes the direction of ControlVelocity to create a bouncing effect.
     /// </summary>
-    /// <param name="_currentDir"></param>
-    /// <param name="_collisionDir"></param>
-    public void Bounce(Vector2 _currentDir, Vector2 _collisionDir) {
+    /// <param name="currentDir"></param>
+    /// <param name="collisionDir"></param>
+    public void Bounce(Vector2 currentDir, Vector2 collisionDir) {
         _plrAcces.ControlSpeed.TempSpeedIncrease();
 
-        if (_collisionDir.x != 0 || _collisionDir.y != 0)
+        if (collisionDir.x != 0 || collisionDir.y != 0)
         {
             //check the raycastdir, our newDir is the opposite of one of the axes
-            if (_collisionDir.x != 0)
+            if (collisionDir.x != 0)
             {
-                _currentDir.x *= -1;
+                currentDir.x *= -1;
             }
-            if (_collisionDir.y != 0)
+            if (collisionDir.y != 0)
             {
-                _currentDir.y *= -1;
+                currentDir.y *= -1;
             }
 
-            _plrAcces.ControlVelocity.SetDirection(_currentDir);
+            _plrAcces.ControlVelocity.SetDirection(currentDir);
 
             if (TookOff != null)
                 TookOff();

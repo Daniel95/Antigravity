@@ -85,9 +85,9 @@ public class ActivateWeapon : MonoBehaviour {
         return targetPos;
     }
 
-    void ChangeWeapon(int _change)
+    void ChangeWeapon(int change)
     {
-        _weaponIndex += _change;
+        _weaponIndex += change;
 
         if (_weaponIndex < 0)
             _weaponIndex = _weapons.Count - 1;

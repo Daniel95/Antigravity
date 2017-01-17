@@ -6,10 +6,7 @@ public class Frames : MonoBehaviour {
 
     public static bool CheckInterval(int intervalLength)
     {
-        if (Time.frameCount % intervalLength == 0)
-            return true;
-        else
-            return false;
+        return Time.frameCount % intervalLength == 0;
     }
 
     public void ExecuteAfterDelay(int framesToWait, Action action) {

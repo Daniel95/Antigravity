@@ -5,7 +5,7 @@ using UnityEngine;
 public class AdjustCameraSize : MonoBehaviour {
 
     [SerializeField]
-    private int pCCameraSize = 10;
+    private int pcCameraSize = 10;
 
     [SerializeField]
     private int mobileCameraSize = 15;
@@ -14,12 +14,6 @@ public class AdjustCameraSize : MonoBehaviour {
     {
         Camera cam = GetComponent<Camera>();
 
-        if (Platform.PlatformIsMobile()) {
-            cam.orthographicSize = mobileCameraSize;
-        }
-        else
-        {
-            cam.orthographicSize = pCCameraSize;
-        }
+        cam.orthographicSize = Platform.PlatformIsMobile() ? mobileCameraSize : pcCameraSize;
     }
 }

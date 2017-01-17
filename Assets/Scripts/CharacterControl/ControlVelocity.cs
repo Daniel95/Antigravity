@@ -7,8 +7,7 @@ public class ControlVelocity : MonoBehaviour {
     [SerializeField]
     private float originalSpeed = 3;
 
-    [SerializeField]
-    private float currentSpeed;
+    private float _currentSpeed;
 
     private float _speedMultiplier = 1;
 
@@ -30,7 +29,7 @@ public class ControlVelocity : MonoBehaviour {
     void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
-        currentSpeed = originalSpeed;
+        _currentSpeed = originalSpeed;
     }
 
     /// <summary>
@@ -56,7 +55,7 @@ public class ControlVelocity : MonoBehaviour {
         while (true)
         {
             //add our own constant force
-            _rb.velocity = direction * (currentSpeed * _speedMultiplier);
+            _rb.velocity = direction * (_currentSpeed * _speedMultiplier);
             yield return new WaitForFixedUpdate();
         }
     }
@@ -73,15 +72,15 @@ public class ControlVelocity : MonoBehaviour {
         _returnSpeedToOriginal = StartCoroutine(ReturnSpeedToOriginal(returnSpeed));
     }
 
-    IEnumerator ReturnSpeedToOriginal(float returnSpeed)
+    private IEnumerator ReturnSpeedToOriginal(float returnSpeed)
     {
-        while (Mathf.Abs(currentSpeed - originalSpeed) > minSpeedOffsetValue)
+        while (Mathf.Abs(_currentSpeed - originalSpeed) > minSpeedOffsetValue)
         {
-            currentSpeed = Mathf.Lerp(currentSpeed, originalSpeed, returnSpeed);
+            _currentSpeed = Mathf.Lerp(_currentSpeed, originalSpeed, returnSpeed);
             yield return new WaitForFixedUpdate();
         }
 
-        currentSpeed = originalSpeed;
+        _currentSpeed = originalSpeed;
     }
 
     public void AddVelocity(Vector2 velocity) {
@@ -176,11 +175,11 @@ public class ControlVelocity : MonoBehaviour {
             StopCoroutine(_returnSpeedToOriginal);
         }
 
-        currentSpeed = newSpeed;
+        _currentSpeed = newSpeed;
 
-        if (currentSpeed > maxSpeed)
+        if (_currentSpeed > maxSpeed)
         {
-            currentSpeed = maxSpeed;
+            _currentSpeed = maxSpeed;
         }
     }
 
@@ -199,7 +198,7 @@ public class ControlVelocity : MonoBehaviour {
     }
 
     public float CurrentSpeed {
-        get { return currentSpeed; }
+        get { return _currentSpeed; }
     }
 
     public float SpeedMultiplier

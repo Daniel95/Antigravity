@@ -5,7 +5,7 @@ using UnityEngine;
 public class CollisionDirection : MonoBehaviour {
 
     //saves the collider and the rounded direction
-    private Dictionary<Collider2D, Vector2> savedCollisions = new Dictionary<Collider2D, Vector2>();
+    private Dictionary<Collider2D, Vector2> _savedCollisions = new Dictionary<Collider2D, Vector2>();
 
     private CharRaycasting _charRaycasting;
 
@@ -30,7 +30,7 @@ public class CollisionDirection : MonoBehaviour {
         Vector2 combinedRoundedCollDir = new Vector2();
 
         //check each saved collision for a direction
-        foreach (KeyValuePair<Collider2D, Vector2> collision in savedCollisions)
+        foreach (KeyValuePair<Collider2D, Vector2> collision in _savedCollisions)
         {
             combinedRoundedCollDir += collision.Value;
         }
@@ -68,12 +68,12 @@ public class CollisionDirection : MonoBehaviour {
             roundedCollDir.y = Rounding.InvertOnNegativeCeil(offset.y);
         }
 
-        savedCollisions.Add(collision.collider, roundedCollDir);
+        _savedCollisions.Add(collision.collider, roundedCollDir);
     }
 
     //remove a saved collision from savedCollisions once we exit
     private void OnCollisionExit2D(Collision2D collision)
     {
-        savedCollisions.Remove(collision.collider);
+        _savedCollisions.Remove(collision.collider);
     }
 }
