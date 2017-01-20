@@ -101,6 +101,7 @@ public class ControlDirection : MonoBehaviour
                 }
 
 
+                //change speed by calculating the angle
                 float speedChange = Vector2.Angle(currentDir, collDir) / 90;
 
                 if (speedChange > maxSpeedChange)

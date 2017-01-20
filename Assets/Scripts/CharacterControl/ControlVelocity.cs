@@ -7,6 +7,7 @@ public class ControlVelocity : MonoBehaviour {
     [SerializeField]
     private float originalSpeed = 3;
 
+    [SerializeField]
     private float _currentSpeed;
 
     private float _speedMultiplier = 1;
@@ -47,7 +48,7 @@ public class ControlVelocity : MonoBehaviour {
         }
     }
 
-    IEnumerator UpdateDirectionalMovement()
+    private IEnumerator UpdateDirectionalMovement()
     {
         while (true)
         {

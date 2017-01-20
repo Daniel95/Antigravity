@@ -82,6 +82,8 @@ public class GrapplingState : State, ITriggerer {
 
         _charAccess.ControlVelocity.SetDirection(_charAccess.ControlVelocity.GetVelocityDirection());
 
+        _charAccess.ControlSpeed.TempSpeedIncrease();
+
         if (StopTrigger != null)
             StopTrigger();
 
@@ -90,7 +92,8 @@ public class GrapplingState : State, ITriggerer {
         EnterLaunchedState();
     }
 
-    private void EnterLaunchedState() {
+    private void EnterLaunchedState()
+    {
         StateMachine.ActivateState(StateID.LaunchedState);
     }
 

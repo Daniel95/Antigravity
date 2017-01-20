@@ -17,33 +17,30 @@ public class GrappleProjectile : MonoBehaviour {
 
     private bool _hookedToSurface;
 
-    private Transform _moveAbleObject;
-
-    private Vector2 _offsetToMoveAble;
-
-    private Coroutine _followMovingObject;
+    private Transform _attachedTransform;
 
     void Awake() {
         _moveTowards = GetComponent<MoveTowards>();
         _frames = GetComponent<Frames>();
     }
 
-    public void GoToShootPos(Vector2 _destination) {
+    public void GoToShootPos(Vector2 destination) {
         _hookedToSurface = false;
 
         _moveTowards.ReachedDestination = ReachedShootPos;
-        _moveTowards.StartMoving(_destination);
+        _moveTowards.StartMoving(destination);
     }
 
-    public void Return(Vector2 _destination)
+    public void Return(Vector2 destination)
     {
-        if (_followMovingObject != null)
-            StopCoroutine(_followMovingObject);
+        _attachedTransform = null;
 
-        _moveAbleObject = null;
+        _hookedToSurface = false;
 
         _moveTowards.ReachedDestination = ReachedDestination;
-        _moveTowards.StartMoving(_destination);
+        _moveTowards.StartMoving(destination);
+
+        transform.SetParent(null);
     }
 
     void OnDisable()
@@ -60,11 +57,7 @@ public class GrappleProjectile : MonoBehaviour {
     {
         if (_hookedToSurface)
         {
-            //if we collided with a moveAble object, make sure the grappleProjectile follows the moving object
-            if(CollidedWithMoveAble())
-            {
-                _followMovingObject = StartCoroutine(FollowMovingObject());
-            }
+            transform.SetParent(_attachedTransform);
 
             if (ReachedDestination != null)
                 ReachedDestination();
@@ -76,45 +69,19 @@ public class GrappleProjectile : MonoBehaviour {
         }
     }
 
-    IEnumerator FollowMovingObject()
-    {
-        _offsetToMoveAble = transform.position - _moveAbleObject.transform.position;
-
-        while (true)
-        {
-            transform.position = (Vector2)_moveAbleObject.transform.position + _offsetToMoveAble;
-            yield return new WaitForFixedUpdate();
-        }
-    }
-
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        //we hit a moveAble object, save the offset and 
-        if (collision.transform.CompareTag(Tags.MoveAble))
-        {
-            _moveAbleObject = collision.transform;
-        }
-
         if (((1 << collision.gameObject.layer) & hookAbleLayers) != 0) {
+            _attachedTransform = collision.transform;
             _hookedToSurface = true;
         }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.transform.CompareTag(Tags.MoveAble))
-        {
-            _moveAbleObject = null;
-        }
-
         if (((1 << collision.gameObject.layer) & hookAbleLayers) != 0)
         {
             _hookedToSurface = false;
         }
-    }
-
-    public bool CollidedWithMoveAble()
-    {
-        return _moveAbleObject != null;
     }
 }
