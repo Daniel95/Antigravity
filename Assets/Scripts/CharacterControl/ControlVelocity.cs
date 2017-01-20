@@ -12,9 +12,6 @@ public class ControlVelocity : MonoBehaviour {
     private float _speedMultiplier = 1;
 
     [SerializeField]
-    private float maxSpeed = 5;
-
-    [SerializeField]
     private float minSpeedOffsetValue = 0.05f;
 
     [SerializeField]
@@ -76,7 +73,7 @@ public class ControlVelocity : MonoBehaviour {
     {
         while (Mathf.Abs(_currentSpeed - originalSpeed) > minSpeedOffsetValue)
         {
-            _currentSpeed = Mathf.Lerp(_currentSpeed, originalSpeed, returnSpeed);
+            _currentSpeed = Mathf.Lerp(_currentSpeed, originalSpeed, returnSpeed * (CurrentSpeed / originalSpeed));
             yield return new WaitForFixedUpdate();
         }
 
@@ -176,20 +173,10 @@ public class ControlVelocity : MonoBehaviour {
         }
 
         _currentSpeed = newSpeed;
-
-        if (_currentSpeed > maxSpeed)
-        {
-            _currentSpeed = maxSpeed;
-        }
     }
 
     public Vector2 GetVelocity {
         get { return _rb.velocity; }
-    }
-
-    public float MaxSpeed
-    {
-        get { return maxSpeed; }
     }
 
     public float OriginalSpeed

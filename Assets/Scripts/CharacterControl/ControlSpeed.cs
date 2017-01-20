@@ -5,10 +5,29 @@ using UnityEngine;
 public class ControlSpeed : MonoBehaviour, IBoostAble {
 
     [SerializeField]
-    private float tempSpeedAddedMuliplier = 0.35f;
+    private float maxSpeedMultiplier = 5f;
 
     [SerializeField]
-    private float returnSpeed = 0.1f;
+    private float speedChangeDivider = 10f;
+
+    [SerializeField]
+    private float maxSpeedChange = 2;
+
+    [SerializeField]
+    private float speedBoostValue = 0.25f;
+
+    [SerializeField]
+    private float returnSpeed = 0.005f;
+
+    [SerializeField]
+    private float standardNeutralValue = 0.5f;
+
+    [SerializeField]
+    private int changeSpeedCdStartValue = 60;
+
+    private int _changeSpeedCdCounter = -1;
+
+    private bool _changeSpeedCdIsActive;
 
     private ControlVelocity _velocity;
 
@@ -22,31 +41,52 @@ public class ControlSpeed : MonoBehaviour, IBoostAble {
     /// </summary>
     public void TempSpeedIncrease()
     {
-        float newSpeed = _velocity.OriginalSpeed * (1 + tempSpeedAddedMuliplier);
-
-        if(newSpeed > _velocity.CurrentSpeed)
-        {
-            _velocity.SetSpeed(newSpeed);
-
-            _velocity.StartReturnSpeedToOriginal(returnSpeed);
-        }
+        TempSpeedChange(0.5f + speedBoostValue, standardNeutralValue);
     }
+
+    public void SpeedDecrease()
+    {
+        TempSpeedChange(0.5f - speedBoostValue, standardNeutralValue);
+    }
+
 
     /// <summary>
-    /// decreases the speed with a multplier, then returns it to the original over time
+    /// Changes speed by a specified amount, below 0.5 is slower, above 0.5 is faster
+    /// never sets speed lower then minimum
     /// </summary>
-    public void TempSpeedDecrease()
+    /// <param name="amount"></param>
+    /// <param name="neutralValue"></param>
+    public void TempSpeedChange(float amount, float neutralValue)
     {
-        float newSpeed = _velocity.OriginalSpeed * (1 - tempSpeedAddedMuliplier);
-
-        if (newSpeed < _velocity.CurrentSpeed)
+        if (_changeSpeedCdIsActive)
         {
-            _velocity.SetSpeed(newSpeed);
-
-            _velocity.StartReturnSpeedToOriginal(returnSpeed);
+            return;
         }
-    }
 
+        if (_changeSpeedCdCounter < 0)
+        {
+            StartCoroutine(ChangeSpeedCdCounter());
+        }
+        else
+        {
+            _changeSpeedCdCounter = changeSpeedCdStartValue;
+        }
+
+        float newSpeed = CalcNewSpeed(amount, neutralValue);
+
+        if (newSpeed - _velocity.CurrentSpeed > maxSpeedChange)
+        {
+            newSpeed = _velocity.CurrentSpeed + maxSpeedChange;
+        }
+
+        //keep the speeds in bounds, above originalspeed, below the speed muliplier
+        if (newSpeed > _velocity.OriginalSpeed * maxSpeedMultiplier)
+            newSpeed = _velocity.OriginalSpeed * maxSpeedMultiplier;
+        else if (newSpeed < _velocity.OriginalSpeed)
+            newSpeed = _velocity.OriginalSpeed;
+
+        BoostSpeed(newSpeed, returnSpeed);
+    }
 
     /// <summary>
     /// boosts with a certain amount.
@@ -58,5 +98,29 @@ public class ControlSpeed : MonoBehaviour, IBoostAble {
         _velocity.SetSpeed(newSpeed);
 
         _velocity.StartReturnSpeedToOriginal(returnSpeed);
+    }
+
+    private float CalcNewSpeed(float amount, float neutralValue)
+    {
+        return _velocity.CurrentSpeed + _velocity.CurrentSpeed * ((amount - neutralValue) * 2) / (_velocity.CurrentSpeed * speedChangeDivider);
+    }
+
+    private IEnumerator ChangeSpeedCdCounter()
+    {
+        _changeSpeedCdIsActive = true;
+        _changeSpeedCdCounter = changeSpeedCdStartValue;
+
+        while (true)
+        {
+            _changeSpeedCdCounter--;
+            if (_changeSpeedCdCounter < 0)
+            {
+                _changeSpeedCdIsActive = false;
+                yield break;
+            }
+
+
+            yield return new WaitForEndOfFrame();
+        }
     }
 }

@@ -8,15 +8,15 @@ public class SpeedMultiplier : MonoBehaviour, ITriggerer
     private float startMultiplier = 1;
 
     [SerializeField]
-    private float flipSpeed = 0.01f;
+    private float flipSpeed = 0.055f;
 
     [SerializeField]
-    private float maxSpeed = 2f;
+    private float maxSpeed = 1.2f;
 
     [SerializeField]
     private float minSwitchSpeedThreshold = 0.1f;
 
-    private ControlVelocity _velocity;
+    private CharScriptAccess _charAcces;
 
     public Action SwitchedMultiplier;
 
@@ -27,65 +27,70 @@ public class SpeedMultiplier : MonoBehaviour, ITriggerer
 
     private float _lastTarget;
 
+    private bool _movingMultiplier;
+
     //used by action trigger to decide when to stop the instructions/tutorial
     public Action ActivateTrigger { get; set; }
     public Action StopTrigger { get; set; }
 
     void Start()
     {
-        _velocity = GetComponent<ControlVelocity>();
-        _velocity.SpeedMultiplier = _originalSpeedMultiplier = startMultiplier;
+        _charAcces = GetComponent<CharScriptAccess>();
+
+        _charAcces.ControlVelocity.SpeedMultiplier = _originalSpeedMultiplier = startMultiplier;
     }
 
     /// <summary>
     /// Sets a new speed multiplier, and corrects it if it is outside of bounds using maxSpeed and minSwitchSpeedThreshold.
     /// </summary>
-    /// <param name="_newMultiplierSpeed"></param>
-    public void SetSpeedMultiplier(float _newMultiplierSpeed)
+    /// <param name="newMultiplierSpeed"></param>
+    public void SetSpeedMultiplier(float newMultiplierSpeed)
     {
 
         //check if the new multiplier is outside the threshold
-        if (Mathf.Abs(_newMultiplierSpeed) >= minSwitchSpeedThreshold)
+        if (Mathf.Abs(newMultiplierSpeed) >= minSwitchSpeedThreshold)
         {
             //only replace the speed when it is lower or equals the maxSpeed
-            if (_newMultiplierSpeed <= maxSpeed && _newMultiplierSpeed >= -maxSpeed)
+            if (newMultiplierSpeed <= maxSpeed && newMultiplierSpeed >= -maxSpeed)
             {
-                _velocity.SpeedMultiplier = _newMultiplierSpeed;
+                _charAcces.ControlVelocity.SpeedMultiplier = newMultiplierSpeed;
             }
         }
         else
         { //round the speed if it reaches the minimal threshold
-            if (_newMultiplierSpeed > 0)
+            if (newMultiplierSpeed > 0)
             {
-                _velocity.SpeedMultiplier = minSwitchSpeedThreshold;
+                _charAcces.ControlVelocity.SpeedMultiplier = minSwitchSpeedThreshold;
             }
             else
             {
-                _velocity.SpeedMultiplier = -minSwitchSpeedThreshold;
+                _charAcces.ControlVelocity.SpeedMultiplier = -minSwitchSpeedThreshold;
             }
         }
 
         //secure way of checking if the multiplier has flipped between pos and neg, even if the change is really fast
-        if (_originalSpeedMultiplier <= 0 && _newMultiplierSpeed > 0 || _originalSpeedMultiplier >= 0 && _newMultiplierSpeed < 0)
+        if (_originalSpeedMultiplier <= 0 && newMultiplierSpeed > 0 || _originalSpeedMultiplier >= 0 && newMultiplierSpeed < 0)
         {
+            _charAcces.ControlSpeed.TempSpeedIncrease();
+
             if (SwitchedMultiplier != null)
                 SwitchedMultiplier();
         }
 
-        _originalSpeedMultiplier = _newMultiplierSpeed;
+        _originalSpeedMultiplier = newMultiplierSpeed;
     }
 
-    public void SetSpeedMultiplierPercentage(float _percentage)
+    public void SetSpeedMultiplierPercentage(float percentage)
     {
-        float newMultiplierSpeed = (_percentage * (maxSpeed * 2) - maxSpeed);
+        float newMultiplierSpeed = (percentage * (maxSpeed * 2) - maxSpeed);
 
         SetSpeedMultiplier(newMultiplierSpeed);
     }
 
     //increases or decreases the multiplier by an set amount
-    private void ChangeSpeedMultiplier(float _change)
+    private void ChangeSpeedMultiplier(float change)
     {
-        float _newMultiplierSpeed = _originalSpeedMultiplier + _change;
+        float _newMultiplierSpeed = _originalSpeedMultiplier + change;
 
         SetSpeedMultiplier(_newMultiplierSpeed);
     }
@@ -95,6 +100,8 @@ public class SpeedMultiplier : MonoBehaviour, ITriggerer
     /// </summary>
     public void SmoothFlipMultiplier()
     {
+        if (_movingMultiplier) return;
+
         if (StopTrigger != null)
             StopTrigger();
 
@@ -131,13 +138,16 @@ public class SpeedMultiplier : MonoBehaviour, ITriggerer
         }
     }
 
-    IEnumerator MoveMultiplier(float _target, float _time)
+    private IEnumerator MoveMultiplier(float target, float time)
     {
-        while (Mathf.Round(_originalSpeedMultiplier * 10) / 10 != Mathf.Round(_target * 10) / 10)
+        _movingMultiplier = true;
+
+        while (Mathf.Round(_originalSpeedMultiplier * 10) / 10 != Mathf.Round(target * 10) / 10)
         {
-            SetSpeedMultiplier(Mathf.Lerp(_originalSpeedMultiplier, _target, _time));
+            SetSpeedMultiplier(Mathf.Lerp(_originalSpeedMultiplier, target, time));
             yield return new WaitForFixedUpdate();
         }
-        SetSpeedMultiplier(_target);
+        SetSpeedMultiplier(target);
+        _movingMultiplier = false;
     }
 }

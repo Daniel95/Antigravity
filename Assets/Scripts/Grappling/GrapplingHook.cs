@@ -10,6 +10,9 @@ public class GrapplingHook : MonoBehaviour, IWeapon, ITriggerer {
     [SerializeField]
     private float minDistance = 0.3f;
 
+    [SerializeField]
+    private float directionSpeedNeutralValue = 0.3f;
+
     //variables to control the unity components
     private LineRenderer _lineRenderer;
     private DistanceJoint2D _distanceJoint;
@@ -28,7 +31,9 @@ public class GrapplingHook : MonoBehaviour, IWeapon, ITriggerer {
     private GameObject _grappleProjectileGObj;
     private GrappleProjectile _grappleProjectileScript;
 
-    private enum GrapplingHookStates { BusyShooting, BusyHolding, BusyPullingBack, Activate, Inactive };
+    private CharScriptAccess _charAcces;
+
+    private enum GrapplingHookStates { BusyShooting, BusyPullingBack, Activate, Inactive };
 
     private GrapplingHookStates _currentGrapplingHookState = GrapplingHookStates.Inactive;
 
@@ -46,6 +51,8 @@ public class GrapplingHook : MonoBehaviour, IWeapon, ITriggerer {
         _lineRenderer = GetComponent<LineRenderer>();
 
         _aimRay = GetComponent<AimRay>();
+
+        _charAcces = GetComponent<CharScriptAccess>();
 
         _grappleProjectileGObj = Instantiate(grappleProjectilePrefab, Vector2.zero, new Quaternion(0, 0, 0, 0)) as GameObject;
         _grappleProjectileScript = _grappleProjectileGObj.GetComponent<GrappleProjectile>();
@@ -92,7 +99,7 @@ public class GrapplingHook : MonoBehaviour, IWeapon, ITriggerer {
         } 
     }
 
-    IEnumerator HoldGrapple(Vector2 destination, Vector2 spawnPosition) {
+    private IEnumerator HoldGrapple(Vector2 destination, Vector2 spawnPosition) {
         while (_currentGrapplingHookState != GrapplingHookStates.Inactive) {
             yield return null;
         }
@@ -115,7 +122,7 @@ public class GrapplingHook : MonoBehaviour, IWeapon, ITriggerer {
         _grappleProjectileScript.GoToShootPos(destination);
     }
 
-    IEnumerator UpdateLineRendererPositions() {
+    private IEnumerator UpdateLineRendererPositions() {
         while (true) {
             _lineRenderer.SetPosition(0, transform.position);
             _lineRenderer.SetPosition(1, _grappleProjectileGObj.transform.position);
@@ -138,6 +145,7 @@ public class GrapplingHook : MonoBehaviour, IWeapon, ITriggerer {
                 StopTrigger();
             }
 
+
             //activate distanceJoint2D
             if (StartedGrappleLocking != null)
             {
@@ -154,6 +162,14 @@ public class GrapplingHook : MonoBehaviour, IWeapon, ITriggerer {
             {
                 _grappleAnchorUpdate = StartCoroutine(GrappleAnchorUpdate());
             }
+
+            float angleDifference =
+                Mathf.Abs(Vector2.Dot((_grappleProjectileGObj.transform.position - transform.position).normalized,
+                    _charAcces.ControlVelocity.GetVelocityDirection()));
+
+            float speedChange = angleDifference * -1 + 1;
+
+            _charAcces.ControlSpeed.TempSpeedChange(speedChange, directionSpeedNeutralValue);
         }
         else {
             //else we exit the grapplehook and pull it back to the player
@@ -161,7 +177,7 @@ public class GrapplingHook : MonoBehaviour, IWeapon, ITriggerer {
         }
     }
 
-    IEnumerator GrappleAnchorUpdate()
+    private IEnumerator GrappleAnchorUpdate()
     {
         while(true)
         {
@@ -200,12 +216,12 @@ public class GrapplingHook : MonoBehaviour, IWeapon, ITriggerer {
         }
     }
 
-    void DonePullingBack() {
+    private void DonePullingBack() {
         _grappleProjectileScript.ReachedDestination -= DonePullingBack;
         DestroyGrappleLock();
     }
 
-    void DestroyGrappleLock()
+    private void DestroyGrappleLock()
     {
         _currentGrapplingHookState = GrapplingHookStates.Inactive;
         StopLineRenderer();

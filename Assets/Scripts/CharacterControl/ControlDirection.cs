@@ -2,7 +2,14 @@
 using System;
 using System.Collections;
 
-public class ControlDirection : MonoBehaviour {
+public class ControlDirection : MonoBehaviour
+{
+
+    [SerializeField]
+    private float directionSpeedNeutralValue = 0.4f;
+
+    [SerializeField]
+    private float maxSpeedChange = 0.7f;
 
     private CharScriptAccess _charAccess;
 
@@ -93,10 +100,13 @@ public class ControlDirection : MonoBehaviour {
                     _lastDir.y = Rounding.InvertOnNegativeCeil(currentDir.y) * _charAccess.ControlVelocity.GetMultiplierDir();
                 }
 
-                if (!_charAccess.ControlVelocity.CheckMovingStandard() || (currentDir.x != 0 && currentDir.y != 0))
-                {
-                    _charAccess.ControlSpeed.TempSpeedIncrease();
-                }
+
+                float speedChange = Vector2.Angle(currentDir, collDir) / 90;
+
+                if (speedChange > maxSpeedChange)
+                    speedChange = maxSpeedChange;
+
+                _charAccess.ControlSpeed.TempSpeedChange(speedChange, directionSpeedNeutralValue);
 
                 //replace the dir on the axis that we dont have a collision with
                 //example: if we hit something under us, move to the left or right, depeding on our lastDir
@@ -106,6 +116,7 @@ public class ControlDirection : MonoBehaviour {
         }
         else //here we know we are hitting more than one wall, or no wall at all
         {
+            _charAccess.ControlSpeed.SpeedDecrease();
 
             if (currentDir.x * _charAccess.ControlVelocity.GetMultiplierDir() == cornersDir.x)
             {
