@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 
 public class GrappleProjectile : MonoBehaviour {
 
@@ -19,6 +20,10 @@ public class GrappleProjectile : MonoBehaviour {
 
     private Transform _attachedTransform;
 
+    private int _returnPointsIndex;
+
+    private List<Vector2> _returnPoints = new List<Vector2>();
+
     void Awake() {
         _moveTowards = GetComponent<MoveTowards>();
         _frames = GetComponent<Frames>();
@@ -31,21 +36,34 @@ public class GrappleProjectile : MonoBehaviour {
         _moveTowards.StartMoving(destination);
     }
 
-    public void Return(Vector2 destination)
+    public void Return(List<Vector2> returnPoints)
     {
         _attachedTransform = null;
-
         _hookedToSurface = false;
-
-        _moveTowards.ReachedDestination = ReachedDestination;
-        _moveTowards.StartMoving(destination);
-
         transform.SetParent(null);
+
+        _returnPoints = returnPoints;
+
+        _returnPointsIndex = 1;
+        GoToNextPoint();
     }
 
-    void OnDisable()
+    private void GoToNextPoint()
     {
-        ReachedDestination = null;
+        //there is a chance we immediatly reach our destination when we startMoving, so we need to increase _returnPointsIndex before we start moving, but we want to use the old value.
+        Vector2 nextPoint = _returnPoints[_returnPointsIndex];
+        _returnPointsIndex++;
+
+        if (_returnPointsIndex >= _returnPoints.Count - 1)
+        {
+            _moveTowards.ReachedDestination = ReachedDestination;
+        }
+        else
+        {
+            _moveTowards.ReachedDestination = GoToNextPoint;
+        }
+
+        _moveTowards.StartMoving(nextPoint);
     }
 
     private void ReachedShootPos()

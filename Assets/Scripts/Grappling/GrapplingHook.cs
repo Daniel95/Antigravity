@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System;
 using System.Collections;
-using Boo.Lang;
+using System.Collections.Generic;
 
 public class GrapplingHook : MonoBehaviour, IWeapon, ITriggerer {
 
@@ -101,7 +101,7 @@ public class GrapplingHook : MonoBehaviour, IWeapon, ITriggerer {
         else if (_currentGrapplingHookState == GrapplingHookStates.Active || _currentGrapplingHookState == GrapplingHookStates.BusyShooting)
         {
             _holdGrappleCoroutine = StartCoroutine(HoldGrapple( destination, spawnPosition));
-            StopDistanceJoint();
+            //StopDistanceJoint();
             PullBack();
         } 
     }
@@ -262,20 +262,27 @@ public class GrapplingHook : MonoBehaviour, IWeapon, ITriggerer {
         {
             _currentGrapplingHookState = GrapplingHookStates.BusyPullingBack;
 
+
+            List<Vector2> returnPoints = new List<Vector2>();
+            foreach (Transform t in _anchors)
+            {
+                returnPoints.Add(t.position);
+            }
+
+            returnPoints.Add(transform.position);
+
             _grappleProjectileScript.ReachedDestination = DeactivateGrappleLock;
-            _grappleProjectileScript.Return(transform.position);
+            _grappleProjectileScript.Return(returnPoints);
         }
     }
 
     private void DeactivateGrappleLock() {
-
         _grappleProjectileScript.ReachedDestination = null;
         _currentGrapplingHookState = GrapplingHookStates.Inactive;
 
         _grappleProjectileGObj.SetActive(false);
-
-        StopLineRenderer();
         StopDistanceJoint();
+        StopLineRenderer();
     }
 
     private void StopLineRenderer() {

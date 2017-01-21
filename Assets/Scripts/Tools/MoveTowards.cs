@@ -24,7 +24,9 @@ public class MoveTowards : MonoBehaviour {
     }
 
     //moves itself to the destination with a const force, activates reachedDestination delegate when the distance is small enough
-    IEnumerator MoveTo(Vector2 destination) {
+    private IEnumerator MoveTo(Vector2 destination) {
+
+        //yield return new WaitForFixedUpdate();
 
         while (Vector2.Distance(transform.position, destination) > minReachedDistance) {
             transform.position = Vector2.MoveTowards(transform.position, destination, speed);
