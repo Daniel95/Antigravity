@@ -218,7 +218,7 @@ public class GrapplingHook : MonoBehaviour, IWeapon, ITriggerer {
             //update the pos each frame
             _distanceJoint.connectedAnchor = _anchors[_anchors.Count - 1].position;
 
-            yield return null;
+            yield return new WaitForFixedUpdate();
         }
     }
 

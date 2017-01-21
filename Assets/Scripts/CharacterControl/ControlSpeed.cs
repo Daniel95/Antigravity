@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Net.NetworkInformation;
 using UnityEngine;
 
 public class ControlSpeed : MonoBehaviour, IBoostAble {
@@ -92,17 +93,17 @@ public class ControlSpeed : MonoBehaviour, IBoostAble {
     /// boosts with a certain amount.
     /// </summary>
     /// <param name="newSpeed"></param>
-    /// <param name="returnSpeed"></param>
-    public void BoostSpeed(float newSpeed, float returnSpeed)
+    /// <param name="myReturnSpeed"></param>
+    public void BoostSpeed(float newSpeed, float myReturnSpeed)
     {
         _velocity.SetSpeed(newSpeed);
 
-        _velocity.StartReturnSpeedToOriginal(returnSpeed);
+        _velocity.StartReturnSpeedToOriginal(myReturnSpeed);
     }
 
     private float CalcNewSpeed(float amount, float neutralValue)
     {
-        return _velocity.CurrentSpeed + _velocity.CurrentSpeed * ((amount - neutralValue) * 2) / (_velocity.CurrentSpeed * speedChangeDivider);
+        return _velocity.CurrentSpeed + _velocity.CurrentSpeed * (amount / neutralValue - 1) / (_velocity.CurrentSpeed * speedChangeDivider);
     }
 
     private IEnumerator ChangeSpeedCdCounter()
