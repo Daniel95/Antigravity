@@ -27,8 +27,6 @@ public class SpeedMultiplier : MonoBehaviour, ITriggerer
 
     private float _lastTarget;
 
-    private bool _movingMultiplier;
-
     //used by action trigger to decide when to stop the instructions/tutorial
     public Action ActivateTrigger { get; set; }
     public Action StopTrigger { get; set; }
@@ -100,8 +98,6 @@ public class SpeedMultiplier : MonoBehaviour, ITriggerer
     /// </summary>
     public void SmoothFlipMultiplier()
     {
-        if (_movingMultiplier) return;
-
         if (StopTrigger != null)
             StopTrigger();
 
@@ -140,7 +136,6 @@ public class SpeedMultiplier : MonoBehaviour, ITriggerer
 
     private IEnumerator MoveMultiplier(float target, float time)
     {
-        _movingMultiplier = true;
 
         while (Mathf.Round(_originalSpeedMultiplier * 10) / 10 != Mathf.Round(target * 10) / 10)
         {
@@ -148,6 +143,5 @@ public class SpeedMultiplier : MonoBehaviour, ITriggerer
             yield return new WaitForFixedUpdate();
         }
         SetSpeedMultiplier(target);
-        _movingMultiplier = false;
     }
 }
