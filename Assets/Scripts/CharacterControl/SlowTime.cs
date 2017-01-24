@@ -48,15 +48,15 @@ public class SlowTime : MonoBehaviour {
         _reachedTarget -= SlowlyReturnToNormal;
     }
 
-    IEnumerator MoveTimeScale(float _target, float _time)
+    IEnumerator MoveTimeScale(float target, float time)
     {
-        while (Mathf.Abs(Time.timeScale - _target) > minOffset)
+        while (Mathf.Abs(Time.timeScale - target) > minOffset)
         {
-            Time.timeScale = Mathf.Lerp(Time.timeScale, _target, _time);
+            Time.timeScale = Mathf.Lerp(Time.timeScale, target, time);
             yield return new WaitForFixedUpdate();
         }
 
-        Time.timeScale = _target;
+        Time.timeScale = target;
 
         if (_reachedTarget != null)
         {
