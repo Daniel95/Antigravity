@@ -7,16 +7,14 @@ using UnityEngine.UI;
 public class FieldGenerator : MonoBehaviour
 {
     /// <summary>
-    /// Makes a field of nodes with a counter.
+    /// Makes a field of nodes with an adjustable counter.
     /// </summary>
-    /// <param name="nodeSize"></param>
-    /// <param name="borderSize"></param>
     /// <param name="countingStartDirection"></param>
     /// <param name="spiralCounting"></param>
     /// <param name="startCountingValue"></param>
     /// <param name="horizontalRows"></param>
     /// <param name="fieldSize"></param>
-    public List<Node> GenerateField(Vector2 fieldSize, Vector2 nodeSize, Vector2 borderSize, Vector2 countingStartDirection, bool spiralCounting, int startCountingValue, bool horizontalRows)
+    public List<Node> GenerateField(Vector2 fieldSize, Vector2 countingStartDirection, bool spiralCounting, int startCountingValue, bool horizontalRows)
     {
         List<Node> nodes = new List<Node>();
 
@@ -29,26 +27,20 @@ public class FieldGenerator : MonoBehaviour
         {
             for (int xIndex = 0; xIndex < fieldSize.x; xIndex++)
             {
-                Vector2 position = new Vector2(getXPos(xIndex, (int)fieldSize.x) * nodeSize.x, getYPos(yIndex, (int)fieldSize.y) * nodeSize.y);
-                //add the borders
-                position += new Vector2(position.x * borderSize.x, position.y * borderSize.y);
+                Vector2 position = new Vector2(getXPos(xIndex, (int)fieldSize.x), getYPos(yIndex, (int)fieldSize.y));
 
-                int count = startCountingValue + getCounter(xIndex, yIndex, fieldSize);
+                int count = startCountingValue + getCounter(xIndex, yIndex, fieldSize) - 1;
 
                 nodes.Add(new Node(position, count));
 
-                if (!horizontalRows && spiralCounting)
-                {
-                    countingStartDirection.y *= -1;
-                    getYPos = GetYPosMethod((int)countingStartDirection.y);
-                }
+                if (horizontalRows || !spiralCounting) continue;
+                countingStartDirection.y *= -1;
+                getYPos = GetYPosMethod((int)countingStartDirection.y);
             }
 
-            if (horizontalRows && spiralCounting)
-            {
-                countingStartDirection.x *= -1;
-                getXPos = GetXPosMethod((int)countingStartDirection.x);
-            }
+            if (!horizontalRows || !spiralCounting) continue;
+            countingStartDirection.x *= -1;
+            getXPos = GetXPosMethod((int)countingStartDirection.x);
         }
 
         return nodes;

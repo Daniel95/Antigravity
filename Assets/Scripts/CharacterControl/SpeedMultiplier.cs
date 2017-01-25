@@ -136,11 +136,12 @@ public class SpeedMultiplier : MonoBehaviour, ITriggerer
 
     private IEnumerator MoveMultiplier(float target, float time)
     {
+        var fixedUpdate = new WaitForFixedUpdate();
 
         while (Mathf.Round(_originalSpeedMultiplier * 10) / 10 != Mathf.Round(target * 10) / 10)
         {
             SetSpeedMultiplier(Mathf.Lerp(_originalSpeedMultiplier, target, time));
-            yield return new WaitForFixedUpdate();
+            yield return fixedUpdate;
         }
         SetSpeedMultiplier(target);
     }

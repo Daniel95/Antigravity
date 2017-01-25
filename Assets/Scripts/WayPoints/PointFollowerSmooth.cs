@@ -42,6 +42,8 @@ public class PointFollowerSmooth : MonoBehaviour, ITriggerable {
 
     IEnumerator MoveToPos(Vector2 _pos)
     {
+        var fixedUpdate = new WaitForFixedUpdate();
+
         while (Mathf.Abs(transform.position.x - _pos.x) > minDistance || Mathf.Abs(transform.position.y - _pos.y) > minDistance)
         {
             //our direction to the target
@@ -55,10 +57,10 @@ public class PointFollowerSmooth : MonoBehaviour, ITriggerable {
 
             transform.position += (Vector3)_currentVelocity;
 
-            yield return new WaitForFixedUpdate();
+            yield return fixedUpdate;
         }
 
-        yield return new WaitForFixedUpdate();
+        yield return fixedUpdate;
 
         GoToNextPoint();
     }

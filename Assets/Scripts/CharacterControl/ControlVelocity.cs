@@ -50,11 +50,12 @@ public class ControlVelocity : MonoBehaviour {
 
     private IEnumerator UpdateDirectionalMovement()
     {
+        var fixedUpdate = new WaitForFixedUpdate();
         while (true)
         {
             //add our own constant force
             _rb.velocity = direction * (_currentSpeed * _speedMultiplier);
-            yield return new WaitForFixedUpdate();
+            yield return fixedUpdate;
         }
     }
 
@@ -72,10 +73,11 @@ public class ControlVelocity : MonoBehaviour {
 
     private IEnumerator ReturnSpeedToOriginal(float returnSpeed)
     {
+        var fixedUpdate = new WaitForFixedUpdate();
         while (Mathf.Abs(_currentSpeed - originalSpeed) > minSpeedOffsetValue)
         {
             _currentSpeed = Mathf.Lerp(_currentSpeed, originalSpeed, returnSpeed * (CurrentSpeed / originalSpeed));
-            yield return new WaitForFixedUpdate();
+            yield return fixedUpdate;
         }
 
         _currentSpeed = originalSpeed;

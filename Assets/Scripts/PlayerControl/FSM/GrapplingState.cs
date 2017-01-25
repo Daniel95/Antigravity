@@ -53,11 +53,13 @@ public class GrapplingState : State, ITriggerer {
 
     IEnumerator SlingMovement()
     {
+        var fixedUpdate = new WaitForFixedUpdate();
+
         while (true)
         {
             _charAccess.ControlVelocity.SetVelocity(_lastVelocity = _charAccess.ControlVelocity.GetVelocityDirection() * (_charAccess.ControlVelocity.CurrentSpeed * Mathf.Abs(_charAccess.ControlVelocity.SpeedMultiplier)));
 
-            yield return new WaitForFixedUpdate();
+            yield return fixedUpdate;
         }
     }
 

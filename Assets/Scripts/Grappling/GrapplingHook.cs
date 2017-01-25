@@ -185,6 +185,8 @@ public class GrapplingHook : MonoBehaviour, IWeapon, ITriggerer {
 
     private IEnumerator GrappleAnchorUpdate()
     {
+        var fixedUpdate = new WaitForFixedUpdate();
+
         while (true)
         {
             RaycastHit2D hitToAnchor = Physics2D.Linecast(transform.position, _anchors[_anchors.Count - 1].position, rayLayers);
@@ -218,7 +220,7 @@ public class GrapplingHook : MonoBehaviour, IWeapon, ITriggerer {
             //update the pos each frame
             _distanceJoint.connectedAnchor = _anchors[_anchors.Count - 1].position;
 
-            yield return new WaitForFixedUpdate();
+            yield return fixedUpdate;
         }
     }
 

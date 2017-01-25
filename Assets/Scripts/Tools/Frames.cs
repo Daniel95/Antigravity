@@ -14,8 +14,10 @@ public class Frames : MonoBehaviour {
     }
 
     IEnumerator DelayExecute(int framesToWait, Action action) {
+        var fixedUpdate = new WaitForFixedUpdate();
+
         for (int i = 0; i < framesToWait; i++) {
-            yield return new WaitForFixedUpdate();
+            yield return fixedUpdate;
         }
 
         action();
