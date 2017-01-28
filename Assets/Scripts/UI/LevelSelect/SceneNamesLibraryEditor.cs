@@ -2,6 +2,9 @@
 using System.Collections;
 using UnityEditor;
 
+
+#if UNITY_EDITOR
+
 [CustomEditor(typeof(SceneNamesLibrary))]
 public class SceneNamesLibraryEditor : Editor
 {
@@ -16,3 +19,5 @@ public class SceneNamesLibraryEditor : Editor
         }
     }
 }
+
+#endif

@@ -2,6 +2,8 @@
 using System.Collections;
 using UnityEditor;
 
+#if UNITY_EDITOR
+
 [CustomEditor(typeof(LevelStatusPlayerPrefs))]
 public class LevelStatusPlayerPrefsEditor : Editor
 {
@@ -15,3 +17,5 @@ public class LevelStatusPlayerPrefsEditor : Editor
         }
     }
 }
+
+#endif
