@@ -5,19 +5,30 @@ using UnityEngine.SceneManagement;
 
 public class Finish : MonoBehaviour {
 
+    [SerializeField]
+    private GameObject levelFinishedKeeper;
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.transform.CompareTag(Tags.Player))
+        if (!collision.transform.CompareTag(Tags.Player))
+            return;
+
+        GoToLevelSelect();
+    }
+
+    private void GoToLevelSelect()
+    {
+        GameObject keeperGameObject = GameObject.FindGameObjectWithTag(Tags.LevelFinishedKeeper); // FindObjectOfType(typeof(FinishedLevelKeeper)) as FinishedLevelKeeper;
+
+        if (keeperGameObject != null)
         {
-            //check if the next scene exists
-            if (SceneManager.GetActiveScene().buildIndex + 1 < SceneManager.sceneCountInBuildSettings)
-            {
-                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-            }
-            else
-            {
-                SceneManager.LoadScene("MainMenu");
-            }
+            keeperGameObject.GetComponent<FinishedLevelKeeper>().SaveCurrentLevelNumber();
         }
+        else
+        {
+            Instantiate(levelFinishedKeeper).GetComponent<FinishedLevelKeeper>().SaveCurrentLevelNumber();
+        }
+
+        SceneManager.LoadScene("LevelSelect");
     }
 }

@@ -13,7 +13,7 @@ public class LevelSelectEditor : Editor
         if (GUILayout.Button("Build Level Select Fields"))
         {
             myScript.DestroyImmediateChildren();
-            myScript.BuildLevelSelectFields();
+            myScript.BuildFields();
         }
     }
 }

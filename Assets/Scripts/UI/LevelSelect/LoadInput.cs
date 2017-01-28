@@ -2,26 +2,27 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
-public class LoadSceneOnClick : MonoBehaviour {
+public class LoadInput : MonoBehaviour {
 
-    private SceneLoader sceneLoader;
+    private LevelLoader _levelLoader;
 
-    private int levelIndex;
+    public bool Unlocked { get; set; }
+
+    public int LevelIndex { get; set; }
 
     private void Start()
     {
-        sceneLoader = GetComponent<SceneLoader>();
-        levelIndex = int.Parse(GetComponentInChildren<TextMesh>().text);
+        _levelLoader = FindObjectOfType(typeof(LevelLoader)) as LevelLoader;
     }
 
     private void OnMouseOver()
     {
-        if (Input.GetMouseButtonUp(0))
-        {
-            sceneLoader.LoadNewSceneName("Lvl" + levelIndex);
-        }
+        if (!Unlocked || !Input.GetMouseButtonUp(0))
+            return;
+
+        _levelLoader.LoadLevel(LevelIndex);
     }
 
     /*
