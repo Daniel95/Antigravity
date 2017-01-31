@@ -69,7 +69,6 @@ public class SpeedMultiplier : MonoBehaviour, ITriggerer
         //secure way of checking if the multiplier has flipped between pos and neg, even if the change is really fast
         if (_originalSpeedMultiplier <= 0 && newMultiplierSpeed > 0 || _originalSpeedMultiplier >= 0 && newMultiplierSpeed < 0)
         {
-            _charAcces.ControlSpeed.TempSpeedIncrease();
 
             if (SwitchedMultiplier != null)
                 SwitchedMultiplier();
@@ -88,9 +87,9 @@ public class SpeedMultiplier : MonoBehaviour, ITriggerer
     //increases or decreases the multiplier by an set amount
     private void ChangeSpeedMultiplier(float change)
     {
-        float _newMultiplierSpeed = _originalSpeedMultiplier + change;
+        float newMultiplierSpeed = _originalSpeedMultiplier + change;
 
-        SetSpeedMultiplier(_newMultiplierSpeed);
+        SetSpeedMultiplier(newMultiplierSpeed);
     }
 
     /// <summary>

@@ -1,8 +1,8 @@
-﻿using UnityEngine;
+﻿#if UNITY_EDITOR
+
+using UnityEngine;
 using System.Collections;
 using UnityEditor;
-
-#if UNITY_EDITOR
 
 [CustomEditor(typeof(LevelSelectField))]
 public class LevelSelectEditor : Editor

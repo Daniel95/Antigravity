@@ -29,7 +29,7 @@ public class MobileInputs : InputsBase {
 
         if(input)
         {
-            _joyStickGObj = Instantiate(joyStickPrefab, Vector2.zero, new Quaternion(0, 0, 0, 0)) as GameObject;
+            _joyStickGObj = Instantiate(joyStickPrefab, Vector2.zero, new Quaternion(0, 0, 0, 0));
             _dragDirIndicator = _joyStickGObj.GetComponent<DragDirIndicator>();
             _joyStickGObj.SetActive(false);
 

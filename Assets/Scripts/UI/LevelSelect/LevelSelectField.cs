@@ -12,6 +12,9 @@ public class LevelSelectField : MonoBehaviour {
     [SerializeField]
     private Vector2 borderSize;
 
+    [SerializeField]
+    private bool levelsUnlocked;
+
     private readonly Dictionary<Vector2, LevelNode> _levelNodes = new Dictionary<Vector2, LevelNode>();
 
     [Serializable]
@@ -38,6 +41,9 @@ public class LevelSelectField : MonoBehaviour {
         GenerateLevelSelectFields();
         UnlockFirstLevel();
         CheckLevelFinished();
+
+        if (levelsUnlocked)
+            UnlockAllLevels();
 
         ActivateLevelNodes();
     }
@@ -118,15 +124,18 @@ public class LevelSelectField : MonoBehaviour {
         return new KeyValuePair<Vector2, LevelNode>();
     }
 
+    /// <summary>
+    /// Checks if we finished a level, if so 
+    /// </summary>
     private void CheckLevelFinished()
     {
         GameObject keeperGameObject = GameObject.FindGameObjectWithTag(Tags.LevelFinishedKeeper);
 
-        LevelLoader levelLoader = GetComponent<LevelLoader>();
-
         if (keeperGameObject)
         {
             FinishedLevelKeeper finishedLevelKeeper = keeperGameObject.GetComponent<FinishedLevelKeeper>();
+
+            LevelLoader levelLoader = GetComponent<LevelLoader>();
 
             if (levelLoader.LevelNames.Contains(finishedLevelKeeper.LevelName))
             {
@@ -149,10 +158,10 @@ public class LevelSelectField : MonoBehaviour {
 
     private void SetLevelFinished(int levelNumber)
     {
-        KeyValuePair<Vector2, LevelNode> nodeValuePair = GetLevelNodesDataByNumber(levelNumber);
+        KeyValuePair<Vector2, LevelNode> nodeKeyValuePair = GetLevelNodesDataByNumber(levelNumber);
 
-        nodeValuePair.Value.Status = LevelNodeStatus.Finished;
-        UnlockNeighbours(nodeValuePair.Key);
+        nodeKeyValuePair.Value.Status = LevelNodeStatus.Finished;
+        UnlockNeighbours(nodeKeyValuePair.Key);
 
         LevelStatusPlayerPrefs.SetLevelStatus(levelNumber, (int)LevelNodeStatus.Finished);
     }
@@ -261,6 +270,14 @@ public class LevelSelectField : MonoBehaviour {
 
             _levelNodes[neighbourPosition].Status = status;
             LevelStatusPlayerPrefs.SetLevelStatus(_levelNodes[neighbourPosition].LevelNumber, (int)_levelNodes[neighbourPosition].Status);
+        }
+    }
+
+    private void UnlockAllLevels()
+    {
+        foreach (var keyValuePair in _levelNodes)
+        {
+            keyValuePair.Value.Status = LevelNodeStatus.Finished;
         }
     }
 

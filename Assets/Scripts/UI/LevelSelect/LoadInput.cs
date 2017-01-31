@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class LoadInput : MonoBehaviour {
 
@@ -24,23 +23,4 @@ public class LoadInput : MonoBehaviour {
 
         _levelLoader.LoadLevel(LevelIndex);
     }
-
-    /*
-    public void OnPointerDown(PointerEventData eventData)
-    {
-        print("Down");
-    }
-    public void OnPointerEnter(PointerEventData eventData)
-    {
-        print("Enter");
-    }
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        print("Exit");
-    }
-
-    public void OnPointerStay(PointerEventData eventData)
-    {
-        print("Stay");
-    }*/
 }

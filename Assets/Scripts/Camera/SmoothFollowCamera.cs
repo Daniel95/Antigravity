@@ -20,6 +20,8 @@ public class SmoothFollowCamera : MonoBehaviour
         boundsCamera = GetComponent<BoundsCamera>();
 
         _yStartPos = transform.position.z;
+
+        transform.position = new Vector3(target.position.x, target.position.y, _yStartPos);
     }
 
     // Update is called once per frame

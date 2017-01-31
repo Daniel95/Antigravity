@@ -8,7 +8,7 @@ public class DragDirIndicator : MonoBehaviour {
     private Transform indicator;
 
     [SerializeField]
-    private float distance;
+    private float distance = 0.8f;
 
     public void SetDragDir(Vector2 dir)
     {
