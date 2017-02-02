@@ -13,6 +13,11 @@ public class Frames : MonoBehaviour {
         StartCoroutine(DelayExecute(framesToWait, action));
     }
 
+    public void StopExecuteAfterDelay()
+    {
+        StopAllCoroutines();
+    }
+
     IEnumerator DelayExecute(int framesToWait, Action action) {
         var fixedUpdate = new WaitForFixedUpdate();
 

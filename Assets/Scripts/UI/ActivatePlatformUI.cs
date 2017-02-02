@@ -5,19 +5,24 @@ using UnityEngine;
 public class ActivatePlatformUI : MonoBehaviour {
 
     [SerializeField]
-    private GameObject pcUI;
+    private GameObject[] pcUI;
 
     [SerializeField]
-    private GameObject mobileUI;
+    private GameObject[] mobileUI;
 
     // Use this for initialization
     void Start () {
 
-        if(pcUI != null && mobileUI != null)
+        //activate the right UI for the active platform
+
+        for (int i = 0; i < pcUI.Length; i++)
         {
-            //activate the right UI for the active platform
-            pcUI.SetActive(!Platform.PlatformIsMobile());
-            mobileUI.SetActive(Platform.PlatformIsMobile());
+            pcUI[i].SetActive(!Platform.PlatformIsMobile());
+        }
+
+        for (int i = 0; i < mobileUI.Length; i++)
+        {
+            mobileUI[i].SetActive(Platform.PlatformIsMobile());
         }
 	}
 }

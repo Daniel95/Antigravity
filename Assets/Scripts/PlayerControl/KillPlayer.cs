@@ -1,8 +1,11 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class KillPlayer : MonoBehaviour
 {
+    public static Action PlayerGettingKilled;
+
     private Checkpoint _checkpoint;
 
     private void Start()
@@ -17,6 +20,9 @@ public class KillPlayer : MonoBehaviour
     /// </summary>
     private void PlayerDies()
     {
+        if (PlayerGettingKilled != null)
+            PlayerGettingKilled();
+
         if (_checkpoint.CheckPointReached)
         {
             _checkpoint.Revive();

@@ -26,52 +26,39 @@ public class PlayerStarter : MonoBehaviour {
         SetPlayerSlowTimeInput(true);
     }
 
-    public void StartMazeLvlPlayerInputs()
+    public void SetPlayerMovement(bool move)
     {
-        SetPlayerMovement(true);
-        SetPlayerShootInputs(true);
-        SetPlayerReverseInput(true);
-        SetPlayerDoubleReverseInput(true);
-
-        SetPlayerSlowTimeInput(true);
-    }
-
-    public void SetPlayerMovement(bool _move)
-    {
-        if(_move)
+        if (move)
             _charAccess.ControlVelocity.StartDirectionalMovement();
         else
             _charAccess.ControlVelocity.StopDirectionalMovement();
     }
 
-    public void SetPlayerActionInput(bool _input)
+    public void SetPlayerActionInput(bool input)
     {
-        _playerInputs.SetActionInput(_input);
+        _playerInputs.SetActionInput(input);
     }
 
-    public void SetPlayerReverseInput(bool _input)
+    public void SetPlayerReverseInput(bool input)
     {
-        //activate the reverse input for the player
-        _playerInputs.Reverse += _charAccess.SpeedMultiplier.SmoothFlipMultiplier;
-
-        _playerInputs.SetReverseInput(_input);
+        _playerInputs.SetReverseInput(input);
     }
 
-    private void SetPlayerDoubleReverseInput(bool _input)
+    private void SetPlayerDoubleReverseInput(bool input)
     {
-        _playerInputs.SetDoubleReverseInput(_input);
+        _playerInputs.SetDoubleReverseInput(input);
     }
 
-    public void SetPlayerSlowTimeInput(bool _input)
+    public void SetPlayerSlowTimeInput(bool input)
     {
-        _playerInputs.SetHoldInput(_input);
+        _playerInputs.SetHoldInput(input);
 
-        _playerActivateSlowTime.SetSlowTimeInput(_input);
+        _playerActivateSlowTime.SetSlowTimeInput(input);
     }
 
-    public void SetPlayerShootInputs(bool _input)
+    public void SetPlayerShootInputs(bool input)
     {
-        _playerInputs.SetShootInput(_input);
-        _playerActivateWeapon.SetWeaponInput(_input);
+        _playerInputs.SetShootInput(input);
+        _playerActivateWeapon.SetWeaponInput(input);
     }
 }

@@ -13,11 +13,11 @@ public class SmoothFollowCamera : MonoBehaviour
 
     private Vector2 _velocity;
 
-    private BoundsCamera boundsCamera;
+    private BoundsCamera _boundsCamera;
 
     void Start()
     {
-        boundsCamera = GetComponent<BoundsCamera>();
+        _boundsCamera = GetComponent<BoundsCamera>();
 
         _yStartPos = transform.position.z;
 
@@ -29,7 +29,7 @@ public class SmoothFollowCamera : MonoBehaviour
     {
         Vector2 delta = target.position - transform.position;
         Vector2 destination = (Vector2)transform.position + delta;
-        Vector2 nextPos = Vector2.SmoothDamp(transform.position, boundsCamera.GetBoundsPosition(destination), ref _velocity, smoothness, Mathf.Infinity, Time.deltaTime); 
+        Vector2 nextPos = Vector2.SmoothDamp(transform.position, _boundsCamera.GetBoundsPosition(destination), ref _velocity, smoothness, Mathf.Infinity, Time.deltaTime); 
         transform.position = new Vector3(nextPos.x, nextPos.y, _yStartPos);
     }
 }
