@@ -42,8 +42,11 @@ public class LevelSelectField : MonoBehaviour {
         UnlockFirstLevel();
         CheckLevelFinished();
 
+        //For debugging
         if (levelsUnlocked)
             UnlockAllLevels();
+        else
+            LevelStatusPlayerPrefs.DeleteAllSavedData();
 
         ActivateLevelNodes();
     }

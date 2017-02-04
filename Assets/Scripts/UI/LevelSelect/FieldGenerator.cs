@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class FieldGenerator : MonoBehaviour
 {
@@ -18,6 +17,7 @@ public class FieldGenerator : MonoBehaviour
     {
         List<Node> nodes = new List<Node>();
 
+        //Choose the right Positioning methods (normal or inverted), depending on our counting direction.
         Func<int, int, int> getXPos = GetXPosMethod((int)countingStartDirection.x);
         Func<int, int, int> getYPos = GetYPosMethod((int)countingStartDirection.y);
 
@@ -31,14 +31,22 @@ public class FieldGenerator : MonoBehaviour
 
                 int count = startCountingValue + getCounter(xIndex, yIndex, fieldSize) - 1;
 
+                print(count);
+
                 nodes.Add(new Node(position, count));
 
-                if (horizontalRows || !spiralCounting) continue;
+                //If we use spiralcounting, and we have vertical rows, switch the YPos Method and counting direction each row
+                if (horizontalRows || !spiralCounting)
+                    continue;
+
                 countingStartDirection.y *= -1;
                 getYPos = GetYPosMethod((int)countingStartDirection.y);
             }
 
-            if (!horizontalRows || !spiralCounting) continue;
+            //If we use spiralcounting, and we have horizontal rows, switch the XPos Method and counting direction each row
+            if (!horizontalRows || !spiralCounting)
+                continue;
+
             countingStartDirection.x *= -1;
             getXPos = GetXPosMethod((int)countingStartDirection.x);
         }
@@ -46,24 +54,24 @@ public class FieldGenerator : MonoBehaviour
         return nodes;
     }
 
+    /// <summary>
+    /// Returns the normal or inverted X Pos Method
+    /// </summary>
+    /// <param name="xCountDir"></param>
+    /// <returns></returns>
     private static Func<int, int, int> GetXPosMethod(int xCountDir)
     {
         return xCountDir != 1 ? (Func<int, int, int>)CalcXPos : CalcInvertedXPos;
     }
 
+    /// <summary>
+    /// Returns the normal or inverted Y Pos Method
+    /// </summary>
+    /// <param name="yCountDir"></param>
+    /// <returns></returns>
     private static Func<int, int, int> GetYPosMethod(int yCountDir)
     {
         return yCountDir != 1 ? (Func<int, int, int>)CalcYPos : CalcInvertedYPos;
-    }
-
-    private static int CalcHorizontalCounter(int xIndex, int yIndex, Vector2 size)
-    {
-        return Mathf.RoundToInt(xIndex + yIndex * size.x + 1);
-    }
-
-    private static int CalcVerticalCounter(int xIndex, int yIndex, Vector2 size)
-    {
-        return Mathf.RoundToInt(yIndex + xIndex * size.y + 1);
     }
 
     private static int CalcXPos(int xIndex, int length)
@@ -73,7 +81,7 @@ public class FieldGenerator : MonoBehaviour
 
     private static int CalcInvertedXPos(int xIndex, int length)
     {
-        return length - 1- xIndex;
+        return length - 1 - xIndex;
     }
 
     private static int CalcYPos(int yIndex, int length)
@@ -86,6 +94,33 @@ public class FieldGenerator : MonoBehaviour
         return length - 1 - yIndex;
     }
 
+    /// <summary>
+    /// Calculates a horizontal counter.
+    /// </summary>
+    /// <param name="xIndex"></param>
+    /// <param name="yIndex"></param>
+    /// <param name="size"></param>
+    /// <returns></returns>
+    private static int CalcHorizontalCounter(int xIndex, int yIndex, Vector2 size)
+    {
+        return Mathf.RoundToInt(xIndex + yIndex * size.x + 1);
+    }
+
+    /// <summary>
+    /// Calculates a vertical counter.
+    /// </summary>
+    /// <param name="xIndex"></param>
+    /// <param name="yIndex"></param>
+    /// <param name="size"></param>
+    /// <returns></returns>
+    private static int CalcVerticalCounter(int xIndex, int yIndex, Vector2 size)
+    {
+        return Mathf.RoundToInt(yIndex + xIndex * size.y + 1);
+    }
+
+    /// <summary>
+    /// Used to save the position and counter of the nodes.
+    /// </summary>
     public struct Node
     {
         public Vector2 Position;

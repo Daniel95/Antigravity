@@ -21,9 +21,6 @@ public class ControlSpeed : MonoBehaviour, IBoostAble {
     private float returnSpeed = 0.005f;
 
     [SerializeField]
-    private float standardNeutralValue = 0.5f;
-
-    [SerializeField]
     private int changeSpeedCdStartValue = 60;
 
     private int _changeSpeedCdCounter = -1;
@@ -42,12 +39,12 @@ public class ControlSpeed : MonoBehaviour, IBoostAble {
     /// </summary>
     public void TempSpeedIncrease()
     {
-        TempSpeedChange(0.5f + speedBoostValue, standardNeutralValue);
+        TempSpeedChange(0.5f + speedBoostValue);
     }
 
     public void SpeedDecrease()
     {
-        TempSpeedChange(0.5f - speedBoostValue, standardNeutralValue);
+        TempSpeedChange(0.5f - speedBoostValue);
     }
 
 
@@ -57,7 +54,7 @@ public class ControlSpeed : MonoBehaviour, IBoostAble {
     /// </summary>
     /// <param name="amount"></param>
     /// <param name="neutralValue"></param>
-    public void TempSpeedChange(float amount, float neutralValue)
+    public void TempSpeedChange(float amount, float neutralValue = 0.5f)
     {
         if (_changeSpeedCdIsActive)
         {

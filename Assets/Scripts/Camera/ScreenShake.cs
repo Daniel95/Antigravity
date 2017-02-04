@@ -38,9 +38,6 @@ public class ScreenShake : MonoBehaviour {
     {
         _shaking = true;
 
-        //save the initual position when when start shaking
-        Vector3 startPos = transform.position;
-
         //choose a random number between minshake and maxshake, that is the amount of times we are going to shake
         float shakeTimes = Random.Range(minShakeTime, maxShakeTime);
 
@@ -51,13 +48,10 @@ public class ScreenShake : MonoBehaviour {
             shakeTimes--;
 
             //says the position is startpos x/y incremented by a random number between minShakeStrength and maxShakeStrength
-            transform.position = new Vector3(startPos.x + Random.Range(-shakeStrength, shakeStrength), startPos.y + Random.Range(-shakeStrength, shakeStrength), startPos.z);
+            transform.position = new Vector3(transform.position.x + Random.Range(-shakeStrength, shakeStrength), transform.position.y + Random.Range(-shakeStrength, shakeStrength), transform.position.z);
 
             yield return new WaitForFixedUpdate();
         }
-
-        //reset the position to the position before we started shaking
-        transform.position = startPos;
 
         _shaking = false;
     }

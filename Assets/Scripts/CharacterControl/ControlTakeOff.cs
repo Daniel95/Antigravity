@@ -5,11 +5,22 @@ using System.Collections;
 public class ControlTakeOff : MonoBehaviour, ITriggerer {
 
     [SerializeField]
+    private float jumpSpeedBoost = 0.3f;
+
+    [SerializeField]
+    private float jumpSpeedReturn = 0.01f;
+
+    [SerializeField]
     private float instaJumpStrength = 0.05f;
+
+    [SerializeField]
+    private int earlyJumpCoverFrames = 10;
 
     private CharScriptAccess _plrAcces;
 
     private CharRaycasting _charRaycasting;
+
+    private Frames _frames;
 
     public Action TookOff;
 
@@ -23,14 +34,16 @@ public class ControlTakeOff : MonoBehaviour, ITriggerer {
     void Start () {
         _plrAcces = GetComponent<CharScriptAccess>();
         _charRaycasting = GetComponent<CharRaycasting>();
+        _frames = GetComponent<Frames>();
     }
 
     /// <summary>
-    /// changes the direction of ControlVelocity, to create a jumping effect.
+    /// Check if we can jump, if so, activate Jump()
     /// </summary>
-    public void Jump()
+    public void TryJump()
     {
-        if (StopTrigger != null) {
+        if (StopTrigger != null)
+        {
             StopTrigger();
         }
 
@@ -45,32 +58,45 @@ public class ControlTakeOff : MonoBehaviour, ITriggerer {
         }
 
         //check if we have raycast collision on only one axis, jumping wont work when we are in a corner
-        if (collisionDir.x == 0 || collisionDir.y == 0)
+        if (collisionDir != Vector2.zero)
         {
-            _plrAcces.ControlSpeed.TempSpeedIncrease();
-
-            Vector2 newDir = _plrAcces.ControlVelocity.GetDirection();
-
-            //check the raycastdir, our newDir is the opposite of one of the axes
-            if (collisionDir.x != 0)
-            {
-                newDir.x = collisionDir.x * -1;
-            }
-            else if(collisionDir.y != 0)
-            {
-                newDir.y = collisionDir.y * -1;
-            }
-
-            _plrAcces.ControlVelocity.SetDirection(_plrAcces.ControlVelocity.AdjustDirToMultiplier(newDir));
-
-            if(rayDir.x == 0 || rayDir.y == 0)
-            {
-                transform.position += (Vector3)(_plrAcces.ControlVelocity.GetDirection() * (instaJumpStrength * _plrAcces.ControlVelocity.SpeedMultiplier));
-            }
-
-            if (TookOff != null)
-                TookOff();
+            _frames.StopExecuteAfterDelay();
+            Jump(collisionDir, rayDir);
         }
+        else //try to jump again a few frames later, so it will still respond even if the player pressed jump too early.
+        {
+            _frames.ExecuteAfterDelay(earlyJumpCoverFrames, TryJump);
+        }
+    }
+
+    /// <summary>
+    /// changes the direction of ControlVelocity, to create a jumping effect.
+    /// </summary>
+    private void Jump(Vector2 collisionDir, Vector2 rayDir)
+    {
+        _plrAcces.ControlSpeed.TempSpeedChange(0.5f + jumpSpeedBoost);
+
+        Vector2 newDir = _plrAcces.ControlVelocity.GetDirection();
+
+        //check the raycastdir, our newDir is the opposite of one of the axes
+        if (collisionDir.x != 0)
+        {
+            newDir.x = collisionDir.x * -1;
+        }
+        else if (collisionDir.y != 0)
+        {
+            newDir.y = collisionDir.y * -1;
+        }
+
+        _plrAcces.ControlVelocity.SetDirection(_plrAcces.ControlVelocity.AdjustDirToMultiplier(newDir));
+
+        if (rayDir.x == 0 || rayDir.y == 0)
+        {
+            transform.position += (Vector3)(_plrAcces.ControlVelocity.GetDirection() * (instaJumpStrength * _plrAcces.ControlVelocity.SpeedMultiplier));
+        }
+
+        if (TookOff != null)
+            TookOff();
     }
 
     /// <summary>

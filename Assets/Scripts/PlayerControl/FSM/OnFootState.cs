@@ -36,7 +36,7 @@ public class OnFootState : State {
 
     private void Jump()
     {
-        _charAccess.ControlTakeOff.Jump();
+        _charAccess.ControlTakeOff.TryJump();
     }
 
     private void ExitState()
