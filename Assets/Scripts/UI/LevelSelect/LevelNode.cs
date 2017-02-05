@@ -30,8 +30,6 @@ public class LevelNode : MonoBehaviour {
     /// <summary>
     /// Apply the status of this node.
     /// </summary>
-    /// <param name="status"></param>
-    /// <param name="levelNumber"></param>
     public void ActivateLevelNode()
     {
         GetReferences();

@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class LevelSelectField : MonoBehaviour {
 
@@ -16,6 +15,8 @@ public class LevelSelectField : MonoBehaviour {
     private bool levelsUnlocked;
 
     private readonly Dictionary<Vector2, LevelNode> _levelNodes = new Dictionary<Vector2, LevelNode>();
+
+    public Action<LevelNode> LevelFinished;
 
     [Serializable]
     public struct LevelFields
@@ -45,8 +46,6 @@ public class LevelSelectField : MonoBehaviour {
         //For debugging
         if (levelsUnlocked)
             UnlockAllLevels();
-        else
-            LevelStatusPlayerPrefs.DeleteAllSavedData();
 
         ActivateLevelNodes();
     }
@@ -114,21 +113,8 @@ public class LevelSelectField : MonoBehaviour {
         GetLevelNodesDataByNumber(1).Value.Status = LevelNodeStatus.Unlocked;
     }
 
-    private KeyValuePair<Vector2, LevelNode> GetLevelNodesDataByNumber(int levelNumber)
-    {
-        foreach (var levelNode in _levelNodes)
-        {
-            if (levelNode.Value.LevelNumber != levelNumber)
-                continue;
-
-            return levelNode;
-        }
-
-        return new KeyValuePair<Vector2, LevelNode>();
-    }
-
     /// <summary>
-    /// Checks if we finished a level, if so 
+    /// Checks if we finished a level, activate the SetLevelFinished method.
     /// </summary>
     private void CheckLevelFinished()
     {
@@ -167,6 +153,22 @@ public class LevelSelectField : MonoBehaviour {
         UnlockNeighbours(nodeKeyValuePair.Key);
 
         LevelStatusPlayerPrefs.SetLevelStatus(levelNumber, (int)LevelNodeStatus.Finished);
+
+        if (LevelFinished != null)
+            LevelFinished(nodeKeyValuePair.Value);
+    }
+
+    public KeyValuePair<Vector2, LevelNode> GetLevelNodesDataByNumber(int levelNumber)
+    {
+        foreach (var levelNode in _levelNodes)
+        {
+            if (levelNode.Value.LevelNumber != levelNumber)
+                continue;
+
+            return levelNode;
+        }
+
+        return new KeyValuePair<Vector2, LevelNode>();
     }
 
     /// <summary>
@@ -201,81 +203,6 @@ public class LevelSelectField : MonoBehaviour {
         }
     }
 
-    /// <summary>
-    /// Get the status of a node.
-    /// </summary>
-    /// <param name="position"></param>
-    /// <returns></returns>
-    private LevelNodeStatus CheckNeighboursStatuses(Vector2 position)
-    {
-        int index = 0;
-
-        for (int x = (int)position.x - 1; x <= position.x + 1; x += 2)
-        {
-            Vector2 neighbourPosition = new Vector2(x, position.y);
-
-            //if our neighbour doens't exist, or its status is the same or lower then our status, skip this iteration
-            if (!_levelNodes.ContainsKey(neighbourPosition) || index >= (int)_levelNodes[neighbourPosition].Status)
-                continue;
-
-            //if the status is the highest achievable status, return it and stop this method
-            if ((int)_levelNodes[neighbourPosition].Status >= Enum.GetNames(typeof(LevelNodeStatus)).Length - 1)
-                return _levelNodes[neighbourPosition].Status;
-
-            index = (int)_levelNodes[neighbourPosition].Status;
-        }
-
-        for (int y = (int)position.y - 1; y <= position.y + 1; y += 2)
-        {
-            Vector2 neighbourPosition = new Vector2(position.x, y);
-
-            //if our neighbour doens't exist, or its status is the same or lower then our status, skip this iteration
-            if (!_levelNodes.ContainsKey(neighbourPosition) || index >= (int)_levelNodes[neighbourPosition].Status)
-                continue;
-
-            //if the status is the highest achievable status, return it and stop this method
-            if ((int)_levelNodes[neighbourPosition].Status >= Enum.GetNames(typeof(LevelNodeStatus)).Length - 1)
-                return _levelNodes[neighbourPosition].Status;
-
-            index = (int)_levelNodes[neighbourPosition].Status;
-        }
-
-        return (LevelNodeStatus)index;
-    }
-
-    /// <summary>
-    /// Set the increase status of our neighbours only if it's current status is lower than the new status.
-    /// </summary>
-    /// <param name="position"></param>
-    /// <param name="status"></param>
-    /// <returns></returns>
-    private void IncreaseNeighboursStatuses(Vector2 position, LevelNodeStatus status)
-    {
-        for (int x = (int)position.x - 1; x <= position.x + 1; x += 2)
-        {
-            Vector2 neighbourPosition = new Vector2(x, position.y);
-
-            //if our neighbour doens't exist, or its status is the same or higher then the status we would increase it to, skip this iteration
-            if (!_levelNodes.ContainsKey(neighbourPosition) || (int)_levelNodes[neighbourPosition].Status >= (int)status)
-                continue;
-
-            _levelNodes[neighbourPosition].Status = status;
-            LevelStatusPlayerPrefs.SetLevelStatus(_levelNodes[neighbourPosition].LevelNumber, (int)_levelNodes[neighbourPosition].Status);
-        }
-
-        for (int y = (int)position.y - 1; y <= position.y + 1; y += 2)
-        {
-            Vector2 neighbourPosition = new Vector2(position.x, y);
-
-            //if our neighbour doens't exist, or its status is the same or higher then the status we would increase it to, skip this iteration
-            if (!_levelNodes.ContainsKey(neighbourPosition) || (int)_levelNodes[neighbourPosition].Status >= (int)status)
-                continue;
-
-            _levelNodes[neighbourPosition].Status = status;
-            LevelStatusPlayerPrefs.SetLevelStatus(_levelNodes[neighbourPosition].LevelNumber, (int)_levelNodes[neighbourPosition].Status);
-        }
-    }
-
     private void UnlockAllLevels()
     {
         foreach (var keyValuePair in _levelNodes)
@@ -302,6 +229,11 @@ public class LevelSelectField : MonoBehaviour {
         foreach (Transform child in transform)
             children.Add(child.gameObject);
         children.ForEach(DestroyImmediate);
+    }
+
+    public Dictionary<Vector2, LevelNode> LevelNodes
+    {
+        get { return _levelNodes; }
     }
 }
 

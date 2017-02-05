@@ -26,7 +26,7 @@ public class PlayerStarter : MonoBehaviour {
         SetPlayerSlowTimeInput(true);
     }
 
-    public void SetPlayerMovement(bool move)
+    public void SetPlayerMovement(bool move = true)
     {
         if (move)
             _charAccess.ControlVelocity.StartDirectionalMovement();
@@ -34,29 +34,29 @@ public class PlayerStarter : MonoBehaviour {
             _charAccess.ControlVelocity.StopDirectionalMovement();
     }
 
-    public void SetPlayerActionInput(bool input)
+    public void SetPlayerActionInput(bool input = true)
     {
         _playerInputs.SetActionInput(input);
     }
 
-    public void SetPlayerReverseInput(bool input)
+    public void SetPlayerReverseInput(bool input = true)
     {
         _playerInputs.SetReverseInput(input);
     }
 
-    private void SetPlayerDoubleReverseInput(bool input)
+    private void SetPlayerDoubleReverseInput(bool input = true)
     {
         _playerInputs.SetDoubleReverseInput(input);
     }
 
-    public void SetPlayerSlowTimeInput(bool input)
+    public void SetPlayerSlowTimeInput(bool input = true)
     {
         _playerInputs.SetHoldInput(input);
 
         _playerActivateSlowTime.SetSlowTimeInput(input);
     }
 
-    public void SetPlayerShootInputs(bool input)
+    public void SetPlayerShootInputs(bool input = true)
     {
         _playerInputs.SetShootInput(input);
         _playerActivateWeapon.SetWeaponInput(input);

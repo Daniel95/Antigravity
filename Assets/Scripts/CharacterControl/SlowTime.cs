@@ -6,16 +6,16 @@ using UnityEngine;
 public class SlowTime : MonoBehaviour {
 
     [SerializeField]
-    private float minOffset = 0.01f;
+    private float minOffset = 0.025f;
 
     [SerializeField]
-    private float slowTimeScale = 0.1f;
+    private float slowTimeScale = 0.09f;
 
     [SerializeField]
-    private float slowDownTime = 0.1f;
+    private float slowDownTime = 0.085f;
 
     [SerializeField]
-    private float returnSpeed = 0.01f;
+    private float returnSpeed = 0.03f;
 
     private Coroutine _moveTimeScale;
 
