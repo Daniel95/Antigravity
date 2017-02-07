@@ -69,23 +69,8 @@ public class CollisionDirection : MonoBehaviour {
             roundedCollDir.y = Rounding.InvertOnNegativeCeil(offset.y);
         }
 
-        try
-        {
+        if(!_savedCollisions.ContainsKey(collision.collider))
             _savedCollisions.Add(collision.collider, roundedCollDir);
-        }
-        catch
-        {
-            print("Saved collisions:");
-            foreach (var keyValuePair in _savedCollisions)
-            {
-                print("name: " + keyValuePair.Key.name);
-                print("dir: " + keyValuePair.Value);
-            }
-            print("new collision: " + collision.collider.name + ", dir: " + roundedCollDir);
-
-            EditorApplication.isPaused = true;
-        }
-
     }
 
     //remove a saved collision from savedCollisions once we exit

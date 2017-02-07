@@ -39,6 +39,7 @@ public class GrapplingHook : MonoBehaviour, IWeapon, ITriggerer {
 
     private enum GrapplingHookStates { BusyShooting, BusyPullingBack, Active, Inactive };
 
+    [SerializeField]
     private GrapplingHookStates _currentGrapplingHookState = GrapplingHookStates.Inactive;
 
     private AimRay _aimRay;
@@ -101,7 +102,6 @@ public class GrapplingHook : MonoBehaviour, IWeapon, ITriggerer {
         else if (_currentGrapplingHookState == GrapplingHookStates.Active || _currentGrapplingHookState == GrapplingHookStates.BusyShooting)
         {
             _holdGrappleCoroutine = StartCoroutine(HoldGrapple( destination, spawnPosition));
-            //StopDistanceJoint();
             PullBack();
         } 
     }
@@ -296,7 +296,6 @@ public class GrapplingHook : MonoBehaviour, IWeapon, ITriggerer {
 
     public void StopDistanceJoint()
     {
-
         if (_grappleAnchorUpdate != null)
             StopCoroutine(_grappleAnchorUpdate);
 

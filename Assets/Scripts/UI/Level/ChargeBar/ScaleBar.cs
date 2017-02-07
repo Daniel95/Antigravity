@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class ScaleBar : MonoBehaviour {
 
@@ -57,7 +56,6 @@ public class ScaleBar : MonoBehaviour {
     public void ScaleHeightPropotion(float heightPropotion)
     {
         float scaleY = _maxScale.y * heightPropotion;
-
         ScaleHeight(scaleY);
     }
 }

@@ -16,7 +16,7 @@ public class ImageColor : MonoBehaviour {
     }
 
     /// <summary>
-    /// 
+    /// Set the color of the image.
     /// </summary>
     /// <param name="i"></param>
     public void SetColor(int i)

@@ -19,10 +19,13 @@ public class PlayerCharges : MonoBehaviour
 
     private float _chargeValue;
 
+    private int _fullCharges;
+
     private Frames _frames;
 
     private ScaleBar _scaleBar;
     private ImageColor _imageColor;
+    private ChargeBorders _chargeBorders;
 
     private Coroutine _rechargeCoroutine;
 
@@ -42,6 +45,7 @@ public class PlayerCharges : MonoBehaviour
 
         _scaleBar = barGO.GetComponent<ScaleBar>();
         _imageColor = barGO.GetComponentInChildren<ImageColor>();
+        _chargeBorders = barGO.GetComponentInChildren<ChargeBorders>();
 
         _frames = GetComponent<Frames>();
 
@@ -67,10 +71,10 @@ public class PlayerCharges : MonoBehaviour
             return false;
         }
 
-
         _chargeValue -= actionCost;
 
         AdjustBar();
+        UpdateCharges(Mathf.FloorToInt(_chargeValue / (int)ChargeAbleAction.ReverseSpeed));
 
         StopCoroutine(_rechargeCoroutine);
         _frames.StopExecuteAfterDelay();
@@ -97,12 +101,24 @@ public class PlayerCharges : MonoBehaviour
             _chargeValue += chargeIncrementSpeed;
             AdjustBar();
             yield return fixedUpdate;
-        }
+        } 
     }
 
     private void AdjustBar()
     {
-        _scaleBar.ScaleWidthPropotion(_chargeValue / maxCharge);
-        _imageColor.SetColor(Mathf.FloorToInt(_chargeValue / maxCharge * (_imageColor.Colors.Length - 1)));
+        float proportion = _chargeValue / maxCharge;
+        _scaleBar.ScaleWidthPropotion(proportion);
+
+        if (Mathf.Floor(_chargeValue / (int)ChargeAbleAction.ReverseSpeed) > _fullCharges)
+        {
+            UpdateCharges(_fullCharges + 1);
+        }
+    }
+
+    private void UpdateCharges(int charges)
+    {
+        _fullCharges = charges;
+        _imageColor.SetColor(charges);
+        _chargeBorders.SetBorderAmount(charges);
     }
 }
