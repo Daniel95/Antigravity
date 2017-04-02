@@ -13,8 +13,6 @@ public class CharScriptAccess : MonoBehaviour {
     [HideInInspector]
     public ControlTakeOff ControlTakeOff;
     [HideInInspector]
-    public SpeedMultiplier SpeedMultiplier;
-    [HideInInspector]
     public CollisionDirection CollisionDirection;
 
     void Awake() {
@@ -22,7 +20,6 @@ public class CharScriptAccess : MonoBehaviour {
         ControlDirection = GetComponent<ControlDirection>();
         ControlSpeed = GetComponent<ControlSpeed>();
         ControlTakeOff = GetComponent<ControlTakeOff>();
-        SpeedMultiplier = GetComponent<SpeedMultiplier>();
         CollisionDirection = GetComponent<CollisionDirection>();
     }
 }

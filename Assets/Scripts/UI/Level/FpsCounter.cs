@@ -5,18 +5,18 @@ using UnityEngine.UI;
 
 public class FpsCounter : MonoBehaviour {
 
-    private Text text;
+    private Text _text;
 
-    private float deltaTime;
+    private float _deltaTime;
 
 	// Use this for initialization
 	void Start () {
-        text = GetComponent<Text>();
+        _text = GetComponent<Text>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        deltaTime += (Time.deltaTime - deltaTime) * 0.1f;
-        text.text = Mathf.Round(1 / deltaTime).ToString();
+        _deltaTime += (Time.deltaTime - _deltaTime) * 0.1f;
+        _text.text = Mathf.Round(1 / _deltaTime).ToString();
     }
 }

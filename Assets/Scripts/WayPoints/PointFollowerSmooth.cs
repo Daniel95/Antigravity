@@ -50,12 +50,12 @@ public class PointFollowerSmooth : MonoBehaviour, ITriggerable {
             Vector2 dir = (_pos - (Vector2)transform.position).normalized;
 
             //our velocity is dir * speed, minus currentVelocity so we dont speed up
-            Vector2 targetVelocity = (dir * speed) - _currentVelocity;
+            Vector2 targetVelocity = dir * speed - _currentVelocity;
 
             //the bigger our massa, the slower we change our velocity
             _currentVelocity += targetVelocity / mass;
 
-            transform.position += (Vector3)_currentVelocity;
+            transform.position += (Vector3) _currentVelocity;
 
             yield return fixedUpdate;
         }

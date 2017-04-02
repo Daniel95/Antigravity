@@ -51,10 +51,10 @@ public class ControlDirection : MonoBehaviour
         //our next direction we are going to move towards, depending on our currentdirection, and the direction of our collision(s)
         Vector2 dirLogic = DirectionLogic(currentDir, collDir);
 
-        Vector2 lookDir = _charAccess.ControlVelocity.AdjustDirToMultiplier(_lastDir);
+        Vector2 lookDir = _lastDir;
 
         //use the direction logic for our new dir, but invert it if our speed multiplier is also inverted
-        _charAccess.ControlVelocity.SetDirection(_charAccess.ControlVelocity.AdjustDirToMultiplier(dirLogic));
+        _charAccess.ControlVelocity.SetDirection(dirLogic);
 
         if (FinishedDirectionLogic != null)
         {
@@ -91,13 +91,13 @@ public class ControlDirection : MonoBehaviour
                 //if our currentDir.x isn't 0, set is as our lastDir.x
                 if (currentDir.x != 0)
                 {
-                    _lastDir.x = Rounding.InvertOnNegativeCeil(currentDir.x) * _charAccess.ControlVelocity.GetMultiplierDir();
+                    _lastDir.x = Rounding.InvertOnNegativeCeil(currentDir.x);
                 }
 
                 //if our currentDir.y isn't 0, set is as our lastDir.y
                 if (currentDir.y != 0)
                 {
-                    _lastDir.y = Rounding.InvertOnNegativeCeil(currentDir.y) * _charAccess.ControlVelocity.GetMultiplierDir();
+                    _lastDir.y = Rounding.InvertOnNegativeCeil(currentDir.y);
                 }
 
 
@@ -119,7 +119,7 @@ public class ControlDirection : MonoBehaviour
         {
             _charAccess.ControlSpeed.SpeedDecrease();
 
-            if (currentDir.x * _charAccess.ControlVelocity.GetMultiplierDir() == cornersDir.x)
+            if (currentDir.x == cornersDir.x)
             {
                 _lastDir.y = cornersDir.y * -1;
                 _lastDir.x = cornersDir.x;

@@ -1,0 +1,3 @@
+﻿interface ISlidingState {
+    void Jump();
+}

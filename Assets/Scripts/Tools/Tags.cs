@@ -8,5 +8,4 @@ public static class Tags {
     public const string Bouncy = "Bouncy";
     public const string CheckPoint = "Checkpoint";
     public const string LevelFinishedKeeper = "LevelFinishedKeeper";
-    public const string ChargeBar = "ChargeBar";
 }

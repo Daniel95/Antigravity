@@ -5,27 +5,56 @@ using UnityEngine.UI;
 
 public class WriteTextField : MonoBehaviour {
 
-    [SerializeField]
-    private float secondsToWait = 0.03f;
+    [SerializeField] private float secondsToWait = 0.03f;
 
-    private Text _textField;
+    [SerializeField] private List<TextWriter.ExceptionCharacters> exceptionCharacters = new List<TextWriter.ExceptionCharacters>();
 
-    private List<char> _savedToChars = new List<char>();
+    [SerializeField] private bool writeOnEnable = true;
 
-    private TextWriter _textWriter;
+    private Text textField;
 
-    private void Start()
-    {
-        _textWriter = GetComponent<TextWriter>();
-        _textField = GetComponent<Text>();
+    private TextWriter textWriter;
 
-        foreach (char character in _textField.text)
-        {
-            _savedToChars.Add(character);
+    private void OnEnable() {
+
+        if(!writeOnEnable) { return; }
+
+        if (textField == null) {
+            textField = GetComponent<Text>(); 
+        }
+        if (textWriter == null) {
+            textWriter = GetComponent<TextWriter>();
         }
 
-        _textField.text = "";
+        StartWrite(textField.text);
+    }
 
-        _textWriter.StartTypingText(_textField, _savedToChars, secondsToWait);
+    public void StartWrite(string text) {
+        if (textField == null) {
+            textField = GetComponent<Text>(); 
+        }
+        if (textWriter == null) {
+            textWriter = GetComponent<TextWriter>();
+        }
+
+        textField.text = "";
+
+        textWriter.StartWritingText(textField, text, exceptionCharacters, secondsToWait);
+    }
+
+    public void StopWrite() {
+        textWriter.StopWritingText();
+    }
+
+    private void OnDisable() {
+        if (textWriter != null) {
+            textWriter.StopWritingText();
+        }
+    }
+
+    private void OnDestroy() {
+        if (textWriter != null) {
+            textWriter.StopWritingText();
+        }
     }
 }

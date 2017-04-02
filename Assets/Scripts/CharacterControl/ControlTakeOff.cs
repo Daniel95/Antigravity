@@ -8,13 +8,12 @@ public class ControlTakeOff : MonoBehaviour, ITriggerer {
     private float jumpSpeedBoost = 0.3f;
 
     [SerializeField]
-    private float jumpSpeedReturn = 0.01f;
-
-    [SerializeField]
     private float instaJumpStrength = 0.05f;
 
     [SerializeField]
     private int earlyJumpCoverFrames = 10;
+
+    public Action TookOff;
 
     private CharScriptAccess _plrAcces;
 
@@ -22,9 +21,9 @@ public class ControlTakeOff : MonoBehaviour, ITriggerer {
 
     private Frames _frames;
 
-    public Action TookOff;
-
     private bool _inBouncyTrigger;
+
+    private Coroutine _retryJumpAfterDelay;
 
     //used by action trigger to decide when to start the instructions/tutorial, and when to stop it
     public Action ActivateTrigger { get; set; }
@@ -38,7 +37,7 @@ public class ControlTakeOff : MonoBehaviour, ITriggerer {
     }
 
     /// <summary>
-    /// Check if we can jump, if so, activate Jump()
+    /// Check if we can jump, if so, activate Jump(), else we will RetryJump a few frames later.
     /// </summary>
     public void TryJump()
     {
@@ -47,6 +46,39 @@ public class ControlTakeOff : MonoBehaviour, ITriggerer {
             StopTrigger();
         }
 
+        CollisionInfo collisionInfo = GetCollisionInfo();
+
+        //check if we have raycast collision on only one axis, jumping wont work when we are in a corner
+        if (collisionInfo.CollisionDirection != Vector2.zero)
+        {
+            if (_retryJumpAfterDelay != null) {
+                StopCoroutine(_retryJumpAfterDelay);
+            }
+            Jump(collisionInfo.CollisionDirection, collisionInfo.RayDirection);
+        }
+        else //retry to jump again a few frames later, so it will still respond even if the player pressed jump too early.
+        {
+            _retryJumpAfterDelay = _frames.ExecuteAfterDelay(earlyJumpCoverFrames, RetryJump);
+        }
+    }
+
+    /// <summary>
+    /// Retry to jump if we couldn't jump last time.
+    /// </summary>
+    private void RetryJump() 
+    {
+        CollisionInfo collisionInfo = GetCollisionInfo();
+
+        //check if we have raycast collision on only one axis, jumping wont work when we are in a corner
+        if (collisionInfo.CollisionDirection != Vector2.zero)
+        {
+            StopCoroutine(_retryJumpAfterDelay);
+            Jump(collisionInfo.CollisionDirection, collisionInfo.RayDirection);
+        }
+    }
+    
+    private CollisionInfo GetCollisionInfo() 
+    {
         Vector2 collisionDir = _plrAcces.CollisionDirection.GetCurrentCollDir();
         Vector2 rayDir = new Vector2(_charRaycasting.CheckHorizontalMiddleDir(), _charRaycasting.CheckVerticalMiddleDir());
 
@@ -57,16 +89,7 @@ public class ControlTakeOff : MonoBehaviour, ITriggerer {
             collisionDir = rayDir;
         }
 
-        //check if we have raycast collision on only one axis, jumping wont work when we are in a corner
-        if (collisionDir != Vector2.zero)
-        {
-            _frames.StopExecuteAfterDelay();
-            Jump(collisionDir, rayDir);
-        }
-        else //try to jump again a few frames later, so it will still respond even if the player pressed jump too early.
-        {
-            _frames.ExecuteAfterDelay(earlyJumpCoverFrames, TryJump);
-        }
+        return new CollisionInfo(collisionDir, rayDir);
     }
 
     /// <summary>
@@ -88,12 +111,14 @@ public class ControlTakeOff : MonoBehaviour, ITriggerer {
             newDir.y = collisionDir.y * -1;
         }
 
-        _plrAcces.ControlVelocity.SetDirection(_plrAcces.ControlVelocity.AdjustDirToMultiplier(newDir));
+        _plrAcces.ControlVelocity.SetDirection(newDir);
 
         if (rayDir.x == 0 || rayDir.y == 0)
         {
-            transform.position += (Vector3)(_plrAcces.ControlVelocity.GetDirection() * (instaJumpStrength * _plrAcces.ControlVelocity.SpeedMultiplier));
+            transform.position += (Vector3)(_plrAcces.ControlVelocity.GetDirection() * instaJumpStrength);
         }
+
+        _plrAcces.CollisionDirection.RemoveCollisionDirection(collisionDir);
 
         if (TookOff != null)
             TookOff();
@@ -150,6 +175,16 @@ public class ControlTakeOff : MonoBehaviour, ITriggerer {
         if (_inBouncyTrigger && collision.transform.CompareTag(Tags.Bouncy))
         {
             _inBouncyTrigger = false;
+        }
+    }
+
+    private class CollisionInfo {
+        public readonly Vector2 CollisionDirection;
+        public readonly Vector2 RayDirection;
+
+        public CollisionInfo(Vector2 collisionDirection, Vector2 rayDirection) {
+            CollisionDirection = collisionDirection;
+            RayDirection = rayDirection;
         }
     }
 }

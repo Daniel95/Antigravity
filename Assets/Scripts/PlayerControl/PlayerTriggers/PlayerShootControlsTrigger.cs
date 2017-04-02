@@ -1,28 +1,19 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using IoCPlus;
 using UnityEngine;
 
-public class PlayerShootControlsTrigger : MonoBehaviour, ITriggerable
-{
+public class PlayerShootControlsTriggerView : View, ITriggerable {
+
     public bool Triggered { get; set; }
 
-    [SerializeField]
-    private GameObject player;
+    [Inject] private EnableShootingInputEvent enableShootingInputEvent;
 
-    private PlayerStarter _playerStarter;
+    [SerializeField] private GameObject player;
 
-    private void Start()
-    {
-        _playerStarter = player.GetComponent<PlayerStarter>();
+    public void TriggerActivate() {
+        enableShootingInputEvent.Dispatch(true);
     }
 
-    public void TriggerActivate()
-    {
-        _playerStarter.SetPlayerShootInputs(true);
-    }
-
-    public void TriggerStop()
-    {
-        _playerStarter.SetPlayerShootInputs(false);
+    public void TriggerStop() {
+        enableShootingInputEvent.Dispatch(false);
     }
 }

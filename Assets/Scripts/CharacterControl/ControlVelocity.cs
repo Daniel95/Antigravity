@@ -10,8 +10,6 @@ public class ControlVelocity : MonoBehaviour {
     [SerializeField]
     private float _currentSpeed;
 
-    private float _speedMultiplier = 1;
-
     [SerializeField]
     private float minSpeedOffsetValue = 0.05f;
 
@@ -54,7 +52,7 @@ public class ControlVelocity : MonoBehaviour {
         while (true)
         {
             //add our own constant force
-            _rb.velocity = direction * (_currentSpeed * _speedMultiplier);
+            _rb.velocity = direction * _currentSpeed;
             yield return fixedUpdate;
         }
     }
@@ -101,42 +99,10 @@ public class ControlVelocity : MonoBehaviour {
         direction *= -1;
     }
 
-    //adjusts the given dir with the current multiplier,
-    //also only inverts a dir when it has changed
-    public Vector2 AdjustDirToMultiplier(Vector2 dir) {
-        Vector2 directionDifference = direction - dir;
-
-        int multiplierDir = GetMultiplierDir();
-
-        //only adjust the direction to multiplierDir if the direction has changed
-        if (directionDifference.x != 0)
-        {
-            dir.x *= multiplierDir;
-        }
-        if (directionDifference.y != 0)
-        {
-            dir.y *= multiplierDir;
-        }
-
-        return dir;
-    }
-
     //set the direction without adjusting anything
     public void SetDirection(Vector2 dir)
     {
         direction = dir;
-    }
-
-    //returns the direction of the multiplier (1 or -1)
-    public int GetMultiplierDir()
-    {
-        int speedMultiplierDir = 1;
-        if (_speedMultiplier < 0)
-        {
-            speedMultiplierDir = -1;
-        }
-
-        return speedMultiplierDir;
     }
 
     /// <summary>
@@ -189,12 +155,6 @@ public class ControlVelocity : MonoBehaviour {
 
     public float CurrentSpeed {
         get { return _currentSpeed; }
-    }
-
-    public float SpeedMultiplier
-    {
-        get { return _speedMultiplier; }
-        set { _speedMultiplier = value; }
     }
 
     public bool CheckMovingStandard() {

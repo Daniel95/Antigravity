@@ -1,36 +1,61 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using ExtraStringExtensions;
 
-public class TextWriter : MonoBehaviour
-{
+public class TextWriter : MonoBehaviour {
+
+    private const string breakLine = "(break)";
+
     /// <summary>
     /// Slowly write text in a existing textfield.
     /// </summary>
     /// <param name="textField"></param>
-    /// <param name="charList"></param>
-    public void StartTypingText(Text textField, List<char> charList, float secondsToWait)
-    {
-        StartCoroutine(WriteText(textField, charList, secondsToWait));
+    /// <param name="textToWrite"></param>
+    /// <param name="exceptionCharacters"></param>
+    /// <param name="secondsToWait"></param>
+    public void StartWritingText(Text textField, string textToWrite, List<ExceptionCharacters> exceptionCharacters, float secondsToWait) {
+        StartCoroutine(WriteText(textField, textToWrite, exceptionCharacters, secondsToWait));
     }
 
-    private IEnumerator WriteText(Text texfield, List<char> charList, float secondsToWait)
-    {
+    public void StopWritingText() {
+        StopAllCoroutines();
+    }
+
+    private static IEnumerator WriteText(Text textField, string textToWrite, List<ExceptionCharacters> exceptionCharacters, float secondsToWait) {
+
         int charCounter = 0;
 
-        while (true)
-        {
-            texfield.text += charList[charCounter];
+        List<int> breakPositions = textToWrite.AllIndexesOf(breakLine);
+
+        while (true) {
+            foreach (int breakPos in breakPositions) {
+                if (charCounter != breakPos) { continue; }
+
+                textField.text += Environment.NewLine;
+                charCounter += breakLine.Length;
+            }
+
+            textField.text += textToWrite[charCounter];
             charCounter++;
 
-            if (charCounter >= charList.Count) 
-                yield break;
+            if (charCounter >= textToWrite.Length) { yield break; }
 
-            for (int i = 0; i < secondsToWait; i++)
-            {
-                yield return new WaitForSecondsRealtime(secondsToWait);
+            foreach (ExceptionCharacters exceptionChar in exceptionCharacters) {
+                if (textToWrite[charCounter - 1] == exceptionChar.Character) {
+                    yield return new WaitForSecondsRealtime(exceptionChar.PauzeTime);
+                }
             }
+
+            yield return new WaitForSecondsRealtime(secondsToWait);;
         }
+    }
+
+    [Serializable]
+    public class ExceptionCharacters {
+        public char Character;
+        public float PauzeTime;
     }
 }

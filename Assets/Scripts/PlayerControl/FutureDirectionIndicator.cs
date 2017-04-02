@@ -33,21 +33,19 @@ public class FutureDirectionIndicator : MonoBehaviour {
     {
         if (_charAccess != null) {
             _charAccess.ControlDirection.FinishedDirectionLogic -= PointToControlledDir;
-            _charAccess.SpeedMultiplier.SwitchedMultiplier -= PointToCeilVelocityDir;
             _charAccess.ControlTakeOff.TookOff -= PointToCeilVelocityDir;
         }
     }
 
     void SubscribeToDelegates() {
         _charAccess.ControlDirection.FinishedDirectionLogic += PointToControlledDir;
-        _charAccess.SpeedMultiplier.SwitchedMultiplier += PointToCeilVelocityDir;
         _charAccess.ControlTakeOff.TookOff += PointToCeilVelocityDir;
     }
 
-    private void PointToControlledDir(Vector2 _futureDir)
+    private void PointToControlledDir(Vector2 futureDir)
     {
 
-        _lookDir = _futureDir * _charAccess.ControlVelocity.GetMultiplierDir();
+        _lookDir = futureDir;
 
         _lookAt.UpdateLookAt((Vector2)transform.position + _lookDir);
     }
@@ -73,18 +71,5 @@ public class FutureDirectionIndicator : MonoBehaviour {
         }
 
         _lookAt.UpdateLookAt((Vector2)transform.position + _lookDir);
-    }
-
-    private void UpdateLookDir(Vector2 _newLookDir)
-    {
-        //don't update the dir when its new value is zero
-        if (_newLookDir.x != 0)
-        {
-            _lookDir.x = _newLookDir.x;
-        }
-        if (_newLookDir.y != 0)
-        {
-            _lookDir.y = _newLookDir.y;
-        }
     }
 }

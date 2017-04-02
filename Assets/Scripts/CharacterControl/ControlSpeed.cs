@@ -105,6 +105,8 @@ public class ControlSpeed : MonoBehaviour, IBoostAble {
 
     private IEnumerator ChangeSpeedCdCounter()
     {
+        var waitForFixedUpdate = new WaitForFixedUpdate();
+
         _changeSpeedCdIsActive = true;
         _changeSpeedCdCounter = changeSpeedCdStartValue;
 
@@ -118,7 +120,7 @@ public class ControlSpeed : MonoBehaviour, IBoostAble {
             }
 
 
-            yield return new WaitForEndOfFrame();
+            yield return waitForFixedUpdate;
         }
     }
 }

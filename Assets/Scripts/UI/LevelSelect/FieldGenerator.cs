@@ -21,7 +21,7 @@ public class FieldGenerator : MonoBehaviour
         Func<int, int, int> getXPos = GetXPosMethod((int)countingStartDirection.x);
         Func<int, int, int> getYPos = GetYPosMethod((int)countingStartDirection.y);
 
-        var getCounter = horizontalRows ? (Func<int, int, Vector2, int>)CalcHorizontalCounter : CalcVerticalCounter;
+        Func<int, int, Vector2, int> getCounter = horizontalRows ? (Func<int, int, Vector2, int>)CalcHorizontalCounter : CalcVerticalCounter;
 
         for (int yIndex = 0; yIndex < fieldSize.y; yIndex++)
         {
@@ -31,7 +31,7 @@ public class FieldGenerator : MonoBehaviour
 
                 int count = startCountingValue + getCounter(xIndex, yIndex, fieldSize) - 1;
 
-                print(count);
+                //print(count);
 
                 nodes.Add(new Node(position, count));
 

@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
 public class CollisionDirection : MonoBehaviour {
@@ -19,7 +18,7 @@ public class CollisionDirection : MonoBehaviour {
     //each collision will be repesented by its highest axis (x or y)
     public Vector2 GetUpdatedCollDir(Collision2D collision)
     {
-        //save the new collision we recieveds
+        //save the new collision we recieved
         SaveNewCollision(collision);
 
         return GetCurrentCollDir();
@@ -69,13 +68,28 @@ public class CollisionDirection : MonoBehaviour {
             roundedCollDir.y = Rounding.InvertOnNegativeCeil(offset.y);
         }
 
-        if(!_savedCollisions.ContainsKey(collision.collider))
+        if (!_savedCollisions.ContainsKey(collision.collider)) {
             _savedCollisions.Add(collision.collider, roundedCollDir);
+        }
     }
 
     //remove a saved collision from savedCollisions once we exit
     private void OnCollisionExit2D(Collision2D collision)
     {
         _savedCollisions.Remove(collision.collider);
+    }
+
+    public void RemoveCollisionDirection(Vector2 collisionDirection) {
+        foreach (KeyValuePair<Collider2D, Vector2> keyValuePair in _savedCollisions) {
+            if (keyValuePair.Value == collisionDirection) {
+                _savedCollisions.Remove(keyValuePair.Key);
+                break;
+            }
+        }
+    }
+
+    public void ResetCollisionDirection()
+    {
+        _savedCollisions.Clear();
     }
 }

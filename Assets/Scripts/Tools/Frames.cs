@@ -1,30 +1,32 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using System;
 
 public class Frames : MonoBehaviour {
 
-    public static bool CheckInterval(int intervalLength)
+    //private List<Coroutine> runningCoroutines = new List<Coroutine>();
+
+    public static bool CheckInterval(int _intervalLength)
     {
-        return Time.frameCount % intervalLength == 0;
+        return Time.frameCount % _intervalLength == 0;
     }
 
-    public void ExecuteAfterDelay(int framesToWait, Action action) {
-        StartCoroutine(DelayExecute(framesToWait, action));
+    public Coroutine ExecuteAfterDelay(int _framesToWait, Action _action) {
+        return StartCoroutine(DelayExecute(_framesToWait, _action));
     }
 
-    public void StopExecuteAfterDelay()
-    {
-        StopAllCoroutines();
-    }
-
-    IEnumerator DelayExecute(int framesToWait, Action action) {
+    private IEnumerator DelayExecute(int _framesToWait, Action _action) {
         var fixedUpdate = new WaitForFixedUpdate();
 
-        for (int i = 0; i < framesToWait; i++) {
+        for (int i = 0; i < _framesToWait; i++) {
             yield return fixedUpdate;
         }
 
-        action();
+        _action();
+    }
+
+    public void StopDelayExecute(Coroutine coroutine) {
+        StopCoroutine(coroutine);
     }
 }

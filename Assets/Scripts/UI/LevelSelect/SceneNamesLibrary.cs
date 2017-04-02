@@ -5,13 +5,14 @@ using System.Collections.Generic;
 
 public class SceneNamesLibrary : MonoBehaviour
 {
-    public List<string> SceneNames;
+    [SerializeField]
+    private List<string> sceneNames;
 
     #if UNITY_EDITOR
 
     public void UpdateNames()
     {
-        SceneNames = ReadNames();
+        sceneNames = ReadNames();
     }
 
     private static List<string> ReadNames()
@@ -31,4 +32,8 @@ public class SceneNamesLibrary : MonoBehaviour
         return temp;
     }
     #endif
+
+    public List<string> SceneNames {
+        get { return sceneNames; }
+    }
 }

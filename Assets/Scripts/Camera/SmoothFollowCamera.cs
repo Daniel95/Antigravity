@@ -24,8 +24,7 @@ public class SmoothFollowCamera : MonoBehaviour
         transform.position = new Vector3(target.position.x, target.position.y, _yStartPos);
     }
 
-    // Update is called once per frame
-    void Update()
+    void LateUpdate()
     {
         Vector2 delta = target.position - transform.position;
         Vector2 destination = (Vector2)transform.position + delta;

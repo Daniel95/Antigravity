@@ -1,0 +1,22 @@
+Bugs!
+
+/-\/-\/-\/-\/-\
+
+Graplling stuck bug lvl 11
+Sometimes not dying bug
+grapple can shoot when firing to leave checkpoint, level 6
+grapple hook decouples when you when you can see the original anchor.
+moving objects move in fixedUpdate, studders a little.
+cannot jump level 1, after colliding with onewaywall
+
+lvl 3 reverse instructions only work once!
+
+pointer should look to last anchor when grappling
+
+grappling hook current inherance system makes 2 instances of the grappling hook. is should be 1 grappling hook, with two different modus
+
+\-/\-/\-/\-/\-/
+
+Design!
+
+make a pull grapple area, if the player shoots at it he will be turned towards the anchors position and the grapple with cancel immediatly.

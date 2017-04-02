@@ -16,14 +16,12 @@ public class ScreenShake : MonoBehaviour {
 
     private void OnEnable()
     {
-        PlayerCharges.NotEnoughCharges += StartShake;
-        KillPlayer.PlayerGettingKilled += StartShake;
+        KillPlayerView.PlayerGettingKilled += StartShake;
     }
 
     private void OnDisable()
     {
-        PlayerCharges.NotEnoughCharges -= StartShake;
-        KillPlayer.PlayerGettingKilled -= StartShake;
+        KillPlayerView.PlayerGettingKilled -= StartShake;
     }
 
     public void StartShake() {
@@ -36,6 +34,8 @@ public class ScreenShake : MonoBehaviour {
 
     private IEnumerator Shake()
     {
+        var waitForFixedUpdate = new WaitForFixedUpdate();
+
         _shaking = true;
 
         //choose a random number between minshake and maxshake, that is the amount of times we are going to shake
@@ -50,7 +50,7 @@ public class ScreenShake : MonoBehaviour {
             //says the position is startpos x/y incremented by a random number between minShakeStrength and maxShakeStrength
             transform.position = new Vector3(transform.position.x + Random.Range(-shakeStrength, shakeStrength), transform.position.y + Random.Range(-shakeStrength, shakeStrength), transform.position.z);
 
-            yield return new WaitForFixedUpdate();
+            yield return waitForFixedUpdate;
         }
 
         _shaking = false;

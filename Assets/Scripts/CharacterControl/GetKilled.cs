@@ -13,7 +13,7 @@ public class GetKilled : MonoBehaviour, IKillable {
 
     private bool _inKillerTrigger;
 
-    public void EnteringKillingTrigger(string killerTag)
+    public void EnteringKillingTrigger(string killerTag) 
     {
         if (CheckDeadliness(killerTag))
         {
@@ -29,14 +29,15 @@ public class GetKilled : MonoBehaviour, IKillable {
         }
     }
 
-    //when we collide with something while in the killing trigger, we die
-    private void OnCollisionStay2D(Collision2D collision)
-    {
-        if (_inKillerTrigger)
-        {
-            if (Die != null)
-                Die();
-        }
+    //when we collide with something while in the killing trigger.
+    private void OnCollisionStay2D(Collision2D collision) {
+        if (!_inKillerTrigger)
+            return;
+
+        _inKillerTrigger = false;
+
+        if (Die != null)
+            Die();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -45,6 +46,8 @@ public class GetKilled : MonoBehaviour, IKillable {
         {
             if (collision.transform.CompareTag(deadlyTags[i]))
             {
+                _inKillerTrigger = false;
+
                 if (Die != null)
                     Die();
             }
