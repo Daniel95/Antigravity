@@ -5,18 +5,18 @@ using System.Collections;
 public class CharScriptAccess : MonoBehaviour {
 
     [HideInInspector]
-    public ControlVelocity ControlVelocity;
+    private ControlVelocityView ControlVelocity;
     [HideInInspector]
-    public ControlDirection ControlDirection;
+    private ControlDirection ControlDirection;
     [HideInInspector]
-    public ControlSpeed ControlSpeed;
+    private ControlSpeed ControlSpeed;
     [HideInInspector]
-    public ControlTakeOff ControlTakeOff;
+    private ControlTakeOff ControlTakeOff;
     [HideInInspector]
-    public CollisionDirection CollisionDirection;
+    private CollisionDirection CollisionDirection;
 
     void Awake() {
-        ControlVelocity = GetComponent<ControlVelocity>();
+        ControlVelocity = GetComponent<ControlVelocityView>();
         ControlDirection = GetComponent<ControlDirection>();
         ControlSpeed = GetComponent<ControlSpeed>();
         ControlTakeOff = GetComponent<ControlTakeOff>();

@@ -1,29 +1,26 @@
 ﻿using UnityEngine;
 using System;
 using System.Collections;
+using IoCPlus;
 
-public class ControlVelocity : MonoBehaviour {
+public class ControlVelocityView : View, IControlVelocity {
 
-    [SerializeField]
-    private float originalSpeed = 3;
+    [Inject] private Ref<ControlVelocityView> controlVelocityRef;
 
-    [SerializeField]
-    private float _currentSpeed;
-
-    [SerializeField]
-    private float minSpeedOffsetValue = 0.05f;
-
-    [SerializeField]
-    private Vector2 direction;
+    [SerializeField] private float originalSpeed = 3;
+    [SerializeField] private float _currentSpeed;
+    [SerializeField] private float minSpeedOffsetValue = 0.05f;
+    [SerializeField] private Vector2 direction;
 
     private Rigidbody2D _rb;
-
     private Coroutine _updateDirectionalMovement;
-
     private Coroutine _returnSpeedToOriginal;
 
-    void Awake()
-    {
+    public override void Initialize() {
+        controlVelocityRef.Set(this);
+    }
+
+    private void Awake() {
         _rb = GetComponent<Rigidbody2D>();
         _currentSpeed = originalSpeed;
     }
@@ -31,14 +28,12 @@ public class ControlVelocity : MonoBehaviour {
     /// <summary>
     /// Starts moving the rigidbody towards the controlled direction. (GetDirection)
     /// </summary>
-    public void StartDirectionalMovement()
-    {
+    public void StartDirectionalMovement() {
         StopDirectionalMovement();
         _updateDirectionalMovement = StartCoroutine(UpdateDirectionalMovement());
     }
 
-    public void StopDirectionalMovement()
-    {
+    public void StopDirectionalMovement() {
         if (_updateDirectionalMovement != null)
         {
             StopCoroutine(_updateDirectionalMovement);
@@ -46,8 +41,7 @@ public class ControlVelocity : MonoBehaviour {
         }
     }
 
-    private IEnumerator UpdateDirectionalMovement()
-    {
+    private IEnumerator UpdateDirectionalMovement() {
         var fixedUpdate = new WaitForFixedUpdate();
         while (true)
         {
@@ -61,16 +55,14 @@ public class ControlVelocity : MonoBehaviour {
     /// Returns the speed to normal.
     /// </summary>
     /// <param name="returnSpeed"></param>
-    public void StartReturnSpeedToOriginal(float returnSpeed)
-    {
+    public void StartReturnSpeedToOriginal(float returnSpeed) {
         if (_returnSpeedToOriginal != null)
             StopCoroutine(_returnSpeedToOriginal);
 
         _returnSpeedToOriginal = StartCoroutine(ReturnSpeedToOriginal(returnSpeed));
     }
 
-    private IEnumerator ReturnSpeedToOriginal(float returnSpeed)
-    {
+    private IEnumerator ReturnSpeedToOriginal(float returnSpeed) {
         var fixedUpdate = new WaitForFixedUpdate();
         while (Mathf.Abs(_currentSpeed - originalSpeed) > minSpeedOffsetValue)
         {
@@ -90,8 +82,7 @@ public class ControlVelocity : MonoBehaviour {
     }
 
     //switched to direction of the velocity
-    public void SwitchVelocityDirection()
-    {
+    public void SwitchVelocityDirection() {
         SetVelocity(GetVelocity * -1);
     }
 
@@ -100,8 +91,7 @@ public class ControlVelocity : MonoBehaviour {
     }
 
     //set the direction without adjusting anything
-    public void SetDirection(Vector2 dir)
-    {
+    public void SetDirection(Vector2 dir) {
         direction = dir;
     }
 
@@ -134,10 +124,8 @@ public class ControlVelocity : MonoBehaviour {
     /// Stop any speed modifiers (coroutines), and set the speed to the new value, or the max value if the new value is too large.
     /// </summary>
     /// <param name="newSpeed"></param>
-    public void SetSpeed(float newSpeed)
-    {
-        if(_returnSpeedToOriginal != null)
-        {
+    public void SetSpeed(float newSpeed) {
+        if(_returnSpeedToOriginal != null) {
             StopCoroutine(_returnSpeedToOriginal);
         }
 

@@ -65,7 +65,7 @@ public class RevivedStateView : View, ITriggerer
         _lookAt = gun.GetComponent<LookAt>();
         _aimRay = GetComponent<AimRay>();
         _moveTowards = GetComponent<MoveTowards>();
-        GetComponent<ControlVelocity>();
+        GetComponent<ControlVelocityView>();
     }
 
     IEnumerator DelayLaunchingInput()

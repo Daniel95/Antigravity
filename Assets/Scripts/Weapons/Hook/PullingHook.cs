@@ -5,11 +5,11 @@ using UnityEngine;
 
 public class PullingHook : HookTypeBase {
 
-    private ControlVelocity velocity;
+    private ControlVelocityView velocity;
     
     private void Awake()
     {
-        velocity = GetComponent<ControlVelocity>();
+        velocity = GetComponent<ControlVelocityView>();
     }
 
     /*

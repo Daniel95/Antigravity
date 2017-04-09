@@ -7,7 +7,7 @@ public class PlayerSpeedTrigger : MonoBehaviour, ITriggerable {
     public bool Triggered { get; set; }
 
     [SerializeField]
-    private ControlVelocity controlVelocity;
+    private ControlVelocityView controlVelocity;
 
     private Vector2 _lastDirection;
 

@@ -9,7 +9,7 @@ public class PullingHookView : View, IPullingHook {
 
     [Inject] private CancelHookEvent cancelHookEvent;
 
-    private ControlVelocity velocity;
+    private ControlVelocityView velocity;
 
     public override void Initialize() {
         pullingHookRef.Set(this);
@@ -32,6 +32,6 @@ public class PullingHookView : View, IPullingHook {
     }
 
     private void Awake() {
-        velocity = GetComponent<ControlVelocity>();
+        velocity = GetComponent<ControlVelocityView>();
     }
 }

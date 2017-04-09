@@ -27,11 +27,11 @@ public class ControlSpeed : MonoBehaviour, IBoostAble {
 
     private bool _changeSpeedCdIsActive;
 
-    private ControlVelocity _velocity;
+    private ControlVelocityView _velocity;
 
     private void Start()
     {
-        _velocity = GetComponent<ControlVelocity>();
+        _velocity = GetComponent<ControlVelocityView>();
     }
 
     /// <summary>
