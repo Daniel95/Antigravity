@@ -16,6 +16,8 @@ public class MobileInputView : View, IInput {
 
     [SerializeField] private float minDistToDrag = 0.75f;
 
+    [Inject] IContext context;
+
     private GameObject _joyStickGObj;
 
     private DragDirIndicator _dragDirIndicator;

@@ -1,7 +1,6 @@
 using IoCPlus;
-using System;
-using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class WeaponInputView : View, IWeaponInput {
 
@@ -14,7 +13,7 @@ public class WeaponInputView : View, IWeaponInput {
     [Inject] private CancelAimWeaponEvent cancelAimWeaponEvent;
 
     [SerializeField] private LayerMask rayLayers;
-    [SerializeField] private const int maxRaycastDistance = 40;
+    [SerializeField] private int maxRaycastDistance = 40;
     [SerializeField] private GameObject gun;
     [SerializeField] private Transform spawnTransform;
 
@@ -40,8 +39,7 @@ public class WeaponInputView : View, IWeaponInput {
     }
 
     public void Dragging(Vector2 direction) {
-
-        aimWeaponEvent.Dispatch(GetDestinationPoint(direction), spawnTransform.position);
+        aimWeaponEvent.Dispatch(new AimWeaponData(GetDestinationPoint(direction), spawnTransform.position));
         
         gunLookAt.UpdateLookAt((Vector2)transform.position + direction);
     }
@@ -54,7 +52,7 @@ public class WeaponInputView : View, IWeaponInput {
     }
 
     public void ReleaseInDirection(Vector2 direction) {
-        fireWeaponEvent.Dispatch(GetDestinationPoint(direction), spawnTransform.position);
+        fireWeaponEvent.Dispatch(new AimWeaponData(GetDestinationPoint(direction), spawnTransform.position));
 
         gunLookAt.UpdateLookAt((Vector2)transform.position + direction);
     }
@@ -65,7 +63,6 @@ public class WeaponInputView : View, IWeaponInput {
 
         RaycastHit2D hit = Physics2D.Raycast(transform.position, dir, maxRaycastDistance, rayLayers);
 
-        //if we hit a collider between the shooter and targetPos, than that collision point is the targetPos
         if (hit.collider != null) {
             targetPos = hit.point;
         }

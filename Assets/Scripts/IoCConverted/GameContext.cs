@@ -6,8 +6,7 @@ public class GameContext : Context {
         base.SetBindings();
 
         On<EnterContextSignal>()
-            .Do<InstantiateViewPrefabCommand>("Resources/Characters/Player")
-            .AddContext<PlayerStateContext>();
+            .AddContext<PlayerContext>();
     }
 
 }

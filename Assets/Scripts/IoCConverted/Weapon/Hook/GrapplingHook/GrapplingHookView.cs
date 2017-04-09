@@ -3,14 +3,14 @@ using System;
 using System.Collections;
 using UnityEngine;
 
+[RequireComponent(typeof(DistanceJoint2D))]
 public class GrapplingHookView : View, IGrapplingHook {
     
-    [Inject] private Ref<HookModel> hookModel;
+    [Inject] private HookModel hookModel;
 
     [Inject] private Ref<IGrapplingHook> grapplingHook;
 
     [Inject] private GrapplingHookStartedEvent startedGrapplingEvent;
-
     [Inject] private ChangeSpeedByAngleEvent changeSpeedByAngleEvent;
     [Inject] private AddAnchorEvent addAnchorEvent;
 
@@ -18,11 +18,12 @@ public class GrapplingHookView : View, IGrapplingHook {
     public Action StoppedGrappleLocking;
 
     [SerializeField] private float minDistance = 0.75f;
-    [SerializeField] private DistanceJoint2D distanceJoint;
+    private DistanceJoint2D distanceJoint;
 
     private Coroutine _grappleAnchorUpdate;
 
     private void Awake() {
+        distanceJoint = GetComponent<DistanceJoint2D>();
         distanceJoint.enabled = false;
     }
 
@@ -40,7 +41,7 @@ public class GrapplingHookView : View, IGrapplingHook {
 
     private void CheckHookDistance()
     {
-        float distance = Vector2.Distance(transform.position, hookModel.Get().HookProjectileGameObject.transform.position);
+        float distance = Vector2.Distance(transform.position, hookModel.HookProjectileGameObject.transform.position);
 
         if (distance > minDistance)
         {
@@ -54,9 +55,9 @@ public class GrapplingHookView : View, IGrapplingHook {
 
     private void EnterGrappleLock(float distance)
     {
-        hookModel.Get().CurrentHookState = HookModel.HookStates.Active;
+        hookModel.CurrentHookState = HookModel.HookStates.Active;
 
-        hookModel.Get().HookProjectile.Attached = null;
+        hookModel.HookProjectile.Attached = null;
 
         startedGrapplingEvent.Dispatch();
 
@@ -104,7 +105,7 @@ public class GrapplingHookView : View, IGrapplingHook {
     {
         while (true)
         {
-            RaycastHit2D hitToAnchor = Physics2D.Linecast(transform.position, hookModel.Get().Anchors[hookModel.Get().Anchors.Count - 1].position, hookModel.Get().RayLayers);
+            RaycastHit2D hitToAnchor = Physics2D.Linecast(transform.position, hookModel.Anchors[hookModel.Anchors.Count - 1].position, hookModel.RayLayers);
 
             if (hitToAnchor.collider != null)
             {
@@ -112,26 +113,26 @@ public class GrapplingHookView : View, IGrapplingHook {
 
                 addAnchorEvent.Dispatch(anchorPos, hitToAnchor.transform);
 
-                hookModel.Get().LineRendererComponent.numPositions = hookModel.Get().Anchors.Count + 1;
+                hookModel.LineRendererComponent.positionCount = hookModel.Anchors.Count + 1;
 
                 distanceJoint.distance = Vector2.Distance(transform.position, hitToAnchor.point);
             }
-            else if (hookModel.Get().Anchors.Count > 1)
+            else if (hookModel.Anchors.Count > 1)
             {
-                RaycastHit2D hitToPreviousAnchor = Physics2D.Linecast(transform.position, hookModel.Get().Anchors[hookModel.Get().Anchors.Count - 2].position, hookModel.Get().RayLayers);
+                RaycastHit2D hitToPreviousAnchor = Physics2D.Linecast(transform.position, hookModel.Anchors[hookModel.Anchors.Count - 2].position, hookModel.RayLayers);
 
                 if (hitToPreviousAnchor.collider == null)
                 {
-                    distanceJoint.distance = Vector2.Distance(transform.position, hookModel.Get().Anchors[hookModel.Get().Anchors.Count - 1].position) + Vector2.Distance(hookModel.Get().Anchors[hookModel.Get().Anchors.Count - 1].position, hookModel.Get().Anchors[hookModel.Get().Anchors.Count - 2].position);
+                    distanceJoint.distance = Vector2.Distance(transform.position, hookModel.Anchors[hookModel.Anchors.Count - 1].position) + Vector2.Distance(hookModel.Anchors[hookModel.Anchors.Count - 1].position, hookModel.Anchors[hookModel.Anchors.Count - 2].position);
 
-                    hookModel.Get().Anchors.RemoveAt(hookModel.Get().Anchors.Count - 1);
+                    hookModel.Anchors.RemoveAt(hookModel.Anchors.Count - 1);
 
-                    hookModel.Get().LineRendererComponent.numPositions--;
+                    hookModel.LineRendererComponent.positionCount--;
                 }
             }
 
             //update the pos each frame
-            distanceJoint.connectedAnchor = hookModel.Get().Anchors[hookModel.Get().Anchors.Count - 1].position;
+            distanceJoint.connectedAnchor = hookModel.Anchors[hookModel.Anchors.Count - 1].position;
 
             yield return null;
         }
@@ -147,7 +148,7 @@ public class GrapplingHookView : View, IGrapplingHook {
          //init the distance joint & line renderer
         distanceJoint.enabled = true;
 
-        distanceJoint.connectedAnchor = hookModel.Get().Anchors[0].position;
+        distanceJoint.connectedAnchor = hookModel.Anchors[0].position;
         distanceJoint.distance = distance;
     }
 

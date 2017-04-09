@@ -6,7 +6,7 @@ public class FloatingStateContext : Context {
         base.SetBindings();
 
         On<EnterContextSignal>()
-            .Do<InstantiatePlayerViewCommand<FloatingStateView>>();
+            .Do<InstantiateViewOnPlayerCommand<FloatingStateView>>();
 
     }
 

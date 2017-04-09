@@ -173,7 +173,7 @@ public class HookWeapon : MonoBehaviour, IWeaponOutput, ITriggerer {
         //activate line renderer
         LineRenderer.enabled = true;
 
-        LineRenderer.numPositions = 2;
+        LineRenderer.positionCount = 2;
         LineRenderer.SetPosition(0, Anchors[0].position);
         LineRenderer.SetPosition(1, transform.position);
 
@@ -194,7 +194,7 @@ public class HookWeapon : MonoBehaviour, IWeaponOutput, ITriggerer {
                 LineRenderer.SetPosition(i, Anchors[i].position);
             }
 
-            LineRenderer.SetPosition(LineRenderer.numPositions - 1, transform.position);
+            LineRenderer.SetPosition(LineRenderer.positionCount - 1, transform.position);
             yield return null;
         }
     }
@@ -235,6 +235,6 @@ public class HookWeapon : MonoBehaviour, IWeaponOutput, ITriggerer {
 
         print("stopped coroutine");
 
-        LineRenderer.numPositions = 0;
+        LineRenderer.positionCount = 0;
     }
 }

@@ -6,7 +6,7 @@ public class SlidingStateContext : Context {
         base.SetBindings();
 
         On<EnterContextSignal>()
-            .Do<InstantiatePlayerViewCommand<SlidingStateView>>();
+            .Do<InstantiateViewOnPlayerCommand<SlidingStateView>>();
 
         On<JumpInputEvent>()
             .Do<PlayerJumpCommand>();

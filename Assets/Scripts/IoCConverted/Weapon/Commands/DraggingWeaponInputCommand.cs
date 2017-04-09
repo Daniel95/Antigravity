@@ -1,11 +1,13 @@
 using IoCPlus;
 using UnityEngine;
 
-public class DraggingWeaponInputCommand : Command<Vector2> {
+public class DraggingWeaponInputCommand : Command {
 
     [Inject] private Ref<IWeaponInput> weaponInputRef;
 
-    protected override void Execute(Vector2 direction) {
+    [InjectParameter] private Vector2 direction;
+
+    protected override void Execute() {
         weaponInputRef.Get().Dragging(direction);
     }
 

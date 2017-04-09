@@ -148,7 +148,7 @@ public class HookView : View, IHookView, IWeaponOutput, ITriggerer {
         //activate line renderer
         lineRenderer.enabled = true;
 
-        lineRenderer.numPositions = 2;
+        lineRenderer.positionCount = 2;
         lineRenderer.SetPosition(0, hookModel.Get().Anchors[0].position);
         lineRenderer.SetPosition(1, transform.position);
 
@@ -166,7 +166,7 @@ public class HookView : View, IHookView, IWeaponOutput, ITriggerer {
                 lineRenderer.SetPosition(i, hookModel.Get().Anchors[i].position);
             }
 
-            lineRenderer.SetPosition(lineRenderer.numPositions - 1, transform.position);
+            lineRenderer.SetPosition(lineRenderer.positionCount - 1, transform.position);
             yield return null;
         }
     }
@@ -203,6 +203,6 @@ public class HookView : View, IHookView, IWeaponOutput, ITriggerer {
 
         print("stopped coroutine");
 
-        lineRenderer.numPositions = 0;
+        lineRenderer.positionCount = 0;
     }
 }

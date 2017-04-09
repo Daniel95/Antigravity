@@ -8,7 +8,7 @@ public class GrapplingStateContext : Context {
         Bind<Ref<IGrapplingState>>();
 
         On<EnterContextSignal>()
-            .Do<InstantiatePlayerViewCommand<GrapplingStateView>>();
+            .Do<InstantiateViewOnPlayerCommand<GrapplingStateView>>();
 
         On<JumpInputEvent>()
             .Do<StopGrapplingMidAirCommand>();

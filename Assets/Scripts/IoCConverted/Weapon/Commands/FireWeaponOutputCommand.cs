@@ -1,14 +1,16 @@
 using IoCPlus;
 using UnityEngine;
 
-public class FireWeaponOutputCommand : Command<Vector2, Vector2> {
+public class FireWeaponOutputCommand : Command {
 
     [Inject] private SelectedWeaponOutputModel selectedWeaponOutputModel;
 
     [Inject] private Ref<IWeaponOutput> weaponOutputRef;
 
-    protected override void Execute(Vector2 destination, Vector2 spawnPosition) {
-        weaponOutputRef.Get().Fire(destination, spawnPosition);
+    [InjectParameter] private AimWeaponData aimWeaponData;
+
+    protected override void Execute() {
+        weaponOutputRef.Get().Fire(aimWeaponData.destination, aimWeaponData.spawnPosition);
     }
 
 }

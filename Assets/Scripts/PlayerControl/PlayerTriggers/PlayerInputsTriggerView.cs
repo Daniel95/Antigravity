@@ -5,7 +5,7 @@ public class PlayerInputsTriggerView : View, ITriggerable
 {
     [Inject] private InputModel inputModel;
 
-    [Inject] private EnableInputPlatformEvent enableInputTypeEvent;
+    [Inject] private ActivateInputPlatformEvent enableInputTypeEvent;
 
     public bool Triggered { get; set; }
 

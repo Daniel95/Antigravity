@@ -1,7 +1,6 @@
 ﻿using IoCPlus;
-using UnityEngine;
 
-public class InstantiatePlayerViewCommand<T> : Command where T : View {
+public class InstantiateViewOnPlayerCommand<T> : Command where T : View {
 
     [Inject] IContext context;
 

@@ -1,4 +1,5 @@
 ﻿using IoCPlus;
+using UnityEngine;
 
 public class PlayerContext : Context {
 
@@ -17,10 +18,18 @@ public class PlayerContext : Context {
         Bind<EnableActionInputEvent>();
         Bind<EnableShootingInputEvent>();
 
+        Bind<RawCancelDragInputEvent>();
+        Bind<RawDraggingInputEvent>();
+        Bind<RawHoldingInputEvent>();
+        Bind<RawJumpInputEvent>();
+        Bind<RawReleaseInDirectionInputEvent>();
+        Bind<RawReleaseInputEvent>();
+        Bind<RawTappedExpiredInputEvent>();
+
         On<EnterContextSignal>()
             .Do<InstantiatePlayerCommand>()
-            .AddContext<WeaponContext>()
             .AddContext<InputContext>()
+            .AddContext<WeaponContext>()
             .AddContext<PlayerStateContext>();
     }
 

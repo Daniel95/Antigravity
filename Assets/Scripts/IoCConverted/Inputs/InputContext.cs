@@ -1,4 +1,5 @@
 ﻿using IoCPlus;
+using UnityEngine;
 
 public class InputContext : Context {
 
@@ -7,10 +8,13 @@ public class InputContext : Context {
 
         Bind<InputModel>();
 
-        Bind<EnableInputPlatformEvent>();
+        Bind<ActivateInputPlatformEvent>();
 
-        On<EnableInputPlatformEvent>()
-            .Do<EnableInputPlatformCommand>();
+        On<EnterContextSignal>()
+            .Do<ActivateViewOnPlayerCommand<ActivateInputPlatformView>>();
+
+        On<ActivateInputPlatformEvent>()
+            .Do<ActivateInputPlatformViewCommand>();
 
         On<RawJumpInputEvent>()
             .Do<AbortIfActionInputIsNotEnabled>()

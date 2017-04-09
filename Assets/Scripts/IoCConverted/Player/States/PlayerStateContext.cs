@@ -1,18 +1,16 @@
 ﻿using IoCPlus;
+using UnityEngine;
 
 public class PlayerStateContext : Context {
 
     protected override void SetBindings() {
         base.SetBindings();
 
-        Bind<PlayerModel>();
-
         On<EnterContextSignal>()
             .AddContext<FloatingStateContext>()
             .AddContext<GrapplingStateContext>()
             .AddContext<SlidingStateContext>()
-            .Do<InstantiatePlayerViewCommand<FloatingStateView>>();
-            
+            .Do<InstantiateViewOnPlayerCommand<FloatingStateView>>();
 
         On<ActivateFloatingStateEvent>()
             .GotoState<FloatingStateContext>();

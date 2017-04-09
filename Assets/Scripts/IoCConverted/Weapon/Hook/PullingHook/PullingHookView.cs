@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class PullingHookView : View, IPullingHook {
 
-    [Inject] private Ref<HookModel> hookModel;
+    [Inject] private HookModel hookModel;
 
     [Inject] private Ref<IPullingHook> pullingHookRef;
 
@@ -19,7 +19,7 @@ public class PullingHookView : View, IPullingHook {
 
         if (hookedLayer != HookModel.HookAbleLayers.PullSurface) return;
 
-        Vector2 newDirection = (hookModel.Get().HookProjectileGameObject.transform.position - transform.position).normalized;
+        Vector2 newDirection = (hookModel.HookProjectileGameObject.transform.position - transform.position).normalized;
 
         Vector2 velocityDirection = velocity.GetVelocityDirection();
 

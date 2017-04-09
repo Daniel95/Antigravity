@@ -1,4 +1,5 @@
 ﻿using IoCPlus;
+using UnityEngine;
 
 public class WeaponContext : Context {
 
@@ -6,10 +7,26 @@ public class WeaponContext : Context {
         base.SetBindings();
 
         Bind<SelectedWeaponOutputModel>();
+        Bind<HookModel>();
 
         Bind<Ref<IWeaponInput>>();
         Bind<Ref<IWeaponOutput>>();
+        Bind<Ref<IPullingHook>>();
+        Bind<Ref<IGrapplingHook>>();
 
+        Bind<GrapplingHookStartedEvent>();
+        Bind<ChangeSpeedByAngleEvent>();
+        Bind<AddAnchorEvent>();
+        Bind<CancelHookEvent>();
+
+
+        Bind<FireWeaponEvent>();
+        Bind<AimWeaponEvent>();
+        Bind<CancelAimWeaponEvent>();
+
+
+        On<EnterContextSignal>()
+            .Do<ActivateViewOnPlayerCommand<WeaponInputView>>();
         On<DraggingInputEvent>()
             .Do<AbortIfGameIsPauzedCommand>()
             .Do<DraggingWeaponInputCommand>();
@@ -20,14 +37,12 @@ public class WeaponContext : Context {
             .Do<AbortIfGameIsPauzedCommand>()
             .Do<ReleaseInDirectionWeaponInputCommand>();
 
-
         On<FireWeaponEvent>()
             .Do<FireWeaponOutputCommand>();
         On<AimWeaponEvent>()
             .Do<AimWeaponOutputCommand>();
         On<CancelAimWeaponEvent>()
             .Do<CancelAimWeaponOutputCommand>();
-
     }
 
 }
