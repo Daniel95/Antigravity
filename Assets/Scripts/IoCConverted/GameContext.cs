@@ -5,9 +5,12 @@ public class GameContext : Context {
     protected override void SetBindings() {
         base.SetBindings();
 
+        Bind<PlayerModel>();
+
         On<EnterContextSignal>()
             .AddContext<PlayerContext>()
-            .AddContext<LevelContext>();
+            .AddContext<LevelContext>()
+            .AddContext<CameraContext>();
     }
 
 }

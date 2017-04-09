@@ -6,8 +6,6 @@ public class PlayerContext : Context {
     protected override void SetBindings() {
         base.SetBindings();
 
-        Bind<PlayerModel>();
-
         Bind<CancelDragInputEvent>();
         Bind<DraggingInputEvent>();
         Bind<HoldingInputEvent>();
@@ -25,7 +23,6 @@ public class PlayerContext : Context {
         Bind<RawReleaseInDirectionInputEvent>();
         Bind<RawReleaseInputEvent>();
         Bind<RawTappedExpiredInputEvent>();
-
 
         //weapons
         Bind<SelectedWeaponOutputModel>();

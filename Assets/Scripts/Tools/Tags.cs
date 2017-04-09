@@ -7,4 +7,5 @@
     public const string LevelFinishedKeeper = "LevelFinishedKeeper";
     public const string Start = "Start";
     public const string Level = "Level";
+    public const string MainCamera = "MainCamera";
 }
