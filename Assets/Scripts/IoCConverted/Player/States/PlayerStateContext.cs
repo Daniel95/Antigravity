@@ -7,10 +7,7 @@ public class PlayerStateContext : Context {
         base.SetBindings();
 
         On<EnterContextSignal>()
-            .AddContext<FloatingStateContext>()
-            .AddContext<GrapplingStateContext>()
-            .AddContext<SlidingStateContext>()
-            .Do<InstantiateViewOnPlayerCommand<FloatingStateView>>();
+            .GotoState<FloatingStateContext>();
 
         On<ActivateFloatingStateEvent>()
             .GotoState<FloatingStateContext>();

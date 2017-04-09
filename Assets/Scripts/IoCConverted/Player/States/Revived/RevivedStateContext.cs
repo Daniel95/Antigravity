@@ -6,7 +6,7 @@ public class RevivedStateContext : Context {
         base.SetBindings();
 
         On<EnterContextSignal>()
-            .Do<InstantiateViewOnPlayerCommand<FloatingStateView>>();
+            .Do<InstantiateViewOnPlayerCommand<RevivedStateView>>();
 
         On<DraggingInputEvent>()
             .Do<RevivedStateAimingCommand>();

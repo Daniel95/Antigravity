@@ -15,7 +15,7 @@ public class FutureDirectionIndicator : MonoBehaviour {
 
     private Frames _frames;
 
-    void Start() {
+    void Awake() {
         _lookAt = arrowTransform.GetComponent<LookAt>();
         _charAccess = GetComponent<CharScriptAccess>();
         _frames = GetComponent<Frames>();
@@ -25,25 +25,24 @@ public class FutureDirectionIndicator : MonoBehaviour {
     }
 
     void OnEnable() {
-        if (_charAccess != null)
+        if (_charAccess != null) {
             SubscribeToDelegates();
+        }
     }
 
-    void OnDisable()
-    {
+    void OnDisable() {
         if (_charAccess != null) {
             _charAccess.ControlDirection.FinishedDirectionLogic -= PointToControlledDir;
-            _charAccess.ControlTakeOff.TookOff -= PointToCeilVelocityDir;
+            _charAccess.ControlTakeOff.TookOff -= PointToCeiledVelocityDir;
         }
     }
 
     void SubscribeToDelegates() {
         _charAccess.ControlDirection.FinishedDirectionLogic += PointToControlledDir;
-        _charAccess.ControlTakeOff.TookOff += PointToCeilVelocityDir;
+        _charAccess.ControlTakeOff.TookOff += PointToCeiledVelocityDir;
     }
 
-    private void PointToControlledDir(Vector2 futureDir)
-    {
+    private void PointToControlledDir(Vector2 futureDir) {
 
         _lookDir = futureDir;
 
@@ -53,7 +52,7 @@ public class FutureDirectionIndicator : MonoBehaviour {
     /// <summary>
     /// look at the the ceiled values of our current normalized velocity.
     /// </summary>
-    public void PointToCeilVelocityDir() {
+    public void PointToCeiledVelocityDir() {
         _frames.ExecuteAfterDelay(1, UpdateCeilVelocityDir);
     }
 

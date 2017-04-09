@@ -48,7 +48,7 @@ public class WeaponInputView : View, IWeaponInput {
 
         cancelAimWeaponEvent.Dispatch();
 
-        futureDirIndicator.PointToCeilVelocityDir();
+        futureDirIndicator.PointToCeiledVelocityDir();
     }
 
     public void ReleaseInDirection(Vector2 direction) {

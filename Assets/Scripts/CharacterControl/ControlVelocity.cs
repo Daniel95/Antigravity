@@ -18,7 +18,7 @@ public class ControlVelocity : MonoBehaviour {
 
     private Rigidbody2D _rb;
 
-    private  Coroutine _updateDirectionalMovement;
+    private Coroutine _updateDirectionalMovement;
 
     private Coroutine _returnSpeedToOriginal;
 

@@ -15,7 +15,7 @@ public class GrapplingStateView : View, IGrapplingState, ITriggerer {
 
     private GrapplingHook _grapplingHook;
 
-    private CharScriptAccess _charAccess;
+    private CharScriptAccess charAcces;
 
     private LookAt _gunLookAt;
 
@@ -26,12 +26,17 @@ public class GrapplingStateView : View, IGrapplingState, ITriggerer {
     public Action ActivateTrigger { get; set; }
     public Action StopTrigger { get; set; }
 
+    private void Awake() {
+        charAcces = GetComponent<CharScriptAccess>();
+    }
+
     public override void Initialize() {
         grappleViewRef.Set(this);
 
+        StartFixedActing();
         StartActing();
 
-        _charAccess.ControlVelocity.StopDirectionalMovement();
+        charAcces.ControlVelocity.StopDirectionalMovement();
 
         _grapplingHook.StoppedGrappleLocking += StopGrapplingMidAir;
     }
@@ -42,14 +47,14 @@ public class GrapplingStateView : View, IGrapplingState, ITriggerer {
 
         _grapplingHook.ExitGrappleLock();
 
-        Destroy(true);
+        Delete();
     }
 
     public void StopGrapplingMidAir() {
 
-        _charAccess.ControlVelocity.SetDirection(_charAccess.ControlVelocity.GetVelocityDirection());
+        charAcces.ControlVelocity.SetDirection(charAcces.ControlVelocity.GetVelocityDirection());
 
-        _charAccess.ControlSpeed.TempSpeedIncrease();
+        charAcces.ControlSpeed.TempSpeedIncrease();
 
         if (StopTrigger != null)
             StopTrigger();
@@ -57,9 +62,9 @@ public class GrapplingStateView : View, IGrapplingState, ITriggerer {
         activateFloatingStateEvent.Dispatch();
     }
 
-    private void Update() {
-        if (_charAccess.ControlVelocity.GetVelocity == Vector2.zero && _charAccess.ControlVelocity.CurrentSpeed != 0) {
-            _charAccess.ControlDirection.ApplyLogicDirection(_charAccess.ControlVelocity.GetVelocityDirection(), _charAccess.CollisionDirection.GetCurrentCollDir());
+    public override void Act() {
+        if (charAcces.ControlVelocity.GetVelocity == Vector2.zero && charAcces.ControlVelocity.CurrentSpeed != 0) {
+            charAcces.ControlDirection.ApplyLogicDirection(charAcces.ControlVelocity.GetVelocityDirection(), charAcces.CollisionDirection.GetCurrentCollDir());
 
             activateSlidingStateEvent.Dispatch();
         }
@@ -67,16 +72,16 @@ public class GrapplingStateView : View, IGrapplingState, ITriggerer {
         _gunLookAt.UpdateLookAt(_grapplingHook.Destination);
     }
 
-    private void FixedUpdate() {
-        _charAccess.ControlVelocity.SetVelocity(_lastVelocity = _charAccess.ControlVelocity.GetVelocityDirection() * _charAccess.ControlVelocity.CurrentSpeed);
+    public override void FixedAct() {
+        charAcces.ControlVelocity.SetVelocity(_lastVelocity = charAcces.ControlVelocity.GetVelocityDirection() * charAcces.ControlVelocity.CurrentSpeed);
     }
 
     private void OnCollisionEnter2D(Collision2D collision) {
-        if (_charAccess.ControlTakeOff.CheckToBounce(collision)) {
-            _charAccess.ControlTakeOff.Bounce(_lastVelocity.normalized, _charAccess.CollisionDirection.GetUpdatedCollDir(collision));
+        if (charAcces.ControlTakeOff.CheckToBounce(collision)) {
+            charAcces.ControlTakeOff.Bounce(_lastVelocity.normalized, charAcces.CollisionDirection.GetUpdatedCollDir(collision));
             activateFloatingStateEvent.Dispatch();
         } else {
-            _charAccess.ControlDirection.ApplyLogicDirection(_lastVelocity.normalized, _charAccess.CollisionDirection.GetUpdatedCollDir(collision));
+            charAcces.ControlDirection.ApplyLogicDirection(_lastVelocity.normalized, charAcces.CollisionDirection.GetUpdatedCollDir(collision));
             activateSlidingStateEvent.Dispatch();
         }
     }
