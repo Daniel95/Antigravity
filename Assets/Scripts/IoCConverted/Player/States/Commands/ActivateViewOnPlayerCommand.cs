@@ -16,6 +16,8 @@ public class ActivateViewOnPlayerCommand<T> : Command where T : View {
             return;
         }
 
-        context.AddView(view);
+        Debug.Log(context);
+        Debug.Log(view);
+        context.AddView(view, false);
     }
 }

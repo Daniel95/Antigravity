@@ -11,7 +11,7 @@ public class ActivateInputPlatformViewCommand : Command {
 
     protected override void Execute() {
         if(activate && !inputModel.isActive) {
-            context.AddView(inputModel.inputPlatform as View);
+            context.AddView(inputModel.inputPlatform as View, false);
         } else if(!activate && inputModel.isActive) {
             (inputModel.inputPlatform as View).Delete();
         }

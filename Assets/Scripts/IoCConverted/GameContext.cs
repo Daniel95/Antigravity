@@ -6,7 +6,8 @@ public class GameContext : Context {
         base.SetBindings();
 
         On<EnterContextSignal>()
-            .AddContext<PlayerContext>();
+            .AddContext<PlayerContext>()
+            .AddContext<LevelContext>();
     }
 
 }

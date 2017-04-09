@@ -19,14 +19,13 @@ public class WeaponContext : Context {
         Bind<AddAnchorEvent>();
         Bind<CancelHookEvent>();
 
-
         Bind<FireWeaponEvent>();
         Bind<AimWeaponEvent>();
         Bind<CancelAimWeaponEvent>();
 
-
         On<EnterContextSignal>()
             .Do<ActivateViewOnPlayerCommand<WeaponInputView>>();
+
         On<DraggingInputEvent>()
             .Do<AbortIfGameIsPauzedCommand>()
             .Do<DraggingWeaponInputCommand>();
@@ -36,12 +35,14 @@ public class WeaponContext : Context {
         On<ReleaseInDirectionInputEvent>()
             .Do<AbortIfGameIsPauzedCommand>()
             .Do<ReleaseInDirectionWeaponInputCommand>();
-
         On<FireWeaponEvent>()
+            .Do<AbortIfGameIsPauzedCommand>()
             .Do<FireWeaponOutputCommand>();
         On<AimWeaponEvent>()
+            .Do<AbortIfGameIsPauzedCommand>()
             .Do<AimWeaponOutputCommand>();
         On<CancelAimWeaponEvent>()
+            .Do<AbortIfGameIsPauzedCommand>()
             .Do<CancelAimWeaponOutputCommand>();
     }
 
