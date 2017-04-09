@@ -26,6 +26,14 @@ public class PlayerContext : Context {
         Bind<RawReleaseInputEvent>();
         Bind<RawTappedExpiredInputEvent>();
 
+
+        //weapons
+        Bind<SelectedWeaponOutputModel>();
+        Bind<Ref<IWeaponInput>>();
+        Bind<FireWeaponEvent>();
+        Bind<AimWeaponEvent>();
+        Bind<CancelAimWeaponEvent>();
+
         On<EnterContextSignal>()
             .Do<InstantiatePlayerCommand>()
             .AddContext<InputContext>()

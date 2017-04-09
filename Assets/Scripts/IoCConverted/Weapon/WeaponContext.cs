@@ -6,7 +6,6 @@ public class WeaponContext : Context {
     protected override void SetBindings() {
         base.SetBindings();
 
-        Bind<SelectedWeaponOutputModel>();
         Bind<HookModel>();
 
         Bind<Ref<IWeaponInput>>();
@@ -18,10 +17,6 @@ public class WeaponContext : Context {
         Bind<ChangeSpeedByAngleEvent>();
         Bind<AddAnchorEvent>();
         Bind<CancelHookEvent>();
-
-        Bind<FireWeaponEvent>();
-        Bind<AimWeaponEvent>();
-        Bind<CancelAimWeaponEvent>();
 
         On<EnterContextSignal>()
             .Do<ActivateViewOnPlayerCommand<WeaponInputView>>();
