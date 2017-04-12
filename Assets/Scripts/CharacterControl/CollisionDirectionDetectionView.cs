@@ -2,16 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CollisionDirection : MonoBehaviour {
+public class CollisionDirectionDetectionView : MonoBehaviour {
 
     //saves the collider and the rounded direction
     private Dictionary<Collider2D, Vector2> _savedCollisions = new Dictionary<Collider2D, Vector2>();
 
-    private CharRaycasting _charRaycasting;
+    private CharacterRaycastingView _charRaycasting;
 
     private void Awake()
     {
-        _charRaycasting = GetComponent<CharRaycasting>();
+        _charRaycasting = GetComponent<CharacterRaycastingView>();
     }
 
     //get the rounded direction of the collisions

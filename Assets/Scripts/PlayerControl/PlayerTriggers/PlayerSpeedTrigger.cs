@@ -7,13 +7,13 @@ public class PlayerSpeedTrigger : MonoBehaviour, ITriggerable {
     public bool Triggered { get; set; }
 
     [SerializeField]
-    private ControlVelocityView controlVelocity;
+    private CharacterVelocityView controlVelocity;
 
     private Vector2 _lastDirection;
 
     public void TriggerActivate()
     {
-        _lastDirection = controlVelocity.GetVelocityDirection();
+        _lastDirection = controlVelocity.VelocityDirection();
         controlVelocity.SetSpeed(0);
     }
 

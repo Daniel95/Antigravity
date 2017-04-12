@@ -24,6 +24,8 @@ public class PlayerContext : Context {
         Bind<RawReleaseInputEvent>();
         Bind<RawTappedExpiredInputEvent>();
 
+        Bind<Ref<ICharacterVelocity>>();
+
         //weapons
         Bind<SelectedWeaponOutputModel>();
         Bind<Ref<IWeaponInput>>();
@@ -35,7 +37,8 @@ public class PlayerContext : Context {
             .Do<InstantiatePlayerCommand>()
             .AddContext<InputContext>()
             .AddContext<WeaponContext>()
-            .AddContext<PlayerStateContext>();
+            .AddContext<PlayerStateContext>()
+            .AddContext<CharacterContext>();
     }
 
 }

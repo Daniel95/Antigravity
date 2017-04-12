@@ -2,7 +2,7 @@
 using System;
 using System.Collections;
 
-public class ControlTakeOff : MonoBehaviour, ITriggerer {
+public class CharacterJumpView : MonoBehaviour, ITriggerer {
 
     [SerializeField]
     private float jumpSpeedBoost = 0.3f;
@@ -17,7 +17,7 @@ public class ControlTakeOff : MonoBehaviour, ITriggerer {
 
     private CharScriptAccess _plrAcces;
 
-    private CharRaycasting _charRaycasting;
+    private CharacterRaycastingView _charRaycasting;
 
     private Frames _frames;
 
@@ -32,7 +32,7 @@ public class ControlTakeOff : MonoBehaviour, ITriggerer {
     // Use this for initialization
     void Start () {
         _plrAcces = GetComponent<CharScriptAccess>();
-        _charRaycasting = GetComponent<CharRaycasting>();
+        _charRaycasting = GetComponent<CharacterRaycastingView>();
         _frames = GetComponent<Frames>();
     }
 

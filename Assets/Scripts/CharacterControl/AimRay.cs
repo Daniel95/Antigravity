@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AimRay : MonoBehaviour {
+public class AimRayView : MonoBehaviour {
 
     [SerializeField]
     private LineRenderer line;

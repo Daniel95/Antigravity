@@ -2,8 +2,7 @@
 using System;
 using System.Collections;
 
-public class ControlDirection : MonoBehaviour
-{
+public class CharacterMoveDirectionView : MonoBehaviour {
 
     [SerializeField]
     private float directionSpeedNeutralValue = 0.4f;
@@ -18,11 +17,11 @@ public class ControlDirection : MonoBehaviour
 
     public Action<Vector2> FinishedDirectionLogic;
 
-    private CharRaycasting _charRaycasting;
+    private CharacterRaycastingView _charRaycasting;
 
     void Start() {
         _charAccess = GetComponent<CharScriptAccess>();
-        _charRaycasting = GetComponent<CharRaycasting>();
+        _charRaycasting = GetComponent<CharacterRaycastingView>();
 
         _lastDir = _charAccess.ControlVelocity.GetDirection();
 

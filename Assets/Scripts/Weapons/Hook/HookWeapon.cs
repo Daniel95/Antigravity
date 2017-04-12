@@ -45,7 +45,7 @@ public class HookWeapon : MonoBehaviour, IWeaponOutput, ITriggerer {
 
     protected enum HookStates { BusyShooting, BusyPullingBack, Active, Inactive }
 
-    private AimRay _aimRay;
+    private AimRayView _aimRay;
 
     public static class HookAbleLayers
     {
@@ -96,7 +96,7 @@ public class HookWeapon : MonoBehaviour, IWeaponOutput, ITriggerer {
     protected virtual void Awake() {
         LineRenderer = GetComponent<LineRenderer>();
 
-        _aimRay = GetComponent<AimRay>();
+        _aimRay = GetComponent<AimRayView>();
 
         _charAcces = GetComponent<CharScriptAccess>();
 

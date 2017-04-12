@@ -25,7 +25,7 @@ public class RevivedStateView : View, ITriggerer
 
     private LookAt _lookAt;
 
-    private AimRay _aimRay;
+    private AimRayView _aimRay;
 
     //the first time we hit a checkpoint, we will be moving towards the center of it, once we reached the center we are in position and can fire ourselfes.
     private bool _isInPosition;
@@ -63,9 +63,9 @@ public class RevivedStateView : View, ITriggerer
         _charAccess = GetComponent<CharScriptAccess>();
 
         _lookAt = gun.GetComponent<LookAt>();
-        _aimRay = GetComponent<AimRay>();
+        _aimRay = GetComponent<AimRayView>();
         _moveTowards = GetComponent<MoveTowards>();
-        GetComponent<ControlVelocityView>();
+        GetComponent<CharacterVelocityView>();
     }
 
     IEnumerator DelayLaunchingInput()

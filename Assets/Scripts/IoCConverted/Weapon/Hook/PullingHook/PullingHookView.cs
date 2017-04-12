@@ -9,7 +9,7 @@ public class PullingHookView : View, IPullingHook {
 
     [Inject] private CancelHookEvent cancelHookEvent;
 
-    private ControlVelocityView velocity;
+    private CharacterVelocityView velocity;
 
     public override void Initialize() {
         pullingHookRef.Set(this);
@@ -21,7 +21,7 @@ public class PullingHookView : View, IPullingHook {
 
         Vector2 newDirection = (hookModel.HookProjectileGameObject.transform.position - transform.position).normalized;
 
-        Vector2 velocityDirection = velocity.GetVelocityDirection();
+        Vector2 velocityDirection = velocity.VelocityDirection();
 
         newDirection.x *= Mathf.Abs(velocityDirection.x);
         newDirection.y *= Mathf.Abs(velocityDirection.y);
@@ -32,6 +32,6 @@ public class PullingHookView : View, IPullingHook {
     }
 
     private void Awake() {
-        velocity = GetComponent<ControlVelocityView>();
+        velocity = GetComponent<CharacterVelocityView>();
     }
 }

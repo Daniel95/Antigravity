@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 
-public class GetKilled : MonoBehaviour, IKillable {
+public class GetKilledView : MonoBehaviour, IKillable {
 
     //tags that we should die to
     [SerializeField]

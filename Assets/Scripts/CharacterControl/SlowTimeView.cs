@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SlowTime : MonoBehaviour {
+public class SlowTimeView : MonoBehaviour {
 
     [SerializeField]
     private float minOffset = 0.025f;

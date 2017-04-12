@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Net.NetworkInformation;
 using UnityEngine;
 
-public class ControlSpeed : MonoBehaviour, IBoostAble {
+public class CharacterSpeedView : MonoBehaviour, IBoostAble {
 
     [SerializeField]
     private float maxSpeedMultiplier = 5f;
@@ -27,11 +27,11 @@ public class ControlSpeed : MonoBehaviour, IBoostAble {
 
     private bool _changeSpeedCdIsActive;
 
-    private ControlVelocityView _velocity;
+    private CharacterVelocityView _velocity;
 
     private void Start()
     {
-        _velocity = GetComponent<ControlVelocityView>();
+        _velocity = GetComponent<CharacterVelocityView>();
     }
 
     /// <summary>
