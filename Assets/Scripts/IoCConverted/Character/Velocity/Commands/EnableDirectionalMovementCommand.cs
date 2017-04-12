@@ -1,7 +1,7 @@
 ﻿using IoCPlus;
 using UnityEngine;
 
-public class EnableCharacterDirectionalMovementCommand : Command {
+public class EnableDirectionalMovementCommand : Command {
 
     [Inject] private Ref<ICharacterVelocity> controlVelocityRef;
 

@@ -1,8 +1,11 @@
 ﻿using UnityEngine;
 using System;
 using System.Collections;
+using IoCPlus;
 
-public class CharacterJumpView : MonoBehaviour, ITriggerer {
+public class CharacterJumpView : View, ITriggerer {
+
+    [Inject] private Ref<ICharacterVelocity> characterVelocityRef;
 
     [SerializeField]
     private float jumpSpeedBoost = 0.3f;
@@ -111,7 +114,7 @@ public class CharacterJumpView : MonoBehaviour, ITriggerer {
             newDir.y = collisionDir.y * -1;
         }
 
-        _plrAcces.ControlVelocity.SetDirection(newDir);
+        characterVelocityRef.SetDirection(newDir);
 
         if (rayDir.x == 0 || rayDir.y == 0)
         {
@@ -129,22 +132,22 @@ public class CharacterJumpView : MonoBehaviour, ITriggerer {
     /// </summary>
     /// <param name="currentDir"></param>
     /// <param name="collisionDir"></param>
-    public void Bounce(Vector2 currentDir, Vector2 collisionDir) {
+    public void Bounce(DirectionInfo directionInfo) {
         _plrAcces.ControlSpeed.TempSpeedIncrease();
 
-        if (collisionDir.x != 0 || collisionDir.y != 0)
+        if (directionInfo.collisionDirection.x != 0 || directionInfo.collisionDirection.y != 0)
         {
             //check the raycastdir, our newDir is the opposite of one of the axes
-            if (collisionDir.x != 0)
+            if (directionInfo.collisionDirection.x != 0)
             {
-                currentDir.x *= -1;
+                directionInfo.moveDirection.x *= -1;
             }
-            if (collisionDir.y != 0)
+            if (directionInfo.collisionDirection.y != 0)
             {
-                currentDir.y *= -1;
+                directionInfo.moveDirection.y *= -1;
             }
 
-            _plrAcces.ControlVelocity.SetDirection(currentDir);
+            _plrAcces.ControlVelocity.SetDirection(directionInfo.moveDirection);
 
             if (TookOff != null)
                 TookOff();

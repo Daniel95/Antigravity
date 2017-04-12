@@ -1,8 +1,11 @@
 ﻿using UnityEngine;
 using System;
 using System.Collections;
+using IoCPlus;
 
-public class CharacterMoveDirectionView : MonoBehaviour {
+public class CharacterMoveDirectionView : View, ICharacterMoveDirection {
+
+    [Inject] private Ref<ICharacterMoveDirection> characterMoveDirectionRef;
 
     [SerializeField]
     private float directionSpeedNeutralValue = 0.4f;
@@ -18,6 +21,29 @@ public class CharacterMoveDirectionView : MonoBehaviour {
     public Action<Vector2> FinishedDirectionLogic;
 
     private CharacterRaycastingView _charRaycasting;
+
+    public override void Initialize() {
+        characterMoveDirectionRef.Set(this);
+    }
+
+    /// <summary>
+    /// apply the next logic direction (game logic), to our controlVelocity script.
+    /// </summary>
+    /// <param name="currentDir"></param>
+    /// <param name="collDir"></param>
+    public void TurnToNextDirection(DirectionInfo directionInfo) {
+        //our next direction we are going to move towards, depending on our currentdirection, and the direction of our collision(s)
+        Vector2 dirLogic = DirectionLogic(directionInfo.moveDirection, directionInfo.collisionDirection);
+
+        Vector2 lookDir = _lastDir;
+
+        //use the direction logic for our new dir, but invert it if our speed multiplier is also inverted
+        _charAccess.ControlVelocity.SetDirection(dirLogic);
+
+        if (FinishedDirectionLogic != null) {
+            FinishedDirectionLogic(lookDir);
+        }
+    }
 
     void Start() {
         _charAccess = GetComponent<CharScriptAccess>();
@@ -40,26 +66,8 @@ public class CharacterMoveDirectionView : MonoBehaviour {
         });
     }
 
-    /// <summary>
-    /// apply the next logic direction (game logic), to our controlVelocity script.
-    /// </summary>
-    /// <param name="currentDir"></param>
-    /// <param name="collDir"></param>
-    public void ApplyLogicDirection(Vector2 currentDir, Vector2 collDir)
-    {
-        //our next direction we are going to move towards, depending on our currentdirection, and the direction of our collision(s)
-        Vector2 dirLogic = DirectionLogic(currentDir, collDir);
 
-        Vector2 lookDir = _lastDir;
 
-        //use the direction logic for our new dir, but invert it if our speed multiplier is also inverted
-        _charAccess.ControlVelocity.SetDirection(dirLogic);
-
-        if (FinishedDirectionLogic != null)
-        {
-            FinishedDirectionLogic(lookDir);
-        }
-    }
 
     /// <summary>
     /// the logic we use to control the players direction using collision directions and raycasts collisions, after we have collision with another object
