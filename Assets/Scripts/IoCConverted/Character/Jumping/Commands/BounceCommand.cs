@@ -5,7 +5,7 @@ public class BounceCommand : Command {
 
     [Inject] private Ref<ICharacterJump> characterJumpRef;
 
-    [InjectParameter] private DirectionInfo directionInfo;
+    [InjectParameter] private DirectionParameter directionInfo;
 
     protected override void Execute() {
         characterJumpRef.Get().Bounce(directionInfo);

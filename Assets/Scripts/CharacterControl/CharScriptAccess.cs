@@ -11,12 +11,12 @@ public class CharScriptAccess : MonoBehaviour {
     [HideInInspector]
     private CharacterJumpView ControlTakeOff;
     [HideInInspector]
-    private CollisionDirectionDetectionView CollisionDirection;
+    private CollisionDirectionDetection CollisionDirection;
 
     void Awake() {
         ControlVelocity = GetComponent<CharacterVelocityView>();
         ControlSpeed = GetComponent<CharacterSpeedView>();
         ControlTakeOff = GetComponent<CharacterJumpView>();
-        CollisionDirection = GetComponent<CollisionDirectionDetectionView>();
+        CollisionDirection = GetComponent<CollisionDirectionDetection>();
     }
 }

@@ -2,16 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CollisionDirectionDetectionView : MonoBehaviour {
+public class CollisionDirectionDetection : MonoBehaviour {
 
     //saves the collider and the rounded direction
     private Dictionary<Collider2D, Vector2> _savedCollisions = new Dictionary<Collider2D, Vector2>();
 
-    private CharacterRaycastingView _charRaycasting;
+    private CharacterRaycasting _charRaycasting;
 
     private void Awake()
     {
-        _charRaycasting = GetComponent<CharacterRaycastingView>();
+        _charRaycasting = GetComponent<CharacterRaycasting>();
     }
 
     //get the rounded direction of the collisions
@@ -21,11 +21,11 @@ public class CollisionDirectionDetectionView : MonoBehaviour {
         //save the new collision we recieved
         SaveNewCollision(collision);
 
-        return GetCurrentCollDir();
+        return GetCurrentCollisionDirection();
     }
 
     //get the current rounded direction of each
-    public Vector2 GetCurrentCollDir()
+    public Vector2 GetCurrentCollisionDirection()
     {
         Vector2 combinedRoundedCollDir = new Vector2();
 

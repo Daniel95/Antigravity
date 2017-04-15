@@ -45,7 +45,7 @@ public class HookWeapon : MonoBehaviour, IWeaponOutput, ITriggerer {
 
     protected enum HookStates { BusyShooting, BusyPullingBack, Active, Inactive }
 
-    private AimRayView _aimRay;
+    private AimLineView _aimRay;
 
     public static class HookAbleLayers
     {
@@ -54,11 +54,11 @@ public class HookWeapon : MonoBehaviour, IWeaponOutput, ITriggerer {
     }
 
     public void Aiming(Vector2 destination, Vector2 spawnPosition) {
-        if (!_aimRay.AimRayActive) {
-            _aimRay.StartAimRay(destination);
+        if (!_aimRay.AimLineActive) {
+            _aimRay.StartAimLine(destination);
         }
 
-        _aimRay.RayDestination = destination;
+        _aimRay.LineDestination = destination;
     }
 
     /// <summary>
@@ -69,7 +69,7 @@ public class HookWeapon : MonoBehaviour, IWeaponOutput, ITriggerer {
     }
 
     private void StopBulletTime() {
-        _aimRay.StopAimRay();
+        _aimRay.StopAimLine();
     }
 
     /// <summary>
@@ -96,7 +96,7 @@ public class HookWeapon : MonoBehaviour, IWeaponOutput, ITriggerer {
     protected virtual void Awake() {
         LineRenderer = GetComponent<LineRenderer>();
 
-        _aimRay = GetComponent<AimRayView>();
+        _aimRay = GetComponent<AimLineView>();
 
         _charAcces = GetComponent<CharScriptAccess>();
 

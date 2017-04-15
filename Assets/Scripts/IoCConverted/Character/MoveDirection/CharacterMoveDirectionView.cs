@@ -20,7 +20,7 @@ public class CharacterMoveDirectionView : View, ICharacterMoveDirection {
 
     public Action<Vector2> FinishedDirectionLogic;
 
-    private CharacterRaycastingView _charRaycasting;
+    private CharacterRaycasting _charRaycasting;
 
     public override void Initialize() {
         characterMoveDirectionRef.Set(this);
@@ -31,9 +31,9 @@ public class CharacterMoveDirectionView : View, ICharacterMoveDirection {
     /// </summary>
     /// <param name="currentDir"></param>
     /// <param name="collDir"></param>
-    public void TurnToNextDirection(DirectionInfo directionInfo) {
+    public void TurnToNextDirection(DirectionParameter directionInfo) {
         //our next direction we are going to move towards, depending on our currentdirection, and the direction of our collision(s)
-        Vector2 dirLogic = DirectionLogic(directionInfo.moveDirection, directionInfo.collisionDirection);
+        Vector2 dirLogic = DirectionLogic(directionInfo.MoveDirection, directionInfo.CollisionDirection);
 
         Vector2 lookDir = _lastDir;
 
@@ -47,7 +47,7 @@ public class CharacterMoveDirectionView : View, ICharacterMoveDirection {
 
     void Start() {
         _charAccess = GetComponent<CharScriptAccess>();
-        _charRaycasting = GetComponent<CharacterRaycastingView>();
+        _charRaycasting = GetComponent<CharacterRaycasting>();
 
         _lastDir = _charAccess.ControlVelocity.GetDirection();
 

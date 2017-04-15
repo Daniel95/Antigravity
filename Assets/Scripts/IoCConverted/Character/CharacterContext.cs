@@ -10,7 +10,8 @@ public class CharacterContext : Context {
 
         On<StartSlidingMovementSignal>();
 
-
+        On<CharacterJumpEvent>()
+            .
 
 
     }

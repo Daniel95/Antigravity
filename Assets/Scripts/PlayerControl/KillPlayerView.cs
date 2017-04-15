@@ -18,7 +18,7 @@ public class KillPlayerView : View {
     {
         checkpoint = GetComponent<CheckPointView>();
 
-        GetComponent<GetKilledView>().Die += PlayerDies;
+        GetComponent<CharacterDieView>().Die += PlayerDies;
     }
 
     /// <summary>

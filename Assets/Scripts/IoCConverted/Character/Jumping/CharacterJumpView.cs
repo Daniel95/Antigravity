@@ -5,90 +5,60 @@ using IoCPlus;
 
 public class CharacterJumpView : View, ITriggerer {
 
-    [Inject] private Ref<ICharacterVelocity> characterVelocityRef;
-
-    [SerializeField]
-    private float jumpSpeedBoost = 0.3f;
-
-    [SerializeField]
-    private float instaJumpStrength = 0.05f;
-
-    [SerializeField]
-    private int earlyJumpCoverFrames = 10;
-
-    public Action TookOff;
-
-    private CharScriptAccess _plrAcces;
-
-    private CharacterRaycastingView _charRaycasting;
-
-    private Frames _frames;
-
-    private bool _inBouncyTrigger;
-
-    private Coroutine _retryJumpAfterDelay;
-
-    //used by action trigger to decide when to start the instructions/tutorial, and when to stop it
     public Action ActivateTrigger { get; set; }
     public Action StopTrigger { get; set; }
 
-    // Use this for initialization
-    void Start () {
-        _plrAcces = GetComponent<CharScriptAccess>();
-        _charRaycasting = GetComponent<CharacterRaycastingView>();
-        _frames = GetComponent<Frames>();
-    }
+    [Inject] private Ref<ICharacterVelocity> characterVelocityRef;
 
-    /// <summary>
-    /// Check if we can jump, if so, activate Jump(), else we will RetryJump a few frames later.
-    /// </summary>
-    public void TryJump()
-    {
-        if (StopTrigger != null)
-        {
+    [SerializeField] private float jumpSpeedBoost = 0.3f;
+    [SerializeField] private float instaJumpStrength = 0.05f;
+    [SerializeField] private int earlyJumpCoverFrames = 10;
+
+    public Action TookOff;
+
+    private bool isInBouncyTrigger;
+
+    private Coroutine _retryJumpAfterDelay;
+
+    private CharacterRaycasting charaterRaycasting;
+    private Frames frames;
+    private CollisionDirectionDetection collisionDirectionDetection;
+
+    public void TryJump() {
+        if (StopTrigger != null) {
             StopTrigger();
         }
 
         CollisionInfo collisionInfo = GetCollisionInfo();
 
         //check if we have raycast collision on only one axis, jumping wont work when we are in a corner
-        if (collisionInfo.CollisionDirection != Vector2.zero)
-        {
+        if (collisionInfo.CollisionDirection != Vector2.zero) {
             if (_retryJumpAfterDelay != null) {
                 StopCoroutine(_retryJumpAfterDelay);
             }
             Jump(collisionInfo.CollisionDirection, collisionInfo.RayDirection);
-        }
-        else //retry to jump again a few frames later, so it will still respond even if the player pressed jump too early.
-        {
-            _retryJumpAfterDelay = _frames.ExecuteAfterDelay(earlyJumpCoverFrames, RetryJump);
+        } else {
+            _retryJumpAfterDelay = frames.ExecuteAfterDelay(earlyJumpCoverFrames, RetryJump);
         }
     }
 
-    /// <summary>
-    /// Retry to jump if we couldn't jump last time.
-    /// </summary>
-    private void RetryJump() 
-    {
+    private void RetryJump()  {
         CollisionInfo collisionInfo = GetCollisionInfo();
 
         //check if we have raycast collision on only one axis, jumping wont work when we are in a corner
-        if (collisionInfo.CollisionDirection != Vector2.zero)
-        {
+        if (collisionInfo.CollisionDirection != Vector2.zero) {
             StopCoroutine(_retryJumpAfterDelay);
             Jump(collisionInfo.CollisionDirection, collisionInfo.RayDirection);
         }
     }
     
-    private CollisionInfo GetCollisionInfo() 
-    {
-        Vector2 collisionDir = _plrAcces.CollisionDirection.GetCurrentCollDir();
-        Vector2 rayDir = new Vector2(_charRaycasting.CheckHorizontalMiddleDir(), _charRaycasting.CheckVerticalMiddleDir());
+    private CollisionInfo GetCollisionInfo()  {
+        Vector2 collisionDir = collisionDirectionDetection.CollisionDirection.GetCurrentCollDir();
+        Vector2 rayDir = new Vector2(charaterRaycasting.CheckHorizontalMiddleDir(), charaterRaycasting.CheckVerticalMiddleDir());
 
         //if collisiondir is zero, it may be because we are barely not colliding, while it looks like we are.
         //as a backup plan we use raycasting if this happens so we can still jump
-        if (collisionDir == Vector2.zero)
-        {
+        if (collisionDir == Vector2.zero) {
             collisionDir = rayDir;
         }
 
@@ -98,33 +68,30 @@ public class CharacterJumpView : View, ITriggerer {
     /// <summary>
     /// changes the direction of ControlVelocity, to create a jumping effect.
     /// </summary>
-    private void Jump(Vector2 collisionDir, Vector2 rayDir)
-    {
+    private void Jump(Vector2 collisionDir, Vector2 rayDir) {
         _plrAcces.ControlSpeed.TempSpeedChange(0.5f + jumpSpeedBoost);
 
         Vector2 newDir = _plrAcces.ControlVelocity.GetDirection();
 
         //check the raycastdir, our newDir is the opposite of one of the axes
-        if (collisionDir.x != 0)
-        {
+        if (collisionDir.x != 0) {
             newDir.x = collisionDir.x * -1;
         }
-        else if (collisionDir.y != 0)
-        {
+        else if (collisionDir.y != 0) {
             newDir.y = collisionDir.y * -1;
         }
 
         characterVelocityRef.SetDirection(newDir);
 
-        if (rayDir.x == 0 || rayDir.y == 0)
-        {
+        if (rayDir.x == 0 || rayDir.y == 0) {
             transform.position += (Vector3)(_plrAcces.ControlVelocity.GetDirection() * instaJumpStrength);
         }
 
-        _plrAcces.CollisionDirection.RemoveCollisionDirection(collisionDir);
+        collisionDirectionDetection.CollisionDirection.RemoveCollisionDirection(collisionDir);
 
-        if (TookOff != null)
+        if (TookOff != null) {
             TookOff();
+        }
     }
 
     /// <summary>
@@ -132,52 +99,41 @@ public class CharacterJumpView : View, ITriggerer {
     /// </summary>
     /// <param name="currentDir"></param>
     /// <param name="collisionDir"></param>
-    public void Bounce(DirectionInfo directionInfo) {
+    public void Bounce(DirectionParameter directionInfo) {
         _plrAcces.ControlSpeed.TempSpeedIncrease();
 
-        if (directionInfo.collisionDirection.x != 0 || directionInfo.collisionDirection.y != 0)
-        {
+        if (directionInfo.CollisionDirection.x != 0 || directionInfo.CollisionDirection.y != 0) {
             //check the raycastdir, our newDir is the opposite of one of the axes
-            if (directionInfo.collisionDirection.x != 0)
-            {
-                directionInfo.moveDirection.x *= -1;
+            if (directionInfo.CollisionDirection.x != 0) {
+                directionInfo.MoveDirection.x *= -1;
             }
-            if (directionInfo.collisionDirection.y != 0)
-            {
-                directionInfo.moveDirection.y *= -1;
+            if (directionInfo.CollisionDirection.y != 0) {
+                directionInfo.MoveDirection.y *= -1;
             }
 
-            _plrAcces.ControlVelocity.SetDirection(directionInfo.moveDirection);
+            _plrAcces.ControlVelocity.SetDirection(directionInfo.MoveDirection);
 
-            if (TookOff != null)
+            if (TookOff != null) {
                 TookOff();
+            }
         }
     }
 
-    /// <summary>
-    /// Check if we should bounce.
-    /// </summary>
-    /// <param name="collision"></param>
-    /// <returns></returns>
-    public bool CheckToBounce(Collision2D collision)
-    {
-        return collision.collider.CompareTag(Tags.Bouncy) || _inBouncyTrigger;
+    public bool CheckToBounce(Collision2D collision) {
+        return collision.collider.CompareTag(Tags.Bouncy) || isInBouncyTrigger;
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (!_inBouncyTrigger && collision.CompareTag(Tags.Bouncy))
-        {
-            //if we hit a trigger we say that we are currently in a bouncy trigger, in case we hit a non trigger collider
-            _inBouncyTrigger = true;
+    private void OnTriggerEnter2D(Collider2D collision) {
+
+        if (!isInBouncyTrigger && collision.CompareTag(Tags.Bouncy)) {
+            isInBouncyTrigger = true;
         }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (_inBouncyTrigger && collision.transform.CompareTag(Tags.Bouncy))
-        {
-            _inBouncyTrigger = false;
+        if (isInBouncyTrigger && collision.transform.CompareTag(Tags.Bouncy)) {
+            isInBouncyTrigger = false;
         }
     }
 
@@ -189,5 +145,11 @@ public class CharacterJumpView : View, ITriggerer {
             CollisionDirection = collisionDirection;
             RayDirection = rayDirection;
         }
+    }
+
+    void Start() {
+        charaterRaycasting = GetComponent<CharacterRaycasting>();
+        frames = GetComponent<Frames>();
+        collisionDirectionDetection = GetComponent<CollisionDirectionDetection>();
     }
 }

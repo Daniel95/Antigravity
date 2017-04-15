@@ -25,7 +25,7 @@ public class RevivedStateView : View, ITriggerer
 
     private LookAt _lookAt;
 
-    private AimRayView _aimRay;
+    private AimLineView _aimRay;
 
     //the first time we hit a checkpoint, we will be moving towards the center of it, once we reached the center we are in position and can fire ourselfes.
     private bool _isInPosition;
@@ -63,7 +63,7 @@ public class RevivedStateView : View, ITriggerer
         _charAccess = GetComponent<CharScriptAccess>();
 
         _lookAt = gun.GetComponent<LookAt>();
-        _aimRay = GetComponent<AimRayView>();
+        _aimRay = GetComponent<AimLineView>();
         _moveTowards = GetComponent<MoveTowards>();
         GetComponent<CharacterVelocityView>();
     }
@@ -97,12 +97,12 @@ public class RevivedStateView : View, ITriggerer
 
     public void Aim(Vector2 dir)
     {
-        if (!_aimRay.AimRayActive)
+        if (!_aimRay.AimLineActive)
         {
-            _aimRay.StartAimRay((Vector2)transform.position + (dir * startDirectionRayLength));
+            _aimRay.StartAimLine((Vector2)transform.position + (dir * startDirectionRayLength));
         }
 
-        _aimRay.RayDestination = (Vector2)transform.position + (dir * startDirectionRayLength);
+        _aimRay.LineDestination = (Vector2)transform.position + (dir * startDirectionRayLength);
 
         _lookAt.UpdateLookAt((Vector2)transform.position + dir);
     }
@@ -111,7 +111,7 @@ public class RevivedStateView : View, ITriggerer
     {
         enableShootingInputEvent.Dispatch(true);
 
-        _aimRay.StopAimRay();
+        _aimRay.StopAimLine();
         _charAccess.ControlVelocity.SetDirection(dir);
 
         _charAccess.ControlSpeed.TempSpeedIncrease();

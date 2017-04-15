@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class CharacterRaycastingView : MonoBehaviour {
+public class CharacterRaycasting : MonoBehaviour {
 
     [SerializeField]
     private LayerMask layers;
