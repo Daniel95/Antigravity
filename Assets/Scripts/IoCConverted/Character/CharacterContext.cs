@@ -10,10 +10,7 @@ public class CharacterContext : Context {
 
         On<StartSlidingMovementSignal>();
 
-        On<CharacterJumpEvent>()
-            .
-
-
+        On<JumpInputEvent>()
+            .Do<TryJumpCommand>();
     }
-
 }

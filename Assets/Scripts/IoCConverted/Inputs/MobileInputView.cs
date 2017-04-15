@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class MobileInputView : View, IInput {
 
+    [Inject] IContext context;
     [Inject] private RawCancelDragInputEvent rawCancelDragInputEvent;
     [Inject] private RawDraggingInputEvent rawDraggingInputEvent;
     [Inject] private RawHoldingInputEvent rawHoldingInputEvent;
@@ -13,34 +14,22 @@ public class MobileInputView : View, IInput {
     [Inject] private RawTappedExpiredInputEvent rawTappedExpiredInputEvent;
 
     [SerializeField] private GameObject joyStickPrefab;
-
+    [SerializeField] private float TimebeforeTappedExpired = 0.15f;
     [SerializeField] private float minDistToDrag = 0.75f;
 
-    [Inject] IContext context;
-
+    private Coroutine inputUpdate;
+    private enum TouchStates { Holding, Dragging, Tapped, None }
+    private TouchStates TouchState = TouchStates.None;
+    private float StartDownTime;
     private GameObject _joyStickGObj;
-
     private DragDirIndicator _dragDirIndicator;
-
     private Vector2 _startTouchPosition;
-
-    protected Coroutine inputUpdate;
-
-    protected enum TouchStates { Holding, Dragging, Tapped, None }
-
-    protected TouchStates TouchState = TouchStates.None;
-
-    [SerializeField]
-    protected float TimebeforeTappedExpired = 0.15f;
-
-    protected float StartDownTime;
 
     public virtual void ResetTouched() {
         rawCancelDragInputEvent.Dispatch();
     }
 
     public void EnableInput(bool enable) {
-
         if (enable) {
             _joyStickGObj = Instantiate(joyStickPrefab, Vector2.zero, new Quaternion(0, 0, 0, 0));
             _dragDirIndicator = _joyStickGObj.GetComponent<DragDirIndicator>();

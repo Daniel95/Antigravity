@@ -8,7 +8,8 @@ public class CharacterJumpView : View, ITriggerer {
     public Action ActivateTrigger { get; set; }
     public Action StopTrigger { get; set; }
 
-    [Inject] private Ref<ICharacterVelocity> characterVelocityRef;
+    [Inject] private Ref<ICharacterJump> characterJumpRef;
+    [Inject] private TemporarySpeedChangeEvent temporarySpeedChangeEvent;
 
     [SerializeField] private float jumpSpeedBoost = 0.3f;
     [SerializeField] private float instaJumpStrength = 0.05f;
@@ -20,9 +21,7 @@ public class CharacterJumpView : View, ITriggerer {
 
     private Coroutine _retryJumpAfterDelay;
 
-    private CharacterRaycasting charaterRaycasting;
     private Frames frames;
-    private CollisionDirectionDetection collisionDirectionDetection;
 
     public void TryJump() {
         if (StopTrigger != null) {
@@ -68,8 +67,8 @@ public class CharacterJumpView : View, ITriggerer {
     /// <summary>
     /// changes the direction of ControlVelocity, to create a jumping effect.
     /// </summary>
-    private void Jump(Vector2 collisionDir, Vector2 rayDir) {
-        _plrAcces.ControlSpeed.TempSpeedChange(0.5f + jumpSpeedBoost);
+    private void Jump(CharacterJumpParameter characterJumpParameter) {
+        temporarySpeedChangeEvent.Dispatch(new TemporarySpeedChangeParameter(0.5f + jumpSpeedBoost));
 
         Vector2 newDir = _plrAcces.ControlVelocity.GetDirection();
 

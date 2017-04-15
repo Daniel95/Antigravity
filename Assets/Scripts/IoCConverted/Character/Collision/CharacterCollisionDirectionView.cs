@@ -1,22 +1,23 @@
-﻿using System.Collections;
+﻿using IoCPlus;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CollisionDirectionDetection : MonoBehaviour {
+public class CharacterCollisionDirectionView : View, ICharacterCollisionDirection {
+
+    [Inject] private Ref<ICharacterCollisionDirection> characterCollisionDirectionRef;
 
     //saves the collider and the rounded direction
     private Dictionary<Collider2D, Vector2> _savedCollisions = new Dictionary<Collider2D, Vector2>();
 
     private CharacterRaycasting _charRaycasting;
 
-    private void Awake()
-    {
-        _charRaycasting = GetComponent<CharacterRaycasting>();
+    public override void Initialize() {
+        characterCollisionDirectionRef.Set(this);
     }
 
     //get the rounded direction of the collisions
     //each collision will be repesented by its highest axis (x or y)
-    public Vector2 GetUpdatedCollDir(Collision2D collision)
+    public Vector2 GetUpdatedCollisionDirection(Collision2D collision)
     {
         //save the new collision we recieved
         SaveNewCollision(collision);
@@ -46,6 +47,20 @@ public class CollisionDirectionDetection : MonoBehaviour {
         }
 
         return combinedRoundedCollDir;
+    }
+
+    public void RemoveCollisionDirection(Vector2 collisionDirection) {
+        foreach (KeyValuePair<Collider2D, Vector2> keyValuePair in _savedCollisions) {
+            if (keyValuePair.Value == collisionDirection) {
+                _savedCollisions.Remove(keyValuePair.Key);
+                break;
+            }
+        }
+    }
+
+    public void ResetCollisionDirection()
+    {
+        _savedCollisions.Clear();
     }
 
     //save a new collision in the savedCollisions dictionary
@@ -79,17 +94,7 @@ public class CollisionDirectionDetection : MonoBehaviour {
         _savedCollisions.Remove(collision.collider);
     }
 
-    public void RemoveCollisionDirection(Vector2 collisionDirection) {
-        foreach (KeyValuePair<Collider2D, Vector2> keyValuePair in _savedCollisions) {
-            if (keyValuePair.Value == collisionDirection) {
-                _savedCollisions.Remove(keyValuePair.Key);
-                break;
-            }
-        }
-    }
-
-    public void ResetCollisionDirection()
-    {
-        _savedCollisions.Clear();
+    private void Awake() {
+        _charRaycasting = GetComponent<CharacterRaycasting>();
     }
 }
