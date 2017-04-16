@@ -1,11 +1,11 @@
 ﻿using IoCPlus;
 using UnityEngine;
 
-public class BounceCommand : Command {
+public class CharacterBounceCommand : Command {
 
     [Inject] private Ref<ICharacterJump> characterJumpRef;
 
-    [InjectParameter] private DirectionParameter directionInfo;
+    [InjectParameter] private CharacterDirectionParameter directionInfo;
 
     protected override void Execute() {
         characterJumpRef.Get().Bounce(directionInfo);

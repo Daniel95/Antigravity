@@ -16,7 +16,7 @@ public class CharacterRaycasting : MonoBehaviour {
     /// check the raycast results of our vertical corners, between -1 and 1.
     /// </summary>
     /// <returns></returns>
-    public int CheckVerticalCornersDir() {
+    public int GetVerticalCornersDirection() {
         if (CheckRayCornersUp()) {
             return 1;
         }
@@ -32,7 +32,7 @@ public class CharacterRaycasting : MonoBehaviour {
     /// check the raycast results of our horizontal corners, between -1 and 1.
     /// </summary>
     /// <returns></returns>
-    public int CheckHorizontalCornersDir() {
+    public int GetHorizontalCornersDirection() {
         if (CheckRayCornerRight()) {
             return 1;
         } else if (CheckRayCornerLeft()) {
@@ -47,7 +47,7 @@ public class CharacterRaycasting : MonoBehaviour {
     /// check the raycast results of our vertical middle, between -1 and 1.
     /// </summary>
     /// <returns></returns>
-    public int CheckVerticalMiddleDir() {
+    public int GetVerticalMiddleDirection() {
         if (CheckRaycastOther(transform.position, new Vector2(0, 1), middleRayLength, layers)) {
             return 1;
         } else if (CheckRaycastOther(transform.position, new Vector2(0, -1), middleRayLength, layers)) {
@@ -61,7 +61,7 @@ public class CharacterRaycasting : MonoBehaviour {
     /// check the raycast results of our horizontal middle, between -1 and 1.
     /// </summary>
     /// <returns></returns>
-    public int CheckHorizontalMiddleDir() {
+    public int GetHorizontalMiddleDirection() {
         if (CheckRaycastOther(transform.position, new Vector2(1, 0), middleRayLength, layers)) {
             return 1;
         }
@@ -108,13 +108,13 @@ public class CharacterRaycasting : MonoBehaviour {
     /// <summary>
     /// checks if the raycast doesn't hit myself, and if it hits something.
     /// </summary>
-    /// <param name="_startPos"></param>
-    /// <param name="_dir"></param>
-    /// <param name="_length"></param>
-    /// <param name="_layers"></param>
+    /// <param name="startPostion"></param>
+    /// <param name="direction"></param>
+    /// <param name="length"></param>
+    /// <param name="layers"></param>
     /// <returns></returns>
-    private bool CheckRaycastOther(Vector2 _startPos, Vector2 _dir, float _length, LayerMask _layers) {
-        RaycastHit2D[] hits = Physics2D.RaycastAll(_startPos, _dir, _length, _layers);
+    private bool CheckRaycastOther(Vector2 startPostion, Vector2 direction, float length, LayerMask layers) {
+        RaycastHit2D[] hits = Physics2D.RaycastAll(startPostion, direction, length, layers);
 
         for (int i = 0; i < hits.Length; i++) {
             if(hits[i].collider.gameObject != gameObject) {

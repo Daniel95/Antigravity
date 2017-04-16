@@ -1,6 +1,6 @@
 ﻿using IoCPlus;
 
-public class TemporarySpeedChangeCommand : Command {
+public class CharacterTemporarySpeedChangeCommand : Command {
 
     [Inject] private Ref<ICharacterVelocity> characterVelocityRef;
 
@@ -8,7 +8,7 @@ public class TemporarySpeedChangeCommand : Command {
 
     [Inject] private BoostSpeedEvent boostSpeedEvent;
 
-    [InjectParameter] private TemporarySpeedChangeParameter temporarySpeedChangeParameter;
+    [InjectParameter] private CharacterTemporarySpeedChangeParameter temporarySpeedChangeParameter;
 
     /// <summary>
     /// Changes speed by a specified amount, below 0.5 is slower, above 0.5 is faster
@@ -37,6 +37,6 @@ public class TemporarySpeedChangeCommand : Command {
             newSpeed = characterVelocityRef.Get().OriginalSpeed;
         }
 
-        boostSpeedEvent.Dispatch(new BoostSpeedParameter(newSpeed, characterSpeed.ReturnSpeed));
+        boostSpeedEvent.Dispatch(new CharacterBoostSpeedParameter(newSpeed, characterSpeed.ReturnSpeed));
     }
 }

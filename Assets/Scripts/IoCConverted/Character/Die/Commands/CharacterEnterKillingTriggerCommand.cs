@@ -1,6 +1,6 @@
 ﻿using IoCPlus;
 
-public class EnterKillingTriggerCommand : Command {
+public class CharacterEnterKillingTriggerCommand : Command {
 
     [Inject] private Ref<ICharacterDie> characterJumpRef;
 

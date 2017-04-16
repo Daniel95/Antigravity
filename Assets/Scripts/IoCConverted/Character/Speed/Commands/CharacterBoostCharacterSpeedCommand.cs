@@ -1,10 +1,10 @@
 ﻿using IoCPlus;
 
-public class BoostCharacterSpeedCommand : Command {
+public class CharacterBoostCharacterSpeedCommand : Command {
 
     [Inject] private Ref<ICharacterVelocity> characterVelocityRef;
 
-    [InjectParameter] private BoostSpeedParameter boostSpeedInfo;
+    [InjectParameter] private CharacterBoostSpeedParameter boostSpeedInfo;
 
     protected override void Execute() {
         characterVelocityRef.Get().SetSpeed(boostSpeedInfo.NewSpeed);

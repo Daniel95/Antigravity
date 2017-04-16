@@ -1,3 +1,3 @@
 ﻿using IoCPlus;
 
-public class TemporarySpeedIncreaseEvent : Signal { }
+public class CharacterTemporarySpeedIncreaseEvent : Signal { }

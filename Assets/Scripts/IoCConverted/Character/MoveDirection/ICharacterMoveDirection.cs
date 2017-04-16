@@ -1,3 +1,3 @@
 ﻿public interface ICharacterMoveDirection {
-    void TurnToNextDirection(DirectionParameter directionInfo);
+    void TurnToNextDirection(CharacterDirectionParameter directionInfo);
 }

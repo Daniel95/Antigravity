@@ -1,3 +1,3 @@
 ﻿using IoCPlus;
 
-public class BoostSpeedEvent : Signal<BoostSpeedParameter> { }
+public class BoostSpeedEvent : Signal<CharacterBoostSpeedParameter> { }

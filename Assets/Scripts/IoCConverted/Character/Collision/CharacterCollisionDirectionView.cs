@@ -43,7 +43,7 @@ public class CharacterCollisionDirectionView : View, ICharacterCollisionDirectio
         //use raycasting instead as a backup plan
         if(combinedRoundedCollDir == Vector2.zero)
         {
-            combinedRoundedCollDir = new Vector2(_charRaycasting.CheckHorizontalCornersDir(), _charRaycasting.CheckVerticalCornersDir());
+            combinedRoundedCollDir = new Vector2(_charRaycasting.GetHorizontalCornersDirection(), _charRaycasting.GetVerticalCornersDirection());
         }
 
         return combinedRoundedCollDir;

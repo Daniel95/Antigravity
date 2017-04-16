@@ -1,7 +1,6 @@
-﻿using UnityEngine;
-using System;
+﻿using IoCPlus;
 using System.Collections;
-using IoCPlus;
+using UnityEngine;
 
 public class CharacterVelocityView : View, ICharacterVelocity {
 

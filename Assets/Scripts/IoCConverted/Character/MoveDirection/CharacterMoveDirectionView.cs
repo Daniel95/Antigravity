@@ -31,7 +31,7 @@ public class CharacterMoveDirectionView : View, ICharacterMoveDirection {
     /// </summary>
     /// <param name="currentDir"></param>
     /// <param name="collDir"></param>
-    public void TurnToNextDirection(DirectionParameter directionInfo) {
+    public void TurnToNextDirection(CharacterDirectionParameter directionInfo) {
         //our next direction we are going to move towards, depending on our currentdirection, and the direction of our collision(s)
         Vector2 dirLogic = DirectionLogic(directionInfo.MoveDirection, directionInfo.CollisionDirection);
 
@@ -156,7 +156,7 @@ public class CharacterMoveDirectionView : View, ICharacterMoveDirection {
             return collDir;
         }
 
-        Vector2 middleRayHitDir = new Vector2(_charRaycasting.CheckHorizontalMiddleDir(), _charRaycasting.CheckVerticalMiddleDir());
+        Vector2 middleRayHitDir = new Vector2(_charRaycasting.GetHorizontalMiddleDirection(), _charRaycasting.GetVerticalMiddleDirection());
 
         if (CheckIsCorner(middleRayHitDir))
         {

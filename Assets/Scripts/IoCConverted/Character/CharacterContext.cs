@@ -8,9 +8,21 @@ public class CharacterContext : Context {
         On<EnterContextSignal>()
             .Do<ActivateViewOnPlayerCommand<CharacterVelocityView>>();
 
-        On<StartSlidingMovementSignal>();
+        On<CharacterStartSlidingMovementEvent>();
 
         On<JumpInputEvent>()
-            .Do<TryJumpCommand>();
+            .Do<CharacterTryJumpCommand>();
+
+        On<CharacterJumpEvent>()
+            .Do<CharacterJumpCommand>();
+
+        On<CharacterBounceEvent>()
+            .Do<CharacterBounceCommand>();
+
+        On<CharacterRemoveCollisionDirectionEvent>()
+            .Do<CharacterRemoveCollisionDirectionCommand>();
+
+        On<CharacterResetCollisionDirectionEvent>()
+            .Do<CharacterResetCollisionDirectionCommand>();
     }
 }

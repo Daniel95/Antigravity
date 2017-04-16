@@ -1,7 +1,7 @@
 ﻿using IoCPlus;
 using UnityEngine;
 
-public class SetSpeedCommand : Command {
+public class CharacterSetSpeedCommand : Command {
 
     [Inject] private Ref<ICharacterVelocity> controlVelocityRef;
 

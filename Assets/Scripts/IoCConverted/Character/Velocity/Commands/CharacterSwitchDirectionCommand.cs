@@ -1,11 +1,11 @@
 ﻿using IoCPlus;
 using UnityEngine;
 
-public class SwitchVelocityDirectionCommand : Command {
+public class CharacterSwitchDirectionCommand : Command {
 
     [Inject] private Ref<ICharacterVelocity> controlVelocityRef;
 
     protected override void Execute() {
-        controlVelocityRef.Get().SwitchVelocityDirection();
+        controlVelocityRef.Get().SwitchDirection();
     }
 }

@@ -1,7 +1,7 @@
 ﻿using IoCPlus;
 using UnityEngine;
 
-public class TryJumpCommand : Command {
+public class CharacterTryJumpCommand : Command {
 
     [Inject] private Ref<ICharacterJump> characterJumpRef;
 

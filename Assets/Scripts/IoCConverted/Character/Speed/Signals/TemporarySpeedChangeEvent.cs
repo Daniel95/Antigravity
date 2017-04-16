@@ -1,3 +1,3 @@
 ﻿using IoCPlus;
 
-public class TemporarySpeedChangeEvent : Signal<TemporarySpeedChangeParameter> { }
+public class CharacterTemporarySpeedChangeEvent : Signal<CharacterTemporarySpeedChangeParameter> { }

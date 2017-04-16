@@ -1,18 +1,22 @@
-﻿using UnityEngine;
+﻿using IoCPlus;
 using System;
-using System.Collections;
-using IoCPlus;
+using UnityEngine;
 
-public class CharacterJumpView : View, ITriggerer {
+public class CharacterJumpView : View, ICharacterJump, ITriggerer {
 
     public Action ActivateTrigger { get; set; }
     public Action StopTrigger { get; set; }
 
     [Inject] private Ref<ICharacterJump> characterJumpRef;
-    [Inject] private TemporarySpeedChangeEvent temporarySpeedChangeEvent;
+
+    [Inject] private CharacterTemporarySpeedChangeEvent characterTemporarySpeedChangeEvent;
+    [Inject] private CharacterTemporarySpeedIncreaseEvent characterTemporarySpeedIncreaseEvent;
+    [Inject] private CharacterSetMoveDirectionEvent characterSetMoveDirectionEvent;
+    [Inject] private CharacterRemoveCollisionDirectionEvent characterRemoveCollisionDirectionEvent;
+    [Inject] private CharacterJumpEvent characterJumpEvent;
 
     [SerializeField] private float jumpSpeedBoost = 0.3f;
-    [SerializeField] private float instaJumpStrength = 0.05f;
+    [SerializeField] private float instantJumpStrength = 0.05f;
     [SerializeField] private int earlyJumpCoverFrames = 10;
 
     public Action TookOff;
@@ -22,6 +26,10 @@ public class CharacterJumpView : View, ITriggerer {
     private Coroutine _retryJumpAfterDelay;
 
     private Frames frames;
+
+    public override void Initialize() {
+        characterJumpRef.Set(this);
+    }
 
     public void TryJump() {
         if (StopTrigger != null) {
@@ -68,25 +76,23 @@ public class CharacterJumpView : View, ITriggerer {
     /// changes the direction of ControlVelocity, to create a jumping effect.
     /// </summary>
     private void Jump(CharacterJumpParameter characterJumpParameter) {
-        temporarySpeedChangeEvent.Dispatch(new TemporarySpeedChangeParameter(0.5f + jumpSpeedBoost));
+        characterTemporarySpeedChangeEvent.Dispatch(new CharacterTemporarySpeedChangeParameter(0.5f + jumpSpeedBoost));
 
-        Vector2 newDir = _plrAcces.ControlVelocity.GetDirection();
+        Vector2 newDirection = characterJumpParameter.MoveDirection;
 
         //check the raycastdir, our newDir is the opposite of one of the axes
-        if (collisionDir.x != 0) {
-            newDir.x = collisionDir.x * -1;
+        if (characterJumpParameter.CollisionDirection.x != 0) {
+            newDirection.x = characterJumpParameter.CollisionDirection.x * -1;
         }
-        else if (collisionDir.y != 0) {
-            newDir.y = collisionDir.y * -1;
-        }
-
-        characterVelocityRef.SetDirection(newDir);
-
-        if (rayDir.x == 0 || rayDir.y == 0) {
-            transform.position += (Vector3)(_plrAcces.ControlVelocity.GetDirection() * instaJumpStrength);
+        else if (characterJumpParameter.CollisionDirection.y != 0) {
+            newDirection.y = characterJumpParameter.CollisionDirection.y * -1;
         }
 
-        collisionDirectionDetection.CollisionDirection.RemoveCollisionDirection(collisionDir);
+        if (characterJumpParameter.RaycastDirection.x == 0 || characterJumpParameter.RaycastDirection.y == 0) {
+            transform.position += (Vector3)(newDirection * instantJumpStrength);
+        }
+
+        characterSetMoveDirectionEvent.Dispatch(newDirection);
 
         if (TookOff != null) {
             TookOff();
@@ -96,11 +102,8 @@ public class CharacterJumpView : View, ITriggerer {
     /// <summary>
     /// Changes the direction of ControlVelocity to create a bouncing effect.
     /// </summary>
-    /// <param name="currentDir"></param>
-    /// <param name="collisionDir"></param>
-    public void Bounce(DirectionParameter directionInfo) {
-        _plrAcces.ControlSpeed.TempSpeedIncrease();
-
+    /// <param name="directionInfo"></param>
+    public void Bounce(CharacterDirectionParameter directionInfo) {
         if (directionInfo.CollisionDirection.x != 0 || directionInfo.CollisionDirection.y != 0) {
             //check the raycastdir, our newDir is the opposite of one of the axes
             if (directionInfo.CollisionDirection.x != 0) {
@@ -110,7 +113,7 @@ public class CharacterJumpView : View, ITriggerer {
                 directionInfo.MoveDirection.y *= -1;
             }
 
-            _plrAcces.ControlVelocity.SetDirection(directionInfo.MoveDirection);
+            characterSetMoveDirectionEvent.Dispatch(directionInfo.MoveDirection);
 
             if (TookOff != null) {
                 TookOff();
@@ -147,8 +150,6 @@ public class CharacterJumpView : View, ITriggerer {
     }
 
     void Start() {
-        charaterRaycasting = GetComponent<CharacterRaycasting>();
         frames = GetComponent<Frames>();
-        collisionDirectionDetection = GetComponent<CollisionDirectionDetection>();
     }
 }
