@@ -10,7 +10,6 @@ public class CharacterJumpView : View, ICharacterJump, ITriggerer {
     [Inject] private Ref<ICharacterJump> characterJumpRef;
 
     [Inject] private CharacterTemporarySpeedChangeEvent characterTemporarySpeedChangeEvent;
-    [Inject] private CharacterTemporarySpeedIncreaseEvent characterTemporarySpeedIncreaseEvent;
     [Inject] private CharacterSetMoveDirectionEvent characterSetMoveDirectionEvent;
     [Inject] private CharacterRemoveCollisionDirectionEvent characterRemoveCollisionDirectionEvent;
     [Inject] private CharacterJumpEvent characterJumpEvent;
@@ -21,8 +20,6 @@ public class CharacterJumpView : View, ICharacterJump, ITriggerer {
     [SerializeField] private int earlyJumpCoverFrames = 10;
 
     public Action TookOff;
-
-    private bool isInBouncyTrigger;
 
     private Coroutine retryJumpAfterDelay;
 
@@ -60,7 +57,6 @@ public class CharacterJumpView : View, ICharacterJump, ITriggerer {
     /// changes the direction of ControlVelocity, to create a jumping effect.
     /// </summary>
     public void Jump(CharacterJumpParameter characterJumpParameter) {
-        characterTemporarySpeedChangeEvent.Dispatch(new CharacterTemporarySpeedChangeParameter(0.5f + jumpSpeedBoost));
 
         Vector2 newDirection = characterJumpParameter.MoveDirection;
 
@@ -77,49 +73,11 @@ public class CharacterJumpView : View, ICharacterJump, ITriggerer {
         }
 
         characterSetMoveDirectionEvent.Dispatch(newDirection);
+        characterRemoveCollisionDirectionEvent.Dispatch(characterJumpParameter.CollisionDirection);
+        characterTemporarySpeedChangeEvent.Dispatch(new CharacterTemporarySpeedChangeParameter(0.5f + jumpSpeedBoost));
 
         if (TookOff != null) {
             TookOff();
-        }
-    }
-
-    /// <summary>
-    /// Changes the direction of ControlVelocity to create a bouncing effect.
-    /// </summary>
-    /// <param name="directionInfo"></param>
-    public void Bounce(CharacterDirectionParameter directionInfo) {
-        if (directionInfo.CollisionDirection.x != 0 || directionInfo.CollisionDirection.y != 0) {
-            //check the raycastdir, our newDir is the opposite of one of the axes
-            if (directionInfo.CollisionDirection.x != 0) {
-                directionInfo.MoveDirection.x *= -1;
-            }
-            if (directionInfo.CollisionDirection.y != 0) {
-                directionInfo.MoveDirection.y *= -1;
-            }
-
-            characterSetMoveDirectionEvent.Dispatch(directionInfo.MoveDirection);
-
-            if (TookOff != null) {
-                TookOff();
-            }
-        }
-    }
-
-    public bool CheckBounce(Collision2D collision) {
-        return collision.collider.CompareTag(Tags.Bouncy) || isInBouncyTrigger;
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision) {
-
-        if (!isInBouncyTrigger && collision.CompareTag(Tags.Bouncy)) {
-            isInBouncyTrigger = true;
-        }
-    }
-
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (isInBouncyTrigger && collision.transform.CompareTag(Tags.Bouncy)) {
-            isInBouncyTrigger = false;
         }
     }
 

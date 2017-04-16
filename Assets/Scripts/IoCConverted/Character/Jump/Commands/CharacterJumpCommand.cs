@@ -1,5 +1,4 @@
 ﻿using IoCPlus;
-using UnityEngine;
 
 public class CharacterJumpCommand : Command {
 
@@ -11,6 +10,5 @@ public class CharacterJumpCommand : Command {
 
     protected override void Execute() {
         characterJumpRef.Get().Jump(characterJumpParameter);
-        characterRemoveCollisionDirectionEvent.Dispatch(characterJumpParameter.CollisionDirection);
     }
 }
