@@ -15,6 +15,5 @@ public class CharScriptAccess : MonoBehaviour {
         ControlVelocity = GetComponent<CharacterVelocityView>();
         ControlSpeed = GetComponent<CharacterSpeedView>();
         ControlTakeOff = GetComponent<CharacterJumpView>();
-        CollisionDirection = GetComponent<CollisionDirectionDetection>();
     }
 }
