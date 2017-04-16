@@ -8,7 +8,8 @@ public class FloatingStateContext : Context {
         Bind<ActivateSlidingStateEvent>();
 
         On<EnterContextSignal>()
-            .Do<ActivateViewOnPlayerCommand<FloatingStateView>>();
+            .Do<ActivateViewOnPlayerCommand<FloatingStateView>>()
+            .Dispatch<startdirmovement>();
 
     }
 

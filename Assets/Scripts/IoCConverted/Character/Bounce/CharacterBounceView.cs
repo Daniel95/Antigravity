@@ -17,7 +17,7 @@ public class CharacterBounceView : View, ICharacterBounce {
     /// Changes the direction of ControlVelocity to create a bouncing effect.
     /// </summary>
     /// <param name="directionParameter"></param>
-    public void Bounce(CharacterDirectionParameter directionParameter) {
+    public void Bounce(CharacterBounceParameter directionParameter) {
         if (directionParameter.CollisionDirection.x != 0 || directionParameter.CollisionDirection.y != 0) {
             //check the raycastdir, our newDir is the opposite of one of the axes
             if (directionParameter.CollisionDirection.x != 0) {
