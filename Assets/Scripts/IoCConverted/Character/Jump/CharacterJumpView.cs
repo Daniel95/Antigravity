@@ -68,7 +68,7 @@ public class CharacterJumpView : View, ICharacterJump, ITriggerer {
             newDirection.y = characterJumpParameter.CollisionDirection.y * -1;
         }
 
-        if (characterJumpParameter.RaycastDirection.x == 0 || characterJumpParameter.RaycastDirection.y == 0) {
+        if (characterJumpParameter.CenterRaycastDirection.x == 0 || characterJumpParameter.CenterRaycastDirection.y == 0) {
             transform.position += (Vector3)(newDirection * instantJumpStrength);
         }
 

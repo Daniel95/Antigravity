@@ -2,6 +2,5 @@
 
 public interface ICharacterMoveDirection {
     Vector2 SavedDirection { set; }
-
-    void TurnToNextDirection(CharacterDirectionParameter directionInfo);
+    void TurnToNextDirection(CharacterTurnToNextDirectionParameter characterTurnToNextDirectionParameter);
 }
