@@ -20,7 +20,7 @@ public class CharacterMoveDirectionView : View, ICharacterMoveDirection {
 
     public Action<Vector2> FinishedDirectionLogic;
 
-    private CharacterRaycasting _charRaycasting;
+    private CharacterRaycastView _charRaycasting;
 
     public override void Initialize() {
         characterMoveDirectionRef.Set(this);
@@ -47,7 +47,7 @@ public class CharacterMoveDirectionView : View, ICharacterMoveDirection {
 
     void Start() {
         _charAccess = GetComponent<CharScriptAccess>();
-        _charRaycasting = GetComponent<CharacterRaycasting>();
+        _charRaycasting = GetComponent<CharacterRaycastView>();
 
         _lastDir = _charAccess.ControlVelocity.GetDirection();
 

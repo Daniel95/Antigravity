@@ -9,7 +9,7 @@ public class CharacterCollisionDirectionView : View, ICharacterCollisionDirectio
     //saves the collider and the rounded direction
     private Dictionary<Collider2D, Vector2> _savedCollisions = new Dictionary<Collider2D, Vector2>();
 
-    private CharacterRaycasting _charRaycasting;
+    private CharacterRaycastView _charRaycasting;
 
     public override void Initialize() {
         characterCollisionDirectionRef.Set(this);
@@ -95,6 +95,6 @@ public class CharacterCollisionDirectionView : View, ICharacterCollisionDirectio
     }
 
     private void Awake() {
-        _charRaycasting = GetComponent<CharacterRaycasting>();
+        _charRaycasting = GetComponent<CharacterRaycastView>();
     }
 }

@@ -13,6 +13,9 @@ public class CharacterContext : Context {
         On<JumpInputEvent>()
             .Do<CharacterTryJumpCommand>();
 
+        On<CharacterRetryJumpEvent>()
+            .Do<CharacterRetryJumpCommand>();
+
         On<CharacterJumpEvent>()
             .Do<CharacterJumpCommand>();
 

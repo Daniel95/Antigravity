@@ -1,3 +1,3 @@
 ﻿using IoCPlus;
 
-public class CharacterJumpEvent : Signal { }
+public class CharacterJumpEvent : Signal<CharacterJumpParameter> { }

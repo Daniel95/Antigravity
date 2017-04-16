@@ -10,8 +10,6 @@ public class CharScriptAccess : MonoBehaviour {
     private CharacterSpeedView ControlSpeed;
     [HideInInspector]
     private CharacterJumpView ControlTakeOff;
-    [HideInInspector]
-    private CollisionDirectionDetection CollisionDirection;
 
     void Awake() {
         ControlVelocity = GetComponent<CharacterVelocityView>();

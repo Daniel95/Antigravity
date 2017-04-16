@@ -1,15 +1,13 @@
 ﻿using IoCPlus;
 using UnityEngine;
 
-public class CharacterTryJumpCommand : Command {
+public class CharacterRetryJumpCommand : Command {
 
     [Inject] private Ref<ICharacterVelocity> characterVelocityRef;
     [Inject] private Ref<ICharacterCollisionDirection> characterCollisionDirectionRef;
     [Inject] private Ref<ICharacterRaycast> characterRaycastRef;
 
     [Inject] private Ref<ICharacterJump> characterJumpRef;
-
-
 
     protected override void Execute() {
         CharacterJumpParameter characterJumpParameter = new CharacterJumpParameter(characterVelocityRef.Get().Direction, 
@@ -25,6 +23,6 @@ public class CharacterTryJumpCommand : Command {
             characterJumpParameter.CollisionDirection = raycastDirection;
         }
 
-        characterJumpRef.Get().TryJump(characterJumpParameter);
+        characterJumpRef.Get().RetryJump(characterJumpParameter);
     }
 }

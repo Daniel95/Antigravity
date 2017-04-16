@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
+using IoCPlus;
 
-public class CharacterRaycasting : MonoBehaviour {
+public class CharacterRaycastView : View, ICharacterRaycast {
 
     [SerializeField] private LayerMask layers;
     [SerializeField] private bool showDebugRays = false;
@@ -71,6 +72,10 @@ public class CharacterRaycasting : MonoBehaviour {
         else {
             return 0;
         }
+    }
+
+    public Vector2 GetMiddleDirection() {
+        return new Vector2(GetHorizontalMiddleDirection(), GetVerticalMiddleDirection());
     }
 
     void Start() {

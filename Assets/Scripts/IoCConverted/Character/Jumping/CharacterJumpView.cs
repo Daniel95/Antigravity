@@ -14,6 +14,7 @@ public class CharacterJumpView : View, ICharacterJump, ITriggerer {
     [Inject] private CharacterSetMoveDirectionEvent characterSetMoveDirectionEvent;
     [Inject] private CharacterRemoveCollisionDirectionEvent characterRemoveCollisionDirectionEvent;
     [Inject] private CharacterJumpEvent characterJumpEvent;
+    [Inject] private CharacterRetryJumpEvent characterRetryJumpEvent;
 
     [SerializeField] private float jumpSpeedBoost = 0.3f;
     [SerializeField] private float instantJumpStrength = 0.05f;
@@ -23,7 +24,7 @@ public class CharacterJumpView : View, ICharacterJump, ITriggerer {
 
     private bool isInBouncyTrigger;
 
-    private Coroutine _retryJumpAfterDelay;
+    private Coroutine retryJumpAfterDelay;
 
     private Frames frames;
 
@@ -31,45 +32,28 @@ public class CharacterJumpView : View, ICharacterJump, ITriggerer {
         characterJumpRef.Set(this);
     }
 
-    public void TryJump() {
+    public void TryJump(CharacterJumpParameter characterJumpParameter) {
         if (StopTrigger != null) {
             StopTrigger();
         }
 
-        CollisionInfo collisionInfo = GetCollisionInfo();
-
         //check if we have raycast collision on only one axis, jumping wont work when we are in a corner
-        if (collisionInfo.CollisionDirection != Vector2.zero) {
-            if (_retryJumpAfterDelay != null) {
-                StopCoroutine(_retryJumpAfterDelay);
+        if (characterJumpParameter.CollisionDirection != Vector2.zero) {
+            if (retryJumpAfterDelay != null) {
+                StopCoroutine(retryJumpAfterDelay);
             }
-            Jump(collisionInfo.CollisionDirection, collisionInfo.RayDirection);
+            characterJumpEvent.Dispatch(characterJumpParameter);
         } else {
-            _retryJumpAfterDelay = frames.ExecuteAfterDelay(earlyJumpCoverFrames, RetryJump);
+            retryJumpAfterDelay = frames.ExecuteAfterDelay(earlyJumpCoverFrames, () => characterRetryJumpEvent.Dispatch());
         }
     }
 
-    private void RetryJump()  {
-        CollisionInfo collisionInfo = GetCollisionInfo();
-
+    private void RetryJump(CharacterJumpParameter characterJumpParameter)  {
         //check if we have raycast collision on only one axis, jumping wont work when we are in a corner
-        if (collisionInfo.CollisionDirection != Vector2.zero) {
-            StopCoroutine(_retryJumpAfterDelay);
-            Jump(collisionInfo.CollisionDirection, collisionInfo.RayDirection);
+        if (characterJumpParameter.CollisionDirection != Vector2.zero) {
+            StopCoroutine(retryJumpAfterDelay);
+            characterJumpEvent.Dispatch(characterJumpParameter);
         }
-    }
-    
-    private CollisionInfo GetCollisionInfo()  {
-        Vector2 collisionDir = collisionDirectionDetection.CollisionDirection.GetCurrentCollDir();
-        Vector2 rayDir = new Vector2(charaterRaycasting.CheckHorizontalMiddleDir(), charaterRaycasting.CheckVerticalMiddleDir());
-
-        //if collisiondir is zero, it may be because we are barely not colliding, while it looks like we are.
-        //as a backup plan we use raycasting if this happens so we can still jump
-        if (collisionDir == Vector2.zero) {
-            collisionDir = rayDir;
-        }
-
-        return new CollisionInfo(collisionDir, rayDir);
     }
 
     /// <summary>
@@ -136,16 +120,6 @@ public class CharacterJumpView : View, ICharacterJump, ITriggerer {
     {
         if (isInBouncyTrigger && collision.transform.CompareTag(Tags.Bouncy)) {
             isInBouncyTrigger = false;
-        }
-    }
-
-    private class CollisionInfo {
-        public readonly Vector2 CollisionDirection;
-        public readonly Vector2 RayDirection;
-
-        public CollisionInfo(Vector2 collisionDirection, Vector2 rayDirection) {
-            CollisionDirection = collisionDirection;
-            RayDirection = rayDirection;
         }
     }
 
