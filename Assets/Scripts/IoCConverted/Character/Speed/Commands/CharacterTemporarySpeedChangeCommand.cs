@@ -6,7 +6,7 @@ public class CharacterTemporarySpeedChangeCommand : Command {
 
     [Inject] private Ref<ICharacterSpeed> characterSpeedRef;
 
-    [Inject] private BoostSpeedEvent boostSpeedEvent;
+    [Inject] private CharacterBoostSpeedEvent boostSpeedEvent;
 
     [InjectParameter] private CharacterTemporarySpeedChangeParameter temporarySpeedChangeParameter;
 

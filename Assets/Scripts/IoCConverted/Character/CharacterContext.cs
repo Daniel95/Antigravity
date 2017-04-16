@@ -6,7 +6,8 @@ public class CharacterContext : Context {
         base.SetBindings();
 
         On<EnterContextSignal>()
-            .Do<ActivateViewOnPlayerCommand<CharacterVelocityView>>();
+            .Do<ActivateViewOnPlayerCommand<CharacterVelocityView>>()
+            .Do<CharacterSetSavedDirectionToStartDirectionCommand>();
 
         On<CharacterStartSlidingMovementEvent>();
 

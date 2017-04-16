@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterTriggerHitDetectionView : View, ICharacterHitTrigger {
+public class CharacterTriggerHitDetectionView : View, ICharacterTriggerHitDetection {
 
-    [Inject] private Ref<ICharacterHitTrigger> characterHitTriggerRef;
+    [Inject] private Ref<ICharacterTriggerHitDetection> characterHitTriggerRef;
 
     public IEnumerable<string> CurrentTriggerTags { get { return currentTriggerTags; } }
 

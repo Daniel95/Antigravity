@@ -13,7 +13,7 @@ public class CharacterSpeedView : View, ICharacterSpeed {
     public int ChangeSpeedCDCounter { get { return changeSpeedCDCounter; } set { changeSpeedCDCounter = value; } }
     public bool ChangeSpeedCDIsActive { get { return changeSpeedCDIsActive; } }
 
-    [Inject] private BoostSpeedEvent boostSpeedEvent;
+    [Inject] private CharacterBoostSpeedEvent boostSpeedEvent;
 
     [SerializeField] private float maxSpeedMultiplier = 5f;
     [SerializeField] private float speedChangeDivider = 10f;
