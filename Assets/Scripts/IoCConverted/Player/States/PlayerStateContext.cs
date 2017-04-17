@@ -14,7 +14,14 @@ public class PlayerStateContext : Context {
 
         On<GrapplingHookStartedEvent>()
             .GotoState<GrapplingStateContext>();
-            
-    }
 
+        On<CollisionEnter2DEvent>()
+            .Do<AbortIfNotCollidingAndNotInTriggerTagCommand>(Tags.Bouncy)
+            .Do<CharacterBounceCommand>()
+            .OnAbort<DispatchTurnFromWallEventCommand>();
+
+        On<TurnFromWallEvent>()
+            .Dispatch<CharacterTurnToNextDirectionEvent>()
+            .Dispatch<ActivateSlidingStateEvent>();
+    }
 }

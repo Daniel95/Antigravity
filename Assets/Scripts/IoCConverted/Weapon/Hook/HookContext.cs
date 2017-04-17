@@ -6,14 +6,14 @@ public class HookContext : Context {
         base.SetBindings();
 
         Bind<GrapplingHookStartedEvent>();
-        Bind<GrapplingHookCancelledEvent>();
+        Bind<CancelGrapplingHookEvent>();
 
         Bind<Ref<IGrapplingHook>>();
         Bind<Ref<IPullingHook>>();
 
         On<EnterContextSignal>();
 
-        On<GrapplingHookCancelledEvent>();
+        On<CancelGrapplingHookEvent>();
             //.Do
     }
 }

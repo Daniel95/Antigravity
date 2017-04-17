@@ -1,6 +1,6 @@
 ﻿using IoCPlus;
 
-public class StopGrapplingMidAirCommand : Command {
+public class StopGrapplingInAirCommand : Command {
 
     [Inject] private Ref<IGrapplingState> grapplingStateRef;
 

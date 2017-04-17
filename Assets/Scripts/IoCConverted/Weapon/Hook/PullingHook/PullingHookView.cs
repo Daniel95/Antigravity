@@ -21,7 +21,7 @@ public class PullingHookView : View, IPullingHook {
 
         Vector2 newDirection = (hookModel.HookProjectileGameObject.transform.position - transform.position).normalized;
 
-        Vector2 velocityDirection = velocity.VelocityDirection();
+        Vector2 velocityDirection = velocity.GetVelocityDirection();
 
         newDirection.x *= Mathf.Abs(velocityDirection.x);
         newDirection.y *= Mathf.Abs(velocityDirection.y);

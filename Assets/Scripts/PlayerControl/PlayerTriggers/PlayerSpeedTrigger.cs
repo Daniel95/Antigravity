@@ -13,7 +13,7 @@ public class PlayerSpeedTrigger : MonoBehaviour, ITriggerable {
 
     public void TriggerActivate()
     {
-        _lastDirection = controlVelocity.VelocityDirection();
+        _lastDirection = controlVelocity.GetVelocityDirection();
         controlVelocity.SetSpeed(0);
     }
 

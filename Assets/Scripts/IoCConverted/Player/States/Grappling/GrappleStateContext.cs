@@ -8,9 +8,22 @@ public class GrapplingStateContext : Context {
         Bind<Ref<IGrapplingState>>();
 
         On<EnterContextSignal>()
-            .Do<InstantiateViewOnPlayerCommand<GrapplingStateView>>();
+            .Do<InstantiateViewOnPlayerCommand<GrapplingStateView>>()
+            .Do<DispatchCharacterEnableDirectionalMovementEventCommand>(false);
+
+        On<LeaveContextSignal>()
+            .Dispatch<CancelGrapplingHookEvent>();
 
         On<JumpInputEvent>()
-            .Do<StopGrapplingMidAirCommand>();
+            .Dispatch<StopGrapplingInAirEvent>();
+
+        On<CancelGrapplingHookEvent>()
+            .Dispatch<StopGrapplingInAirEvent>();
+
+        On<StopGrapplingInAirEvent>()
+            .Do<SetMoveDirectionToVelocityDirectionCommand>()
+            .Do<CharacterTemporarySpeedIncreaseCommand>()
+            .Do<StopGrapplingInAirCommand>()
+            .Dispatch<ActivateFloatingStateEvent>();
     }
 }

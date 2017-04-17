@@ -7,7 +7,7 @@ public class CharacterPointToCeiledVelocityDirectionCommand : Command {
     [Inject] private Ref<ICharacterVelocity> characterVelocityRef;
 
     protected override void Execute() {
-        Vector2 ceiledVelocityDirection = characterVelocityRef.Get().CeilVelocityDirection();
+        Vector2 ceiledVelocityDirection = characterVelocityRef.Get().GetCeilVelocityDirection();
         directionPointerRef.Get().PointToCeiledVelocityDirection(ceiledVelocityDirection);
     }
 }

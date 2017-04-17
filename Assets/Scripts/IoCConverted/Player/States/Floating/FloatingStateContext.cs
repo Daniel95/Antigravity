@@ -11,13 +11,5 @@ public class FloatingStateContext : Context {
             .Do<CharacterPointToCeiledVelocityDirectionCommand>()
             .Do<DispatchCharacterEnableDirectionalMovementEventCommand>(true);
 
-        On<CollisionEnter2DEvent>()
-            .Do<AbortIfNotCollidingAndNotInTriggerTagCommand>(Tags.Bouncy)
-            .Do<CharacterBounceCommand>()
-            .OnAbort<DispatchTurnFromWallEventCommand>();
-
-        On<TurnFromWallEvent>()
-            .Dispatch<CharacterTurnToNextDirectionEvent>()
-            .Dispatch<ActivateSlidingStateEvent>();
     }
 }

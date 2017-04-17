@@ -51,11 +51,11 @@ public class CharacterVelocityView : View, ICharacterVelocity {
         direction *= -1;
     }
 
-    public Vector2 VelocityDirection() {
+    public Vector2 GetVelocityDirection() {
         return _rb.velocity.normalized;
     }
 
-    public Vector2 CeilVelocityDirection() {
+    public Vector2 GetCeilVelocityDirection() {
         Vector2 velocityNormalized = _rb.velocity.normalized;
         return new Vector2(Rounding.InvertOnNegativeCeil(velocityNormalized.x), Rounding.InvertOnNegativeCeil(velocityNormalized.y));
     }
@@ -68,7 +68,7 @@ public class CharacterVelocityView : View, ICharacterVelocity {
         currentSpeed = newSpeed;
     }
 
-    public bool MovingStandard() {
+    public bool GetMovingStandard() {
         return _updateDirectionalMovement != null;
     }
 

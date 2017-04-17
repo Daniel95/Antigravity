@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public interface ICharacterVelocity {
 
@@ -8,9 +7,9 @@ public interface ICharacterVelocity {
     float OriginalSpeed { get; }
     float CurrentSpeed { get; }
 
-    Vector2 VelocityDirection();
-    Vector2 CeilVelocityDirection();
-    bool MovingStandard();
+    Vector2 GetVelocityDirection();
+    Vector2 GetCeilVelocityDirection();
+    bool GetMovingStandard();
 
     void EnableDirectionalMovement(bool enable);
     void StartReturnSpeedToOriginal(float returnSpeed);
