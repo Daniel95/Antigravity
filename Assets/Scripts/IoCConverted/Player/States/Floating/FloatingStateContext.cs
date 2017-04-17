@@ -12,7 +12,7 @@ public class FloatingStateContext : Context {
             .Do<DispatchCharacterEnableDirectionalMovementEventCommand>(true);
 
         On<CollisionEnter2DEvent>()
-            .Do<AbortIfCollisionTagIsNotTheSame>(Tags.Bouncy)
+            .Do<AbortIfNotCollidingAndNotInTriggerTagCommand>(Tags.Bouncy)
             .Do<CharacterBounceCommand>()
             .OnAbort<DispatchTurnFromWallEventCommand>();
 

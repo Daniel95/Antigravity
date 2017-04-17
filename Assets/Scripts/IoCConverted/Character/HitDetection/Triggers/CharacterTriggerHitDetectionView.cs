@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class CharacterTriggerHitDetectionView : View, ICharacterTriggerHitDetection {
 
-    [Inject] private Ref<ICharacterTriggerHitDetection> characterHitTriggerRef;
+    public List<string> CurrentTriggerTags { get { return currentTriggerTags; } }
 
-    public IEnumerable<string> CurrentTriggerTags { get { return currentTriggerTags; } }
+    [Inject] private Ref<ICharacterTriggerHitDetection> characterHitTriggerRef;
 
     [Inject] private TriggerEnter2DEvent onTriggerEnter2DEvent;
     [Inject] private TriggerStay2DEvent onTriggerStay2DEvent;
