@@ -2,13 +2,13 @@
 using System;
 using UnityEngine;
 
-public class CharacterMoveDirectionView : View, ICharacterMoveDirection {
+public class CharacterTurnDirectionView : View, ICharacterTurnDirection {
 
     public Vector2 SavedDirection { set { savedDirection = value; } }
 
     public Action<Vector2> FinishedDirectionLogic;
 
-    [Inject] private Ref<ICharacterMoveDirection> characterMoveDirectionRef;
+    [Inject] private Ref<ICharacterTurnDirection> characterMoveDirectionRef;
 
     [Inject] private CharacterSetMoveDirectionEvent characterSetMoveDirectionEvent;
     [Inject] private CharacterTemporarySpeedChangeEvent characterTemporarySpeedChangeEvent;

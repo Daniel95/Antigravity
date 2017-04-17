@@ -6,7 +6,12 @@ public class RevivedStateContext : Context {
         base.SetBindings();
 
         On<EnterContextSignal>()
-            .Do<InstantiateViewOnPlayerCommand<RevivedStateView>>();
+            .Do<InstantiateViewOnPlayerCommand<RevivedStateView>>()
+            .Do<CharacterResetVelocityCommand>()
+            .Do<CharacterResetMoveDirectionCommand>()
+            .Do<CancelDragWeaponInputCommand>()
+            .Do<DispatchEnableShootingInputCommand>(false)
+            .Do<CharacterResetCollisionDirectionCommand>();
 
         On<DraggingInputEvent>()
             .Do<RevivedStateAimingCommand>();

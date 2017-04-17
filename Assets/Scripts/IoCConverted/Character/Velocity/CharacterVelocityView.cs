@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class CharacterVelocityView : View, ICharacterVelocity {
 
-    public Vector2 Velocity { get { return _rb.velocity; } set { _rb.velocity = value; } }
-    public Vector2 Direction { get { return direction; } set { direction = value; } }
+    public Vector2 Velocity { get { return rigidbodyComponent.velocity; } set { rigidbodyComponent.velocity = value; } }
+    public Vector2 MoveDirection { get { return moveDirection; } set { moveDirection = value; } }
     public float OriginalSpeed { get { return originalSpeed; }  }
     public float CurrentSpeed { get { return currentSpeed; } }
 
@@ -14,11 +14,11 @@ public class CharacterVelocityView : View, ICharacterVelocity {
     [SerializeField] private float originalSpeed = 3;
     [SerializeField] private float currentSpeed;
     [SerializeField] private float minSpeedOffsetValue = 0.05f;
-    [SerializeField] private Vector2 direction;
+    [SerializeField] private Vector2 moveDirection;
 
-    private Rigidbody2D _rb;
-    private Coroutine _updateDirectionalMovement;
-    private Coroutine _returnSpeedToOriginal;
+    private Rigidbody2D rigidbodyComponent;
+    private Coroutine updateDirectionalMovement;
+    private Coroutine returnSpeedToOriginal;
 
     public override void Initialize() {
         controlVelocityRef.Set(this);
@@ -33,60 +33,60 @@ public class CharacterVelocityView : View, ICharacterVelocity {
     }
 
     public void StartReturnSpeedToOriginal(float returnSpeed) {
-        if (_returnSpeedToOriginal != null)
-            StopCoroutine(_returnSpeedToOriginal);
+        if (returnSpeedToOriginal != null)
+            StopCoroutine(returnSpeedToOriginal);
 
-        _returnSpeedToOriginal = StartCoroutine(ReturnSpeedToOriginal(returnSpeed));
+        returnSpeedToOriginal = StartCoroutine(ReturnSpeedToOriginal(returnSpeed));
     }
 
     public void AddVelocity(Vector2 velocity) {
-        _rb.velocity += velocity;
+        rigidbodyComponent.velocity += velocity;
     }
 
     public void SwitchVelocityDirection() {
-        _rb.velocity *= -1;
+        rigidbodyComponent.velocity *= -1;
     }
 
     public void SwitchDirection() {
-        direction *= -1;
+        moveDirection *= -1;
     }
 
     public Vector2 GetVelocityDirection() {
-        return _rb.velocity.normalized;
+        return rigidbodyComponent.velocity.normalized;
     }
 
     public Vector2 GetCeilVelocityDirection() {
-        Vector2 velocityNormalized = _rb.velocity.normalized;
+        Vector2 velocityNormalized = rigidbodyComponent.velocity.normalized;
         return new Vector2(Rounding.InvertOnNegativeCeil(velocityNormalized.x), Rounding.InvertOnNegativeCeil(velocityNormalized.y));
     }
 
     public void SetSpeed(float newSpeed) {
-        if (_returnSpeedToOriginal != null) {
-            StopCoroutine(_returnSpeedToOriginal);
+        if (returnSpeedToOriginal != null) {
+            StopCoroutine(returnSpeedToOriginal);
         }
 
         currentSpeed = newSpeed;
     }
 
     public bool GetMovingStandard() {
-        return _updateDirectionalMovement != null;
+        return updateDirectionalMovement != null;
     }
 
     private void Awake() {
-        _rb = GetComponent<Rigidbody2D>();
+        rigidbodyComponent = GetComponent<Rigidbody2D>();
         currentSpeed = originalSpeed;
     }
 
     private void EnableDirectionalMovement() {
         DisableDirectionalMovement();
-        _updateDirectionalMovement = StartCoroutine(UpdateDirectionalMovement());
+        updateDirectionalMovement = StartCoroutine(UpdateDirectionalMovement());
     }
 
     private void DisableDirectionalMovement() {
-        if (_updateDirectionalMovement != null)
+        if (updateDirectionalMovement != null)
         {
-            StopCoroutine(_updateDirectionalMovement);
-            _updateDirectionalMovement = null;
+            StopCoroutine(updateDirectionalMovement);
+            updateDirectionalMovement = null;
         }
     }
 
@@ -95,7 +95,7 @@ public class CharacterVelocityView : View, ICharacterVelocity {
         while (true)
         {
             //add our own constant force
-            _rb.velocity = direction * currentSpeed;
+            rigidbodyComponent.velocity = moveDirection * currentSpeed;
             yield return fixedUpdate;
         }
     }

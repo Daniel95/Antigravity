@@ -1,7 +1,6 @@
 ﻿using IoCPlus;
-using UnityEngine;
 using System;
-using System.Collections;
+using UnityEngine;
 
 public class GrapplingStateView : View, IGrapplingState, ITriggerer {
 

@@ -12,7 +12,7 @@ public class CharacterTryJumpCommand : Command {
 
 
     protected override void Execute() {
-        CharacterJumpParameter characterJumpParameter = new CharacterJumpParameter(characterVelocityRef.Get().Direction, 
+        CharacterJumpParameter characterJumpParameter = new CharacterJumpParameter(characterVelocityRef.Get().MoveDirection, 
                                                                                    characterCollisionDirectionRef.Get().GetCurrentCollisionDirection(), 
                                                                                    characterRaycastRef.Get().GetMiddleDirection());
 

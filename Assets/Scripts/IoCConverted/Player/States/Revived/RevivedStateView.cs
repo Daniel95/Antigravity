@@ -9,9 +9,9 @@ public class RevivedStateView : View, ITriggerer
 
     [Inject] private ActivateFloatingStateEvent activateFloatingStateEvent;
     [Inject] private CancelDragInputEvent cancelDragInputEvent;
+    [Inject] private CharacterSetMoveDirectionEvent characterSetMoveDirectionEvent;
 
-    [SerializeField]
-    private GameObject gun;
+    [SerializeField] private GameObject gun;
 
     [SerializeField]
     private int startDirectionRayLength = 50;
@@ -19,17 +19,9 @@ public class RevivedStateView : View, ITriggerer
     [SerializeField]
     private int launchDelayWhenRespawning = 20;
 
-    private CharScriptAccess _charAccess;
-
-    private MoveTowards _moveTowards;
-
-    private LookAt _lookAt;
-
-    private AimLineView _aimRay;
-
-    //the first time we hit a checkpoint, we will be moving towards the center of it, once we reached the center we are in position and can fire ourselfes.
-    private bool _isInPosition;
-
+    private MoveTowards moveTowards;
+    private LookAt lookAt;
+    private bool isInPosition; //the first time we hit a checkpoint, we will be moving towards the center of it, once we reached the center we are in position and can fire ourselfes.
     private bool canFire;
 
     //used by action trigger to decide when to start the instructions/tutorial, and when to stop it
@@ -38,42 +30,27 @@ public class RevivedStateView : View, ITriggerer
 
     public override void Initialize() {
         base.Initialize();
-
-        cancelDragInputEvent.Dispatch();
-
-        enableShootingInputEvent.Dispatch(false);
-
-        _charAccess.ControlVelocity.SetVelocity(Vector2.zero);
-        _charAccess.ControlVelocity.SetDirection(Vector2.zero);
-
-        _charAccess.CollisionDirection.ResetCollisionDirection();
-
         StartCoroutine(DelayLaunchingInput());
     }
 
     public override void Dispose() {
         base.Dispose();
 
-        if (StopTrigger != null)
+        if (StopTrigger != null) {
             StopTrigger();
+        }
     }
 
-    private void Awake()
-    {
-        _charAccess = GetComponent<CharScriptAccess>();
-
-        _lookAt = gun.GetComponent<LookAt>();
-        _aimRay = GetComponent<AimLineView>();
-        _moveTowards = GetComponent<MoveTowards>();
+    private void Awake() {
+        lookAt = gun.GetComponent<LookAt>();
+        moveTowards = GetComponent<MoveTowards>();
         GetComponent<CharacterVelocityView>();
     }
 
-    IEnumerator DelayLaunchingInput()
-    {
+    IEnumerator DelayLaunchingInput() {
         int framesCounter = launchDelayWhenRespawning;
 
-        while (framesCounter < 0 || !_isInPosition)
-        {
+        while (framesCounter < 0 || !isInPosition) {
             framesCounter--;
             yield return new WaitForFixedUpdate();
         }
@@ -81,34 +58,30 @@ public class RevivedStateView : View, ITriggerer
         canFire = true;
     }
 
-    public void StartMovingToCenterCheckPoint(Vector2 _checkPointPosition)
-    {
-        _moveTowards.ReachedDestination += ReachedPosition;
-        _moveTowards.StartMoving(_checkPointPosition);
+    public void StartMovingToCenterCheckPoint(Vector2 _checkPointPosition) {
+        moveTowards.ReachedDestination += ReachedPosition;
+        moveTowards.StartMoving(_checkPointPosition);
     }
 
-    private void ReachedPosition()
-    {
-        _isInPosition = true;
+    private void ReachedPosition() {
+        isInPosition = true;
 
-        if (ActivateTrigger != null)
+        if (ActivateTrigger != null) {
             ActivateTrigger();
+        }
     }
 
-    public void Aim(Vector2 dir)
-    {
-        if (!_aimRay.AimLineActive)
-        {
+    public void Aim(Vector2 dir){
+        if (!_aimRay.AimLineActive) {
             _aimRay.StartAimLine((Vector2)transform.position + (dir * startDirectionRayLength));
         }
 
         _aimRay.LineDestination = (Vector2)transform.position + (dir * startDirectionRayLength);
 
-        _lookAt.UpdateLookAt((Vector2)transform.position + dir);
+        lookAt.UpdateLookAt((Vector2)transform.position + dir);
     }
 
-    public void Launch(Vector2 dir)
-    {
+    public void Launch(Vector2 dir) {
         enableShootingInputEvent.Dispatch(true);
 
         _aimRay.StopAimLine();
@@ -119,8 +92,7 @@ public class RevivedStateView : View, ITriggerer
         activateFloatingStateEvent.Dispatch();
     }
 
-    public bool IsInPosition
-    {
-        set { _isInPosition = value; }
+    public bool IsInPosition {
+        set { isInPosition = value; }
     }
 }

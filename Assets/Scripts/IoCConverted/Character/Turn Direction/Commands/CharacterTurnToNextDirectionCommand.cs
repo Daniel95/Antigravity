@@ -2,7 +2,7 @@
 
 public class CharacterTurnToNextDirectionCommand : Command {
 
-    [Inject] private Ref<ICharacterMoveDirection> characterMoveDirectionRef;
+    [Inject] private Ref<ICharacterTurnDirection> characterMoveDirectionRef;
 
     [Inject] private CharacterTurnToNextDirectionParameter characterTurnToNextDirectionParameter;
 

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public interface ICharacterMoveDirection {
+public interface ICharacterTurnDirection {
     Vector2 SavedDirection { set; }
     void TurnToNextDirection(CharacterTurnToNextDirectionParameter characterTurnToNextDirectionParameter);
 }
