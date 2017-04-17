@@ -1,7 +1,6 @@
-﻿using UnityEngine;
+﻿using IoCPlus;
 using System;
-using System.Collections;
-using IoCPlus;
+using UnityEngine;
 
 public class CharacterMoveDirectionView : View, ICharacterMoveDirection {
 

@@ -8,9 +8,16 @@ public class FloatingStateContext : Context {
         Bind<ActivateSlidingStateEvent>();
 
         On<EnterContextSignal>()
-            .Do<ActivateViewOnPlayerCommand<FloatingStateView>>()
-            .Dispatch<startdirmovement>();
+            .Do<CharacterPointToCeiledVelocityDirectionCommand>()
+            .Do<DispatchCharacterEnableDirectionalMovementEventCommand>(true);
 
+        On<CollisionEnter2DEvent>()
+            .Do<AbortIfCollisionTagIsNotTheSame>(Tags.Bouncy)
+            .Do<CharacterBounceCommand>()
+            .OnAbort<DispatchTurnFromWallEventCommand>();
+
+        On<TurnFromWallEvent>()
+            .Dispatch<CharacterTurnToNextDirectionEvent>()
+            .Dispatch<ActivateSlidingStateEvent>();
     }
-
 }

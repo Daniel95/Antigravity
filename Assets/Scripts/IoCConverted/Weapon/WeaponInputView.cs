@@ -23,7 +23,7 @@ public class WeaponInputView : View, IWeaponInput {
 
     private int weaponIndex;
 
-    private FutureDirectionIndicator futureDirIndicator;
+    private CharacterDirectionPoint futureDirIndicator;
 
     public override void Initialize() {
         weaponInputRef.Set(this);
@@ -31,7 +31,7 @@ public class WeaponInputView : View, IWeaponInput {
 
     void Start() {
         gunLookAt = gun.GetComponent<LookAt>();
-        futureDirIndicator = GetComponent<FutureDirectionIndicator>();
+        futureDirIndicator = GetComponent<CharacterDirectionPoint>();
 
         foreach (IWeaponOutput weapon in GetComponents<IWeaponOutput>()) {
             weapons.Add(weapon);
@@ -48,7 +48,7 @@ public class WeaponInputView : View, IWeaponInput {
 
         cancelAimWeaponEvent.Dispatch();
 
-        futureDirIndicator.PointToCeiledVelocityDir();
+        futureDirIndicator.PointToCeiledVelocityDirection();
     }
 
     public void ReleaseInDirection(Vector2 direction) {

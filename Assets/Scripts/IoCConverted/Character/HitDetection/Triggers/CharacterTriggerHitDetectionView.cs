@@ -8,9 +8,9 @@ public class CharacterTriggerHitDetectionView : View, ICharacterTriggerHitDetect
 
     public IEnumerable<string> CurrentTriggerTags { get { return currentTriggerTags; } }
 
-    [Inject] private OnTriggerEnter2DEvent onTriggerEnter2DEvent;
-    [Inject] private OnTriggerStay2DEvent onTriggerStay2DEvent;
-    [Inject] private OnTriggerExit2DEvent onTriggerExit2DEvent;
+    [Inject] private TriggerEnter2DEvent onTriggerEnter2DEvent;
+    [Inject] private TriggerStay2DEvent onTriggerStay2DEvent;
+    [Inject] private TriggerExit2DEvent onTriggerExit2DEvent;
 
     private List<string> currentTriggerTags = new List<string>();
 

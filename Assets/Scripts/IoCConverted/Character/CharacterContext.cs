@@ -18,9 +18,11 @@ public class CharacterContext : Context {
             .Do<CharacterRetryJumpCommand>();
 
         On<CharacterJumpEvent>()
+            .Do<CharacterPointToCeiledVelocityDirectionCommand>()
             .Do<CharacterJumpCommand>();
 
         On<CharacterBounceEvent>()
+            .Do<CharacterPointToCeiledVelocityDirectionCommand>()
             .Do<CharacterBounceCommand>();
 
         On<CharacterRemoveCollisionDirectionEvent>()
@@ -28,5 +30,9 @@ public class CharacterContext : Context {
 
         On<CharacterResetCollisionDirectionEvent>()
             .Do<CharacterResetCollisionDirectionCommand>();
+
+        On<CharacterTurnToNextDirectionEvent>()
+            .Do<CharacterPointToCeiledVelocityDirectionCommand>()
+            .Do<CharacterTurnToNextDirectionCommand>();
     }
 }

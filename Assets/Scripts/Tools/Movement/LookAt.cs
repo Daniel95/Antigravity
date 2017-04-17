@@ -1,10 +1,8 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class LookAt : MonoBehaviour {
 
-    public void UpdateLookAt(Vector2 lookAtPos)
-    {
-        transform.right = lookAtPos - (Vector2)transform.position;
+    public void UpdateLookAt(Vector2 lookAtPosition) {
+        transform.right = lookAtPosition - (Vector2)transform.position;
     }
 }
