@@ -11,6 +11,5 @@ public class AbortIfNotCollidingAndNotInTriggerTagCommand : Command<string> {
         if (!collision.transform.CompareTag(tag) && !characterTriggerHitDetectionRef.Get().CurrentTriggerTags.Contains(tag)) {
             Abort();
         }
-
     }
 }

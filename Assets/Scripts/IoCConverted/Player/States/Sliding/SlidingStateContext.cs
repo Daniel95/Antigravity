@@ -5,11 +5,13 @@ public class SlidingStateContext : Context {
     protected override void SetBindings() {
         base.SetBindings();
 
+
+
         On<EnterContextSignal>()
-            .Do<InstantiateViewOnPlayerCommand<SlidingStateView>>();
+            .Do<CharacterActivateDirectionalMovementCommand>();
 
         On<JumpInputEvent>()
-            .Do<PlayerJumpCommand>();
+            .Do<CharacterTryJumpCommand>();
     }
 
 }

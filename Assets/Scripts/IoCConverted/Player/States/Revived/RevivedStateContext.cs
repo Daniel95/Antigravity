@@ -9,7 +9,7 @@ public class RevivedStateContext : Context {
             .Do<InstantiateViewOnPlayerCommand<RevivedStateView>>()
             .Do<CharacterResetVelocityCommand>()
             .Do<CharacterResetMoveDirectionCommand>()
-            .Do<CancelDragWeaponInputCommand>()
+            .Dispatch<CancelDragInputEvent>()
             .Do<DispatchEnableShootingInputEventCommand>(false)
             .Do<CharacterResetCollisionDirectionCommand>();
 
