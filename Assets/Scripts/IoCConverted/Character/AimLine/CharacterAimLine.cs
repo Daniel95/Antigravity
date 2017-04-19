@@ -2,9 +2,8 @@
 using System.Collections;
 using UnityEngine;
 
-public class AimLineView : View {
+public class CharacterAimLineView : View, ICharacterAimLine {
 
-    public Vector2 LineDestination { set { lineDestination = value; } }
     public bool AimLineActive { get { return aimLineActive; } }
 
     [SerializeField] private LineRenderer line;
@@ -13,11 +12,27 @@ public class AimLineView : View {
     private Coroutine updateLineRendererPositions;
     private bool aimLineActive;
 
+    public void UpdateAimLineDestination(Vector2 destination) {
+        if (!aimLineActive) {
+            StartAimLine(destination);
+        }
+
+        lineDestination = destination;
+    }
+
+    public void StopAimLine() {
+        if (aimLineActive) {
+            StopCoroutine(updateLineRendererPositions);
+
+            line.enabled = aimLineActive = false;
+        }
+    }
+
     void Start() {
         line.enabled = false;
     }
 
-    public void StartAimLine(Vector2 destination) {
+    private void StartAimLine(Vector2 destination) {
         line.enabled = aimLineActive = true;
 
         line.SetPosition(0, transform.position);
@@ -32,14 +47,6 @@ public class AimLineView : View {
             line.SetPosition(0, transform.position);
             line.SetPosition(1, lineDestination);
             yield return null;
-        }
-    }
-
-    public void StopAimLine() {
-        if (aimLineActive) {
-            StopCoroutine(updateLineRendererPositions);
-
-            line.enabled = aimLineActive = false;
         }
     }
 }

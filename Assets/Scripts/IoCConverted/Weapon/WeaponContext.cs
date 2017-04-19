@@ -1,5 +1,4 @@
 ﻿using IoCPlus;
-using UnityEngine;
 
 public class WeaponContext : Context {
 
@@ -8,7 +7,7 @@ public class WeaponContext : Context {
 
         Bind<HookModel>();
 
-        Bind<Ref<IWeaponInput>>();
+        Bind<Ref<IShoot>>();
         Bind<Ref<IWeaponOutput>>();
         Bind<Ref<IPullingHook>>();
         Bind<Ref<IGrapplingHook>>();
@@ -19,26 +18,22 @@ public class WeaponContext : Context {
         Bind<CancelHookEvent>();
 
         On<EnterContextSignal>()
-            .Do<ActivateViewOnPlayerCommand<WeaponInputView>>();
+            .Do<ActivateViewOnPlayerCommand<ShootView>>();
+
+        On<ReleaseInDirectionInputEvent>()
+            .Do<AbortIfGameIsPauzedCommand>()
+            .Do<DispatchFireWeaponEventCommand>();
 
         On<DraggingInputEvent>()
             .Do<AbortIfGameIsPauzedCommand>()
-            .Do<DraggingWeaponInputCommand>();
+            .Do<CharacterPointToDirectionCommand>()
+            .Do<CharacterUpdateAimLineDestinationCommand>()
+            .Do<DispatchAimWeaponEventCommand>();
+
         On<CancelDragInputEvent>()
             .Do<AbortIfGameIsPauzedCommand>()
-            .Do<CancelDragWeaponInputCommand>();
-        On<ReleaseInDirectionInputEvent>()
-            .Do<AbortIfGameIsPauzedCommand>()
-            .Do<ReleaseInDirectionWeaponInputCommand>();
-        On<FireWeaponEvent>()
-            .Do<AbortIfGameIsPauzedCommand>()
-            .Do<FireWeaponOutputCommand>();
-        On<AimWeaponEvent>()
-            .Do<AbortIfGameIsPauzedCommand>()
-            .Do<AimWeaponOutputCommand>();
-        On<CancelAimWeaponEvent>()
-            .Do<AbortIfGameIsPauzedCommand>()
-            .Do<CancelAimWeaponOutputCommand>();
+            .Do<CharacterPointToCeiledVelocityDirectionCommand>()
+            .Do<CancelAimWeaponOutputCommand>()
+            .Dispatch<CancelAimWeaponEvent>();
     }
-
 }

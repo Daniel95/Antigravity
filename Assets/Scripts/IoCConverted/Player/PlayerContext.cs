@@ -28,7 +28,7 @@ public class PlayerContext : Context {
 
         //weapons
         Bind<SelectedWeaponOutputModel>();
-        Bind<Ref<IWeaponInput>>();
+        Bind<Ref<IShoot>>();
         Bind<FireWeaponEvent>();
         Bind<AimWeaponEvent>();
         Bind<CancelAimWeaponEvent>();

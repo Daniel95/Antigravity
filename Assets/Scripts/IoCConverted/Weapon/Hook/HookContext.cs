@@ -13,7 +13,7 @@ public class HookContext : Context {
 
         On<EnterContextSignal>();
 
-        On<CancelGrapplingHookEvent>();
-            //.Do
+        On<CancelGrapplingHookEvent>()
+            .Do<StopSlowTimeCommand>();
     }
 }

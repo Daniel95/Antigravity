@@ -18,7 +18,7 @@ public class HookView : View, IHookView, IWeaponOutput, ITriggerer {
     [SerializeField] private LayerMask rayLayers;
     [SerializeField] private GameObject hookProjectilePrefab;
     [SerializeField] private float directionSpeedNeutralValue = 0.15f;
-    [SerializeField] private AimLineView aimRay;
+    [SerializeField] private CharacterAimLineView aimRay;
 
     //to save our LineUpdateCoroutine;
     private Coroutine _lineUpdateCoroutine;
@@ -72,7 +72,7 @@ public class HookView : View, IHookView, IWeaponOutput, ITriggerer {
 
     protected virtual void Awake() {
         lineRenderer = GetComponent<LineRenderer>();
-        aimRay = GetComponent<AimLineView>();
+        aimRay = GetComponent<CharacterAimLineView>();
 
         hookProjectileGObj = Instantiate(hookProjectilePrefab, Vector2.zero, new Quaternion(0, 0, 0, 0));
         hookProjectileScript = hookProjectileGObj.GetComponent<HookProjectile>();

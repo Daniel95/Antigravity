@@ -45,7 +45,7 @@ public class HookWeapon : MonoBehaviour, IWeaponOutput, ITriggerer {
 
     protected enum HookStates { BusyShooting, BusyPullingBack, Active, Inactive }
 
-    private AimLineView _aimRay;
+    private CharacterAimLineView _aimRay;
 
     public static class HookAbleLayers
     {
@@ -53,7 +53,7 @@ public class HookWeapon : MonoBehaviour, IWeaponOutput, ITriggerer {
         public static int PullSurface =  LayerMask.NameToLayer("PullHook");
     }
 
-    public void Aiming(Vector2 destination, Vector2 spawnPosition) {
+    public void Aiming(Vector2 destination) {
         if (!_aimRay.AimLineActive) {
             _aimRay.StartAimLine(destination);
         }
@@ -96,7 +96,7 @@ public class HookWeapon : MonoBehaviour, IWeaponOutput, ITriggerer {
     protected virtual void Awake() {
         LineRenderer = GetComponent<LineRenderer>();
 
-        _aimRay = GetComponent<AimLineView>();
+        _aimRay = GetComponent<CharacterAimLineView>();
 
         _charAcces = GetComponent<CharScriptAccess>();
 
@@ -122,9 +122,11 @@ public class HookWeapon : MonoBehaviour, IWeaponOutput, ITriggerer {
         //change speed by calculating the angle
         float angleDifference =
             Mathf.Abs(Vector2.Dot((HookProjectileGObj.transform.position - transform.position).normalized,
-                _charAcces.ControlVelocity.GetVelocityDirection()));
+                        _charAcces.ControlVelocity.GetVelocityDirection()));
 
         float speedChange = angleDifference * -1 + 1;
+
+
 
         _charAcces.ControlSpeed.TempSpeedChange(speedChange, directionSpeedNeutralValue);
     }

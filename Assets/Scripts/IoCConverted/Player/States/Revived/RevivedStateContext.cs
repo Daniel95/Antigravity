@@ -10,15 +10,18 @@ public class RevivedStateContext : Context {
             .Do<CharacterResetVelocityCommand>()
             .Do<CharacterResetMoveDirectionCommand>()
             .Do<CancelDragWeaponInputCommand>()
-            .Do<DispatchEnableShootingInputCommand>(false)
+            .Do<DispatchEnableShootingInputEventCommand>(false)
             .Do<CharacterResetCollisionDirectionCommand>();
 
         On<DraggingInputEvent>()
+            .Do<CharacterUpdateAimLineDestinationCommand>()
             .Do<RevivedStateAimingCommand>();
 
         On<ReleaseInDirectionInputEvent>()
-            .Do<RevivedStateLaunchCommand>()
+            .Do<DispatchEnableShootingInputEventCommand>(true)
+            .Do<CharacterStopAimLineCommand>()
+            .Do<CharacterSetMoveDirectionCommand>()
+            .Do<CharacterTemporarySpeedIncreaseCommand>()
             .Dispatch<ActivateFloatingStateEvent>();
-
     }
 }

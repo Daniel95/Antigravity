@@ -1,7 +1,7 @@
 ﻿using IoCPlus;
 using UnityEngine;
 
-public class CharacterDirectionPoint : View, ICharacterDirectionPointer {
+public class CharacterDirectionPointView : View, ICharacterDirectionPointer {
 
     [Inject] private Ref<ICharacterDirectionPointer> directionPointer;
 

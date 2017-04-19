@@ -3,13 +3,15 @@ using System.Collections;
 using System;
 using IoCPlus;
 
-public class RevivedStateView : View, ITriggerer
-{
-    [Inject] private EnableShootingInputEvent enableShootingInputEvent;
+public class RevivedStateView : View, IRevivedState, ITriggerer {
 
-    [Inject] private ActivateFloatingStateEvent activateFloatingStateEvent;
-    [Inject] private CancelDragInputEvent cancelDragInputEvent;
-    [Inject] private CharacterSetMoveDirectionEvent characterSetMoveDirectionEvent;
+    //used by action trigger to decide when to start the instructions/tutorial, and when to stop it
+    public Action ActivateTrigger { get; set; }
+    public Action StopTrigger { get; set; }
+
+    public bool IsInPosition { set { isInPosition = value; } }
+
+    [Inject] private CharacterUpdateLineDestinationEvent characterUpdateLineDestinationEvent;
 
     [SerializeField] private GameObject gun;
 
@@ -23,10 +25,6 @@ public class RevivedStateView : View, ITriggerer
     private LookAt lookAt;
     private bool isInPosition; //the first time we hit a checkpoint, we will be moving towards the center of it, once we reached the center we are in position and can fire ourselfes.
     private bool canFire;
-
-    //used by action trigger to decide when to start the instructions/tutorial, and when to stop it
-    public Action ActivateTrigger { get; set; }
-    public Action StopTrigger { get; set; }
 
     public override void Initialize() {
         base.Initialize();
@@ -58,9 +56,9 @@ public class RevivedStateView : View, ITriggerer
         canFire = true;
     }
 
-    public void StartMovingToCenterCheckPoint(Vector2 _checkPointPosition) {
+    public void StartMovingToCenterCheckPoint(Vector2 checkPointPosition) {
         moveTowards.ReachedDestination += ReachedPosition;
-        moveTowards.StartMoving(_checkPointPosition);
+        moveTowards.StartMoving(checkPointPosition);
     }
 
     private void ReachedPosition() {
@@ -71,28 +69,9 @@ public class RevivedStateView : View, ITriggerer
         }
     }
 
-    public void Aim(Vector2 dir){
-        if (!_aimRay.AimLineActive) {
-            _aimRay.StartAimLine((Vector2)transform.position + (dir * startDirectionRayLength));
-        }
+    public void Aim(Vector2 direction){
+        characterUpdateLineDestinationEvent.Dispatch((Vector2)transform.position + (direction * startDirectionRayLength));
 
-        _aimRay.LineDestination = (Vector2)transform.position + (dir * startDirectionRayLength);
-
-        lookAt.UpdateLookAt((Vector2)transform.position + dir);
-    }
-
-    public void Launch(Vector2 dir) {
-        enableShootingInputEvent.Dispatch(true);
-
-        _aimRay.StopAimLine();
-        _charAccess.ControlVelocity.SetDirection(dir);
-
-        _charAccess.ControlSpeed.TempSpeedIncrease();
-
-        activateFloatingStateEvent.Dispatch();
-    }
-
-    public bool IsInPosition {
-        set { isInPosition = value; }
+        lookAt.UpdateLookAt((Vector2)transform.position + direction);
     }
 }

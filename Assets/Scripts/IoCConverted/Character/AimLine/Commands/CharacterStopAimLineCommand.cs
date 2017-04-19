@@ -1,8 +1,8 @@
 ﻿using IoCPlus;
 
-public class StopAimLineCommand : Command {
+public class CharacterStopAimLineCommand : Command {
 
-    [Inject] private Ref<IAimLine> aimLineRef;
+    [Inject] private Ref<ICharacterAimLine> aimLineRef;
 
     protected override void Execute() {
         aimLineRef.Get().StopAimLine();

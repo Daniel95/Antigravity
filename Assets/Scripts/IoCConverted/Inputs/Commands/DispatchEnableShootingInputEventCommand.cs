@@ -1,6 +1,6 @@
 ﻿using IoCPlus;
 
-public class DispatchEnableShootingInputCommand : Command<bool> {
+public class DispatchEnableShootingInputEventCommand : Command<bool> {
 
     [Inject] private EnableShootingInputEvent enableShootingInputEvent;
 

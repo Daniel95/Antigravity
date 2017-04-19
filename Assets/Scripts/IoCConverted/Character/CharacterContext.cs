@@ -34,5 +34,11 @@ public class CharacterContext : Context {
         On<CharacterTurnToNextDirectionEvent>()
             .Do<CharacterPointToCeiledVelocityDirectionCommand>()
             .Do<CharacterTurnToNextDirectionCommand>();
+
+        On<CharacterUpdateLineDestinationEvent>()
+            .Do<CharacterUpdateAimLineDestinationCommand>();
+
+        On<CharacterStopAimLineEvent>()
+            .Do<CharacterStopAimLineCommand>();
     }
 }
