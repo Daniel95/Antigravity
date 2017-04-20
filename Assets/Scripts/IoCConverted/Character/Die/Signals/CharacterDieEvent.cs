@@ -1,5 +1,4 @@
-﻿using UnityEngine;
-using System.Collections;
-using IoCPlus;
+﻿using IoCPlus;
+using UnityEngine;
 
-public class CharacterDieEvent : Signal { }
+public class CharacterDieEvent : Signal<GameObject> { }

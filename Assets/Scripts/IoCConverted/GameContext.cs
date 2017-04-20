@@ -11,6 +11,9 @@ public class GameContext : Context {
             .AddContext<PlayerContext>()
             .AddContext<LevelContext>()
             .AddContext<CameraContext>();
+
+        On<ReloadSceneEvent>()
+            .Do<ReloadSceneCommand>();
     }
 
 }

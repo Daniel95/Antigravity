@@ -9,8 +9,6 @@ public class CharacterContext : Context {
             .Do<ActivateViewOnPlayerCommand<CharacterVelocityView>>()
             .Do<CharacterSetSavedDirectionToStartDirectionCommand>();
 
-        On<CharacterStartSlidingMovementEvent>();
-
         On<JumpInputEvent>()
             .Do<CharacterTryJumpCommand>();
 

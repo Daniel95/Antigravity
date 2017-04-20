@@ -39,6 +39,17 @@ public class PlayerContext : Context {
             .AddContext<WeaponContext>()
             .AddContext<PlayerStateContext>()
             .AddContext<CharacterContext>();
-    }
 
+        On<TriggerEnter2DEvent>()
+            .Do<AbortIfTriggerTagIsNotTheSame>("Checkpoint")
+            .Do<SetCheckpointReachedCommand>(true);
+
+        On<CharacterDieEvent>()
+            .Do<AbortIfGameObjectIsNotThePlayerCommand>()
+            .Do<ChooseAndDispatchPlayerDiesEventCommand>();
+
+        On<RespawnPlayerEvent>()
+            .Do<InstantiateGameObjectCommand>()
+            .Dispatch<ActivateRevivedStateEvent>();
+    }
 }
