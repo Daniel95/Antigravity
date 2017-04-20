@@ -50,6 +50,7 @@ public class PlayerContext : Context {
 
         On<RespawnPlayerEvent>()
             .Do<InstantiateGameObjectCommand>()
+            .Do<StartScreenShakeCommand>()
             .Dispatch<ActivateRevivedStateEvent>();
     }
 }

@@ -1,33 +1,26 @@
 ﻿using UnityEngine;
 using System.Collections;
+using IoCPlus;
 
-public class ScreenShake : MonoBehaviour {
+public class ScreenShakeView : View, IScreenShake {
 
-    [SerializeField]
-    private int minShakeTime = 2;
+    [Inject] private Ref<IScreenShake> screenShakeRef;
 
-    [SerializeField]
-    private int maxShakeTime = 35;
+    [SerializeField] private int minShakeTime = 2;
+    [SerializeField] private int maxShakeTime = 35;
+    [SerializeField] private float shakeStrength = 0.04f;
 
-    [SerializeField]
-    private float shakeStrength = 0.04f;
+    private bool shaking;
 
-    private bool _shaking;
-
-    private void OnEnable()
-    {
-        KillPlayerView.PlayerGettingKilled += StartShake;
+    public override void Initialize() {
+        screenShakeRef.Set(this);
     }
 
-    private void OnDisable()
-    {
-        KillPlayerView.PlayerGettingKilled -= StartShake;
-    }
-
-    public void StartShake() {
+    public void StartScreenShake() {
         //stop the previous shake if we are already shaking
-        if (_shaking)
+        if (shaking) {
             StopAllCoroutines();
+        }
 
         StartCoroutine(Shake());
     }
@@ -36,7 +29,7 @@ public class ScreenShake : MonoBehaviour {
     {
         var waitForFixedUpdate = new WaitForFixedUpdate();
 
-        _shaking = true;
+        shaking = true;
 
         //choose a random number between minshake and maxshake, that is the amount of times we are going to shake
         float shakeTimes = Random.Range(minShakeTime, maxShakeTime);
@@ -53,6 +46,6 @@ public class ScreenShake : MonoBehaviour {
             yield return waitForFixedUpdate;
         }
 
-        _shaking = false;
+        shaking = false;
     }
 }
