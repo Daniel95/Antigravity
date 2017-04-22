@@ -1,6 +1,6 @@
 ﻿using IoCPlus;
 
-public class StartSlowTimeCommand : Command {
+public class SlowTimeCommand : Command {
 
     [Inject] private Ref<ISlowTime> slowTimeRef;
 

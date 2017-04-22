@@ -45,31 +45,9 @@ public class HookWeapon : MonoBehaviour, IWeaponOutput, ITriggerer {
 
     protected enum HookStates { BusyShooting, BusyPullingBack, Active, Inactive }
 
-    private CharacterAimLineView _aimRay;
-
-    public static class HookAbleLayers
-    {
+    public static class HookAbleLayers {
         public static int GrappleSurface =  LayerMask.NameToLayer("GrappleHook");
         public static int PullSurface =  LayerMask.NameToLayer("PullHook");
-    }
-
-    public void Aiming(Vector2 destination) {
-        if (!_aimRay.AimLineActive) {
-            _aimRay.StartAimLine(destination);
-        }
-
-        _aimRay.LineDestination = destination;
-    }
-
-    /// <summary>
-    /// cancel aiming
-    /// </summary>
-    public void CancelAiming() {
-        StopBulletTime();
-    }
-
-    private void StopBulletTime() {
-        _aimRay.StopAimLine();
     }
 
     /// <summary>
@@ -78,10 +56,8 @@ public class HookWeapon : MonoBehaviour, IWeaponOutput, ITriggerer {
     /// <param name="destination"></param>
     /// <param name="spawnPosition"></param>
     public void Fire(Vector2 destination, Vector2 spawnPosition) {
-        StopBulletTime();
 
-        if (CurrentHookState == HookStates.Inactive)
-        {
+        if (CurrentHookState == HookStates.Inactive) {
             print("shoot : " + this);
             ShootHook(destination, spawnPosition);
         }

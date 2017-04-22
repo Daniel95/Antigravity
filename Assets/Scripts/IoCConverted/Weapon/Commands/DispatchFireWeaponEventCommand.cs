@@ -1,13 +1,14 @@
 ﻿using IoCPlus;
+using UnityEngine;
 
 public class DispatchFireWeaponEventCommand : Command {
 
     [Inject] private Ref<IShoot> shootRef;
     [Inject] private FireWeaponEvent fireWeaponEvent;
 
-    [Inject] private FireWeaponParameter fireWeaponParameter;
+    [InjectParameter] private Vector2 direction;
 
     protected override void Execute() {
-        fireWeaponEvent.Dispatch(fireWeaponParameter);
+        fireWeaponEvent.Dispatch(new FireWeaponParameter(shootRef.Get().GetDestinationPoint(direction), shootRef.Get().SpawnPosition));
     }
 }

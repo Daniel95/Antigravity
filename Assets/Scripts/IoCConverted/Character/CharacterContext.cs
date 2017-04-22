@@ -38,5 +38,8 @@ public class CharacterContext : Context {
 
         On<CharacterStopAimLineEvent>()
             .Do<CharacterStopAimLineCommand>();
+
+        On<CollisionEnter2DEvent>()
+            .Do<AbortIfNotCollidingAndNotInTriggerKillerTagsCommand>();
     }
 }

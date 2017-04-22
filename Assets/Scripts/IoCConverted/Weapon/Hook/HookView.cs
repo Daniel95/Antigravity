@@ -32,14 +32,6 @@ public class HookView : View, IHookView, IWeaponOutput, ITriggerer {
         hookProjectileGObj.SetActive(false);
     }
 
-    public void Aiming(Vector2 destination, Vector2 spawnPosition) {
-        if (!aimRay.AimLineActive) {
-            aimRay.StartAimLine(destination);
-        }
-
-        aimRay.LineDestination = destination;
-    }
-
     /// <summary>
     /// cancel aiming
     /// </summary>

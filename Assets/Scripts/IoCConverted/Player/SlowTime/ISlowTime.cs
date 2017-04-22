@@ -1,4 +1,4 @@
 ﻿public interface ISlowTime {
-    void StartSlowTime();
+    void SlowTime();
     void StopSlowTime();
 }

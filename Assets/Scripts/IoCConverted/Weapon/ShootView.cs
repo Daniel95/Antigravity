@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class ShootView : View, IShoot {
 
+    public Vector2 SpawnPosition { get { return spawnTransform.position; } }
+
     [Inject] private Ref<IShoot> weaponInputRef;
 
     [Inject] private FireWeaponEvent fireWeaponEvent;
