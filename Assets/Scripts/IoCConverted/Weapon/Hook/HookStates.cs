@@ -1,0 +1,1 @@
+﻿public enum HookState { BusyShooting, BusyPullingBack, Active, Inactive }
