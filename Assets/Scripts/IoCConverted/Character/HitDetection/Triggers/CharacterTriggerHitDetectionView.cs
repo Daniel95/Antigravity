@@ -20,15 +20,15 @@ public class CharacterTriggerHitDetectionView : View, ICharacterTriggerHitDetect
 
     private void OnTriggerEnter2D(Collider2D collision) {
         currentTriggerTags.Add(collision.tag);
-        onTriggerEnter2DEvent.Dispatch(collision);
+        onTriggerEnter2DEvent.Dispatch(gameObject, collision);
     }
 
     private void OnTriggerStay2D(Collider2D collision) {
-        onTriggerStay2DEvent.Dispatch(collision);
+        onTriggerStay2DEvent.Dispatch(gameObject, collision);
     }
 
     private void OnTriggerExit2D(Collider2D collision) {
         currentTriggerTags.Remove(collision.tag);
-        onTriggerExit2DEvent.Dispatch(collision);
+        onTriggerExit2DEvent.Dispatch(gameObject, collision);
     }
 }

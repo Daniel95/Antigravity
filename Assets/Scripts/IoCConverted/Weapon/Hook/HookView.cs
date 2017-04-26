@@ -13,9 +13,10 @@ public class HookView : View, IHook, ITriggerer {
 
     public HookState CurrentHookState { get { return currentHookState; } }
     public GameObject HookProjectileGameObject { get { return hookProjectileGameObject; } }
-    public HookProjectile HookProjectile { get { return hookProjectile; } }
     public List<Transform> Anchors { get { return anchors; } }
     public LineRenderer LineRendererComponent { get { return lineRendererComponent; } }
+    public LayerMask RayLayers { get { return rayLayers; } }
+    public float DirectionSpeedNeutralValue { get { return directionSpeedNeutralValue; } }
 
     //used by action trigger to decide when to start the instructions/tutorial, and when to stop it
     public Action ActivateTrigger { get; set; }
@@ -23,15 +24,14 @@ public class HookView : View, IHook, ITriggerer {
 
     [SerializeField] private LineRenderer lineRenderer;
     [SerializeField] private GameObject hookProjectileGObj;
-    [SerializeField] private HookProjectile hookProjectileScript;
+    [SerializeField] private HookProjectileView hookProjectileScript;
     [SerializeField] private LayerMask rayLayers;
     [SerializeField] private GameObject hookProjectilePrefab;
     [SerializeField] private float directionSpeedNeutralValue = 0.15f;
-    [SerializeField] private CharacterAimLineView aimRay;
 
     private HookState currentHookState = HookState.Inactive;
     private GameObject hookProjectileGameObject;
-    private HookProjectile hookProjectile;
+    private HookProjectileView hookProjectile;
     private List<Transform> anchors = new List<Transform>();
     private LineRenderer lineRendererComponent;
 
@@ -43,7 +43,7 @@ public class HookView : View, IHook, ITriggerer {
         lineRendererComponent = lineRenderer;
 
         hookProjectileGObj = Instantiate(hookProjectilePrefab, Vector2.zero, new Quaternion(0, 0, 0, 0));
-        hookProjectileScript = hookProjectileGObj.GetComponent<HookProjectile>();
+        hookProjectileScript = hookProjectileGObj.GetComponent<HookProjectileView>();
         hookProjectileGObj.SetActive(false);
     }
 
@@ -53,12 +53,12 @@ public class HookView : View, IHook, ITriggerer {
     /// <param name="destination"></param>
     /// <param name="spawnPosition"></param>
     public void Fire(Vector2 destination, Vector2 spawnPosition) {
-        if (currentHookState == HookStates.Inactive) {
+        if (currentHookState == HookState.Inactive) {
             print("shoot : " + this);
             ShootHook(destination, spawnPosition);
         }
         //if we still have a grapple activate, deactivate it first before we shoot a new one
-        else if (currentHookState == HookStates.Active || currentHookState == HookStates.BusyShooting) {
+        else if (currentHookState == HookState.Active || currentHookState == HookState.BusyShooting) {
             holdGrappleCoroutine = StartCoroutine(HoldGrapple(destination, spawnPosition));
             PullBack();
         }
@@ -66,10 +66,9 @@ public class HookView : View, IHook, ITriggerer {
 
     protected virtual void Awake() {
         lineRenderer = GetComponent<LineRenderer>();
-        aimRay = GetComponent<CharacterAimLineView>();
 
         hookProjectileGObj = Instantiate(hookProjectilePrefab, Vector2.zero, new Quaternion(0, 0, 0, 0));
-        hookProjectileScript = hookProjectileGObj.GetComponent<HookProjectile>();
+        hookProjectileScript = hookProjectileGObj.GetComponent<HookProjectileView>();
         hookProjectileGObj.SetActive(false);
     }
 
@@ -84,54 +83,47 @@ public class HookView : View, IHook, ITriggerer {
         PullBack();
     }
 
-    protected void ChangeSpeedByAngle() {
-        //change speed by calculating the angle
-        //float angleDifference =
-         //   Mathf.Abs(Vector2.Dot((hookProjectileGObj.transform.position - transform.position).normalized,
-         //       _charAcces.ControlVelocity.GetVelocityDirection()));
-
-       // float speedChange = angleDifference * -1 + 1;
-
-       // _charAcces.ControlSpeed.TempSpeedChange(speedChange, directionSpeedNeutralValue);
-    }
-
-    public void AddAnchor(Vector2 position, Transform parent) {
+    public void SpawnAnchor(Vector2 position, Transform parent) {
         anchors.Add(CreateAnchor(position, parent));
     }
 
-    private Transform CreateAnchor(Vector2 pos, Transform parent) {
-        GameObject p = new GameObject("GrappleAnchor");
-        p.transform.position = pos;
-        p.layer = LayerMask.NameToLayer("Ignore Raycast");
-        p.transform.SetParent(parent);
-        return p.transform;
+    public void ActivateHookProjectile(Vector2 spawnPosition) {
+        hookProjectileGObj.SetActive(true);
+        hookProjectileGObj.transform.position = spawnPosition;
+    }
+
+    public void DeactivateHookProjectile() {
+        hookProjectileGObj.SetActive(false);
+    }
+
+    private Transform CreateAnchor(Vector2 position, Transform parent) {
+        GameObject anchor = new GameObject("HookRopeAnchor");
+        anchor.transform.position = position;
+        anchor.layer = LayerMask.NameToLayer("Ignore Raycast");
+        anchor.transform.SetParent(parent);
+        return anchor.transform;
     }
 
     protected virtual void DeactivateHook() {
         hookProjectileScript.Returned = null;
-        currentHookState = HookStates.Inactive;
+        currentHookState = HookState.Inactive;
 
         hookProjectileGObj.SetActive(false);
 
-        print("DestroyAnchors");
         DestroyAnchors();
-        print("StopLinerenderer");
-        StopLineRenderer();
+        DeactivateHookRope();
     }
 
     private IEnumerator HoldGrapple(Vector2 destination, Vector2 spawnPosition) {
-        while (currentHookState != HookStates.Inactive) {
+        while (currentHookState != HookState.Inactive) {
             yield return null;
         }
-
-        print("shoot");
-
 
         ShootHook(destination, spawnPosition);
     }
 
     private void ShootHook(Vector2 destination, Vector2 spawnPosition) {
-        currentHookState = HookStates.BusyShooting;
+        currentHookState = HookState.BusyShooting;
 
         hookProjectileGObj.SetActive(true);
         hookProjectileGObj.transform.position = spawnPosition;
@@ -146,7 +138,6 @@ public class HookView : View, IHook, ITriggerer {
         lineRenderer.SetPosition(0, anchors[0].position);
         lineRenderer.SetPosition(1, transform.position);
 
-        print("Start coroutine");
         lineUpdateCoroutine = StartCoroutine(UpdateLineRendererPositions());
 
         hookProjectileScript.Attached = Hooked;
@@ -168,9 +159,9 @@ public class HookView : View, IHook, ITriggerer {
     //pulls the grappling hook back to the player, once it reached the player set it to inactive
     private void PullBack() {
         //only pullback when we aren't already pulling back and the we are not in the inactive state. 
-        if (currentHookState == HookStates.BusyPullingBack || currentHookState == HookStates.Inactive) return;
+        if (currentHookState == HookState.BusyPullingBack || currentHookState == HookState.Inactive) return;
 
-        currentHookState = HookStates.BusyPullingBack;
+        currentHookState = HookState.BusyPullingBack;
 
         List<Vector2> returnPoints = new List<Vector2>();
         foreach (Transform t in anchors) {
@@ -191,12 +182,17 @@ public class HookView : View, IHook, ITriggerer {
 
     }
 
-    private void StopLineRenderer() {
+    public void ActivateHookRope() {
+        lineRenderer.enabled = true;
+        lineRenderer.positionCount = 2;
+        lineRenderer.SetPosition(0, anchors[0].position);
+        lineRenderer.SetPosition(1, transform.position);
+        lineUpdateCoroutine = StartCoroutine(UpdateLineRendererPositions());
+    }
+
+    public void DeactivateHookRope() {
         lineRenderer.enabled = false;
         StopCoroutine(lineUpdateCoroutine);
-
-        print("stopped coroutine");
-
         lineRenderer.positionCount = 0;
     }
 }

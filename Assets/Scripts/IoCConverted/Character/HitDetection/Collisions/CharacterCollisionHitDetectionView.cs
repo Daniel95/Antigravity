@@ -15,14 +15,14 @@ public class CharacterCollisionHitDetectionView : View {
     private List<string> currentCollisionTags = new List<string>();
 
     private void OnCollisionEnter2D(Collision2D collision) {
-        onCollisionEnter2DEvent.Dispatch(collision);
+        onCollisionEnter2DEvent.Dispatch(gameObject, collision);
     }
 
     private void OnCollisionStay2D(Collision2D collision) {
-        onCollisionStay2DEvent.Dispatch(collision);
+        onCollisionStay2DEvent.Dispatch(gameObject, collision);
     }
 
     private void OnCollisionExit2D(Collision2D collision) {
-        onCollisionExit2DEvent.Dispatch(collision);
+        onCollisionExit2DEvent.Dispatch(gameObject, collision);
     }
 }

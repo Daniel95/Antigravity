@@ -45,7 +45,7 @@ public class PlayerContext : Context {
             .Do<SetCheckpointReachedCommand>(true);
 
         On<CharacterDieEvent>()
-            .Do<AbortIfGameObjectIsNotThePlayerCommand>()
+            .Do<AbortIfGameObjectIsNotPlayerCommand>()
             .Do<ChooseAndDispatchPlayerDiesEventCommand>();
 
         On<RespawnPlayerEvent>()

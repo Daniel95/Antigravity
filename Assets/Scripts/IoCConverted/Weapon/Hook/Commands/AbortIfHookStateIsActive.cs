@@ -1,11 +1,11 @@
 ﻿using IoCPlus;
 
-public class AbortIfHookStateIsNotActive : Command<HookState> {
+public class AbortIfHookStateIsActive : Command<HookState> {
 
     [Inject] private Ref<IHook> hookRef;
 
     protected override void Execute(HookState hookState) {
-        if(hookRef.Get().CurrentHookState != hookState) {
+        if(hookRef.Get().CurrentHookState == hookState) {
             Abort();
         }
     }

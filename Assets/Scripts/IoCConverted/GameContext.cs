@@ -7,6 +7,9 @@ public class GameContext : Context {
 
         Bind<PlayerModel>();
 
+        Bind<StartMoveTowardsEvent>();
+        Bind<StopMoveTowardsEvent>();
+
         On<EnterContextSignal>()
             .AddContext<PlayerContext>()
             .AddContext<LevelContext>()

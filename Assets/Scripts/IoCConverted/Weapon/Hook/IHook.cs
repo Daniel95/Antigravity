@@ -5,12 +5,16 @@ interface IHook {
 
     void Hooked();
     void Canceled();
-    void AddAnchor(Vector2 position, Transform parent);
+    void SpawnAnchor(Vector2 position, Transform parent);
+    void ActivateHookProjectile(Vector2 spawnPosition);
+    void DeactivateHookProjectile();
+    void ActivateHookRope();
+    void DeactivateHookRope();
 
-    HookState CurrentHookState { get; }
+    HookState CurrentHookState { get; set; }
     GameObject HookProjectileGameObject { get; }
-    HookProjectile HookProjectile { get; }
     List<Transform> Anchors { get; }
     LayerMask RayLayers { get; }
     LineRenderer LineRendererComponent { get; }
+    float DirectionSpeedNeutralValue { get; }
 }

@@ -7,8 +7,6 @@ public class PullingHookView : View, IPullingHook {
 
     [Inject] private Ref<IPullingHook> pullingHookRef;
 
-    [Inject] private CancelHookEvent cancelHookEvent;
-
     private CharacterVelocityView velocity;
 
     public override void Initialize() {

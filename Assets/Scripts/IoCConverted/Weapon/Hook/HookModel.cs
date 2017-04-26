@@ -6,7 +6,7 @@ public class HookModel {
 
     public HookStates CurrentHookState = HookStates.Inactive;
     public GameObject HookProjectileGameObject;
-    public HookProjectile HookProjectile;
+    public HookProjectileView HookProjectile;
     public List<Transform> Anchors = new List<Transform>();
     public LayerMask RayLayers;
     public LineRenderer LineRendererComponent;

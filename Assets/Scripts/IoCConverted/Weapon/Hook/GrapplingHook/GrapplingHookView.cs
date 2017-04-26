@@ -11,8 +11,6 @@ public class GrapplingHookView : View, IGrapplingHook {
     [Inject] private Ref<IGrapplingHook> grapplingHook;
 
     [Inject] private GrapplingHookStartedEvent startedGrapplingEvent;
-    [Inject] private ChangeSpeedByAngleEvent changeSpeedByAngleEvent;
-    [Inject] private AddAnchorEvent addAnchorEvent;
 
     public Action StartedGrappleLocking;
     public Action StoppedGrappleLocking;
@@ -33,8 +31,7 @@ public class GrapplingHookView : View, IGrapplingHook {
 
     public void Hooked(int hookedLayer)
     {
-        if (hookedLayer == HookWeapon.HookAbleLayers.GrappleSurface)
-        {
+        if (hookedLayer == HookAbleLayers.GrappleSurface) {
             CheckHookDistance();
         }
     }
@@ -43,12 +40,9 @@ public class GrapplingHookView : View, IGrapplingHook {
     {
         float distance = Vector2.Distance(transform.position, hookModel.HookProjectileGameObject.transform.position);
 
-        if (distance > minDistance)
-        {
+        if (distance > minDistance) {
             EnterGrappleLock(distance);
-        }
-        else 
-        {
+        } else {
             ExitGrappleLock();
         }
     }
@@ -67,8 +61,7 @@ public class GrapplingHookView : View, IGrapplingHook {
         //}
 
         //activate distanceJoint2D
-        if (StartedGrappleLocking != null)
-        {
+        if (StartedGrappleLocking != null) {
             StartedGrappleLocking();
         }
 

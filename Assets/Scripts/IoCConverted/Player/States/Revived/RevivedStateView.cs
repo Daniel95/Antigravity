@@ -21,7 +21,7 @@ public class RevivedStateView : View, IRevivedState, ITriggerer {
     [SerializeField]
     private int launchDelayWhenRespawning = 20;
 
-    private MoveTowards moveTowards;
+    private MoveTowardsView moveTowards;
     private LookAt lookAt;
     private bool isInPosition; //the first time we hit a checkpoint, we will be moving towards the center of it, once we reached the center we are in position and can fire ourselfes.
     private bool canFire;
@@ -41,7 +41,7 @@ public class RevivedStateView : View, IRevivedState, ITriggerer {
 
     private void Awake() {
         lookAt = gun.GetComponent<LookAt>();
-        moveTowards = GetComponent<MoveTowards>();
+        moveTowards = GetComponent<MoveTowardsView>();
         GetComponent<CharacterVelocityView>();
     }
 

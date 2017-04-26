@@ -1,4 +1,4 @@
 ﻿using IoCPlus;
 using UnityEngine;
 
-public class TriggerEnter2DEvent : Signal<Collider2D> {}
+public class TriggerEnter2DEvent : Signal<GameObject, Collider2D> {}

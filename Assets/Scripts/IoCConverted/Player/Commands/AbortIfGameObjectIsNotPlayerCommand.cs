@@ -1,7 +1,7 @@
 ﻿using IoCPlus;
 using UnityEngine;
 
-public class AbortIfGameObjectIsNotThePlayerCommand : Command {
+public class AbortIfGameObjectIsNotPlayerCommand : Command {
 
     [Inject] private PlayerModel playerModel;
 
@@ -11,5 +11,7 @@ public class AbortIfGameObjectIsNotThePlayerCommand : Command {
         if(gameobject != playerModel.player) {
             Abort();
         }
+
+        Collider2D coll;
     }
 }
