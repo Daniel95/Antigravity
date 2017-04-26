@@ -45,7 +45,7 @@ public class HookContext : Context {
             .Do<AbortIfGameObjectIsNotPlayerCommand>();
 
         //make special trigger event when the player touched something!
-        On<TriggerEnter2DEvent>()
+        On<PlayerTriggerEnter2DEvent>()
             .Do<AbortIfTriggerIsNotLayerIndex>
             .Do<AbortIfTriggerIsNotLayersIndexes>
 

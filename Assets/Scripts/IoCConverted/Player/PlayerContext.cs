@@ -52,5 +52,31 @@ public class PlayerContext : Context {
             .Do<InstantiateGameObjectCommand>()
             .Do<StartScreenShakeCommand>()
             .Dispatch<ActivateRevivedStateEvent>();
+
+
+        //collisions
+        On<CollisionEnter2DEvent>()
+            .Do<AbortIfGameObjectIsNotPlayerCommand>()
+            .Do<DispatchPlayerCollisionEnter2DEvent>();
+
+        On<CollisionStay2DEvent>()
+            .Do<AbortIfGameObjectIsNotPlayerCommand>()
+            .Do<DispatchPlayerCollisionStay2DEvent>();
+
+        On<CollisionExit2DEvent>()
+            .Do<AbortIfGameObjectIsNotPlayerCommand>()
+            .Do<DispatchPlayerCollisionExit2DEvent>();
+
+        On<TriggerEnter2DEvent>()
+            .Do<AbortIfGameObjectIsNotPlayerCommand>()
+            .Do<DispatchPlayerTriggerEnter2DEvent>();
+
+        On<TriggerStay2DEvent>()
+            .Do<AbortIfGameObjectIsNotPlayerCommand>()
+            .Do<DispatchPlayerTriggerStay2DEvent>();
+
+        On<TriggerExit2DEvent>()
+            .Do<AbortIfGameObjectIsNotPlayerCommand>()
+            .Do<DispatchPlayerTriggerExit2DEvent>();
     }
 }
