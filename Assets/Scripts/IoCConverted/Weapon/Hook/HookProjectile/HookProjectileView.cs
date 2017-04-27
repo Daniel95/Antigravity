@@ -40,6 +40,10 @@ public class HookProjectileView : View, IHookProjectile {
         GoToNextPoint();
     }
 
+    public void SetParent(Transform parent) {
+        transform.SetParent(parent, true);
+    }
+
     private void GoToNextPoint() {
         //there is a chance we immediatly reach our destination when we startMoving, so we need to increase _returnPointsIndex before we start moving, but we want to use the old value.
         Vector2 nextPoint = returnPoints[returnPointsIndex];

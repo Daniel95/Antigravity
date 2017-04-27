@@ -31,20 +31,46 @@ public class HookContext : Context {
             .Do<ActivateHoopRopeCommand>()
             .Do<SetHookedLayerCommand>(0)
             .Do<HookProjectileGoToDestinationCommand>();
+        /*
+        private void ShootHook(Vector2 destination, Vector2 spawnPosition) {
+
+            hookProjectileScript.Attached = Hooked;
+            hookProjectileScript.Canceled = Canceled;
+        }
+        */
 
         On<PullBackHookEvent>()
             .Do<AbortIfHookStatesAreActive>(new List<HookState>() {
                 HookState.Inactive,
                 HookState.BusyPullingBack })
-            .Do<SetHookStateCommand>(HookState.BusyPullingBack);
+            .Do<SetHookStateCommand>(HookState.BusyPullingBack)
+            .Do<HookProjectileSetAttachedTransformCommand>(null)
+            .Do<HookProjectileSetHookedLayerIndexCommand>(0)
+            .Do<HookProjectileResetParentCommand>();
 
+        /*
+        //pulls the grappling hook back to the player, once it reached the player set it to inactive
+        private void PullBack()
+        {
 
+            List<Vector2> returnPoints = new List<Vector2>();
+            foreach (Transform t in anchors) {
+                returnPoints.Add(t.position);
+            }
 
+            returnPoints.Add(transform.position);
+
+            hookProjectileScript.Returned = DeactivateHook;
+            hookProjectileScript.Return(returnPoints);
+        }
+        */
 
         //todo
         On<ReachedDestinationEvent>()
-            .Do<AbortIfGameObjectIsNotHookProjectileCommand>();
-            //check which what HookedLayer projectile is.
+            .Do<AbortIfGameObjectIsNotHookProjectileCommand>()
+            .Do<AbortIfHookedLayerIsZeroCommand>()
+            .Do<HookProjectileSetParentToAttachedTransformCommand>()
+            .Dispatch<HookIsAttachedEvent>(); //dispatch via command with int parameter
 
         //make special trigger event when the player touched something!
         On<TriggerEnter2DEvent>()
@@ -65,24 +91,5 @@ public class HookContext : Context {
     }
 }
 
-/*
-private void ShootHook(Vector2 destination, Vector2 spawnPosition) {
 
-    hookProjectileScript.Attached = Hooked;
-    hookProjectileScript.Canceled = Canceled;
-}
 
-//pulls the grappling hook back to the player, once it reached the player set it to inactive
-private void PullBack() {
-
-    List<Vector2> returnPoints = new List<Vector2>();
-    foreach (Transform t in anchors) {
-        returnPoints.Add(t.position);
-    }
-
-    returnPoints.Add(transform.position);
-
-    hookProjectileScript.Returned = DeactivateHook;
-    hookProjectileScript.Return(returnPoints);
-}
-*/
