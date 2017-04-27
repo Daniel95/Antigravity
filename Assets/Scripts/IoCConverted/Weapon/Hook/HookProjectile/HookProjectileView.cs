@@ -5,18 +5,19 @@ using UnityEngine;
 
 public class HookProjectileView : View, IHookProjectile {
 
-    public int HookedLayer { get { return hookedLayer; } set { hookedLayer = value; } }
+    public Transform AttachedTransform { get { return attachedTransform; } set { attachedTransform = value; } }
+    public int HookedLayerIndex { get { return hookedLayer; } set { hookedLayer = value; } }
 
     public Action<int> Attached;
     public Action Returned;
     public Action Canceled;
 
+    private Transform attachedTransform;
+    private int hookedLayer;
     private MoveTowardsView moveTowards;
     private Frames frames;
-    private Transform attachedTransform;
     private int returnPointsIndex;
     private List<Vector2> returnPoints = new List<Vector2>();
-    private int hookedLayer;
 
     void Awake() {
         moveTowards = GetComponent<MoveTowardsView>();

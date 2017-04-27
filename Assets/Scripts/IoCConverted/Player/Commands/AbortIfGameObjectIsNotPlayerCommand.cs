@@ -11,7 +11,5 @@ public class AbortIfGameObjectIsNotPlayerCommand : Command {
         if(gameobject != playerModel.player) {
             Abort();
         }
-
-        Collider2D coll;
     }
 }

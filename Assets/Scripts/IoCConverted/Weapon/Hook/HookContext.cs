@@ -12,6 +12,7 @@ public class HookContext : Context {
         Bind<Ref<IHook>>();
         Bind<Ref<IGrapplingHook>>();
         Bind<Ref<IPullingHook>>();
+        Bind<Ref<IHookProjectile>>();
 
         On<EnterContextSignal>();
 
@@ -42,13 +43,25 @@ public class HookContext : Context {
 
         //todo
         On<ReachedDestinationEvent>()
-            .Do<AbortIfGameObjectIsNotPlayerCommand>();
+            .Do<AbortIfGameObjectIsNotHookProjectileCommand>();
+            //check which what HookedLayer projectile is.
 
         //make special trigger event when the player touched something!
-        On<PlayerTriggerEnter2DEvent>()
-            .Do<AbortIfTriggerIsNotLayerIndex>
-            .Do<AbortIfTriggerIsNotLayersIndexes>
+        On<TriggerEnter2DEvent>()
+            .Do<AbortIfGameObjectIsNotHookProjectileCommand>()
+            .Do<AbortIfTriggerLayerIndexIsNotTheSameCommand>(HookAbleLayers.GrappleSurface)
+            .Do<HookProjectileSetAttachedTransformCommand>()
+            .Do<HookProjectileSetHookedLayerIndexCommand>(HookAbleLayers.GrappleSurface);
 
+        On<TriggerEnter2DEvent>()
+            .Do<AbortIfGameObjectIsNotHookProjectileCommand>()
+            .Do<AbortIfTriggerLayerIndexIsNotTheSameCommand>(HookAbleLayers.PullSurface)
+            .Do<HookProjectileSetHookedLayerIndexCommand>(HookAbleLayers.PullSurface);
+
+        On<TriggerExit2DEvent>()
+            .Do<AbortIfGameObjectIsNotHookProjectileCommand>()
+            .Do<AbortIfTriggerLayerIndexesAreNotTheSameCommand>(new List<int> { HookAbleLayers.GrappleSurface, HookAbleLayers.PullSurface })
+            .Do<HookProjectileSetHookedLayerIndexCommand>(0);
     }
 }
 
@@ -72,26 +85,4 @@ private void PullBack() {
     hookProjectileScript.Returned = DeactivateHook;
     hookProjectileScript.Return(returnPoints);
 }
-
-
-
-
-    
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.gameObject.layer == HookAbleLayers.GrappleSurface) {
-            attachedTransform = collision.transform;
-            hookedLayer = HookAbleLayers.GrappleSurface;
-        }
-        else if (collision.gameObject.layer == HookAbleLayers.PullSurface) {
-            hookedLayer = HookAbleLayers.PullSurface;
-        }
-    }
-
-    private void OnTriggerExit2D(Collider2D collision) {
-        if (collision.gameObject.layer == HookAbleLayers.GrappleSurface || collision.gameObject.layer == HookAbleLayers.PullSurface)
-        {
-            hookedLayer = 0;
-        }
-    }
 */

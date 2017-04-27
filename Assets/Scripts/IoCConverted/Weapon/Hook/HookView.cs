@@ -122,29 +122,6 @@ public class HookView : View, IHook, ITriggerer {
         ShootHook(destination, spawnPosition);
     }
 
-    private void ShootHook(Vector2 destination, Vector2 spawnPosition) {
-        currentHookState = HookState.BusyShooting;
-
-        hookProjectileGObj.SetActive(true);
-        hookProjectileGObj.transform.position = spawnPosition;
-
-        Vector2 anchorPos = hookProjectileGObj.transform.position + (hookProjectileGObj.transform.position - transform.position).normalized * 0.1f;
-        anchors.Add(CreateAnchor(anchorPos, hookProjectileGObj.transform));
-
-        //activate line renderer
-        lineRenderer.enabled = true;
-
-        lineRenderer.positionCount = 2;
-        lineRenderer.SetPosition(0, anchors[0].position);
-        lineRenderer.SetPosition(1, transform.position);
-
-        lineUpdateCoroutine = StartCoroutine(UpdateLineRendererPositions());
-
-        hookProjectileScript.Attached = Hooked;
-        hookProjectileScript.Canceled = Canceled;
-        hookProjectileScript.GoToShootPos(destination);
-    }
-
     private IEnumerator UpdateLineRendererPositions() {
         while (true) {
             for (int i = 0; i < anchors.Count; i++) {

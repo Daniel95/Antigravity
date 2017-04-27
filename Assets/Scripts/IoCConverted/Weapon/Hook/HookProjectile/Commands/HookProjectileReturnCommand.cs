@@ -1,6 +1,6 @@
 ﻿using IoCPlus;
 
-public class HookProjectileReturn : Command {
+public class HookProjectileReturnCommand : Command {
 
     [Inject] private Ref<IHookProjectile> hookProjectileRef;
 

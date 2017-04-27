@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AbortIfTriggerIsNotLayersIndexes : Command<List<int>> {
+public class AbortIfTriggerLayerIndexesAreNotTheSameCommand : Command<List<int>> {
 
     [InjectParameter] private Collider2D collider;
 

@@ -1,7 +1,7 @@
 ﻿using IoCPlus;
 using UnityEngine;
 
-public class AbortIfTriggerIsNotLayerIndex : Command<int> {
+public class AbortIfTriggerLayerIndexIsNotTheSameCommand : Command<int> {
 
     [InjectParameter] private Collider2D collider;
 

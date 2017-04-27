@@ -41,7 +41,7 @@ public class PlayerContext : Context {
             .AddContext<CharacterContext>();
 
         On<TriggerEnter2DEvent>()
-            .Do<AbortIfTriggerTagIsNotTheSame>("Checkpoint")
+            .Do<AbortIfTriggerTagIsNotTheSameCommand>("Checkpoint")
             .Do<SetCheckpointReachedCommand>(true);
 
         On<CharacterDieEvent>()

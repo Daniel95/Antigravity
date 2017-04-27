@@ -14,9 +14,6 @@ public class WeaponContext : Context {
         Bind<Ref<IGrapplingHook>>();
 
         Bind<GrapplingHookStartedEvent>();
-        Bind<ChangeSpeedByAngleEvent>();
-        Bind<AddAnchorEvent>();
-        Bind<CancelHookEvent>();
 
         On<EnterContextSignal>()
             .Do<ActivateViewOnPlayerCommand<ShootView>>();

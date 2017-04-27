@@ -1,7 +1,7 @@
 ﻿using IoCPlus;
 using UnityEngine;
 
-public class AbortIfTriggerTagIsNotTheSame : Command<string> {
+public class AbortIfTriggerTagIsNotTheSameCommand : Command<string> {
 
     [InjectParameter] private Collider2D collider;
 

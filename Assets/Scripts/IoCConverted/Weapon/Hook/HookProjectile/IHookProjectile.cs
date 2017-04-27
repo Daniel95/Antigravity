@@ -2,7 +2,8 @@
 
 public interface IHookProjectile {
 
-    int HookedLayer { get; set; }
+    int HookedLayerIndex { get; set; }
+    Transform AttachedTransform { get; set; }
 
     void GoToDestination(Vector2 destination);
     void CheckIfHooked();
