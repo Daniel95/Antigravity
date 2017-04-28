@@ -9,6 +9,8 @@ public class HookContext : Context {
         Bind<GrapplingHookStartedEvent>();
         Bind<CancelGrapplingHookEvent>();
 
+        Bind<HookProjectileReturnedToOwnerEvent>();
+
         Bind<Ref<IHook>>();
         Bind<Ref<IGrapplingHook>>();
         Bind<Ref<IPullingHook>>();
@@ -31,13 +33,6 @@ public class HookContext : Context {
             .Do<ActivateHoopRopeCommand>()
             .Do<SetHookedLayerCommand>(0)
             .Do<HookProjectileGoToDestinationCommand>();
-        /*
-        private void ShootHook(Vector2 destination, Vector2 spawnPosition) {
-
-            hookProjectileScript.Attached = Hooked;
-            hookProjectileScript.Canceled = Canceled;
-        }
-        */
 
         On<PullBackHookEvent>()
             .Do<AbortIfHookStatesAreActive>(new List<HookState>() {
@@ -46,33 +41,29 @@ public class HookContext : Context {
             .Do<SetHookStateCommand>(HookState.BusyPullingBack)
             .Do<HookProjectileSetAttachedTransformCommand>(null)
             .Do<HookProjectileSetHookedLayerIndexCommand>(0)
-            .Do<HookProjectileResetParentCommand>();
+            .Do<HookProjectileResetParentCommand>()
+            .Do<HookProjectileSetReachedAnchorsIndexCommand>(0)
+            .Do<DispatchHookProjectileMoveTowardsNextAnchorCommand>();
 
-        /*
-        //pulls the grappling hook back to the player, once it reached the player set it to inactive
-        private void PullBack()
-        {
-
-            List<Vector2> returnPoints = new List<Vector2>();
-            foreach (Transform t in anchors) {
-                returnPoints.Add(t.position);
-            }
-
-            returnPoints.Add(transform.position);
-
-            hookProjectileScript.Returned = DeactivateHook;
-            hookProjectileScript.Return(returnPoints);
-        }
-        */
-
-        //todo
         On<ReachedDestinationEvent>()
             .Do<AbortIfGameObjectIsNotHookProjectileCommand>()
             .Do<AbortIfHookedLayerIsZeroCommand>()
             .Do<HookProjectileSetParentToAttachedTransformCommand>()
-            .Dispatch<HookIsAttachedEvent>(); //dispatch via command with int parameter
+            .Do<DispatchHookProjectileIsAttachedEventCommand>()
+            .OnAbort<DispatchHookProjectileMoveTowardsNextAnchorCommand>();
 
-        //make special trigger event when the player touched something!
+        On<HookProjectileMoveTowardsNextAnchorEvent>()
+            .Do<AbortIfHookProjectileAnchorIndexIsHigherOrEqualThenAnchorCount>()
+            .Do<HookProjectileMoveTowardNextAnchorCommand>()
+            .OnAbort<DispatchHookProjectileMoveTowardsOwnerEventCommand>();
+
+        On<HookProjectileMoveTowardsOwnerEvent>()
+            .Do<AbortIfHookProjectileIsAlreadyMovingToOwnerCommand>()
+            .Do<HookProjectileMoveTowardsOwnerCommand>()
+            .OnAbort<DispatchHookProjectileReturnedToOwnerEventCommand>();
+
+        On<HookProjectileReturnedToOwnerEvent>()
+
         On<TriggerEnter2DEvent>()
             .Do<AbortIfGameObjectIsNotHookProjectileCommand>()
             .Do<AbortIfTriggerLayerIndexIsNotTheSameCommand>(HookAbleLayers.GrappleSurface)

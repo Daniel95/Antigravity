@@ -11,12 +11,13 @@ public class HookView : View, IHook, ITriggerer {
         public static int PullSurface = LayerMask.NameToLayer("PullHook");
     }
 
-    public HookState CurrentHookState { get { return currentHookState; } }
+    public HookState CurrentHookState { get { return currentHookState; } set { currentHookState = value; } }
     public GameObject HookProjectileGameObject { get { return hookProjectileGameObject; } }
     public List<Transform> Anchors { get { return anchors; } }
     public LineRenderer LineRendererComponent { get { return lineRendererComponent; } }
     public LayerMask RayLayers { get { return rayLayers; } }
     public float DirectionSpeedNeutralValue { get { return directionSpeedNeutralValue; } }
+    public GameObject Owner { get { return gameObject; } }
 
     //used by action trigger to decide when to start the instructions/tutorial, and when to stop it
     public Action ActivateTrigger { get; set; }
@@ -45,23 +46,6 @@ public class HookView : View, IHook, ITriggerer {
         hookProjectileGObj = Instantiate(hookProjectilePrefab, Vector2.zero, new Quaternion(0, 0, 0, 0));
         hookProjectileScript = hookProjectileGObj.GetComponent<HookProjectileView>();
         hookProjectileGObj.SetActive(false);
-    }
-
-    /// <summary>
-    /// spawns the grapple projectile and activates its moveTowards script
-    /// </summary>
-    /// <param name="destination"></param>
-    /// <param name="spawnPosition"></param>
-    public void Fire(Vector2 destination, Vector2 spawnPosition) {
-        if (currentHookState == HookState.Inactive) {
-            print("shoot : " + this);
-            ShootHook(destination, spawnPosition);
-        }
-        //if we still have a grapple activate, deactivate it first before we shoot a new one
-        else if (currentHookState == HookState.Active || currentHookState == HookState.BusyShooting) {
-            holdGrappleCoroutine = StartCoroutine(HoldGrapple(destination, spawnPosition));
-            PullBack();
-        }
     }
 
     protected virtual void Awake() {
@@ -131,24 +115,6 @@ public class HookView : View, IHook, ITriggerer {
             lineRenderer.SetPosition(lineRenderer.positionCount - 1, transform.position);
             yield return null;
         }
-    }
-
-    //pulls the grappling hook back to the player, once it reached the player set it to inactive
-    private void PullBack() {
-        //only pullback when we aren't already pulling back and the we are not in the inactive state. 
-        if (currentHookState == HookState.BusyPullingBack || currentHookState == HookState.Inactive) return;
-
-        currentHookState = HookState.BusyPullingBack;
-
-        List<Vector2> returnPoints = new List<Vector2>();
-        foreach (Transform t in anchors) {
-            returnPoints.Add(t.position);
-        }
-
-        returnPoints.Add(transform.position);
-
-        hookProjectileScript.Returned = DeactivateHook;
-        hookProjectileScript.Return(returnPoints);
     }
 
     private void DestroyAnchors() {

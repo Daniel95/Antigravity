@@ -3,8 +3,6 @@ using UnityEngine;
 
 interface IHook {
 
-    void Hooked();
-    void Canceled();
     void SpawnAnchor(Vector2 position, Transform parent);
     void ActivateHookProjectile(Vector2 spawnPosition);
     void DeactivateHookProjectile();
@@ -17,4 +15,5 @@ interface IHook {
     LayerMask RayLayers { get; }
     LineRenderer LineRendererComponent { get; }
     float DirectionSpeedNeutralValue { get; }
+    GameObject Owner { get; }
 }
