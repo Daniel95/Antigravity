@@ -1,6 +1,6 @@
 ﻿using IoCPlus;
 
-public class DeactivateHoopRopeCommand : Command {
+public class DeactivateHookRopeCommand : Command {
 
     [Inject] private Ref<HookView> hookViewRef;
 

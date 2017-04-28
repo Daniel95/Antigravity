@@ -8,6 +8,7 @@ interface IHook {
     void DeactivateHookProjectile();
     void ActivateHookRope();
     void DeactivateHookRope();
+    void DestroyAnchors();
 
     HookState CurrentHookState { get; set; }
     GameObject HookProjectileGameObject { get; }

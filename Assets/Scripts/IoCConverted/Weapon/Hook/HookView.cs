@@ -56,17 +56,6 @@ public class HookView : View, IHook, ITriggerer {
         hookProjectileGObj.SetActive(false);
     }
 
-    protected virtual void Hooked(int hookedLayer) { }
-
-    protected virtual void Canceled() {
-        hookProjectileScript.Attached = null;
-
-        if (holdGrappleCoroutine != null)
-            StopCoroutine(holdGrappleCoroutine);
-
-        PullBack();
-    }
-
     public void SpawnAnchor(Vector2 position, Transform parent) {
         anchors.Add(CreateAnchor(position, parent));
     }
@@ -76,8 +65,29 @@ public class HookView : View, IHook, ITriggerer {
         hookProjectileGObj.transform.position = spawnPosition;
     }
 
+    public void DestroyAnchors() {
+        foreach (Transform t in anchors) {
+            Destroy(t.gameObject);
+        }
+        anchors.Clear();
+    }
+
     public void DeactivateHookProjectile() {
         hookProjectileGObj.SetActive(false);
+    }
+
+    public void ActivateHookRope() {
+        lineRenderer.enabled = true;
+        lineRenderer.positionCount = 2;
+        lineRenderer.SetPosition(0, anchors[0].position);
+        lineRenderer.SetPosition(1, transform.position);
+        lineUpdateCoroutine = StartCoroutine(UpdateLineRendererPositions());
+    }
+
+    public void DeactivateHookRope() {
+        lineRenderer.enabled = false;
+        StopCoroutine(lineUpdateCoroutine);
+        lineRenderer.positionCount = 0;
     }
 
     private Transform CreateAnchor(Vector2 position, Transform parent) {
@@ -86,16 +96,6 @@ public class HookView : View, IHook, ITriggerer {
         anchor.layer = LayerMask.NameToLayer("Ignore Raycast");
         anchor.transform.SetParent(parent);
         return anchor.transform;
-    }
-
-    protected virtual void DeactivateHook() {
-        hookProjectileScript.Returned = null;
-        currentHookState = HookState.Inactive;
-
-        hookProjectileGObj.SetActive(false);
-
-        DestroyAnchors();
-        DeactivateHookRope();
     }
 
     private IEnumerator HoldGrapple(Vector2 destination, Vector2 spawnPosition) {
@@ -115,27 +115,5 @@ public class HookView : View, IHook, ITriggerer {
             lineRenderer.SetPosition(lineRenderer.positionCount - 1, transform.position);
             yield return null;
         }
-    }
-
-    private void DestroyAnchors() {
-        foreach (Transform t in anchors) {
-            Destroy(t.gameObject);
-        }
-        anchors.Clear();
-
-    }
-
-    public void ActivateHookRope() {
-        lineRenderer.enabled = true;
-        lineRenderer.positionCount = 2;
-        lineRenderer.SetPosition(0, anchors[0].position);
-        lineRenderer.SetPosition(1, transform.position);
-        lineUpdateCoroutine = StartCoroutine(UpdateLineRendererPositions());
-    }
-
-    public void DeactivateHookRope() {
-        lineRenderer.enabled = false;
-        StopCoroutine(lineUpdateCoroutine);
-        lineRenderer.positionCount = 0;
     }
 }

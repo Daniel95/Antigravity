@@ -19,12 +19,18 @@ public class HookContext : Context {
         On<EnterContextSignal>();
 
         On<CancelGrapplingHookEvent>()
-            .Do<StopSlowTimeCommand>();
+            .Do<StopSlowTimeCommand>()
+            .Do<DispatchHookPullBackEventCommand>();
+
+        //StopHoldHookShotCommand
+
 
         On<FireWeaponEvent>()
             .Do<AbortIfHookStateIsNotActive>(HookState.Inactive)
             .Do<DispatchShootHookEventCommand>()
             .OnAbort<DispatchHookPullBackEventCommand>();
+
+        //StartHoldHookShotCommand
 
         On<ShootHookEvent>()
             .Do<SetHookStateCommand>(HookState.BusyShooting)
@@ -63,6 +69,10 @@ public class HookContext : Context {
             .OnAbort<DispatchHookProjectileReturnedToOwnerEventCommand>();
 
         On<HookProjectileReturnedToOwnerEvent>()
+            .Do<SetHookStateCommand>(HookState.Inactive)
+            .Do<DeactivateHookProjectileCommand>()
+            .Do<DestroyHookAnchorsCommand>()
+            .Do<DeactivateHookRopeCommand>();
 
         On<TriggerEnter2DEvent>()
             .Do<AbortIfGameObjectIsNotHookProjectileCommand>()
