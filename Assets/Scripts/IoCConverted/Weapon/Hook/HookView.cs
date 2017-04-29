@@ -20,7 +20,6 @@ public class HookView : View, IHook, ITriggerer {
     public float DirectionSpeedNeutralValue { get { return directionSpeedNeutralValue; } }
     public GameObject Owner { get { return gameObject; } }
 
-    //used by action trigger to decide when to start the instructions/tutorial, and when to stop it
     public Action ActivateTrigger { get; set; }
     public Action StopTrigger { get; set; }
 
