@@ -9,7 +9,7 @@ public class AbortIfHookStatesAreNotActive : Command<List<HookState>> {
         bool stateIsActive = false;
 
         hookStates.ForEach(x => {
-            if (hookRef.Get().CurrentHookState == x) {
+            if (hookRef.Get().ActiveHookState == x) {
                 stateIsActive = true;
             }
         });

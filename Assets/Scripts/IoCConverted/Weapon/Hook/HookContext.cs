@@ -20,20 +20,37 @@ public class HookContext : Context {
 
         On<CancelGrapplingHookEvent>()
             .Do<StopSlowTimeCommand>()
+            .Do<AbortIfHookStatesAreActive>(new List<HookState>() {
+                HookState.Inactive,
+                HookState.Canceling,
+                HookState.HoldingShot })
+            .Do<SetHookStateCommand>(HookState.Canceling)
             .Do<DispatchHookPullBackEventCommand>();
 
-        //StopHoldHookShotCommand
+        On<AimWeaponEvent>()
+            .Do<CharacterUpdateAimLineDestinationCommand>();
 
+        On<CancelAimWeaponEvent>()
+            .Do<StopSlowTimeCommand>()
+            .Do<CharacterStopAimLineCommand>();
 
         On<FireWeaponEvent>()
             .Do<AbortIfHookStateIsNotActive>(HookState.Inactive)
             .Do<DispatchShootHookEventCommand>()
-            .OnAbort<DispatchHookPullBackEventCommand>();
+            .OnAbort<DispatchHoldShotEventCommand>();
 
-        //StartHoldHookShotCommand
+        On<HoldShotEvent>()
+            .Do<AbortIfHookStatesAreActive>(new List<HookState>() {
+                HookState.Inactive,
+                HookState.Canceling,
+                HookState.HoldingShot })
+            .Do<SetHookStateCommand>(HookState.HoldingShot)
+            .Do<AbortIfHookStateIsLastHookState>(HookState.Canceling)
+            .Do<DispatchHookPullBackEventCommand>();
+
 
         On<ShootHookEvent>()
-            .Do<SetHookStateCommand>(HookState.BusyShooting)
+            .Do<SetHookStateCommand>(HookState.Shooting)
             .Do<ActivateHookProjectileCommand>()
             .Do<SpawnAnchorAtPlayerCommand>()
             .Do<ActivateHoopRopeCommand>()
@@ -41,10 +58,6 @@ public class HookContext : Context {
             .Do<HookProjectileGoToDestinationCommand>();
 
         On<PullBackHookEvent>()
-            .Do<AbortIfHookStatesAreActive>(new List<HookState>() {
-                HookState.Inactive,
-                HookState.BusyPullingBack })
-            .Do<SetHookStateCommand>(HookState.BusyPullingBack)
             .Do<HookProjectileSetAttachedTransformCommand>(null)
             .Do<HookProjectileSetHookedLayerIndexCommand>(0)
             .Do<HookProjectileResetParentCommand>()
@@ -69,10 +82,12 @@ public class HookContext : Context {
             .OnAbort<DispatchHookProjectileReturnedToOwnerEventCommand>();
 
         On<HookProjectileReturnedToOwnerEvent>()
+            .Do<AbortIfHookStateIsActive>(HookState.HoldingShot)
             .Do<SetHookStateCommand>(HookState.Inactive)
             .Do<DeactivateHookProjectileCommand>()
             .Do<DestroyHookAnchorsCommand>()
-            .Do<DeactivateHookRopeCommand>();
+            .Do<DeactivateHookRopeCommand>()
+            .OnAbort<DispatchShootHookEventCommand>();
 
         On<TriggerEnter2DEvent>()
             .Do<AbortIfGameObjectIsNotHookProjectileCommand>()

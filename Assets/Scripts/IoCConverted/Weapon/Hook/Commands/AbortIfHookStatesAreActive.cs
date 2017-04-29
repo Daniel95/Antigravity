@@ -7,7 +7,7 @@ public class AbortIfHookStatesAreActive : Command<List<HookState>> {
 
     protected override void Execute(List<HookState> hookStates) {
         hookStates.ForEach(x => {
-            if (hookRef.Get().CurrentHookState == x) {
+            if (hookRef.Get().ActiveHookState == x) {
                 Abort();
             }
         });

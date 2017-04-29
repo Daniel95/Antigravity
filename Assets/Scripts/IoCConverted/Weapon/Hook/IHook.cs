@@ -10,7 +10,8 @@ interface IHook {
     void DeactivateHookRope();
     void DestroyAnchors();
 
-    HookState CurrentHookState { get; set; }
+    HookState ActiveHookState { get; set; }
+    HookState LastHookState { get; set; }
     GameObject HookProjectileGameObject { get; }
     List<Transform> Anchors { get; }
     LayerMask RayLayers { get; }

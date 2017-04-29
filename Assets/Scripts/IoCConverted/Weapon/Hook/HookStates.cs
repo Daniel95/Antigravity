@@ -1,1 +1,1 @@
-﻿public enum HookState { BusyShooting, BusyPullingBack, Active, Inactive }
+﻿public enum HookState { Inactive, Canceling, Shooting, HoldingShot}

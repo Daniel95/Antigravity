@@ -11,7 +11,7 @@ public class HookView : View, IHook, ITriggerer {
         public static int PullSurface = LayerMask.NameToLayer("PullHook");
     }
 
-    public HookState CurrentHookState { get { return currentHookState; } set { currentHookState = value; } }
+    public HookState ActiveHookState { get { return currentHookState; } set { currentHookState = value; } }
     public GameObject HookProjectileGameObject { get { return hookProjectileGameObject; } }
     public List<Transform> Anchors { get { return anchors; } }
     public LineRenderer LineRendererComponent { get { return lineRendererComponent; } }
