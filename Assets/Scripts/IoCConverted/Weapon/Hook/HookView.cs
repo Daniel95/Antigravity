@@ -11,7 +11,8 @@ public class HookView : View, IHook, ITriggerer {
         public static int PullSurface = LayerMask.NameToLayer("PullHook");
     }
 
-    public HookState ActiveHookState { get { return currentHookState; } set { currentHookState = value; } }
+    public HookState ActiveHookState { get { return activeHookState; } set { activeHookState = value; } }
+    public HookState LastHookState { get { return lastHookState; } set { lastHookState = value; } }
     public GameObject HookProjectileGameObject { get { return hookProjectileGameObject; } }
     public List<Transform> Anchors { get { return anchors; } }
     public LineRenderer LineRendererComponent { get { return lineRendererComponent; } }
@@ -23,6 +24,8 @@ public class HookView : View, IHook, ITriggerer {
     public Action ActivateTrigger { get; set; }
     public Action StopTrigger { get; set; }
 
+    [Inject] private Ref<IHook> hookRef;
+
     [SerializeField] private LineRenderer lineRenderer;
     [SerializeField] private GameObject hookProjectileGObj;
     [SerializeField] private HookProjectileView hookProjectileScript;
@@ -30,22 +33,16 @@ public class HookView : View, IHook, ITriggerer {
     [SerializeField] private GameObject hookProjectilePrefab;
     [SerializeField] private float directionSpeedNeutralValue = 0.15f;
 
-    private HookState currentHookState = HookState.Inactive;
+    private HookState activeHookState = HookState.Inactive;
+    private HookState lastHookState = HookState.Inactive;
     private GameObject hookProjectileGameObject;
-    private HookProjectileView hookProjectile;
     private List<Transform> anchors = new List<Transform>();
     private LineRenderer lineRendererComponent;
 
-    //to save our LineUpdateCoroutine;
     private Coroutine lineUpdateCoroutine;
-    private Coroutine holdGrappleCoroutine;
 
     public override void Initialize() {
-        lineRendererComponent = lineRenderer;
-
-        hookProjectileGObj = Instantiate(hookProjectilePrefab, Vector2.zero, new Quaternion(0, 0, 0, 0));
-        hookProjectileScript = hookProjectileGObj.GetComponent<HookProjectileView>();
-        hookProjectileGObj.SetActive(false);
+        hookRef.Set(this);
     }
 
     protected virtual void Awake() {
@@ -65,15 +62,15 @@ public class HookView : View, IHook, ITriggerer {
         hookProjectileGObj.transform.position = spawnPosition;
     }
 
+    public void DeactivateHookProjectile() {
+        hookProjectileGObj.SetActive(false);
+    }
+
     public void DestroyAnchors() {
         foreach (Transform t in anchors) {
             Destroy(t.gameObject);
         }
         anchors.Clear();
-    }
-
-    public void DeactivateHookProjectile() {
-        hookProjectileGObj.SetActive(false);
     }
 
     public void ActivateHookRope() {
@@ -98,20 +95,11 @@ public class HookView : View, IHook, ITriggerer {
         return anchor.transform;
     }
 
-    private IEnumerator HoldGrapple(Vector2 destination, Vector2 spawnPosition) {
-        while (currentHookState != HookState.Inactive) {
-            yield return null;
-        }
-
-        ShootHook(destination, spawnPosition);
-    }
-
     private IEnumerator UpdateLineRendererPositions() {
         while (true) {
             for (int i = 0; i < anchors.Count; i++) {
                 lineRenderer.SetPosition(i, anchors[i].position);
             }
-
             lineRenderer.SetPosition(lineRenderer.positionCount - 1, transform.position);
             yield return null;
         }
