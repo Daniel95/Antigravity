@@ -12,12 +12,9 @@ public class GrapplingStateContext : Context {
             .Do<DispatchCharacterEnableDirectionalMovementEventCommand>(false);
 
         On<LeaveContextSignal>()
-            .Dispatch<CancelGrapplingHookEvent>();
+            .Dispatch<CancelHookEvent>();
 
         On<JumpInputEvent>()
-            .Dispatch<StopGrapplingInAirEvent>();
-
-        On<CancelGrapplingHookEvent>()
             .Dispatch<StopGrapplingInAirEvent>();
 
         On<StopGrapplingInAirEvent>()

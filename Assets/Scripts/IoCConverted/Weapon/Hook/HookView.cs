@@ -6,11 +6,6 @@ using System.Collections.Generic;
 
 public class HookView : View, IHook, ITriggerer {
 
-    public static class HookAbleLayers {
-        public static int GrappleSurface = LayerMask.NameToLayer("GrappleHook");
-        public static int PullSurface = LayerMask.NameToLayer("PullHook");
-    }
-
     public HookState ActiveHookState { get { return activeHookState; } set { activeHookState = value; } }
     public HookState LastHookState { get { return lastHookState; } set { lastHookState = value; } }
     public GameObject HookProjectileGameObject { get { return hookProjectileGameObject; } }
@@ -18,6 +13,7 @@ public class HookView : View, IHook, ITriggerer {
     public LineRenderer LineRendererComponent { get { return lineRendererComponent; } }
     public LayerMask RayLayers { get { return rayLayers; } }
     public float DirectionSpeedNeutralValue { get { return directionSpeedNeutralValue; } }
+    public float MinimalHookDistance { get { return minimalHookDistance; } }
     public GameObject Owner { get { return gameObject; } }
 
     public Action ActivateTrigger { get; set; }
@@ -31,6 +27,7 @@ public class HookView : View, IHook, ITriggerer {
     [SerializeField] private LayerMask rayLayers;
     [SerializeField] private GameObject hookProjectilePrefab;
     [SerializeField] private float directionSpeedNeutralValue = 0.15f;
+    [SerializeField] private float minimalHookDistance = 0.75f;
 
     private HookState activeHookState = HookState.Inactive;
     private HookState lastHookState = HookState.Inactive;
@@ -52,7 +49,7 @@ public class HookView : View, IHook, ITriggerer {
         hookProjectileGObj.SetActive(false);
     }
 
-    public void SpawnAnchor(Vector2 position, Transform parent) {
+    public void AddAnchor(Vector2 position, Transform parent) {
         anchors.Add(CreateAnchor(position, parent));
     }
 

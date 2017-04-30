@@ -1,5 +1,4 @@
 ﻿using IoCPlus;
-using UnityEngine;
 
 public class PlayerContext : Context {
 
@@ -52,7 +51,6 @@ public class PlayerContext : Context {
             .Do<InstantiateGameObjectCommand>()
             .Do<StartScreenShakeCommand>()
             .Dispatch<ActivateRevivedStateEvent>();
-
 
         //collisions
         On<CollisionEnter2DEvent>()

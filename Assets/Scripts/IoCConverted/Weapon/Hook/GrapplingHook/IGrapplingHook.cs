@@ -1,5 +1,9 @@
-﻿interface IGrapplingHook {
+﻿using UnityEngine;
 
-    void Hooked(int layer);
-    void Canceled();
+interface IGrapplingHook {
+
+    DistanceJoint2D DistanceJoint { get; set; }
+    float HookDistance { get; set; }
+
+    void EnterGrappleLock();
 }

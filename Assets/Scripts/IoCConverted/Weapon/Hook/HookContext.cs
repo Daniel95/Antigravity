@@ -7,18 +7,17 @@ public class HookContext : Context {
         base.SetBindings();
 
         Bind<GrapplingHookStartedEvent>();
-        Bind<CancelGrapplingHookEvent>();
+        Bind<CancelHookEvent>();
 
         Bind<HookProjectileReturnedToOwnerEvent>();
 
         Bind<Ref<IHook>>();
         Bind<Ref<IGrapplingHook>>();
-        Bind<Ref<IPullingHook>>();
         Bind<Ref<IHookProjectile>>();
 
         On<EnterContextSignal>();
 
-        On<CancelGrapplingHookEvent>()
+        On<CancelHookEvent>()
             .Do<StopSlowTimeCommand>()
             .Do<AbortIfHookStatesAreActive>(new List<HookState>() {
                 HookState.Inactive,
@@ -47,7 +46,6 @@ public class HookContext : Context {
             .Do<SetHookStateCommand>(HookState.HoldingShot)
             .Do<AbortIfHookStateIsLastHookState>(HookState.Canceling)
             .Do<DispatchHookPullBackEventCommand>();
-
 
         On<ShootHookEvent>()
             .Do<SetHookStateCommand>(HookState.Shooting)
@@ -91,19 +89,22 @@ public class HookContext : Context {
 
         On<TriggerEnter2DEvent>()
             .Do<AbortIfGameObjectIsNotHookProjectileCommand>()
-            .Do<AbortIfTriggerLayerIndexIsNotTheSameCommand>(HookAbleLayers.GrappleSurface)
+            .Do<AbortIfTriggerLayerIndexIsNotTheSameCommand>(HookableLayers.GrappleSurface)
             .Do<HookProjectileSetAttachedTransformCommand>()
-            .Do<HookProjectileSetHookedLayerIndexCommand>(HookAbleLayers.GrappleSurface);
+            .Do<HookProjectileSetHookedLayerIndexCommand>(HookableLayers.GrappleSurface);
 
         On<TriggerEnter2DEvent>()
             .Do<AbortIfGameObjectIsNotHookProjectileCommand>()
-            .Do<AbortIfTriggerLayerIndexIsNotTheSameCommand>(HookAbleLayers.PullSurface)
-            .Do<HookProjectileSetHookedLayerIndexCommand>(HookAbleLayers.PullSurface);
+            .Do<AbortIfTriggerLayerIndexIsNotTheSameCommand>(HookableLayers.PullSurface)
+            .Do<HookProjectileSetHookedLayerIndexCommand>(HookableLayers.PullSurface);
 
         On<TriggerExit2DEvent>()
             .Do<AbortIfGameObjectIsNotHookProjectileCommand>()
-            .Do<AbortIfTriggerLayerIndexesAreNotTheSameCommand>(new List<int> { HookAbleLayers.GrappleSurface, HookAbleLayers.PullSurface })
+            .Do<AbortIfTriggerLayerIndexesAreNotTheSameCommand>(new List<int> { HookableLayers.GrappleSurface, HookableLayers.PullSurface })
             .Do<HookProjectileSetHookedLayerIndexCommand>(0);
+
+        On<AddHookAnchorEvent>()
+            .Do<AddHookAnchorCommand>();
     }
 }
 

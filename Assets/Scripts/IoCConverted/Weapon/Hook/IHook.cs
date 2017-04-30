@@ -3,7 +3,7 @@ using UnityEngine;
 
 interface IHook {
 
-    void SpawnAnchor(Vector2 position, Transform parent);
+    void AddAnchor(Vector2 position, Transform parent);
     void ActivateHookProjectile(Vector2 spawnPosition);
     void DeactivateHookProjectile();
     void ActivateHookRope();
@@ -17,5 +17,6 @@ interface IHook {
     LayerMask RayLayers { get; }
     LineRenderer LineRendererComponent { get; }
     float DirectionSpeedNeutralValue { get; }
+    float MinimalHookDistance { get; }
     GameObject Owner { get; }
 }
