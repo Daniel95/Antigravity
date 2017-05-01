@@ -26,28 +26,19 @@ public class GrapplingHookView : View, IGrapplingHook {
         grapplingHookRef.Set(this);
     }
 
-    public void EnterGrappleLock() {
-        //if (StopTrigger != null)
-        //{
-        //    StopTrigger();
-        //}
-
-        StartDistaneJoint(distance);
+    public void StartDistaneJoint() {
+        distanceJoint.enabled = true;
+        distanceJoint.distance = distance;
 
         grappleAnchorUpdate = StartCoroutine(GrappleAnchorUpdate());
     }
 
-    public void ExitGrappleLock()
-    {
-        Canceled();
-    }
-
-    public void Canceled() {
-        distanceJoint.enabled = false;
-
+    public void StopDistanceJoint() {
         if (grappleAnchorUpdate != null) {
-           StopCoroutine(grappleAnchorUpdate);
+            StopCoroutine(grappleAnchorUpdate);
         }
+
+        distanceJoint.enabled = false;
     }
 
     private IEnumerator GrappleAnchorUpdate() {
@@ -56,25 +47,5 @@ public class GrapplingHookView : View, IGrapplingHook {
             yield return null;
         }
     }
-
-    private void DeactivateHook() {
-        StopDistanceJoint();
-    }
-
-    private void StartDistaneJoint(float distance) {
-         //init the distance joint & line renderer
-        distanceJoint.enabled = true;
-
-        distanceJoint.connectedAnchor = hookRef.Get().Anchors[0].position;
-        distanceJoint.distance = distance;
-    }
-
-    public void StopDistanceJoint() {
-        if (grappleAnchorUpdate != null)
-            StopCoroutine(grappleAnchorUpdate);
-
-        distanceJoint.enabled = false;
-    }
-
 }
  
