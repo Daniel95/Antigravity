@@ -2,11 +2,11 @@
 
 public class HookProjectileGoToDestinationCommand : Command {
 
-    [Inject] private Ref<IHookProjectile> hookProjectileRef;
+    [Inject] private Ref<IMoveTowards> moveTowardsRef;
 
     [InjectParameter] private FireWeaponParameter fireWeaponParameter;
 
     protected override void Execute() {
-        hookProjectileRef.Get().GoToDestination(fireWeaponParameter.destination);
+        moveTowardsRef.Get().StartMoving(fireWeaponParameter.destination);
     }
 }

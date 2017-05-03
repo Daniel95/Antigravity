@@ -41,5 +41,14 @@ public class CharacterContext : Context {
 
         On<CollisionEnter2DEvent>()
             .Do<AbortIfNotCollidingAndNotInTriggerKillerTagsCommand>();
+
+        On<CharacterPointToDirectionEvent>()
+            .Do<CharacterPointToDirectionCommand>();
+
+        On<CharacterSetMoveDirectionEvent>()
+            .Do<CharacterSetMoveDirectionCommand>();
+
+        On<CharacterSetVelocityEvent>()
+            .Do<CharacterSetVelocityCommand>();
     }
 }

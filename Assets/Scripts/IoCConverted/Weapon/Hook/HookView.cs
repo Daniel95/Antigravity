@@ -15,6 +15,7 @@ public class HookView : View, IHook, ITriggerer {
     public float DirectionSpeedNeutralValue { get { return directionSpeedNeutralValue; } }
     public float MinimalHookDistance { get { return minimalHookDistance; } }
     public GameObject Owner { get { return gameObject; } }
+    public Vector2 Destination { get { return destination; } set { destination = value; } }
 
     public Action ActivateTrigger { get; set; }
     public Action StopTrigger { get; set; }
@@ -34,6 +35,7 @@ public class HookView : View, IHook, ITriggerer {
     private GameObject hookProjectileGameObject;
     private List<Transform> anchors = new List<Transform>();
     private LineRenderer lineRendererComponent;
+    private Vector2 destination;
 
     private Coroutine lineUpdateCoroutine;
 

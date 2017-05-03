@@ -19,4 +19,5 @@ interface IHook {
     float DirectionSpeedNeutralValue { get; }
     float MinimalHookDistance { get; }
     GameObject Owner { get; }
+    Vector2 Destination { get; set; }
 }

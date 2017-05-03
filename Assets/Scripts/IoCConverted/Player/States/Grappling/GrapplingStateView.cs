@@ -26,26 +26,11 @@ public class GrapplingStateView : View, IGrapplingState, ITriggerer {
 
     public override void Initialize() {
         grappleViewRef.Set(this);
-
-        StartFixedActing();
-        StartActing();
     }
 
     public override void Dispose() {
         Delete();
     }
 
-    public override void Act() {
-        if (charAcces.ControlVelocity.GetVelocity == Vector2.zero && charAcces.ControlVelocity.CurrentSpeed != 0) {
-            charAcces.ControlDirection.ApplyLogicDirection(charAcces.ControlVelocity.GetVelocityDirection(), charAcces.CollisionDirection.GetCurrentCollDir());
 
-            activateSlidingStateEvent.Dispatch();
-        }
-
-        gunLookAt.UpdateLookAt(_grapplingHook.Destination);
-    }
-
-    public override void FixedAct() {
-        charAcces.ControlVelocity.SetVelocity(lastVelocity = charAcces.ControlVelocity.GetVelocityDirection() * charAcces.ControlVelocity.CurrentSpeed);
-    }
 }

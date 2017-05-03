@@ -21,5 +21,8 @@ public class GrapplingStateContext : Context {
             .Do<CharacterSetMoveDirectionToVelocityDirectionCommand>()
             .Do<CharacterTemporarySpeedIncreaseCommand>()
             .Dispatch<ActivateFloatingStateEvent>();
+
+        On<UpdateGrapplingStateEvent>()
+            .Do<UpdateGrapplingStateCommand>();
     }
 }

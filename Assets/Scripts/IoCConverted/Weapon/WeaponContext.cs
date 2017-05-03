@@ -5,11 +5,8 @@ public class WeaponContext : Context {
     protected override void SetBindings() {
         base.SetBindings();
 
-        Bind<HookModel>();
-
         Bind<Ref<IShoot>>();
         Bind<Ref<IWeaponOutput>>();
-        Bind<Ref<IPullingHook>>();
         Bind<Ref<IGrapplingHook>>();
         Bind<Ref<IGrapplingHook>>();
 
