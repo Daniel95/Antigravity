@@ -1,5 +1,7 @@
-﻿using UnityEngine;
+﻿interface IRevivedState {
 
-interface IRevivedState {
-    void Aim(Vector2 direction);
+    bool IsReadyForLaunchInput { get; set; }
+    bool IsInPosition { get; set; }
+
+    void StartDelayLaunchInput();
 }

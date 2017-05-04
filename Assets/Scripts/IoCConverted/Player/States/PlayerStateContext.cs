@@ -11,9 +11,6 @@ public class PlayerStateContext : Context {
         On<ActivateFloatingStateEvent>()
             .GotoState<FloatingStateContext>();
 
-        On<GrapplingHookStartedEvent>()
-            .GotoState<GrapplingStateContext>();
-
         On<CollisionEnter2DEvent>()
             .Do<AbortIfNotCollidingAndNotInTriggerTagCommand>(Tags.Bouncy)
             .Do<CharacterBounceCommand>()
@@ -22,5 +19,12 @@ public class PlayerStateContext : Context {
         On<TurnFromWallEvent>()
             .Dispatch<CharacterTurnToNextDirectionEvent>()
             .Dispatch<ActivateSlidingStateEvent>();
+
+        On<TriggerEnter2DEvent>()
+            .Do<AbortIfGameObjectIsNotPlayerCommand>()
+            .Do<AbortIfCollider2DIsNotCheckpointCommand>()
+            .Do<UpdateCheckpointStatusCommand>()
+            .GotoState<GrapplingStateContext>();
+
     }
 }

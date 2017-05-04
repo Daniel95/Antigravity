@@ -62,7 +62,7 @@ public class HookContext : Context {
             .Do<HookProjectileSetReachedAnchorsIndexCommand>(0)
             .Do<DispatchHookProjectileMoveTowardsNextAnchorCommand>();
 
-        On<ReachedDestinationEvent>()
+        On<ReachedMoveTowardsDestinationEvent>()
             .Do<AbortIfGameObjectIsNotHookProjectileCommand>()
             .Do<AbortIfHookedLayerIsZeroCommand>()
             .Do<HookProjectileSetParentToAttachedTransformCommand>()

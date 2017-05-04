@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MoveTowardsView : View, IMoveTowards {
 
-    [Inject] private ReachedDestinationEvent reachedDestinationEvent;
+    [Inject] private ReachedMoveTowardsDestinationEvent reachedDestinationEvent;
 
     [SerializeField] private float speed = 10;
     [SerializeField] private float minReachedDistance = 0.5f;
