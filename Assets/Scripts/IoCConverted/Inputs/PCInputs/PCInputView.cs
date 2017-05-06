@@ -28,9 +28,7 @@ public class PCInputView : View, IPCInput {
     private float StartDownTime;
 
     public override void Initialize() {
-        Debug.Log("set pc input");
         pcInputRef.Set(this);
-        Debug.Log(pcInputRef.Get());
     }
 
     public void ResetTouched() {

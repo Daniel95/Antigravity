@@ -6,7 +6,26 @@ public class PlayerContext : Context {
         base.SetBindings();
 
         Bind<Ref<IShoot>>();
+        Bind<Ref<IPCInput>>();
+        Bind<Ref<IMobileInput>>();
+        Bind<Ref<IGrapplingHook>>();
+        Bind<Ref<ICharacterVelocity>>();
+        Bind<Ref<ICharacterTurnDirection>>();
+        Bind<Ref<ICharacterRaycast>>();
+        Bind<Ref<ICharacterCollisionDirection>>();
+        Bind<Ref<ICharacterJump>>();
+        Bind<Ref<ICharacterDirectionPointer>>();
+        Bind<Ref<ICharacterCollisionHitDetection>>();
+        Bind<Ref<ICharacterTriggerHitDetection>>();
+        Bind<Ref<ICharacterAimLine>>();
+        Bind<Ref<ICharacterBounce>>();
+        Bind<Ref<ICharacterDie>>();
+        Bind<Ref<ICharacterSpeed>>();
         Bind<Ref<ISlowTime>>();
+        Bind<Ref<IGrapplingState>>();
+        Bind<Ref<IRevivedState>>();
+        Bind<Ref<IMoveTowards>>();
+        Bind<Ref<IHook>>();
 
         Bind<CancelDragInputEvent>();
         Bind<DraggingInputEvent>();
