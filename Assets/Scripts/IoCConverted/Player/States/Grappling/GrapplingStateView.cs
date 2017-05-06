@@ -9,20 +9,8 @@ public class GrapplingStateView : View, IGrapplingState, ITriggerer {
 
     [Inject] private Ref<IGrapplingState> grapplingStateRef;
 
-    [Inject] private CharacterEnableDirectionalMovementEvent characterEnableDirectionalMovementEvent;
-
-    [Inject] private ActivateFloatingStateEvent activateFloatingStateEvent;
-    [Inject] private ActivateSlidingStateEvent activateSlidingStateEvent;
-
-    [SerializeField] private GameObject gun;
-
-    private LookAt gunLookAt;
     private Coroutine slingMovement;
     private Vector2 lastVelocity;
-
-    private void Awake() {
-        gunLookAt = gun.GetComponent<LookAt>();
-    }
 
     public override void Initialize() {
         grapplingStateRef.Set(this);
@@ -31,6 +19,4 @@ public class GrapplingStateView : View, IGrapplingState, ITriggerer {
     public override void Dispose() {
         Delete();
     }
-
-
 }

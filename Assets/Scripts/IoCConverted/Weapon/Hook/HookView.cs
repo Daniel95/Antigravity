@@ -10,7 +10,7 @@ public class HookView : View, IHook, ITriggerer {
     public HookState LastHookState { get { return lastHookState; } set { lastHookState = value; } }
     public GameObject HookProjectileGameObject { get { return hookProjectileGameObject; } }
     public List<Transform> Anchors { get { return anchors; } }
-    public LineRenderer LineRendererComponent { get { return lineRendererComponent; } }
+    public LineRenderer LineRenderer { get { return lineRenderer; } }
     public LayerMask RayLayers { get { return rayLayers; } }
     public float DirectionSpeedNeutralValue { get { return directionSpeedNeutralValue; } }
     public float MinimalHookDistance { get { return minimalHookDistance; } }
@@ -22,9 +22,6 @@ public class HookView : View, IHook, ITriggerer {
 
     [Inject] private Ref<IHook> hookRef;
 
-    [SerializeField] private LineRenderer lineRenderer;
-    [SerializeField] private GameObject hookProjectileGObj;
-    [SerializeField] private HookProjectileView hookProjectileScript;
     [SerializeField] private LayerMask rayLayers;
     [SerializeField] private GameObject hookProjectilePrefab;
     [SerializeField] private float directionSpeedNeutralValue = 0.15f;
@@ -34,7 +31,7 @@ public class HookView : View, IHook, ITriggerer {
     private HookState lastHookState = HookState.Inactive;
     private GameObject hookProjectileGameObject;
     private List<Transform> anchors = new List<Transform>();
-    private LineRenderer lineRendererComponent;
+    private LineRenderer lineRenderer;
     private Vector2 destination;
 
     private Coroutine lineUpdateCoroutine;
@@ -46,9 +43,8 @@ public class HookView : View, IHook, ITriggerer {
     protected virtual void Awake() {
         lineRenderer = GetComponent<LineRenderer>();
 
-        hookProjectileGObj = Instantiate(hookProjectilePrefab, Vector2.zero, new Quaternion(0, 0, 0, 0));
-        hookProjectileScript = hookProjectileGObj.GetComponent<HookProjectileView>();
-        hookProjectileGObj.SetActive(false);
+        hookProjectileGameObject = Instantiate(hookProjectilePrefab, Vector2.zero, new Quaternion(0, 0, 0, 0));
+        hookProjectileGameObject.SetActive(false);
     }
 
     public void AddAnchor(Vector2 position, Transform parent) {
@@ -56,12 +52,12 @@ public class HookView : View, IHook, ITriggerer {
     }
 
     public void ActivateHookProjectile(Vector2 spawnPosition) {
-        hookProjectileGObj.SetActive(true);
-        hookProjectileGObj.transform.position = spawnPosition;
+        hookProjectileGameObject.SetActive(true);
+        hookProjectileGameObject.transform.position = spawnPosition;
     }
 
     public void DeactivateHookProjectile() {
-        hookProjectileGObj.SetActive(false);
+        hookProjectileGameObject.SetActive(false);
     }
 
     public void DestroyAnchors() {

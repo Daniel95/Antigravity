@@ -8,7 +8,6 @@ public class CharacterDirectionPointView : View, ICharacterDirectionPointer {
     [SerializeField] private Transform arrowTransform;
 
     private Vector2 lookdirection;
-    private Frames frames;
     private LookAt lookAt;
 
     public override void Initialize() {
@@ -32,7 +31,6 @@ public class CharacterDirectionPointView : View, ICharacterDirectionPointer {
     }
 
     private void Awake() {
-        frames = GetComponent<Frames>();
         lookAt = GetComponent<LookAt>();
     }
 }
