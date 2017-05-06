@@ -4,7 +4,7 @@ public interface IHookProjectile {
 
     int HookedLayerIndex { get; set; }
     Transform AttachedTransform { get; set; }
-    Transform Transform { get; set; }
+    Transform Transform { get; }
     int ReachedAnchorsIndex { get; set; }
     bool IsMovingTowardsOwner { get; set; }
 

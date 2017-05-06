@@ -13,6 +13,12 @@ public class CharacterRaycastView : View, ICharacterRaycast {
     [SerializeField] private float cornerRayLength = 0.15f;
     [SerializeField] private float middleRayLength = 0.4f;
 
+    [Inject] private Ref<ICharacterRaycast> characterRaycastRef;
+
+    public override void Initialize() {
+        characterRaycastRef.Set(this);
+    }
+
     /// <summary>
     /// check the raycast results of our vertical corners, between -1 and 1.
     /// </summary>

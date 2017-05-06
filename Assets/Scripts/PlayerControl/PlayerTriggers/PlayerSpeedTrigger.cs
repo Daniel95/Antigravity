@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerSpeedTrigger : MonoBehaviour, ITriggerable {
 
@@ -19,9 +17,9 @@ public class PlayerSpeedTrigger : MonoBehaviour, ITriggerable {
 
     public void TriggerStop()
     {
-        controlVelocity.SetDirection(_lastDirection);
+        //controlVelocity.SetDirection(_lastDirection);
 
-        controlVelocity.SetVelocity(_lastDirection * controlVelocity.OriginalSpeed);
+        //controlVelocity.SetVelocity(_lastDirection * controlVelocity.OriginalSpeed);
 
         controlVelocity.SetSpeed(controlVelocity.OriginalSpeed);
     }

@@ -1,5 +1,4 @@
 ﻿using IoCPlus;
-using UnityEngine;
 
 public class InputContext : Context {
 
@@ -7,6 +6,9 @@ public class InputContext : Context {
         base.SetBindings();
 
         Bind<InputModel>();
+
+        Bind<Ref<IPCInput>>();
+        Bind<Ref<IMobileInput>>();
 
         Bind<ActivateInputPlatformEvent>();
 

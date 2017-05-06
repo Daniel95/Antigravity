@@ -5,6 +5,9 @@ public class PlayerStateContext : Context {
     protected override void SetBindings() {
         base.SetBindings();
 
+        Bind<Ref<IGrapplingState>>();
+        Bind<Ref<IRevivedState>>();
+
         On<EnterContextSignal>()
             .GotoState<FloatingStateContext>();
 

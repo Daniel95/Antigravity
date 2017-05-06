@@ -5,6 +5,9 @@ public class PlayerContext : Context {
     protected override void SetBindings() {
         base.SetBindings();
 
+        Bind<Ref<IShoot>>();
+        Bind<Ref<ISlowTime>>();
+
         Bind<CancelDragInputEvent>();
         Bind<DraggingInputEvent>();
         Bind<HoldingInputEvent>();
@@ -23,11 +26,8 @@ public class PlayerContext : Context {
         Bind<RawReleaseInputEvent>();
         Bind<RawTappedExpiredInputEvent>();
 
-        Bind<Ref<ICharacterVelocity>>();
-
         //weapons
         Bind<SelectedWeaponOutputModel>();
-        Bind<Ref<IShoot>>();
         Bind<FireWeaponEvent>();
         Bind<AimWeaponEvent>();
         Bind<CancelAimWeaponEvent>();

@@ -4,12 +4,18 @@ using UnityEngine;
 
 public class MoveTowardsView : View, IMoveTowards {
 
+    [Inject] private Ref<IMoveTowards> moveTowardsRef;
+
     [Inject] private ReachedMoveTowardsDestinationEvent reachedDestinationEvent;
 
     [SerializeField] private float speed = 10;
     [SerializeField] private float minReachedDistance = 0.5f;
 
     private Coroutine moveTo;
+
+    public override void Initialize() {
+        moveTowardsRef.Set(this);
+    }
 
     public void StartMoving(Vector2 destination) {
         if (moveTo != null) {

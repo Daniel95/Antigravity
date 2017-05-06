@@ -11,6 +11,10 @@ public class CharacterDirectionPointView : View, ICharacterDirectionPointer {
     private Frames frames;
     private LookAt lookAt;
 
+    public override void Initialize() {
+        directionPointer.Set(this);
+    }
+
     public void PointToDirection(Vector2 direction) {
         lookdirection = direction;
         lookAt.UpdateLookAt((Vector2)transform.position + lookdirection);

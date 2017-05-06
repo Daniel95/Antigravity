@@ -7,7 +7,7 @@ public class GrapplingStateView : View, IGrapplingState, ITriggerer {
     public Action ActivateTrigger { get; set; }
     public Action StopTrigger { get; set; }
 
-    [Inject] private Ref<IGrapplingState> grappleViewRef;
+    [Inject] private Ref<IGrapplingState> grapplingStateRef;
 
     [Inject] private CharacterEnableDirectionalMovementEvent characterEnableDirectionalMovementEvent;
 
@@ -25,7 +25,7 @@ public class GrapplingStateView : View, IGrapplingState, ITriggerer {
     }
 
     public override void Initialize() {
-        grappleViewRef.Set(this);
+        grapplingStateRef.Set(this);
     }
 
     public override void Dispose() {

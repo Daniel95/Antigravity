@@ -26,14 +26,14 @@ public class GrapplingHookView : View, IGrapplingHook {
         grapplingHookRef.Set(this);
     }
 
-    public void StartDistaneJoint() {
+    public void StartGrappleLock() {
         distanceJoint.enabled = true;
         distanceJoint.distance = distance;
 
         grappleAnchorUpdate = StartCoroutine(GrappleAnchorUpdate());
     }
 
-    public void StopDistanceJoint() {
+    public void StopGrappleLock() {
         if (grappleAnchorUpdate != null) {
             StopCoroutine(grappleAnchorUpdate);
         }

@@ -8,9 +8,15 @@ public class CharacterAimLineView : View, ICharacterAimLine {
 
     [SerializeField] private LineRenderer line;
 
+    [Inject] private Ref<ICharacterAimLine> characterAimLineRef;
+
     private Vector2 lineDestination;
     private Coroutine updateLineRendererPositions;
     private bool aimLineActive;
+
+    public override void Initialize() {
+        characterAimLineRef.Set(this);
+    }
 
     public void UpdateAimLineDestination(Vector2 destination) {
         if (!aimLineActive) {

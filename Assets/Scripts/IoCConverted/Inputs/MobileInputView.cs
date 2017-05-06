@@ -2,9 +2,10 @@ using IoCPlus;
 using System.Collections;
 using UnityEngine;
 
-public class MobileInputView : View, IInput {
+public class MobileInputView : View, IMobileInput {
 
-    [Inject] IContext context;
+    [Inject] private Ref<IMobileInput> mobileInputRef;
+
     [Inject] private RawCancelDragInputEvent rawCancelDragInputEvent;
     [Inject] private RawDraggingInputEvent rawDraggingInputEvent;
     [Inject] private RawHoldingInputEvent rawHoldingInputEvent;
@@ -24,6 +25,10 @@ public class MobileInputView : View, IInput {
     private GameObject _joyStickGObj;
     private DragDirIndicator _dragDirIndicator;
     private Vector2 _startTouchPosition;
+
+    public override void Initialize() {
+        mobileInputRef.Set(this);
+    }
 
     public virtual void ResetTouched() {
         rawCancelDragInputEvent.Dispatch();

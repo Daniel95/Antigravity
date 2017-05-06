@@ -2,7 +2,9 @@ using IoCPlus;
 using System.Collections;
 using UnityEngine;
 
-public class PCInputView : View, IInput {
+public class PCInputView : View, IPCInput {
+
+    [Inject] private Ref<IPCInput> pcInputRef;
 
     [Inject] private RawCancelDragInputEvent rawCancelDragInputEvent;
     [Inject] private RawDraggingInputEvent rawDraggingInputEvent;
@@ -24,6 +26,10 @@ public class PCInputView : View, IInput {
     private TouchStates TouchState = TouchStates.None;
 
     private float StartDownTime;
+
+    public override void Initialize() {
+        pcInputRef.Set(this);
+    }
 
     public void ResetTouched() {
         rawCancelDragInputEvent.Dispatch();

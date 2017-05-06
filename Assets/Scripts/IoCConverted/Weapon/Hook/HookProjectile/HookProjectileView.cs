@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class HookProjectileView : View, IHookProjectile {
 
-    public Transform Transfrom { get { return transform; } set { transform = value; } }
+    public Transform Transform { get { return transform; } }
     public Transform AttachedTransform { get { return attachedTransform; } set { attachedTransform = value; } }
     public int HookedLayerIndex { get { return hookedLayer; } set { hookedLayer = value; } }
     public int ReachedAnchorsIndex { get { return anchorIndex; } set { anchorIndex = value; } }
