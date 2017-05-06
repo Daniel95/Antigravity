@@ -48,7 +48,7 @@ public class PlayerContext : Context {
             .Do<ChooseAndDispatchPlayerDiesEventCommand>();
 
         On<RespawnPlayerEvent>()
-            .Do<InstantiateGameObjectCommand>()
+            .Do<InstantiatePlayerCommand>()
             .Do<StartScreenShakeCommand>()
             .Dispatch<ActivateRevivedStateEvent>();
 
