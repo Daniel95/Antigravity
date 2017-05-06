@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class PCInputView : View, IPCInput {
 
+    [SerializeField] private KeyCode jumpInput = KeyCode.Space;
+    [SerializeField] private KeyCode aimInput = KeyCode.Mouse0;
+    [SerializeField] private float minDistFromPlayer = 6;
+    [SerializeField] private float TimebeforeTappedExpired = 0.15f;
+
     [Inject] private Ref<IPCInput> pcInputRef;
 
     [Inject] private RawCancelDragInputEvent rawCancelDragInputEvent;
@@ -13,11 +18,6 @@ public class PCInputView : View, IPCInput {
     [Inject] private RawReleaseInDirectionInputEvent rawReleaseInDirectionInputEvent;
     [Inject] private RawReleaseInputEvent rawReleaseInputEvent;
     [Inject] private RawTappedExpiredInputEvent rawTappedExpiredInputEvent;
-
-    [SerializeField] private KeyCode jumpInput = KeyCode.Space;
-    [SerializeField] private KeyCode aimInput = KeyCode.Mouse0;
-    [SerializeField] private float minDistFromPlayer = 6;
-    [SerializeField] private float TimebeforeTappedExpired = 0.15f;
 
     private Coroutine inputUpdate;
 

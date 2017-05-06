@@ -1,3 +1,3 @@
 ﻿using IoCPlus;
 
-public class ActivateInputPlatformEvent : Signal<bool> { }
+public class ActivateInputPlatformEvent : Signal { }

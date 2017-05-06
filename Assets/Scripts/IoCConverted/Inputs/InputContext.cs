@@ -7,16 +7,18 @@ public class InputContext : Context {
 
         Bind<InputModel>();
 
-        Bind<Ref<IPCInput>>();
-        Bind<Ref<IMobileInput>>();
-
         Bind<ActivateInputPlatformEvent>();
 
         On<EnterContextSignal>()
-            .Do<ActivateViewOnPlayerCommand<ActivateInputPlatformView>>();
+            .Dispatch<ActivateInputPlatformEvent>();
 
         On<ActivateInputPlatformEvent>()
-            .Do<ActivateInputPlatformViewCommand>();
+            .Do<AbortIfPlatformIsNotMobileCommand>()
+            .GotoState<MobileInputContext>();
+
+        On<ActivateInputPlatformEvent>()
+            .Do<AbortIfPlatformIsMobileCommand>()
+            .GotoState<PCInputContext>();
 
         On<RawJumpInputEvent>()
             .Do<AbortIfActionInputIsNotEnabled>()

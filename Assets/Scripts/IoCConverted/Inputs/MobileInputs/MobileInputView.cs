@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class MobileInputView : View, IMobileInput {
 
+    [SerializeField] private GameObject joyStickPrefab;
+    [SerializeField] private float TimebeforeTappedExpired = 0.15f;
+    [SerializeField] private float minDistToDrag = 0.75f;
+
     [Inject] private Ref<IMobileInput> mobileInputRef;
 
     [Inject] private RawCancelDragInputEvent rawCancelDragInputEvent;
@@ -13,10 +17,6 @@ public class MobileInputView : View, IMobileInput {
     [Inject] private RawReleaseInDirectionInputEvent rawReleaseInDirectionInputEvent;
     [Inject] private RawReleaseInputEvent rawReleaseInputEvent;
     [Inject] private RawTappedExpiredInputEvent rawTappedExpiredInputEvent;
-
-    [SerializeField] private GameObject joyStickPrefab;
-    [SerializeField] private float TimebeforeTappedExpired = 0.15f;
-    [SerializeField] private float minDistToDrag = 0.75f;
 
     private Coroutine inputUpdate;
     private enum TouchStates { Holding, Dragging, Tapped, None }
