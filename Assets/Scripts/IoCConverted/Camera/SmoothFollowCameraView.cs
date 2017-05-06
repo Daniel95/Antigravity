@@ -5,8 +5,7 @@ public class SmoothFollowCameraView : View {
 
     [Inject] private PlayerModel playerModel;
 
-    [SerializeField]
-    private float smoothness = 0.375f;
+    [SerializeField] private float smoothness = 0.375f;
 
     private Transform target;
 
@@ -23,8 +22,7 @@ public class SmoothFollowCameraView : View {
     }
 
     public override void Initialize() {
-        base.Initialize();
-        target = playerModel.player.transform;
+        target = playerModel.Player.transform;
         transform.position = new Vector3(target.position.x, target.position.y, _yStartPos);
     }
 

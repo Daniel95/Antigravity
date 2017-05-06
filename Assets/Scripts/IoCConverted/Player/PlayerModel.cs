@@ -2,6 +2,6 @@
 
 public class PlayerModel  {
 
-    public GameObject player;
-    public bool checkpointReached;
+    public GameObject Player;
+    public bool CheckpointReached;
 }

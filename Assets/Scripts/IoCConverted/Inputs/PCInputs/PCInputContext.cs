@@ -1,4 +1,5 @@
 ﻿using IoCPlus;
+using UnityEngine;
 
 public class PCInputContext : Context {
 
@@ -12,7 +13,6 @@ public class PCInputContext : Context {
 
         On<LeaveContextSignal>()
             .Do<EnablePCInputCommand>(false);
-
     }
 
 }

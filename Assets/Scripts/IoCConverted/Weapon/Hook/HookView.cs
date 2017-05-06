@@ -23,15 +23,17 @@ public class HookView : View, IHook, ITriggerer {
     [Inject] private Ref<IHook> hookRef;
 
     [SerializeField] private LayerMask rayLayers;
+    [SerializeField] private GameObject hookLinePrefab;
     [SerializeField] private GameObject hookProjectilePrefab;
     [SerializeField] private float directionSpeedNeutralValue = 0.15f;
     [SerializeField] private float minimalHookDistance = 0.75f;
+
+    private LineRenderer lineRenderer;
 
     private HookState activeHookState = HookState.Inactive;
     private HookState lastHookState = HookState.Inactive;
     private GameObject hookProjectileGameObject;
     private List<Transform> anchors = new List<Transform>();
-    private LineRenderer lineRenderer;
     private Vector2 destination;
 
     private Coroutine lineUpdateCoroutine;
@@ -41,6 +43,8 @@ public class HookView : View, IHook, ITriggerer {
     }
 
     protected virtual void Awake() {
+        lineRenderer = Instantiate(hookLinePrefab, transform).GetComponent<LineRenderer>();
+
         lineRenderer = GetComponent<LineRenderer>();
 
         hookProjectileGameObject = Instantiate(hookProjectilePrefab, Vector2.zero, new Quaternion(0, 0, 0, 0));

@@ -2,5 +2,5 @@
 
 public interface ICharacterDie
 {
-    List<string> KillerTag { get; }
+    List<string> KillerTags { get; }
 }

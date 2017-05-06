@@ -8,7 +8,7 @@ public class AbortIfNotCollidingAndNotInTriggerKillerTagsCommand : Command {
     [InjectParameter] private Collision2D collision;
 
     protected override void Execute() {
-        if(!characterDieRef.Get().KillerTag.Contains(collision.transform.tag)) {
+        if(!characterDieRef.Get().KillerTags.Contains(collision.transform.tag)) {
             Abort();
         }
     }

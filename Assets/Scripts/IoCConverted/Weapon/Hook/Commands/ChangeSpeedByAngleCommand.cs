@@ -12,7 +12,7 @@ public class ChangeSpeedByAngleCommand : Command {
 
     protected override void Execute() {
         float angleDifference =
-            Mathf.Abs(Vector2.Dot((hookRef.Get().HookProjectileGameObject.transform.position - playerModel.player.transform.position).normalized,
+            Mathf.Abs(Vector2.Dot((hookRef.Get().HookProjectileGameObject.transform.position - playerModel.Player.transform.position).normalized,
             characterVelocityRef.Get().GetVelocityDirection()));
 
         float speedChange = angleDifference * -1 + 1;

@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class CharacterDieView : View, ICharacterDie {
 
-    public List<string> KillerTag { get { return killerTag; } }
+    public List<string> KillerTags { get { return killerTags; } }
 
     [Inject] private Ref<ICharacterDie> characterDieRef;
 
-    [SerializeField] private List<string> killerTag;
+    [SerializeField] private List<string> killerTags;
 
     public override void Initialize() {
         characterDieRef.Set(this);

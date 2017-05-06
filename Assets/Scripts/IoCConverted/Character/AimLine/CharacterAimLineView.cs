@@ -6,10 +6,11 @@ public class CharacterAimLineView : View, ICharacterAimLine {
 
     public bool AimLineActive { get { return aimLineActive; } }
 
-    [SerializeField] private LineRenderer line;
+    [SerializeField] private GameObject aimLinePrefab;
 
     [Inject] private Ref<ICharacterAimLine> characterAimLineRef;
 
+    private LineRenderer lineRenderer;
     private Vector2 lineDestination;
     private Coroutine updateLineRendererPositions;
     private bool aimLineActive;
@@ -30,19 +31,20 @@ public class CharacterAimLineView : View, ICharacterAimLine {
         if (aimLineActive) {
             StopCoroutine(updateLineRendererPositions);
 
-            line.enabled = aimLineActive = false;
+            lineRenderer.enabled = aimLineActive = false;
         }
     }
 
-    void Start() {
-        line.enabled = false;
+    private void Awake() {
+        lineRenderer = Instantiate(aimLinePrefab, transform).GetComponent<LineRenderer>();
+        lineRenderer.enabled = false;
     }
 
     private void StartAimLine(Vector2 destination) {
-        line.enabled = aimLineActive = true;
+        lineRenderer.enabled = aimLineActive = true;
 
-        line.SetPosition(0, transform.position);
-        line.SetPosition(1, destination);
+        lineRenderer.SetPosition(0, transform.position);
+        lineRenderer.SetPosition(1, destination);
 
         updateLineRendererPositions = StartCoroutine(UpdateLineRendererPositions());
     }
@@ -50,8 +52,8 @@ public class CharacterAimLineView : View, ICharacterAimLine {
     IEnumerator UpdateLineRendererPositions() {
         while (true)
         {
-            line.SetPosition(0, transform.position);
-            line.SetPosition(1, lineDestination);
+            lineRenderer.SetPosition(0, transform.position);
+            lineRenderer.SetPosition(1, lineDestination);
             yield return null;
         }
     }

@@ -8,7 +8,7 @@ public class AbortIfGameObjectIsNotPlayerCommand : Command {
     [InjectParameter] private GameObject gameobject;
 
     protected override void Execute() {
-        if(gameobject != playerModel.player) {
+        if(gameobject != playerModel.Player) {
             Abort();
         }
     }

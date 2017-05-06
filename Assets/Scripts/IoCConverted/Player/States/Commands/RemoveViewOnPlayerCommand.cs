@@ -7,7 +7,7 @@ public class RemoveViewOnPlayerCommand<T> : Command where T : View {
     [Inject] private PlayerModel playerModel;
 
     protected override void Execute() {
-        View view = playerModel.player.GetComponent<T>();
+        View view = playerModel.Player.GetComponent<T>();
 
         view.Destroy();
     }
