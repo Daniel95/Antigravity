@@ -5,12 +5,6 @@ public class GameContext : Context {
     protected override void SetBindings() {
         base.SetBindings();
 
-        Bind<Ref<IHook>>();
-        Bind<Ref<IGrapplingHook>>();
-        Bind<Ref<IHookProjectile>>();
-
-        Bind<Ref<IPCInput>>();
-
         Bind<PlayerModel>();
 
         Bind<StartMoveTowardsEvent>();

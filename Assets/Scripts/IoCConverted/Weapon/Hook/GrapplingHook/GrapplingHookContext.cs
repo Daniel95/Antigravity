@@ -19,6 +19,5 @@ public class GrapplingHookContext : Context {
 
         On<LeaveContextSignal>()
             .Do<GrapplingHookStopGrappleLockCommand>();
-
     }
 }

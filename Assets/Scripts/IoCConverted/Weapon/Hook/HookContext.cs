@@ -6,16 +6,7 @@ public class HookContext : Context {
     protected override void SetBindings() {
         base.SetBindings();
 
-        Bind<GrapplingHookStartedEvent>();
-        Bind<CancelHookEvent>();
 
-        Bind<HookProjectileReturnedToOwnerEvent>();
-
-        Bind<Ref<IHook>>();
-        Bind<Ref<IGrapplingHook>>();
-        Bind<Ref<IHookProjectile>>();
-
-        On<EnterContextSignal>();
 
         On<CancelHookEvent>()
             .Do<StopSlowTimeCommand>()

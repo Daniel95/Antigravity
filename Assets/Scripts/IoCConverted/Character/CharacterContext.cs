@@ -5,18 +5,6 @@ public class CharacterContext : Context {
     protected override void SetBindings() {
         base.SetBindings();
 
-        Bind<Ref<ICharacterAimLine>>();
-        Bind<Ref<ICharacterBounce>>();
-        Bind<Ref<ICharacterCollisionDirection>>();
-        Bind<Ref<ICharacterCollisionHitDetection>>();
-        Bind<Ref<ICharacterDie>>();
-        Bind<Ref<ICharacterDirectionPointer>>();
-        Bind<Ref<ICharacterJump>>();
-        Bind<Ref<ICharacterRaycast>>();
-        Bind<Ref<ICharacterSpeed>>();
-        Bind<Ref<ICharacterTurnDirection>>();
-        Bind<Ref<ICharacterVelocity>>();
-
         On<EnterContextSignal>()
             .Do<ActivateViewOnPlayerCommand<CharacterVelocityView>>()
             .Do<CharacterSetSavedDirectionToStartDirectionCommand>();

@@ -27,6 +27,17 @@ public class PlayerContext : Context {
         Bind<Ref<IMoveTowards>>();
         Bind<Ref<IHook>>();
 
+        //character
+        Bind<CharacterSetMoveDirectionEvent>();
+        Bind<CharacterBoostSpeedEvent>();
+        Bind<CharacterTemporarySpeedChangeEvent>();
+        Bind<CharacterTemporarySpeedDecreaseEvent>();
+        Bind<CharacterTemporarySpeedChangeEvent>();
+        Bind<CharacterRemoveCollisionDirectionEvent>();
+        Bind<CharacterJumpEvent>();
+        Bind<CharacterRetryJumpEvent>();
+
+        //player
         Bind<CancelDragInputEvent>();
         Bind<DraggingInputEvent>();
         Bind<HoldingInputEvent>();
@@ -37,6 +48,10 @@ public class PlayerContext : Context {
         Bind<EnableActionInputEvent>();
         Bind<EnableShootingInputEvent>();
 
+        //player states
+        Bind<UpdateGrapplingStateEvent>();
+
+        //raw inputs
         Bind<RawCancelDragInputEvent>();
         Bind<RawDraggingInputEvent>();
         Bind<RawHoldingInputEvent>();
@@ -50,6 +65,14 @@ public class PlayerContext : Context {
         Bind<FireWeaponEvent>();
         Bind<AimWeaponEvent>();
         Bind<CancelAimWeaponEvent>();
+
+        //hook
+        Bind<GrapplingHookStartedEvent>();
+        Bind<CancelHookEvent>();
+        Bind<HookProjectileReturnedToOwnerEvent>();
+
+        //grapplinghook
+        Bind<UpdateGrapplingHookRopeEvent>();
 
         On<EnterContextSignal>()
             .Do<InstantiatePlayerCommand>()
