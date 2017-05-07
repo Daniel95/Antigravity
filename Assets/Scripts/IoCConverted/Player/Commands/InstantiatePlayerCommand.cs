@@ -19,17 +19,10 @@ public class InstantiatePlayerCommand : Command {
         }
 
         Vector2 startPosition = GameObject.FindGameObjectWithTag(Tags.Start).transform.position;
-        Debug.Log("spawn player");
-
-
-        GameObject player = GameObject.Instantiate(playerViewPrefab.gameObject, startPosition, Quaternion.identity);
-        player.transform.position = startPosition;
-        playerModel.Player = player;
-        Debug.Log("Init player");
-        Debug.Log(playerModel.Player.activeInHierarchy);
-
-        (context as Context).AddView(playerViewPrefab);
-        //context.AddView(playerViewPrefab);
+        View playerView = context.InstantiateView(playerViewPrefab);
+        GameObject playerGO = playerView.gameObject;
+        playerGO.transform.position = startPosition;
+        playerModel.Player = playerGO;
     }
 }
 
