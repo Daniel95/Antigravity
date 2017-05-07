@@ -17,7 +17,8 @@ public class GrapplingStateView : View, IGrapplingState, ITriggerer {
 
     public override void Initialize() {
         grapplingStateRef.Set(this);
-
+        Debug.Log(gameObject.activeInHierarchy);
+        Debug.Break();
         updateGrapplingStateCoroutine = StartCoroutine(UpdateGrapplingState());
     }
 

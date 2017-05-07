@@ -9,6 +9,7 @@ public class GameContext : Context {
 
         Bind<StartMoveTowardsEvent>();
         Bind<StopMoveTowardsEvent>();
+        Bind<ReachedMoveTowardsDestinationEvent>();
 
         On<EnterContextSignal>()
             .AddContext<PlayerContext>()

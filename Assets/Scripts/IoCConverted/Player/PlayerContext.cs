@@ -28,6 +28,7 @@ public class PlayerContext : Context {
         Bind<Ref<IHook>>();
 
         //character
+        Bind<CharacterEnableDirectionalMovementEvent>();
         Bind<CharacterSetMoveDirectionEvent>();
         Bind<CharacterBoostSpeedEvent>();
         Bind<CharacterTemporarySpeedChangeEvent>();

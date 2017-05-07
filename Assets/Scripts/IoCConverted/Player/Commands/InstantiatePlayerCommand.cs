@@ -19,8 +19,42 @@ public class InstantiatePlayerCommand : Command {
         }
 
         Vector2 startPosition = GameObject.FindGameObjectWithTag(Tags.Start).transform.position;
-        context.AddView(playerViewPrefab);
-        playerModel.Player = GameObject.Instantiate(playerViewPrefab.gameObject, startPosition, Quaternion.identity);
-        playerModel.Player.transform.position = startPosition;
+        Debug.Log("spawn player");
+
+
+        GameObject player = GameObject.Instantiate(playerViewPrefab.gameObject, startPosition, Quaternion.identity);
+        player.transform.position = startPosition;
+        playerModel.Player = player;
+        Debug.Log("Init player");
+        Debug.Log(playerModel.Player.activeInHierarchy);
+
+        (context as Context).AddView(playerViewPrefab);
+        //context.AddView(playerViewPrefab);
     }
 }
+
+
+/*
+    protected override void Execute() {
+        View playerViewPrefab = Resources.Load<View>(PLAYER_PREFAB_PATH);
+
+        if (GameObject.FindGameObjectWithTag(Tags.Start) == null) {
+            Debug.Log("Cant find start, aborting");
+            Abort();
+            return;
+        }
+
+        Vector2 startPosition = GameObject.FindGameObjectWithTag(Tags.Start).transform.position;
+        Debug.Log("spawn player");
+
+
+        GameObject player = GameObject.Instantiate(playerViewPrefab.gameObject, startPosition, Quaternion.identity);
+        player.transform.position = startPosition;
+        playerModel.Player = player;
+        Debug.Log("Init player");
+        Debug.Log(playerModel.Player.activeInHierarchy);
+
+        (context as Context).AddView(playerViewPrefab);
+        //context.AddView(playerViewPrefab);
+    }
+*/

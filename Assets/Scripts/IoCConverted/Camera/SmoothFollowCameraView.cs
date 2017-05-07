@@ -1,35 +1,34 @@
 ﻿using UnityEngine;
 using IoCPlus;
+using System.Collections;
 
 public class SmoothFollowCameraView : View {
 
-    [Inject] private PlayerModel playerModel;
-
     [SerializeField] private float smoothness = 0.375f;
 
+    [Inject] private PlayerModel playerModel;
+
     private Transform target;
-
-    private float _yStartPos;
-
-    private Vector2 _velocity;
-
-    private BoundsCamera _boundsCamera;
-
-    void Awake() {
-        _boundsCamera = GetComponent<BoundsCamera>();
-
-        _yStartPos = transform.position.z;
-    }
+    private float yStartPos;
+    private Vector2 velocity;
+    private BoundsCamera boundsCamera;
 
     public override void Initialize() {
+        Debug.Log("init cam");
         target = playerModel.Player.transform;
-        transform.position = new Vector3(target.position.x, target.position.y, _yStartPos);
+        transform.position = new Vector3(target.position.x, target.position.y, yStartPos);
     }
 
-    void LateUpdate() {
+    private void LateUpdate() {
+        if (target == null) { return; }
         Vector2 delta = target.position - transform.position;
         Vector2 destination = (Vector2)transform.position + delta;
-        Vector2 nextPos = Vector2.SmoothDamp(transform.position, _boundsCamera.GetBoundsPosition(destination), ref _velocity, smoothness, Mathf.Infinity, Time.deltaTime); 
-        transform.position = new Vector3(nextPos.x, nextPos.y, _yStartPos);
+        Vector2 nextPos = Vector2.SmoothDamp(transform.position, boundsCamera.GetBoundsPosition(destination), ref velocity, smoothness, Mathf.Infinity, Time.deltaTime); 
+        transform.position = new Vector3(nextPos.x, nextPos.y, yStartPos);
+    }
+
+    private void Awake() {
+        boundsCamera = GetComponent<BoundsCamera>();
+        yStartPos = transform.position.z;
     }
 }

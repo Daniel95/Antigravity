@@ -11,10 +11,10 @@ public class RevivedStateView : View, IRevivedState, ITriggerer {
     public bool IsReadyForLaunchInput { get { return isReadyForLaunchInput; } set { isReadyForLaunchInput = value; } }
     public bool IsInPosition { get { return isInPosition; } set { isInPosition = value; } }
 
-    private Ref<IRevivedState> revivedStateRef;
-
     [SerializeField] private GameObject gun;
     [SerializeField] private int launchDelayWhenRespawning = 20;
+
+    [Inject] private Ref<IRevivedState> revivedStateRef;
 
     private bool isReadyForLaunchInput;
     private bool isInPosition;

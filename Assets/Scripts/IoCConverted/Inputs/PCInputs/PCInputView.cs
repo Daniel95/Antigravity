@@ -36,7 +36,6 @@ public class PCInputView : View, IPCInput {
     }
 
     public void EnableInput(bool enable) {
-
         if (enable) {
             inputUpdate = StartCoroutine(InputUpdate());
         } else if (inputUpdate != null) {
