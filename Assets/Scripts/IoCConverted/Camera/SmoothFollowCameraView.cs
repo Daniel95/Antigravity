@@ -1,6 +1,5 @@
-﻿using UnityEngine;
-using IoCPlus;
-using System.Collections;
+﻿using IoCPlus;
+using UnityEngine;
 
 public class SmoothFollowCameraView : View {
 
@@ -14,7 +13,6 @@ public class SmoothFollowCameraView : View {
     private BoundsCamera boundsCamera;
 
     public override void Initialize() {
-        Debug.Log("init cam");
         target = playerModel.Player.transform;
         transform.position = new Vector3(target.position.x, target.position.y, yStartPos);
     }

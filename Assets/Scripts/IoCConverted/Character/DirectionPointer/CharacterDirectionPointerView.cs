@@ -1,11 +1,10 @@
 ﻿using IoCPlus;
 using UnityEngine;
 
+[RequireComponent(typeof(LookAt))]
 public class CharacterDirectionPointerView : View, ICharacterDirectionPointer {
 
     [Inject] private Ref<ICharacterDirectionPointer> directionPointer;
-
-    [SerializeField] private Transform arrowTransform;
 
     private Vector2 lookdirection;
     private LookAt lookAt;
