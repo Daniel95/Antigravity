@@ -1,12 +1,10 @@
 ﻿using UnityEngine;
 
-public class SwitchActive : MonoBehaviour, ITriggerable
-{
+public class SwitchActive : MonoBehaviour {
 
     public bool Triggered { get; set; }
 
-    [SerializeField]
-    private Element[] elements;
+    [SerializeField] private Element[] elements;
 
     public void SwitchCurrentState()
     {
@@ -45,13 +43,4 @@ public class SwitchActive : MonoBehaviour, ITriggerable
         public bool nextState;
     }
 
-    public void TriggerActivate()
-    {
-        SwitchToNextState();
-    }
-
-    public void TriggerStop()
-    {
-        SwitchToNextState();
-    }
 }

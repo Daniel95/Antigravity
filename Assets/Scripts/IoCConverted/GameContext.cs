@@ -12,6 +12,7 @@ public class GameContext : Context {
         Bind<ReachedMoveTowardsDestinationEvent>();
 
         On<EnterContextSignal>()
+            .AddContext<UIContext>()
             .AddContext<PlayerContext>()
             .AddContext<LevelContext>()
             .AddContext<CameraContext>();

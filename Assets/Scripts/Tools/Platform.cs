@@ -1,11 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class Platform : MonoBehaviour {
+public static class Platform {
 
-    public static bool PlatformIsMobile()
-    {
+    public static bool PlatformIsMobile() {
         return Application.platform == RuntimePlatform.Android || Application.platform == RuntimePlatform.IPhonePlayer;
     }
+
 }

@@ -1,25 +1,33 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using IoCPlus;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ActivateButtonInput : MonoBehaviour {
+public class ActivateButtonInput : View {
 
-    [SerializeField]
-    private KeyCode keyInput;
+    [SerializeField] private KeyCode keyInput;
 
-    private Button _button;
+    private Button button;
+    private Coroutine updateKeyInputCoroutine;
 
-	// Use this for initialization
-	void Start () {
-        _button = GetComponent<Button>();
+    public override void Initialize() {
+        updateKeyInputCoroutine = StartCoroutine(UpdateKeyInput());
+    }
+
+    public override void Dispose() {
+        StopCoroutine(UpdateKeyInput());
+    }
+
+    private void Awake () {
+        button = GetComponent<Button>();
 	}
 
-    private void Update()
-    {
-        if(Input.GetKeyDown(keyInput))
-        {
-            _button.onClick.Invoke();
+    private IEnumerator UpdateKeyInput() {
+        while (true) {
+            if (Input.GetKeyDown(keyInput)) {
+                button.onClick.Invoke();
+            }
+            yield return null;
         }
     }
 }
