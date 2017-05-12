@@ -5,6 +5,8 @@ public class PlayerStateContext : Context {
     protected override void SetBindings() {
         base.SetBindings();
 
+        Bind<CheckpointStatus>();
+
         Bind<Ref<IGrapplingState>>();
         Bind<Ref<IRevivedState>>();
 

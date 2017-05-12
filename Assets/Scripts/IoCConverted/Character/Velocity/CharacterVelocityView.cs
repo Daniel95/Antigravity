@@ -16,7 +16,7 @@ public class CharacterVelocityView : View, ICharacterVelocity {
     [SerializeField] private float currentSpeed;
     [SerializeField] private float minSpeedOffsetValue = 0.05f;
 
-    private Vector2 moveDirection = new Vector2(1, 1);
+    private Vector2 moveDirection = new Vector2(1, -1);
     private Rigidbody2D rigidbodyComponent;
     private Coroutine updateDirectionalMovement;
     private Coroutine returnSpeedToOriginal;

@@ -1,5 +1,4 @@
 ﻿using IoCPlus;
-using UnityEngine;
 
 public class CharacterContext : Context {
 
@@ -32,8 +31,8 @@ public class CharacterContext : Context {
             .Do<CharacterResetCollisionDirectionCommand>();
 
         On<CharacterTurnToNextDirectionEvent>()
-            .Do<CharacterPointToCeiledVelocityDirectionCommand>()
-            .Do<CharacterTurnToNextDirectionCommand>();
+            .Do<CharacterTurnToNextDirectionCommand>()
+            .Do<CharacterPointToSavedDirectionCommand>();
 
         On<CharacterUpdateLineDestinationEvent>()
             .Do<CharacterUpdateAimLineDestinationCommand>();

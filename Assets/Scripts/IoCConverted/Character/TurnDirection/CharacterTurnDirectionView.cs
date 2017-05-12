@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CharacterTurnDirectionView : View, ICharacterTurnDirection {
 
-    public Vector2 SavedDirection { set { savedDirection = value; } }
+    public Vector2 SavedDirection { get { return savedDirection; } set { savedDirection = value; } }
 
     public Action<Vector2> FinishedDirectionLogic;
 
@@ -33,6 +33,14 @@ public class CharacterTurnDirectionView : View, ICharacterTurnDirection {
         Vector2 nextDirection = CalculateDirection(characterTurnToNextDirectionParameter);
 
         Vector2 nextLookDirection = savedDirection;
+
+        //Debug.Log("____");
+        //Debug.Log("move dir: " + characterTurnToNextDirectionParameter.MoveDirection);
+        //Debug.Log("coll dir: " + characterTurnToNextDirectionParameter.CollisionDirection);
+        //Debug.Log("corner dir: " + characterTurnToNextDirectionParameter.CornerDirection);
+
+        //Debug.Log("saved dir: " + savedDirection);
+        //Debug.Log("next dir: " + nextDirection);
 
         //use the direction logic for our new dir, but invert it if our speed multiplier is also inverted
         characterSetMoveDirectionEvent.Dispatch(nextDirection);
@@ -74,19 +82,12 @@ public class CharacterTurnDirectionView : View, ICharacterTurnDirection {
 
         //if we are not hitting a wall on both axis or are not moving in an angle
         if (cornerDirection == Vector2.zero) {
+            if (collisionDirection.x == 0 || collisionDirection.y == 0) {
 
-            //if we are not in a corner, but still touch objects from both axises, invert our dir
-            if (collisionDirection.x != 0 && collisionDirection.y != 0) {
-                newDirection = savedDirection = moveDirection * -1;
-            }
-            else {
-                //we dont want to overwrite our last dir with a zero, we use it determine which direction we should move next
-                //if our currentDir.x isn't 0, set is as our lastDir.x
+                //save our direction the axis is not zero
                 if (moveDirection.x != 0) {
                     savedDirection.x = Rounding.InvertOnNegativeCeil(moveDirection.x);
                 }
-
-                //if our currentDir.y isn't 0, set is as our lastDir.y
                 if (moveDirection.y != 0) {
                     savedDirection.y = Rounding.InvertOnNegativeCeil(moveDirection.y);
                 }
@@ -103,10 +104,11 @@ public class CharacterTurnDirectionView : View, ICharacterTurnDirection {
                 //replace the dir on the axis that we dont have a collision with
                 //example: if we hit something under us, move to the left or right, depeding on our lastDir
                 newDirection = collisionDirection.x != 0 ? new Vector2(0, savedDirection.y) : new Vector2(savedDirection.x, 0);
+            } else {
+                newDirection = savedDirection = moveDirection * -1;
             }
 
-        }   //here we know we are hitting more than one wall, or no wall at all 
-        else {
+        } else {
             characterTemporarySpeedDecreaseEvent.Dispatch();
 
             if (moveDirection.x == cornerDirection.x) {
