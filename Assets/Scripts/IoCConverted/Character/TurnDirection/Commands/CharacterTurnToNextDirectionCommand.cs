@@ -4,7 +4,7 @@ public class CharacterTurnToNextDirectionCommand : Command {
 
     [Inject] private Ref<ICharacterTurnDirection> characterMoveDirectionRef;
 
-    [Inject] private CharacterTurnToNextDirectionParameter characterTurnToNextDirectionParameter;
+    [InjectParameter] private CharacterTurnToNextDirectionEvent.Parameter characterTurnToNextDirectionParameter;
 
     protected override void Execute() {
         characterMoveDirectionRef.Get().TurnToNextDirection(characterTurnToNextDirectionParameter);

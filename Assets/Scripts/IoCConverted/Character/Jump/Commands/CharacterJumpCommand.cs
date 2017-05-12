@@ -6,7 +6,7 @@ public class CharacterJumpCommand : Command {
 
     [Inject] private CharacterRemoveCollisionDirectionEvent characterRemoveCollisionDirectionEvent;
 
-    [InjectParameter] private CharacterJumpParameter characterJumpParameter;
+    [InjectParameter] private CharacterJumpEvent.Parameter characterJumpParameter;
 
     protected override void Execute() {
         characterJumpRef.Get().Jump(characterJumpParameter);

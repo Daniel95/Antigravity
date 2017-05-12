@@ -30,6 +30,7 @@ public class PlayerContext : Context {
         Bind<Ref<IHook>>();
 
         //character
+        Bind<CharacterTurnToNextDirectionEvent>();
         Bind<CharacterEnableDirectionalMovementEvent>();
         Bind<CharacterSetMoveDirectionEvent>();
         Bind<CharacterBoostSpeedEvent>();
@@ -39,6 +40,7 @@ public class PlayerContext : Context {
         Bind<CharacterRemoveCollisionDirectionEvent>();
         Bind<CharacterJumpEvent>();
         Bind<CharacterRetryJumpEvent>();
+        Bind<CharacterBounceEvent>();
 
         //player
         Bind<CancelDragInputEvent>();
@@ -50,6 +52,14 @@ public class PlayerContext : Context {
         Bind<TappedExpiredInputEvent>();
         Bind<EnableActionInputEvent>();
         Bind<EnableShootingInputEvent>();
+
+        //player collisions
+        Bind<PlayerCollisionEnter2DEvent>();
+        Bind<PlayerCollisionStay2DEvent>();
+        Bind<PlayerCollisionExit2DEvent>();
+        Bind<PlayerTriggerEnter2DEvent>();
+        Bind<PlayerTriggerStay2DEvent>();
+        Bind<PlayerTriggerExit2DEvent>();
 
         //player states
         Bind<UpdateGrapplingStateEvent>();
@@ -94,8 +104,7 @@ public class PlayerContext : Context {
 
         On<RespawnPlayerEvent>()
             .Do<InstantiatePlayerCommand>()
-            .Do<StartScreenShakeCommand>()
-            .Dispatch<ActivateRevivedStateEvent>();
+            .Do<StartScreenShakeCommand>();
 
         //collisions
         On<CollisionEnter2DEvent>()

@@ -27,8 +27,7 @@ public class RevivedStateContext : Context {
             .Do<DispatchEnableShootingInputEventCommand>(true)
             .Do<CharacterStopAimLineCommand>()
             .Do<CharacterSetMoveDirectionCommand>()
-            .Do<CharacterTemporarySpeedIncreaseCommand>()
-            .Dispatch<ActivateFloatingStateEvent>();
+            .Do<CharacterTemporarySpeedIncreaseCommand>();
 
         On<ReachedMoveTowardsDestinationEvent>()
             .Do<AbortIfGameObjectIsNotPlayerCommand>()

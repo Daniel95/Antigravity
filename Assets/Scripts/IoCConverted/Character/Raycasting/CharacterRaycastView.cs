@@ -84,6 +84,10 @@ public class CharacterRaycastView : View, ICharacterRaycast {
         return new Vector2(GetHorizontalMiddleDirection(), GetVerticalMiddleDirection());
     }
 
+    public Vector2 GetCornersDirection() {
+        return new Vector2(GetHorizontalCornersDirection(), GetVerticalCornersDirection());
+    }
+
     void Start() {
         if (showDebugRays) {
             StartCoroutine(DebugRays());

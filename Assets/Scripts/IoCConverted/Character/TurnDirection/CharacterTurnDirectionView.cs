@@ -28,7 +28,7 @@ public class CharacterTurnDirectionView : View, ICharacterTurnDirection {
     /// </summary>
     /// <param name="currentDir"></param>
     /// <param name="collDir"></param>
-    public void TurnToNextDirection(CharacterTurnToNextDirectionParameter characterTurnToNextDirectionParameter) {
+    public void TurnToNextDirection(CharacterTurnToNextDirectionEvent.Parameter characterTurnToNextDirectionParameter) {
         //our next direction we are going to move towards, depending on our currentdirection, and the direction of our collision(s)
         Vector2 nextDirection = CalculateDirection(characterTurnToNextDirectionParameter);
 
@@ -62,7 +62,7 @@ public class CharacterTurnDirectionView : View, ICharacterTurnDirection {
     /// <param name="currentDirection"></param>
     /// <param name="collisionDirection"></param>
     /// <returns></returns>
-    private Vector2 CalculateDirection(CharacterTurnToNextDirectionParameter characterTurnToNextDirectionParameter) {     
+    private Vector2 CalculateDirection(CharacterTurnToNextDirectionEvent.Parameter characterTurnToNextDirectionParameter) {     
         Vector2 newDirection;
 
         Vector2 cornerDirection = characterTurnToNextDirectionParameter.CornerDirection;
@@ -98,7 +98,7 @@ public class CharacterTurnDirectionView : View, ICharacterTurnDirection {
                     speedChange = maxSpeedChange;
                 }
 
-                characterTemporarySpeedChangeEvent.Dispatch(new CharacterTemporarySpeedChangeParameter(speedChange, directionSpeedNeutralValue));
+                characterTemporarySpeedChangeEvent.Dispatch(new CharacterTemporarySpeedChangeEvent.Parameter(speedChange, directionSpeedNeutralValue));
 
                 //replace the dir on the axis that we dont have a collision with
                 //example: if we hit something under us, move to the left or right, depeding on our lastDir

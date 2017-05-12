@@ -17,6 +17,6 @@ public class ChangeSpeedByAngleCommand : Command {
 
         float speedChange = angleDifference * -1 + 1;
 
-        characterTemporarySpeedChangeEvent.Dispatch(new CharacterTemporarySpeedChangeParameter(speedChange, hookRef.Get().DirectionSpeedNeutralValue));
+        characterTemporarySpeedChangeEvent.Dispatch(new CharacterTemporarySpeedChangeEvent.Parameter(speedChange, hookRef.Get().DirectionSpeedNeutralValue));
     }
 }

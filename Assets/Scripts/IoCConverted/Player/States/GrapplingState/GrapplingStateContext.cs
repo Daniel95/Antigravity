@@ -16,10 +16,15 @@ public class GrapplingStateContext : Context {
 
         On<StopGrapplingInAirEvent>()
             .Do<CharacterSetMoveDirectionToVelocityDirectionCommand>()
-            .Do<CharacterTemporarySpeedIncreaseCommand>()
-            .Dispatch<ActivateFloatingStateEvent>();
+            .Do<CharacterTemporarySpeedIncreaseCommand>();
 
         On<UpdateGrapplingStateEvent>()
-            .Do<UpdateGrapplingStateCommand>();
+            .Do<AbortIfNotMovingCommand>()
+            .Do<UpdateGrapplingStateCommand>()
+            .OnAbort<DispatchNotMovingEventCommand>();
+
+        On<NotMovingEvent>()
+            .Do<DispatchCharacterTurnToNextDirectionEventCommand>()
+            .OnAbort<GotoStateCommand<SlidingStateContext>>();
     }
 }

@@ -9,9 +9,11 @@ public class CharacterRetryJumpCommand : Command {
     [Inject] private Ref<ICharacterJump> characterJumpRef;
 
     protected override void Execute() {
-        CharacterJumpParameter characterJumpParameter = new CharacterJumpParameter(characterVelocityRef.Get().MoveDirection, 
-                                                                                   characterCollisionDirectionRef.Get().GetCurrentCollisionDirection(), 
-                                                                                   characterRaycastRef.Get().GetMiddleDirection());
+        CharacterJumpEvent.Parameter characterJumpParameter = new CharacterJumpEvent.Parameter(
+            characterVelocityRef.Get().MoveDirection, 
+            characterCollisionDirectionRef.Get().GetCurrentCollisionDirection(), 
+            characterRaycastRef.Get().GetMiddleDirection()
+        );
 
         characterJumpRef.Get().RetryJump(characterJumpParameter);
     }

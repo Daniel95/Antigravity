@@ -11,17 +11,11 @@ public class PlayerStateContext : Context {
         On<EnterContextSignal>()
             .GotoState<FloatingStateContext>();
 
-        On<ActivateFloatingStateEvent>()
-            .GotoState<FloatingStateContext>();
-
         On<CollisionEnter2DEvent>()
-            .Do<AbortIfNotCollidingAndNotInTriggerTagCommand>(Tags.Bouncy)
-            .Do<CharacterBounceCommand>()
-            .OnAbort<DispatchTurnFromWallEventCommand>();
-
-        On<TurnFromWallEvent>()
-            .Dispatch<CharacterTurnToNextDirectionEvent>()
-            .Dispatch<ActivateSlidingStateEvent>();
+            .Do<AbortIfCollidingOrInTriggerTagCommand>(Tags.Bouncy)
+            .Do<DispatchCharacterTurnToNextDirectionEventCommand>()
+            .GotoState<SlidingStateContext>()
+            .OnAbort<DispatchCharacterBounceEventCommand>();
 
         On<TriggerEnter2DEvent>()
             .Do<AbortIfGameObjectIsNotPlayerCommand>()
@@ -29,5 +23,16 @@ public class PlayerStateContext : Context {
             .Do<UpdateCheckpointStatusCommand>()
             .GotoState<GrapplingStateContext>();
 
+        On<RespawnPlayerEvent>()
+            .GotoState<RevivedStateContext>();
+
+        OnChild<RevivedStateContext, ReleaseInDirectionInputEvent>()
+            .GotoState<FloatingStateContext>();
+
+        OnChild<GrapplingStateContext, StopGrapplingInAirEvent>()
+            .GotoState<FloatingStateContext>();
+
+        OnChild<GrapplingStateContext, NotMovingEvent>()
+            .GotoState<SlidingStateContext>();
     }
 }

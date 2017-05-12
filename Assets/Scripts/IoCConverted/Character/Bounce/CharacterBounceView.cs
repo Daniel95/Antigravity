@@ -10,16 +10,16 @@ public class CharacterBounceView : View, ICharacterBounce {
         characterBounceRef.Set(this);
     }
 
-    public void Bounce(CharacterBounceParameter directionParameter) {
-        if (directionParameter.CollisionDirection.x != 0 || directionParameter.CollisionDirection.y != 0) {
-            if (directionParameter.CollisionDirection.x != 0) {
-                directionParameter.MoveDirection.x *= -1;
+    public void Bounce(CharacterBounceEvent.Parameter characterBounceParameter) {
+        if (characterBounceParameter.CollisionDirection.x != 0 || characterBounceParameter.CollisionDirection.y != 0) {
+            if (characterBounceParameter.CollisionDirection.x != 0) {
+                characterBounceParameter.MoveDirection.x *= -1;
             }
-            if (directionParameter.CollisionDirection.y != 0) {
-                directionParameter.MoveDirection.y *= -1;
+            if (characterBounceParameter.CollisionDirection.y != 0) {
+                characterBounceParameter.MoveDirection.y *= -1;
             }
 
-            characterSetMoveDirectionEvent.Dispatch(directionParameter.MoveDirection);
+            characterSetMoveDirectionEvent.Dispatch(characterBounceParameter.MoveDirection);
         }
     }
 }

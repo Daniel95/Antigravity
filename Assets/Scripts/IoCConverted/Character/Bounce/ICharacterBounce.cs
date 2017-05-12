@@ -1,3 +1,3 @@
 ﻿public interface ICharacterBounce {
-    void Bounce(CharacterBounceParameter directionParamter);
+    void Bounce(CharacterBounceEvent.Parameter characterBounceParameter);
 }

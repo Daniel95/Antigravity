@@ -8,7 +8,7 @@ public class CharacterTemporarySpeedChangeCommand : Command {
 
     [Inject] private CharacterBoostSpeedEvent boostSpeedEvent;
 
-    [InjectParameter] private CharacterTemporarySpeedChangeParameter temporarySpeedChangeParameter;
+    [InjectParameter] private CharacterTemporarySpeedChangeEvent.Parameter temporarySpeedChangeParameter;
 
     /// <summary>
     /// Changes speed by a specified amount, below 0.5 is slower, above 0.5 is faster
@@ -37,6 +37,6 @@ public class CharacterTemporarySpeedChangeCommand : Command {
             newSpeed = characterVelocityRef.Get().OriginalSpeed;
         }
 
-        boostSpeedEvent.Dispatch(new CharacterBoostSpeedParameter(newSpeed, characterSpeed.ReturnSpeed));
+        boostSpeedEvent.Dispatch(new CharacterBoostSpeedEvent.Parameter(newSpeed, characterSpeed.ReturnSpeed));
     }
 }

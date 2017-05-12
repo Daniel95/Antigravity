@@ -4,9 +4,9 @@ public class CharacterBounceCommand : Command {
 
     [Inject] private Ref<ICharacterBounce> characterBounceRef;
 
-    [InjectParameter] private CharacterBounceParameter directionParameter;
+    [InjectParameter] private CharacterBounceEvent.Parameter characterBounceParameter;
 
     protected override void Execute() {
-        characterBounceRef.Get().Bounce(directionParameter);
+        characterBounceRef.Get().Bounce(characterBounceParameter);
     }
 }
