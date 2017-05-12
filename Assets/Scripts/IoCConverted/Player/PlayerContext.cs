@@ -5,6 +5,8 @@ public class PlayerContext : Context {
     protected override void SetBindings() {
         base.SetBindings();
 
+        //BindLabeled<Ref<IShoot>>("Views/Player/ShootView");
+
         Bind<Ref<IShoot>>();
         Bind<Ref<IPCInput>>();
         Bind<Ref<IMobileInput>>();

@@ -5,16 +5,16 @@ public class GameUIContext : Context {
     protected override void SetBindings() {
         base.SetBindings();
 
-        Bind<GameUIPlayEvent>();
-        Bind<GameUIPauseEvent>();
+        Bind<GameUIPlayPressedEvent>();
+        Bind<GameUIPausePressedEvent>();
 
         On<EnterContextSignal>()
-            .AddContext<GameUIPauseContext>();
+            .GotoState<GameUIPauseContext>();
 
-        OnChild<GameUIPauseContext, GameUIPlayEvent>()
+        OnChild<GameUIPauseContext, GameUIPlayPressedEvent>()
             .GotoState<GameUIPlayContext>();
 
-        OnChild<GameUIPlayContext, GameUIPauseEvent>()
+        OnChild<GameUIPlayContext, GameUIPausePressedEvent>()
             .GotoState<GameUIPauseContext>();
     }
 

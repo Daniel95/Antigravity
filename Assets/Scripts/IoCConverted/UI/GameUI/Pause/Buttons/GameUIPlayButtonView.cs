@@ -2,10 +2,10 @@
 
 public class GameUIPlayButtonView : View {
 
-    [Inject] private GameUIPlayEvent gameUIPlayEvent;
+    [Inject] private GameUIPlayPressedEvent gameUIPlayPressedEvent;
 
     public void PlayPressed() {
-        gameUIPlayEvent.Dispatch();
+        gameUIPlayPressedEvent.Dispatch();
     }
 
 }
