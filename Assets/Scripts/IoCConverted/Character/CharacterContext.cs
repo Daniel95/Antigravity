@@ -1,4 +1,5 @@
 ﻿using IoCPlus;
+using UnityEngine;
 
 public class CharacterContext : Context {
 
@@ -7,7 +8,8 @@ public class CharacterContext : Context {
 
         On<EnterContextSignal>()
             .Do<ActivateViewOnPlayerCommand<CharacterVelocityView>>()
-            .Do<CharacterSetSavedDirectionToStartDirectionCommand>();
+            .Do<CharacterSetSavedDirectionToStartDirectionCommand>()
+            .Do<CharacterActivateDirectionalMovementCommand>();
 
         On<JumpInputEvent>()
             .Do<CharacterTryJumpCommand>();

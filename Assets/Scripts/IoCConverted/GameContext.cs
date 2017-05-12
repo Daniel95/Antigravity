@@ -7,6 +7,8 @@ public class GameContext : Context {
 
         Bind<PlayerModel>();
 
+        Bind<Ref<ITime>>();
+
         Bind<StartMoveTowardsEvent>();
         Bind<StopMoveTowardsEvent>();
         Bind<ReachedMoveTowardsDestinationEvent>();

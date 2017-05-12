@@ -8,10 +8,9 @@ public class ActivateButtonInput : View {
     [SerializeField] private KeyCode keyInput;
 
     private Button button;
-    private Coroutine updateKeyInputCoroutine;
 
     public override void Initialize() {
-        updateKeyInputCoroutine = StartCoroutine(UpdateKeyInput());
+        StartCoroutine(UpdateKeyInput());
     }
 
     public override void Dispose() {

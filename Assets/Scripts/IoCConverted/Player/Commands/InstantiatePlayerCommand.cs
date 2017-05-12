@@ -7,7 +7,7 @@ public class InstantiatePlayerCommand : Command {
 
     [Inject] private PlayerModel playerModel;
     
-    private const string PLAYER_PREFAB_PATH = "Characters/Player";
+    private const string PLAYER_PREFAB_PATH = "Character/Player";
 
     protected override void Execute() {
         View playerViewPrefab = Resources.Load<View>(PLAYER_PREFAB_PATH);

@@ -6,7 +6,8 @@ public class GameUIPlayContext : Context {
         base.SetBindings();
 
         On<EnterContextSignal>()
-            .Do<InstantiateViewPrefabInCanvasCommand>("UI/GameUI/PlayUI");
+            .Do<InstantiateViewPrefabInCanvasCommand>("UI/GameUI/PlayUI")
+            .Do<PauseTimeCommand>(false);
 
     }
 

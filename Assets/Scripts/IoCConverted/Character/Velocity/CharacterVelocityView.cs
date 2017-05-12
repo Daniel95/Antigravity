@@ -15,8 +15,8 @@ public class CharacterVelocityView : View, ICharacterVelocity {
     [SerializeField] private float originalSpeed = 3;
     [SerializeField] private float currentSpeed;
     [SerializeField] private float minSpeedOffsetValue = 0.05f;
-    [SerializeField] private Vector2 moveDirection;
 
+    private Vector2 moveDirection = new Vector2(1, 1);
     private Rigidbody2D rigidbodyComponent;
     private Coroutine updateDirectionalMovement;
     private Coroutine returnSpeedToOriginal;
@@ -92,12 +92,10 @@ public class CharacterVelocityView : View, ICharacterVelocity {
     }
 
     private IEnumerator UpdateDirectionalMovement() {
-        var fixedUpdate = new WaitForFixedUpdate();
         while (true)
         {
-            //add our own constant force
-            rigidbodyComponent.velocity = moveDirection * currentSpeed;
-            yield return fixedUpdate;
+            rigidbodyComponent.velocity = moveDirection * currentSpeed * Time.deltaTime;
+            yield return null;
         }
     }
 
