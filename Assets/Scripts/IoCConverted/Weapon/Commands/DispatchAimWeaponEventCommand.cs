@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class DispatchAimWeaponEventCommand : Command {
 
-    [Inject] private Ref<IShoot> shootRef;
+    [Inject] private Ref<IAimDestination> shootRef;
     [Inject] private AimWeaponEvent aimWeaponEvent;
 
     [InjectParameter] private Vector2 direction;

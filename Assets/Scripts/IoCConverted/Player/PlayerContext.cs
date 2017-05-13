@@ -8,7 +8,9 @@ public class PlayerContext : Context {
         //BindLabeled<Ref<IShoot>>("Views/Player/ShootView");
         Bind<InputModel>();
 
-        Bind<Ref<IShoot>>();
+        Bind<Ref<IAimDestination>>();
+        Bind<Ref<IHook>>();
+        Bind<Ref<IHookProjectile>>();
         Bind<Ref<IPCInput>>();
         Bind<Ref<IMobileInput>>();
         Bind<Ref<IGrapplingHook>>();
@@ -28,7 +30,6 @@ public class PlayerContext : Context {
         Bind<Ref<IGrapplingState>>();
         Bind<Ref<IRevivedState>>();
         Bind<Ref<IMoveTowards>>();
-        Bind<Ref<IHook>>();
 
         //character
         Bind<CharacterTurnToNextDirectionEvent>();
@@ -75,7 +76,6 @@ public class PlayerContext : Context {
         Bind<RawTappedExpiredInputEvent>();
 
         //weapons
-        Bind<SelectedWeaponOutputModel>();
         Bind<FireWeaponEvent>();
         Bind<AimWeaponEvent>();
         Bind<CancelAimWeaponEvent>();

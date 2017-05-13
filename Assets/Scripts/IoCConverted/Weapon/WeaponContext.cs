@@ -5,15 +5,10 @@ public class WeaponContext : Context {
     protected override void SetBindings() {
         base.SetBindings();
 
-        Bind<Ref<IShoot>>();
-        Bind<Ref<IWeaponOutput>>();
-        Bind<Ref<IGrapplingHook>>();
-        Bind<Ref<IGrapplingHook>>();
-
         Bind<GrapplingHookStartedEvent>();
 
         On<EnterContextSignal>()
-            .Do<ActivateViewOnPlayerCommand<ShootView>>();
+            .AddContext<HookContext>();
 
         On<ReleaseInDirectionInputEvent>()
             .Do<AbortIfGameIsPauzedCommand>()
@@ -31,7 +26,6 @@ public class WeaponContext : Context {
             .Do<AbortIfGameIsPauzedCommand>()
             .Do<StopSlowTimeCommand>()
             .Do<CharacterPointToCeiledVelocityDirectionCommand>()
-            .Do<CancelAimWeaponOutputCommand>()
             .Dispatch<CancelAimWeaponEvent>();
     }
 }

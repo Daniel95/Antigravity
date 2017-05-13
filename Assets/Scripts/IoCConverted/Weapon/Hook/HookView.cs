@@ -42,15 +42,6 @@ public class HookView : View, IHook, ITriggerer {
         hookRef.Set(this);
     }
 
-    protected virtual void Awake() {
-        lineRenderer = Instantiate(hookLinePrefab, transform).GetComponent<LineRenderer>();
-
-        lineRenderer = GetComponent<LineRenderer>();
-
-        hookProjectileGameObject = Instantiate(hookProjectilePrefab, Vector2.zero, new Quaternion(0, 0, 0, 0));
-        hookProjectileGameObject.SetActive(false);
-    }
-
     public void AddAnchor(Vector2 position, Transform parent) {
         anchors.Add(CreateAnchor(position, parent));
     }
@@ -102,5 +93,14 @@ public class HookView : View, IHook, ITriggerer {
             lineRenderer.SetPosition(lineRenderer.positionCount - 1, transform.position);
             yield return null;
         }
+    }
+
+    private void Awake() {
+        lineRenderer = Instantiate(hookLinePrefab, transform).GetComponent<LineRenderer>();
+
+        lineRenderer = GetComponent<LineRenderer>();
+
+        hookProjectileGameObject = Instantiate(hookProjectilePrefab, Vector2.zero, new Quaternion(0, 0, 0, 0));
+        hookProjectileGameObject.SetActive(false);
     }
 }

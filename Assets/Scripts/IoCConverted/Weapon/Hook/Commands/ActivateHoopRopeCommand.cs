@@ -2,9 +2,9 @@
 
 public class ActivateHoopRopeCommand : Command {
 
-    [Inject] private Ref<HookView> hookViewRef;
+    [Inject] private Ref<IHook> hookRef;
 
     protected override void Execute() {
-        hookViewRef.Get().ActivateHookRope();
+        hookRef.Get().ActivateHookRope();
     }
 }

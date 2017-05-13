@@ -6,7 +6,11 @@ public class HookContext : Context {
     protected override void SetBindings() {
         base.SetBindings();
 
+        On<EnterContextSignal>()
+            .Do<InstantiateViewPrefabCommand>("Character/Projectile/HookProjectile");
 
+        On<LeaveContextSignal>()
+            .Do<HookProjectileDestroyCommand>();
 
         On<CancelHookEvent>()
             .Do<StopSlowTimeCommand>()

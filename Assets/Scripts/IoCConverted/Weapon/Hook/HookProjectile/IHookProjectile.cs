@@ -8,5 +8,7 @@ public interface IHookProjectile {
     int ReachedAnchorsIndex { get; set; }
     bool IsMovingTowardsOwner { get; set; }
 
-    void SetParent(Transform paren);
+    void SetParent(Transform parent);
+    void DestroyProjectile();
+
 }

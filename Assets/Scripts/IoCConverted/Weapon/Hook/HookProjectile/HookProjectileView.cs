@@ -23,4 +23,8 @@ public class HookProjectileView : View, IHookProjectile {
     public void SetParent(Transform parent) {
         transform.SetParent(parent, true);
     }
+
+    public void DestroyProjectile() {
+        Destroy();
+    }
 }
