@@ -21,7 +21,7 @@ public class CharacterJumpView : View, ICharacterJump, ITriggerer {
 
     public Action TookOff;
 
-    private Coroutine retryJumpAfterDelay;
+    private Coroutine retryJumpAfterDelayCoroutine;
 
     private Frames frames;
 
@@ -34,21 +34,21 @@ public class CharacterJumpView : View, ICharacterJump, ITriggerer {
             StopTrigger();
         }
 
-        //check if we have raycast collision on only one axis, jumping wont work when we are in a corner
         if (characterJumpParameter.CollisionDirection != Vector2.zero) {
-            if (retryJumpAfterDelay != null) {
-                StopCoroutine(retryJumpAfterDelay);
+            if (retryJumpAfterDelayCoroutine != null) {
+                frames.StopDelayExecute(retryJumpAfterDelayCoroutine);
             }
             characterJumpEvent.Dispatch(characterJumpParameter);
         } else {
-            retryJumpAfterDelay = frames.ExecuteAfterDelay(earlyJumpCoverFrames, () => characterRetryJumpEvent.Dispatch());
+            retryJumpAfterDelayCoroutine = frames.ExecuteAfterDelay(earlyJumpCoverFrames, () => characterRetryJumpEvent.Dispatch());
         }
     }
 
     public void RetryJump(CharacterJumpEvent.Parameter characterJumpParameter)  {
         //check if we have raycast collision on only one axis, jumping wont work when we are in a corner
         if (characterJumpParameter.CollisionDirection != Vector2.zero) {
-            StopCoroutine(retryJumpAfterDelay);
+            StopCoroutine(retryJumpAfterDelayCoroutine);
+            retryJumpAfterDelayCoroutine = null;
             characterJumpEvent.Dispatch(characterJumpParameter);
         }
     }

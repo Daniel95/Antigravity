@@ -19,7 +19,7 @@ public class PCInputView : View, IPCInput {
     [Inject] private RawReleaseInputEvent rawReleaseInputEvent;
     [Inject] private RawTappedExpiredInputEvent rawTappedExpiredInputEvent;
 
-    private Coroutine inputUpdate;
+    private Coroutine inputUpdateCoroutine;
 
     private enum TouchStates { Holding, Dragging, Tapped, None }
 
@@ -37,9 +37,10 @@ public class PCInputView : View, IPCInput {
 
     public void EnableInput(bool enable) {
         if (enable) {
-            inputUpdate = StartCoroutine(InputUpdate());
-        } else if (inputUpdate != null) {
-            StopCoroutine(inputUpdate);
+            inputUpdateCoroutine = StartCoroutine(InputUpdate());
+        } else if (inputUpdateCoroutine != null) {
+            StopCoroutine(inputUpdateCoroutine);
+            inputUpdateCoroutine = null;
         }
     }
 

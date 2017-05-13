@@ -20,7 +20,7 @@ public class PointFollowerSmooth : MonoBehaviour, ITriggerable {
 
     private WayPoints _wayPoints;
 
-    private Coroutine _moveToPos;
+    private Coroutine moveToPositionCoroutine;
 
     private Vector2 _currentVelocity;
 
@@ -34,10 +34,10 @@ public class PointFollowerSmooth : MonoBehaviour, ITriggerable {
 
     public void StartFollowingWaypoint()
     {
-        if (_moveToPos != null)
+        if (moveToPositionCoroutine != null)
             TriggerStop();
 
-        _moveToPos = StartCoroutine(MoveToPos(_wayPoints.GetCurrentPoint()));
+        moveToPositionCoroutine = StartCoroutine(MoveToPos(_wayPoints.GetCurrentPoint()));
     }
 
     IEnumerator MoveToPos(Vector2 _pos)
@@ -67,7 +67,7 @@ public class PointFollowerSmooth : MonoBehaviour, ITriggerable {
 
     private void GoToNextPoint()
     {
-        _moveToPos = StartCoroutine(MoveToPos(_wayPoints.GetNextPoint()));
+        moveToPositionCoroutine = StartCoroutine(MoveToPos(_wayPoints.GetNextPoint()));
     }
 
     public void TriggerActivate()
@@ -75,8 +75,8 @@ public class PointFollowerSmooth : MonoBehaviour, ITriggerable {
         StartFollowingWaypoint();
     }
 
-    public void TriggerStop()
-    {
-        StopCoroutine(_moveToPos);
+    public void TriggerStop() {
+        StopCoroutine(moveToPositionCoroutine);
+        moveToPositionCoroutine = null;
     }
 }

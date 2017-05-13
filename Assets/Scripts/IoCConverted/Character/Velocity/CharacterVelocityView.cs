@@ -18,8 +18,8 @@ public class CharacterVelocityView : View, ICharacterVelocity {
 
     private Vector2 moveDirection = new Vector2(1, -1);
     private Rigidbody2D rigidbodyComponent;
-    private Coroutine updateDirectionalMovement;
-    private Coroutine returnSpeedToOriginal;
+    private Coroutine updateDirectionalMovementCoroutine;
+    private Coroutine returnSpeedToOriginalCoroutine;
 
     public override void Initialize() {
         controlVelocityRef.Set(this);
@@ -34,10 +34,12 @@ public class CharacterVelocityView : View, ICharacterVelocity {
     }
 
     public void StartReturnSpeedToOriginal(float returnSpeed) {
-        if (returnSpeedToOriginal != null)
-            StopCoroutine(returnSpeedToOriginal);
+        if (returnSpeedToOriginalCoroutine != null) {
+            StopCoroutine(returnSpeedToOriginalCoroutine);
+            returnSpeedToOriginalCoroutine = null;
+        }
 
-        returnSpeedToOriginal = StartCoroutine(ReturnSpeedToOriginal(returnSpeed));
+        returnSpeedToOriginalCoroutine = StartCoroutine(ReturnSpeedToOriginal(returnSpeed));
     }
 
     public void AddVelocity(Vector2 velocity) {
@@ -62,15 +64,16 @@ public class CharacterVelocityView : View, ICharacterVelocity {
     }
 
     public void SetSpeed(float newSpeed) {
-        if (returnSpeedToOriginal != null) {
-            StopCoroutine(returnSpeedToOriginal);
+        if (returnSpeedToOriginalCoroutine != null) {
+            StopCoroutine(returnSpeedToOriginalCoroutine);
+            returnSpeedToOriginalCoroutine = null;
         }
 
         currentSpeed = newSpeed;
     }
 
     public bool GetMovingStandard() {
-        return updateDirectionalMovement != null;
+        return updateDirectionalMovementCoroutine != null;
     }
 
     private void Awake() {
@@ -80,31 +83,27 @@ public class CharacterVelocityView : View, ICharacterVelocity {
 
     private void EnableDirectionalMovement() {
         DisableDirectionalMovement();
-        updateDirectionalMovement = StartCoroutine(UpdateDirectionalMovement());
+        updateDirectionalMovementCoroutine = StartCoroutine(UpdateDirectionalMovement());
     }
 
     private void DisableDirectionalMovement() {
-        if (updateDirectionalMovement != null)
-        {
-            StopCoroutine(updateDirectionalMovement);
-            updateDirectionalMovement = null;
+        if (updateDirectionalMovementCoroutine != null) {
+            StopCoroutine(updateDirectionalMovementCoroutine);
+            updateDirectionalMovementCoroutine = null;
         }
     }
 
     private IEnumerator UpdateDirectionalMovement() {
-        while (true)
-        {
+        while (true) {
             rigidbodyComponent.velocity = moveDirection * currentSpeed * Time.deltaTime;
             yield return null;
         }
     }
 
     private IEnumerator ReturnSpeedToOriginal(float returnSpeed) {
-        var fixedUpdate = new WaitForFixedUpdate();
-        while (Mathf.Abs(currentSpeed - originalSpeed) > minSpeedOffsetValue)
-        {
-            currentSpeed = Mathf.Lerp(currentSpeed, originalSpeed, returnSpeed * (CurrentSpeed / originalSpeed));
-            yield return fixedUpdate;
+        while (Mathf.Abs(currentSpeed - originalSpeed) > minSpeedOffsetValue) {
+            currentSpeed = Mathf.Lerp(currentSpeed, originalSpeed, returnSpeed * (currentSpeed / originalSpeed));
+            yield return null;
         }
 
         currentSpeed = originalSpeed;

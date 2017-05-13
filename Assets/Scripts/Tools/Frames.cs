@@ -28,5 +28,6 @@ public class Frames : MonoBehaviour {
 
     public void StopDelayExecute(Coroutine coroutine) {
         StopCoroutine(coroutine);
+        coroutine = null;
     }
 }

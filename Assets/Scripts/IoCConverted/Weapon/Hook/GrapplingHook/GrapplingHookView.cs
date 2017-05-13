@@ -14,7 +14,7 @@ public class GrapplingHookView : View, IGrapplingHook {
     [Inject] private UpdateGrapplingHookRopeEvent updateGrapplingHookRopeEvent;
 
     private DistanceJoint2D distanceJoint;
-    private Coroutine grappleAnchorUpdate;
+    private Coroutine grappleAnchorUpdateCoroutine;
     private float distance;
 
     private void Awake() {
@@ -30,12 +30,13 @@ public class GrapplingHookView : View, IGrapplingHook {
         distanceJoint.enabled = true;
         distanceJoint.distance = distance;
 
-        grappleAnchorUpdate = StartCoroutine(GrappleAnchorUpdate());
+        grappleAnchorUpdateCoroutine = StartCoroutine(GrappleAnchorUpdate());
     }
 
     public void StopGrappleLock() {
-        if (grappleAnchorUpdate != null) {
-            StopCoroutine(grappleAnchorUpdate);
+        if (grappleAnchorUpdateCoroutine != null) {
+            StopCoroutine(grappleAnchorUpdateCoroutine);
+            grappleAnchorUpdateCoroutine = null;
         }
 
         distanceJoint.enabled = false;

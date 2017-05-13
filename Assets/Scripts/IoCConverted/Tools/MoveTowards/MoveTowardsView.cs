@@ -11,18 +11,18 @@ public class MoveTowardsView : View, IMoveTowards {
     [SerializeField] private float speed = 10;
     [SerializeField] private float minReachedDistance = 0.5f;
 
-    private Coroutine moveTo;
+    private Coroutine moveToCoroutine;
 
     public override void Initialize() {
         moveTowardsRef.Set(this);
     }
 
     public void StartMoving(Vector2 destination) {
-        if (moveTo != null) {
+        if (moveToCoroutine != null) {
             StopMoving();
         }
 
-        moveTo = StartCoroutine(MoveTo(destination));
+        moveToCoroutine = StartCoroutine(MoveTo(destination));
     }
 
     private IEnumerator MoveTo(Vector2 destination) {
@@ -33,11 +33,11 @@ public class MoveTowardsView : View, IMoveTowards {
 
         gameObject.transform.position = destination;
         reachedDestinationEvent.Dispatch(gameObject);
-        moveTo = null;
+        moveToCoroutine = null;
     }
 
     public void StopMoving() {
-        StopCoroutine(moveTo);
-        moveTo = null;
+        StopCoroutine(moveToCoroutine);
+        moveToCoroutine = null;
     }
 }

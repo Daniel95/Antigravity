@@ -10,7 +10,7 @@ public class SlowTimeView : View, ISlowTime {
     [SerializeField] private float slowDownTime = 0.085f;
     [SerializeField] private float returnSpeed = 0.03f;
 
-    private Coroutine moveTimeScale;
+    private Coroutine moveTimeScaleCoroutine;
     private bool slowTimeActive;
     private Action reachedTarget;
 
@@ -19,8 +19,9 @@ public class SlowTimeView : View, ISlowTime {
     /// </summary>
     public void SlowTime() {
         if(!slowTimeActive) {
-            if (moveTimeScale != null) {
-                StopCoroutine(moveTimeScale);
+            if (moveTimeScaleCoroutine != null) {
+                StopCoroutine(moveTimeScaleCoroutine);
+                moveTimeScaleCoroutine = null;
             }
 
             slowTimeActive = true;
@@ -28,12 +29,12 @@ public class SlowTimeView : View, ISlowTime {
             reachedTarget += SlowlyReturnToNormal;
 
             //slow down the time
-            moveTimeScale = StartCoroutine(MoveTimeScale(slowTimeScale, slowDownTime));
+            moveTimeScaleCoroutine = StartCoroutine(MoveTimeScale(slowTimeScale, slowDownTime));
         }
     }
 
     private void SlowlyReturnToNormal() {
-        moveTimeScale = StartCoroutine(MoveTimeScale(1, returnSpeed));
+        moveTimeScaleCoroutine = StartCoroutine(MoveTimeScale(1, returnSpeed));
         reachedTarget -= SlowlyReturnToNormal;
     }
 
@@ -59,7 +60,8 @@ public class SlowTimeView : View, ISlowTime {
         if (slowTimeActive) {
             reachedTarget -= SlowlyReturnToNormal;
 
-            StopCoroutine(moveTimeScale);
+            StopCoroutine(moveTimeScaleCoroutine);
+            moveTimeScaleCoroutine = null;
 
             slowTimeActive = false;
 

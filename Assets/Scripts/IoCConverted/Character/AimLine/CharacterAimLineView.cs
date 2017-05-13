@@ -12,7 +12,7 @@ public class CharacterAimLineView : View, ICharacterAimLine {
 
     private LineRenderer lineRenderer;
     private Vector2 lineDestination;
-    private Coroutine updateLineRendererPositions;
+    private Coroutine updateLineRendererPositionsCoroutine;
     private bool aimLineActive;
 
     public override void Initialize() {
@@ -29,8 +29,8 @@ public class CharacterAimLineView : View, ICharacterAimLine {
 
     public void StopAimLine() {
         if (aimLineActive) {
-            StopCoroutine(updateLineRendererPositions);
-
+            StopCoroutine(updateLineRendererPositionsCoroutine);
+            updateLineRendererPositionsCoroutine = null;
             lineRenderer.enabled = aimLineActive = false;
         }
     }
@@ -46,7 +46,7 @@ public class CharacterAimLineView : View, ICharacterAimLine {
         lineRenderer.SetPosition(0, transform.position);
         lineRenderer.SetPosition(1, destination);
 
-        updateLineRendererPositions = StartCoroutine(UpdateLineRendererPositions());
+        updateLineRendererPositionsCoroutine = StartCoroutine(UpdateLineRendererPositions());
     }
 
     IEnumerator UpdateLineRendererPositions() {

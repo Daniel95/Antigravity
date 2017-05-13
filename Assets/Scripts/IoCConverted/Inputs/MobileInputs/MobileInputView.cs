@@ -18,7 +18,7 @@ public class MobileInputView : View, IMobileInput {
     [Inject] private RawReleaseInputEvent rawReleaseInputEvent;
     [Inject] private RawTappedExpiredInputEvent rawTappedExpiredInputEvent;
 
-    private Coroutine inputUpdate;
+    private Coroutine inputUpdateCoroutine;
     private enum TouchStates { Holding, Dragging, Tapped, None }
     private TouchStates TouchState = TouchStates.None;
     private float StartDownTime;
@@ -40,14 +40,15 @@ public class MobileInputView : View, IMobileInput {
             _dragDirIndicator = _joyStickGObj.GetComponent<DragDirIndicator>();
             _joyStickGObj.SetActive(false);
 
-            inputUpdate = StartCoroutine(InputUpdate());
+            inputUpdateCoroutine = StartCoroutine(InputUpdate());
         } else {
             if (_joyStickGObj != null) {
                 _joyStickGObj.SetActive(false);
             }
 
-            if (inputUpdate != null) {
-                StopCoroutine(inputUpdate);
+            if (inputUpdateCoroutine != null) {
+                StopCoroutine(inputUpdateCoroutine);
+                inputUpdateCoroutine = null;
             }
         }
     }

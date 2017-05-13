@@ -22,6 +22,7 @@ public class GrapplingStateView : View, IGrapplingState, ITriggerer {
 
     public override void Dispose() {
         StopCoroutine(updateGrapplingStateCoroutine);
+        updateGrapplingStateCoroutine = null;
     }
 
     private IEnumerator UpdateGrapplingState() {
