@@ -47,8 +47,7 @@ public class CharacterJumpView : View, ICharacterJump, ITriggerer {
     public void RetryJump(CharacterJumpEvent.Parameter characterJumpParameter)  {
         //check if we have raycast collision on only one axis, jumping wont work when we are in a corner
         if (characterJumpParameter.CollisionDirection != Vector2.zero) {
-            StopCoroutine(retryJumpAfterDelayCoroutine);
-            retryJumpAfterDelayCoroutine = null;
+            frames.StopDelayExecute(retryJumpAfterDelayCoroutine);
             characterJumpEvent.Dispatch(characterJumpParameter);
         }
     }
