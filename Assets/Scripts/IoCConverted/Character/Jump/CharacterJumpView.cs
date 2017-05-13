@@ -19,8 +19,6 @@ public class CharacterJumpView : View, ICharacterJump, ITriggerer {
     [SerializeField] private float instantJumpStrength = 0.05f;
     [SerializeField] private int earlyJumpCoverFrames = 10;
 
-    public Action TookOff;
-
     private Coroutine retryJumpAfterDelayCoroutine;
 
     private Frames frames;
@@ -45,16 +43,12 @@ public class CharacterJumpView : View, ICharacterJump, ITriggerer {
     }
 
     public void RetryJump(CharacterJumpEvent.Parameter characterJumpParameter)  {
-        //check if we have raycast collision on only one axis, jumping wont work when we are in a corner
         if (characterJumpParameter.CollisionDirection != Vector2.zero) {
             frames.StopDelayExecute(retryJumpAfterDelayCoroutine);
             characterJumpEvent.Dispatch(characterJumpParameter);
         }
     }
 
-    /// <summary>
-    /// changes the direction of ControlVelocity, to create a jumping effect.
-    /// </summary>
     public void Jump(CharacterJumpEvent.Parameter characterJumpParameter) {
 
         Vector2 newDirection = characterJumpParameter.MoveDirection;
@@ -74,10 +68,6 @@ public class CharacterJumpView : View, ICharacterJump, ITriggerer {
         characterSetMoveDirectionEvent.Dispatch(newDirection);
         characterRemoveCollisionDirectionEvent.Dispatch(characterJumpParameter.CollisionDirection);
         characterTemporarySpeedChangeEvent.Dispatch(new CharacterTemporarySpeedChangeEvent.Parameter(0.5f + jumpSpeedBoost));
-
-        if (TookOff != null) {
-            TookOff();
-        }
     }
 
     void Start() {

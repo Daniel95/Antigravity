@@ -10,7 +10,7 @@ public class CharacterRetryJumpCommand : Command {
 
     protected override void Execute() {
         CharacterJumpEvent.Parameter characterJumpParameter = new CharacterJumpEvent.Parameter(
-            characterVelocityRef.Get().MoveDirection, 
+            characterVelocityRef.Get().Direction, 
             characterCollisionDirectionRef.Get().GetCurrentCollisionDirection(characterRaycastRef.Get().GetCornersDirection()), 
             characterRaycastRef.Get().GetMiddleDirection()
         );

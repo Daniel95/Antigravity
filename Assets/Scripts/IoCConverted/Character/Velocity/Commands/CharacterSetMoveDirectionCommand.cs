@@ -8,6 +8,6 @@ public class CharacterSetMoveDirectionCommand : Command {
     [InjectParameter] private Vector2 direction;
 
     protected override void Execute() {
-        characterVelocityRef.Get().MoveDirection = direction;
+        characterVelocityRef.Get().SetMoveDirection(direction);
     }
 }

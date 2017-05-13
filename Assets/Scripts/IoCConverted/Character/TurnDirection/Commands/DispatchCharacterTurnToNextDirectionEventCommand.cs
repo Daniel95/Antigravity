@@ -10,7 +10,7 @@ public class DispatchCharacterTurnToNextDirectionEventCommand : Command {
 
     protected override void Execute() {
         characterTurnToNextDirectionEvent.Dispatch(new CharacterTurnToNextDirectionEvent.Parameter(
-            characterVelocityRef.Get().MoveDirection,
+            characterVelocityRef.Get().Direction,
             characterCollisionDirectionRef.Get().GetCurrentCollisionDirection(characterRaycastRef.Get().GetCornersDirection()),
             characterRaycastRef.Get().GetCornersDirection()
         ));

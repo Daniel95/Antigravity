@@ -10,7 +10,7 @@ public class DispatchCharacterBounceEventCommand : Command {
 
     protected override void Execute() {
         characterBounceEvent.Dispatch(new CharacterBounceEvent.Parameter(
-            characterVelocityRef.Get().MoveDirection,
+            characterVelocityRef.Get().Direction,
             characterCollisionDirection.Get().GetCurrentCollisionDirection(characterRaycastRef.Get().GetCornersDirection())
         ));
     }

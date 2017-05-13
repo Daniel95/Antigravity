@@ -14,6 +14,6 @@ public class PullingHookPullCommand : Command {
         newDirection.x *= Mathf.Abs(velocityDirection.x);
         newDirection.y *= Mathf.Abs(velocityDirection.y);
 
-        characterVelocityRef.Get().MoveDirection = newDirection;
+        characterVelocityRef.Get().SetMoveDirection(newDirection);
     }
 }
