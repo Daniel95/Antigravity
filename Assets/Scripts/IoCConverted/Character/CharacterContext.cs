@@ -17,12 +17,12 @@ public class CharacterContext : Context {
             .Do<CharacterRetryJumpCommand>();
 
         On<CharacterJumpEvent>()
-            .Do<CharacterPointToCeiledVelocityDirectionCommand>()
-            .Do<CharacterJumpCommand>();
+            .Do<CharacterJumpCommand>()
+            .Do<CharacterPointToCeiledVelocityDirectionCommand>();
 
         On<CharacterBounceEvent>()
-            .Do<CharacterPointToCeiledVelocityDirectionCommand>()
-            .Do<CharacterBounceCommand>();
+            .Do<CharacterBounceCommand>()
+            .Do<CharacterPointToCeiledVelocityDirectionCommand>();
 
         On<CharacterRemoveCollisionDirectionEvent>()
             .Do<CharacterRemoveCollisionDirectionCommand>();

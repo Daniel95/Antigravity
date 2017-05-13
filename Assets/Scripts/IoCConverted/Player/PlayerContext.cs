@@ -6,6 +6,7 @@ public class PlayerContext : Context {
         base.SetBindings();
 
         //BindLabeled<Ref<IShoot>>("Views/Player/ShootView");
+        Bind<InputModel>();
 
         Bind<Ref<IShoot>>();
         Bind<Ref<IPCInput>>();
@@ -92,7 +93,9 @@ public class PlayerContext : Context {
             .AddContext<InputContext>()
             .AddContext<WeaponContext>()
             .AddContext<PlayerStateContext>()
-            .AddContext<CharacterContext>();
+            .AddContext<CharacterContext>()
+            .Do<DispatchEnableActionInputEventCommand>(true)
+            .Do<DispatchEnableShootingInputEventCommand>(true);
 
         On<TriggerEnter2DEvent>()
             .Do<AbortIfTriggerTagIsNotTheSameCommand>("Checkpoint")
@@ -130,5 +133,11 @@ public class PlayerContext : Context {
         On<TriggerExit2DEvent>()
             .Do<AbortIfGameObjectIsNotPlayerCommand>()
             .Do<DispatchPlayerTriggerExit2DEvent>();
+
+        On<EnableActionInputEvent>()
+            .Do<EnableActionInputCommand>();
+
+        On<EnableShootingInputEvent>()
+            .Do<EnableShootingInputCommand>();
     }
 }

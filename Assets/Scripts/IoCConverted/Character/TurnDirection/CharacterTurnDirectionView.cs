@@ -51,10 +51,12 @@ public class CharacterTurnDirectionView : View, ICharacterTurnDirection {
     }
 
     void Start() {
-        if (savedDirection.x == 0)
+        if (savedDirection.x == 0) {
             savedDirection.x = 1;
-        if (savedDirection.y == 0)
+        }
+        if (savedDirection.y == 0) {
             savedDirection.y = 1;
+        }
 
         //wait one frame so all scripts are loaded, then send out a delegate with the direction, used by FutureDirectionIndicator
         GetComponent<Frames>().ExecuteAfterDelay(1, () => {

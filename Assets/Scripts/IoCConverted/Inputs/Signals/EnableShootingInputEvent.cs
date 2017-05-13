@@ -1,3 +1,3 @@
 ﻿using IoCPlus;
 
-public class EnableShootingInputEvent : Signal<bool  > { }
+public class EnableShootingInputEvent : Signal<bool> { }

@@ -5,8 +5,6 @@ public class InputContext : Context {
     protected override void SetBindings() {
         base.SetBindings();
 
-        Bind<InputModel>();
-
         Bind<ActivateInputPlatformEvent>();
 
         On<EnterContextSignal>()
