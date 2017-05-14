@@ -4,10 +4,11 @@ using UnityEngine;
 public class PullingHookPullCommand : Command {
 
     [Inject] private Ref<IHook> hookRef;
+    [Inject] private Ref<IHookProjectile> hookProjectileRef;
     [Inject] private Ref<ICharacterVelocity> characterVelocityRef;
 
     protected override void Execute() {
-        Vector2 newDirection = (hookRef.Get().HookProjectileGameObject.transform.position - hookRef.Get().Owner.transform.position).normalized;
+        Vector2 newDirection = (hookProjectileRef.Get().Transform.position - hookRef.Get().Owner.transform.position).normalized;
 
         Vector2 velocityDirection = characterVelocityRef.Get().GetVelocityDirection();
 

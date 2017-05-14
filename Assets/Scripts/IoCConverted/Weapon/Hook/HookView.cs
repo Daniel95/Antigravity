@@ -8,7 +8,6 @@ public class HookView : View, IHook, ITriggerer {
 
     public HookState ActiveHookState { get { return activeHookState; } set { activeHookState = value; } }
     public HookState LastHookState { get { return lastHookState; } set { lastHookState = value; } }
-    public GameObject HookProjectileGameObject { get { return hookProjectileGameObject; } }
     public List<Transform> Anchors { get { return anchors; } }
     public LineRenderer LineRenderer { get { return lineRenderer; } }
     public LayerMask RayLayers { get { return rayLayers; } }
@@ -32,7 +31,6 @@ public class HookView : View, IHook, ITriggerer {
 
     private HookState activeHookState = HookState.Inactive;
     private HookState lastHookState = HookState.Inactive;
-    private GameObject hookProjectileGameObject;
     private List<Transform> anchors = new List<Transform>();
     private Vector2 destination;
 
@@ -44,15 +42,6 @@ public class HookView : View, IHook, ITriggerer {
 
     public void AddAnchor(Vector2 position, Transform parent) {
         anchors.Add(CreateAnchor(position, parent));
-    }
-
-    public void ActivateHookProjectile(Vector2 spawnPosition) {
-        hookProjectileGameObject.SetActive(true);
-        hookProjectileGameObject.transform.position = spawnPosition;
-    }
-
-    public void DeactivateHookProjectile() {
-        hookProjectileGameObject.SetActive(false);
     }
 
     public void DestroyAnchors() {
@@ -97,10 +86,5 @@ public class HookView : View, IHook, ITriggerer {
 
     private void Awake() {
         lineRenderer = Instantiate(hookLinePrefab, transform).GetComponent<LineRenderer>();
-
-        lineRenderer = GetComponent<LineRenderer>();
-
-        hookProjectileGameObject = Instantiate(hookProjectilePrefab, Vector2.zero, new Quaternion(0, 0, 0, 0));
-        hookProjectileGameObject.SetActive(false);
     }
 }

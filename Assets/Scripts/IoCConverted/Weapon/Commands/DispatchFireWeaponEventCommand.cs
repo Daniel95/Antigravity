@@ -9,6 +9,9 @@ public class DispatchFireWeaponEventCommand : Command {
     [InjectParameter] private Vector2 direction;
 
     protected override void Execute() {
-        fireWeaponEvent.Dispatch(new FireWeaponParameter(aimDestination.Get().GetDestinationPoint(direction), aimDestination.Get().SpawnPosition));
+        fireWeaponEvent.Dispatch(new FireWeaponEvent.FireWeapFireWeaponEventParameter(
+            aimDestination.Get().GetDestinationPoint(direction), 
+            aimDestination.Get().SpawnPosition)
+        );
     }
 }

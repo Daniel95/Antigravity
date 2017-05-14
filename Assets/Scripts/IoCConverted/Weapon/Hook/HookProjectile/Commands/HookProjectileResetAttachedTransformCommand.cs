@@ -1,10 +1,10 @@
 ﻿using IoCPlus;
 
-public class DeactivateHookProjectileCommand : Command { 
+public class HookProjectileResetAttachedTransformCommand : Command {
 
     [Inject] private Ref<IHookProjectile> hookProjectileRef;
 
     protected override void Execute() {
-        hookProjectileRef.Get().DeactivateHookProjectile();
+        hookProjectileRef.Get().AttachedTransform = null;
     }
 }

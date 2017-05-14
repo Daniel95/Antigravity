@@ -2,11 +2,11 @@
 
 public class ActivateHookProjectileCommand : Command { 
 
-    [Inject] private Ref<IHook> hookRef;
+    [Inject] private Ref<IHookProjectile> hookProjectileRef;
 
-    [InjectParameter] private FireWeaponParameter fireWeaponParameter;
+    [InjectParameter] private ShootHookEvent.ShootHookEventParameter shootHookEventParameter;
 
     protected override void Execute() {
-        hookRef.Get().ActivateHookProjectile(fireWeaponParameter.spawnPosition);
+        hookProjectileRef.Get().ActivateHookProjectile(shootHookEventParameter.StartPosition);
     }
 }

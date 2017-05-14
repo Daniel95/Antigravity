@@ -18,6 +18,7 @@ public class HookProjectileView : View, IHookProjectile {
 
     public override void Initialize() {
         hookProjectileRef.Set(this);
+        gameObject.SetActive(false);
     }
 
     public void SetParent(Transform parent) {
@@ -26,5 +27,14 @@ public class HookProjectileView : View, IHookProjectile {
 
     public void DestroyProjectile() {
         Destroy();
+    }
+
+    public void ActivateHookProjectile(Vector2 spawnPosition) {
+        gameObject.SetActive(true);
+        transform.position = spawnPosition;
+    }
+
+    public void DeactivateHookProjectile() {
+        gameObject.SetActive(false);
     }
 }

@@ -4,9 +4,13 @@ public class DispatchShootHookEventCommand : Command {
 
     [Inject] private ShootHookEvent shootHookEvent;
 
-    [InjectParameter] private FireWeaponParameter fireWeaponParameter;
+    [Inject] private Ref<IHook> hookRef;
+    [Inject] private Ref<IAimDestination> aimDestination;
 
     protected override void Execute() {
-        shootHookEvent.Dispatch(fireWeaponParameter);
+        shootHookEvent.Dispatch(new ShootHookEvent.ShootHookEventParameter(
+            hookRef.Get().Destination,
+            aimDestination.Get().SpawnPosition
+        ));
     }
 }

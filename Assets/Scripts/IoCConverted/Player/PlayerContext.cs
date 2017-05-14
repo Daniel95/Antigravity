@@ -84,6 +84,7 @@ public class PlayerContext : Context {
         Bind<GrapplingHookStartedEvent>();
         Bind<CancelHookEvent>();
         Bind<HookProjectileReturnedToOwnerEvent>();
+        Bind<HookProjectileIsAttachedEvent>();
 
         //grapplinghook
         Bind<UpdateGrapplingHookRopeEvent>();

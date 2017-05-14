@@ -4,9 +4,9 @@ public class DispatchHookProjectileIsAttachedEventCommand : Command {
 
     [Inject] private Ref<IHookProjectile> hookProjectileRef;
 
-    [Inject] private HookProjectileIsAttachedEvent hookIsAttachedEvent;
+    [Inject] private HookProjectileIsAttachedEvent hookProjectileIsAttachedEvent;
 
     protected override void Execute() {
-        hookIsAttachedEvent.Dispatch(hookProjectileRef.Get().HookedLayerIndex);
+        hookProjectileIsAttachedEvent.Dispatch(hookProjectileRef.Get().HookedLayerIndex);
     }
 }

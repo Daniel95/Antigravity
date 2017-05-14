@@ -5,8 +5,6 @@ public class WeaponContext : Context {
     protected override void SetBindings() {
         base.SetBindings();
 
-        Bind<GrapplingHookStartedEvent>();
-
         On<EnterContextSignal>()
             .AddContext<HookContext>();
 

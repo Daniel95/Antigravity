@@ -45,13 +45,14 @@ public class HookContext : Context {
         On<ShootHookEvent>()
             .Do<SetHookStateCommand>(HookState.Shooting)
             .Do<ActivateHookProjectileCommand>()
+            .Do<SetHookDestinationCommand>()
             .Do<SpawnAnchorAtPlayerCommand>()
             .Do<ActivateHoopRopeCommand>()
             .Do<SetHookedLayerCommand>(0)
             .Do<HookProjectileGoToDestinationCommand>();
 
         On<PullBackHookEvent>()
-            .Do<HookProjectileSetAttachedTransformCommand>(null)
+            .Do<HookProjectileResetAttachedTransformCommand>()
             .Do<HookProjectileSetHookedLayerIndexCommand>(0)
             .Do<HookProjectileResetParentCommand>()
             .Do<HookProjectileSetReachedAnchorsIndexCommand>(0)

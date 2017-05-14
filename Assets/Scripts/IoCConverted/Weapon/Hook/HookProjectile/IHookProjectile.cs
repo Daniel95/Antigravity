@@ -8,7 +8,8 @@ public interface IHookProjectile {
     int ReachedAnchorsIndex { get; set; }
     bool IsMovingTowardsOwner { get; set; }
 
+    void ActivateHookProjectile(Vector2 startPosition);
+    void DeactivateHookProjectile();
     void SetParent(Transform parent);
     void DestroyProjectile();
-
 }

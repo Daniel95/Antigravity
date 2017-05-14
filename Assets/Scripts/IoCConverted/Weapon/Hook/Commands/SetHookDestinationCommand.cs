@@ -4,9 +4,9 @@ public class SetHookDestinationCommand : Command {
 
     [Inject] private Ref<IHook> hookRef;
 
-    [InjectParameter] private FireWeaponParameter fireWeaponParameter;
+    [InjectParameter] private ShootHookEvent.ShootHookEventParameter shootHookEventParameter;
 
     protected override void Execute() {
-        hookRef.Get().Destination = fireWeaponParameter.destination;
+        hookRef.Get().Destination = shootHookEventParameter.Destination;
     }
 }
