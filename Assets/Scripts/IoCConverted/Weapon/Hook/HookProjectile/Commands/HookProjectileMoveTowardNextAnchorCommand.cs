@@ -6,7 +6,7 @@ public class HookProjectileMoveTowardNextAnchorCommand : Command {
     [Inject] private Ref<IHookProjectile> hookProjectileRef;
     [Inject] private Ref<IHook> hookRef;
 
-    [Inject] private StartMoveTowardsEvent startMoveTowardsEvent;
+    [Inject(Label.HookProjectile)] private Ref<IMoveTowards> moveTowardsRef;
 
     protected override void Execute() {
         Debug.Log("index: " + (hookRef.Get().Anchors.Count - hookProjectileRef.Get().AnchorsIndex));
@@ -14,7 +14,6 @@ public class HookProjectileMoveTowardNextAnchorCommand : Command {
 
         Vector2 nextPoint = hookRef.Get().Anchors[(hookRef.Get().Anchors.Count - 1) - hookProjectileRef.Get().AnchorsIndex].position;
         hookProjectileRef.Get().AnchorsIndex++;
-        Debug.Log("dispatch movetowards");
-        startMoveTowardsEvent.Dispatch(nextPoint);
+        moveTowardsRef.Get().StartMoving(nextPoint);
     }
 }
