@@ -4,9 +4,9 @@ public class MoveTowardsCheckpointCommand : Command {
 
     [Inject] private CheckpointStatus checkPointStatus;
 
-    [Inject] private Ref<IMoveTowards> moveTowards;
+    [Inject("Player/MoveTowards")] private Ref<IMoveTowards> moveTowardsRef;
 
     protected override void Execute() {
-        moveTowards.Get().StartMoving(checkPointStatus.checkpoint.transform.position);
+        moveTowardsRef.Get().StartMoving(checkPointStatus.checkpoint.transform.position);
     }
 }

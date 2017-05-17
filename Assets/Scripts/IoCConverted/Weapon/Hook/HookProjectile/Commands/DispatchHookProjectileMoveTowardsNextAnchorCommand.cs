@@ -2,9 +2,9 @@
 
 public class DispatchHookProjectileMoveTowardsNextAnchorCommand : Command {
 
-    [Inject] private HookProjectileMoveTowardsNextAnchorEvent returnToNextAnchorOrOwnerByIndexEvent;
+    [Inject] private HookProjectileMoveTowardsNextAnchorEvent hookProjectileMoveTowardsNextAnchorEvent;
 
     protected override void Execute() {
-        returnToNextAnchorOrOwnerByIndexEvent.Dispatch();
+        hookProjectileMoveTowardsNextAnchorEvent.Dispatch();
     }
 }

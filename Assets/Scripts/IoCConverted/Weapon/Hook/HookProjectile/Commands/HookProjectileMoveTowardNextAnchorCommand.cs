@@ -9,8 +9,12 @@ public class HookProjectileMoveTowardNextAnchorCommand : Command {
     [Inject] private StartMoveTowardsEvent startMoveTowardsEvent;
 
     protected override void Execute() {
-        Vector2 nextPoint = hookRef.Get().Anchors[hookRef.Get().Anchors.Count - hookProjectileRef.Get().ReachedAnchorsIndex].position;
-        hookProjectileRef.Get().ReachedAnchorsIndex++;
+        Debug.Log("index: " + (hookRef.Get().Anchors.Count - hookProjectileRef.Get().AnchorsIndex));
+        Debug.Log("count: " + hookRef.Get().Anchors.Count);
+
+        Vector2 nextPoint = hookRef.Get().Anchors[(hookRef.Get().Anchors.Count - 1) - hookProjectileRef.Get().AnchorsIndex].position;
+        hookProjectileRef.Get().AnchorsIndex++;
+        Debug.Log("dispatch movetowards");
         startMoveTowardsEvent.Dispatch(nextPoint);
     }
 }

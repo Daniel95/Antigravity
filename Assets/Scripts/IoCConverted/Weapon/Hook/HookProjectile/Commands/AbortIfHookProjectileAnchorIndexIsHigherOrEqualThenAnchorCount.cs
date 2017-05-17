@@ -1,4 +1,5 @@
 ﻿using IoCPlus;
+using UnityEngine;
 
 public class AbortIfHookProjectileAnchorIndexIsHigherOrEqualThenAnchorCount : Command {
 
@@ -6,7 +7,9 @@ public class AbortIfHookProjectileAnchorIndexIsHigherOrEqualThenAnchorCount : Co
     [Inject] private Ref<IHookProjectile> hookProjectileRef;
 
     protected override void Execute() {
-        if (hookProjectileRef.Get().ReachedAnchorsIndex >= hookRef.Get().Anchors.Count - 1) {
+        if (hookProjectileRef.Get().AnchorsIndex >= hookRef.Get().Anchors.Count) {
+            Debug.Log("abort");
+            hookProjectileRef.Get().AnchorsIndex = 0;
             Abort();
         }
     }

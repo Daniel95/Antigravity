@@ -17,7 +17,8 @@ public class HookContext : Context {
             .Do<AbortIfHookStatesAreActive>(new List<HookState>() {
                 HookState.Inactive,
                 HookState.Canceling,
-                HookState.HoldingShot })
+                HookState.HoldingShot
+            })
             .Do<SetHookStateCommand>(HookState.Canceling)
             .Do<DispatchHookPullBackEventCommand>();
 
