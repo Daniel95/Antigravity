@@ -29,8 +29,7 @@ public class RevivedStateContext : Context {
             .Do<CharacterSetMoveDirectionCommand>()
             .Do<CharacterTemporarySpeedIncreaseCommand>();
 
-        On<ReachedMoveTowardsDestinationEvent>()
-            .Do<AbortIfGameObjectIsNotPlayerCommand>()
+        On<MoveTowardsCheckpointCompletedEvent>()
             .Do<SetRevivedStateIsInPositionCommand>(true);
     }
 }

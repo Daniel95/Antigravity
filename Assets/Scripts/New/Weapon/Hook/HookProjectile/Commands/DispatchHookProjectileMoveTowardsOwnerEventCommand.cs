@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-using System.Collections;
-using IoCPlus;
+﻿using IoCPlus;
 
 public class DispatchHookProjectileMoveTowardsOwnerEventCommand : Command {
 

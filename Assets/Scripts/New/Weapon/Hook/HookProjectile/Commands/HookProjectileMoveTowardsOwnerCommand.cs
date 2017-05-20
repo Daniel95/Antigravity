@@ -7,8 +7,13 @@ public class HookProjectileMoveTowardsOwnerCommand : Command {
 
     [Inject(Label.HookProjectile)] private Ref<IMoveTowards> moveTowardsRef;
 
+    [Inject] private HookProjectileReturnedToOwnerEvent hookProjectileReturnedToOwnerEvent;
+
     protected override void Execute() {
         hookProjectileRef.Get().IsMovingTowardsOwner = true;
-        moveTowardsRef.Get().StartMoving(hookRef.Get().Owner.transform.position);
+        moveTowardsRef.Get().StartMoving(
+            hookRef.Get().Owner.transform.position, 
+            hookProjectileReturnedToOwnerEvent
+        );
     }
 }

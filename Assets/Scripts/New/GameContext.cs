@@ -9,8 +9,6 @@ public class GameContext : Context {
 
         Bind<Ref<ITime>>();
 
-        Bind<ReachedMoveTowardsDestinationEvent>();
-
         On<EnterContextSignal>()
             .AddContext<UIContext>()
             .AddContext<PlayerContext>()

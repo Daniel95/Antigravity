@@ -52,7 +52,7 @@ public class HookContext : Context {
             .Do<SpawnAnchorAtPlayerCommand>()
             .Do<ActivateHoopRopeCommand>()
             .Do<SetHookedLayerCommand>(0)
-            .Do<HookProjectileGoToDestinationCommand>();
+            .Do<HookProjectileGoToShootDestinationCommand>();
 
         On<PullBackHookEvent>()
             .Do<HookProjectileResetAttachedTransformCommand>()
@@ -61,14 +61,12 @@ public class HookContext : Context {
             .Do<HookProjectileSetReachedAnchorsIndexCommand>(0)
             .Do<DispatchHookProjectileMoveTowardsNextAnchorCommand>();
 
-        On<ReachedMoveTowardsDestinationEvent>()
-            .Do<AbortIfGameObjectIsNotHookProjectileCommand>()
+        On<HookProjectileMoveTowardsShootDestinationCompletedEvent>()
             .Do<AbortIfHookedLayerIsZeroCommand>()
             .Do<HookProjectileSetParentToAttachedTransformCommand>()
-            .Do<DispatchHookProjectileIsAttachedEventCommand>()
-            .OnAbort<DispatchHookProjectileMoveTowardsNextAnchorCommand>();
+            .Do<DispatchHookProjectileIsAttachedEventCommand>();
 
-        On<HookProjectileMoveTowardsNextAnchorEvent>()
+        On<HookProjectileMoveTowardsNextAnchorCompletedEvent>()
             .Do<AbortIfHookProjectileAnchorIndexIsHigherOrEqualThenAnchorCount>()
             .Do<HookProjectileMoveTowardNextAnchorCommand>()
             .OnAbort<DispatchHookProjectileMoveTowardsOwnerEventCommand>();
