@@ -1,13 +1,13 @@
 ﻿using IoCPlus;
 using UnityEngine;
 
-public class ShootHookEvent : Signal<ShootHookEvent.ShootHookEventParameter> {
+public class ShootHookEvent : Signal<ShootHookEvent.Parameter> {
 
-    public class ShootHookEventParameter {
+    public class Parameter {
         public Vector2 Destination;
         public Vector2 StartPosition;
 
-        public ShootHookEventParameter(Vector2 destination, Vector2 startPosition) {
+        public Parameter(Vector2 destination, Vector2 startPosition) {
             Destination = destination;
             StartPosition = startPosition;
         }

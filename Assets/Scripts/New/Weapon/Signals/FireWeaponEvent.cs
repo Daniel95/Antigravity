@@ -1,13 +1,13 @@
 using IoCPlus;
 using UnityEngine;
 
-public class FireWeaponEvent : Signal<FireWeaponEvent.FireWeapFireWeaponEventParameter> {
+public class FireWeaponEvent : Signal<FireWeaponEvent.Parameter> {
 
-    public class FireWeapFireWeaponEventParameter {
+    public class Parameter {
         public Vector2 Destination;
         public Vector2 StartPosition;
 
-        public FireWeapFireWeaponEventParameter(Vector2 destination, Vector2 startPosition) {
+        public Parameter(Vector2 destination, Vector2 startPosition) {
             Destination = destination;
             StartPosition = startPosition;
         }

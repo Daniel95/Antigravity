@@ -4,7 +4,7 @@ public class DispatchHoldShotEventCommand : Command {
 
     [Inject] private HoldShotEvent holdShotEvent;
 
-    [InjectParameter] private FireWeaponEvent.FireWeapFireWeaponEventParameter fireWeapFireWeaponEventParameter;
+    [InjectParameter] private FireWeaponEvent.Parameter fireWeapFireWeaponEventParameter;
 
     protected override void Execute() {
         holdShotEvent.Dispatch(new HoldShotEvent.HoldShotEventParameter(

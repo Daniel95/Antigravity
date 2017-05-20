@@ -8,7 +8,7 @@ public class DispatchShootHookEventCommand : Command {
     [Inject] private Ref<IAimDestination> aimDestination;
 
     protected override void Execute() {
-        shootHookEvent.Dispatch(new ShootHookEvent.ShootHookEventParameter(
+        shootHookEvent.Dispatch(new ShootHookEvent.Parameter(
             hookRef.Get().Destination,
             aimDestination.Get().SpawnPosition
         ));

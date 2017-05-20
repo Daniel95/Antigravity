@@ -9,9 +9,6 @@ public class HookProjectileMoveTowardNextAnchorCommand : Command {
     [Inject(Label.HookProjectile)] private Ref<IMoveTowards> moveTowardsRef;
 
     protected override void Execute() {
-        Debug.Log("index: " + (hookRef.Get().Anchors.Count - hookProjectileRef.Get().AnchorsIndex));
-        Debug.Log("count: " + hookRef.Get().Anchors.Count);
-
         Vector2 nextPoint = hookRef.Get().Anchors[(hookRef.Get().Anchors.Count - 1) - hookProjectileRef.Get().AnchorsIndex].position;
         hookProjectileRef.Get().AnchorsIndex++;
         moveTowardsRef.Get().StartMoving(nextPoint);

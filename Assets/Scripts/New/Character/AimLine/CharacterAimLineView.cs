@@ -28,11 +28,10 @@ public class CharacterAimLineView : View, ICharacterAimLine {
     }
 
     public void StopAimLine() {
-        if (aimLineActive) {
-            StopCoroutine(updateLineRendererPositionsCoroutine);
-            updateLineRendererPositionsCoroutine = null;
-            lineRenderer.enabled = aimLineActive = false;
-        }
+        if (!aimLineActive) { return; }
+        StopCoroutine(updateLineRendererPositionsCoroutine);
+        updateLineRendererPositionsCoroutine = null;
+        lineRenderer.enabled = aimLineActive = false;
     }
 
     private void Awake() {

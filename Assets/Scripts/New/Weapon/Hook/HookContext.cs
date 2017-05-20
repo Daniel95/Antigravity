@@ -33,6 +33,7 @@ public class HookContext : Context {
 
         On<FireWeaponEvent>()
             .Do<AbortIfHookStateIsNotActive>(HookState.Inactive)
+            .Do<SetHookDestinationCommand>()
             .Do<DispatchShootHookEventCommand>()
             .OnAbort<DispatchHoldShotEventCommand>();
 
@@ -48,7 +49,6 @@ public class HookContext : Context {
         On<ShootHookEvent>()
             .Do<SetHookStateCommand>(HookState.Shooting)
             .Do<ActivateHookProjectileCommand>()
-            .Do<SetHookDestinationCommand>()
             .Do<SpawnAnchorAtPlayerCommand>()
             .Do<ActivateHoopRopeCommand>()
             .Do<SetHookedLayerCommand>(0)
