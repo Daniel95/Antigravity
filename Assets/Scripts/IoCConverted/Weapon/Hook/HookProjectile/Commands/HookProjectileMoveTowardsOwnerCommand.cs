@@ -5,10 +5,10 @@ public class HookProjectileMoveTowardsOwnerCommand : Command {
     [Inject] private Ref<IHook> hookRef;
     [Inject] private Ref<IHookProjectile> hookProjectileRef;
 
-    [Inject] private StartMoveTowardsEvent startMoveTowardsEvent;
+    [Inject(Label.HookProjectile)] private Ref<IMoveTowards> moveTowardsRef;
 
     protected override void Execute() {
         hookProjectileRef.Get().IsMovingTowardsOwner = true;
-        startMoveTowardsEvent.Dispatch(hookRef.Get().Owner.transform.position);
+        moveTowardsRef.Get().StartMoving(hookRef.Get().Owner.transform.position);
     }
 }

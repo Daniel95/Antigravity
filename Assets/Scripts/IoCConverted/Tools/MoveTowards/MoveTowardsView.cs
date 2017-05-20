@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class MoveTowardsView : View, IMoveTowards {
 
-    [Inject] private Ref<IMoveTowards> moveTowardsRef;
-
     [Inject] private ReachedMoveTowardsDestinationEvent reachedDestinationEvent;
 
     [SerializeField] private float speed = 10;
@@ -13,14 +11,7 @@ public class MoveTowardsView : View, IMoveTowards {
 
     private Coroutine moveToCoroutine;
 
-    public override void Initialize() {
-        moveTowardsRef.Set(this);
-        Debug.Log(moveTowardsRef.Get());
-    }
-
     public void StartMoving(Vector2 destination) {
-
-        Debug.Log("start moving");
         if (moveToCoroutine != null) {
             StopMoving();
         }
@@ -30,7 +21,6 @@ public class MoveTowardsView : View, IMoveTowards {
 
     private IEnumerator MoveTo(Vector2 destination) {
         while (Vector2.Distance(transform.position, destination) > minReachedDistance) {
-            Debug.Log("moving");
             transform.position = Vector2.MoveTowards(transform.position, destination, speed);
             yield return new WaitForFixedUpdate();
         }

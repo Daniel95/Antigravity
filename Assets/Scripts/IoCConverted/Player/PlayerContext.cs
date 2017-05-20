@@ -29,7 +29,7 @@ public class PlayerContext : Context {
         Bind<Ref<ISlowTime>>();
         Bind<Ref<IGrapplingState>>();
         Bind<Ref<IRevivedState>>();
-        BindLabeled<Ref<IMoveTowards>>(Label.OfPlayer);
+        BindLabeled<Ref<IMoveTowards>>(Label.Player);
 
         //character
         Bind<CharacterTurnToNextDirectionEvent>();

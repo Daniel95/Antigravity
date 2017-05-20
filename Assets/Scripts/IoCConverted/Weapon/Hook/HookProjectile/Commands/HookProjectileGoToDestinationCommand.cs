@@ -2,7 +2,7 @@
 
 public class HookProjectileGoToDestinationCommand : Command {
 
-    [Inject] private Ref<IMoveTowards> moveTowardsRef;
+    [Inject(Label.HookProjectile)] private Ref<IMoveTowards> moveTowardsRef;
 
     [InjectParameter] private ShootHookEvent.ShootHookEventParameter shootHookEventParameter;
 

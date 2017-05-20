@@ -9,16 +9,13 @@ public class GameContext : Context {
 
         Bind<Ref<ITime>>();
 
-        Bind<StartMoveTowardsEvent>();
-        Bind<StopMoveTowardsEvent>();
         Bind<ReachedMoveTowardsDestinationEvent>();
 
         On<EnterContextSignal>()
             .AddContext<UIContext>()
             .AddContext<PlayerContext>()
             .AddContext<LevelContext>()
-            .AddContext<CameraContext>()
-            .AddContext<ToolContext>();
+            .AddContext<CameraContext>();
 
         On<ReloadSceneEvent>()
             .Do<ReloadSceneCommand>();
