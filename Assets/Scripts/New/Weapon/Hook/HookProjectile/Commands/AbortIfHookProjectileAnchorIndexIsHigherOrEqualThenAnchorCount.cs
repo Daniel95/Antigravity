@@ -8,7 +8,6 @@ public class AbortIfHookProjectileAnchorIndexIsHigherOrEqualThenAnchorCount : Co
 
     protected override void Execute() {
         if (hookProjectileRef.Get().AnchorsIndex >= hookRef.Get().Anchors.Count) {
-            Debug.Log("abort");
             hookProjectileRef.Get().AnchorsIndex = 0;
             Abort();
         }

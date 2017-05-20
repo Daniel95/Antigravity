@@ -86,7 +86,6 @@ public class PlayerContext : Context {
         Bind<HookProjectileReturnedToOwnerEvent>();
         Bind<HookProjectileIsAttachedEvent>();
         Bind<HookProjectileMoveTowardsShootDestinationCompletedEvent>();
-        Bind<HookProjectileMoveTowardsNextAnchorCompletedEvent>();
         Bind<HookProjectileMoveTowardsNextAnchorEvent>();
 
         //grapplinghook

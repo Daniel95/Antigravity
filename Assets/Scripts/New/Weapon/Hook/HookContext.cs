@@ -64,9 +64,10 @@ public class HookContext : Context {
         On<HookProjectileMoveTowardsShootDestinationCompletedEvent>()
             .Do<AbortIfHookedLayerIsZeroCommand>()
             .Do<HookProjectileSetParentToAttachedTransformCommand>()
-            .Do<DispatchHookProjectileIsAttachedEventCommand>();
+            .Do<DispatchHookProjectileIsAttachedEventCommand>()
+            .OnAbort<DispatchHookProjectileMoveTowardsNextAnchorCommand>();
 
-        On<HookProjectileMoveTowardsNextAnchorCompletedEvent>()
+        On<HookProjectileMoveTowardsNextAnchorEvent>()
             .Do<AbortIfHookProjectileAnchorIndexIsHigherOrEqualThenAnchorCount>()
             .Do<HookProjectileMoveTowardNextAnchorCommand>()
             .OnAbort<DispatchHookProjectileMoveTowardsOwnerEventCommand>();
