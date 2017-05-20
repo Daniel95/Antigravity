@@ -4,6 +4,8 @@ This is a mobile game that playable with one hand. It contains several levels, s
 
 Play link: http://14411.hosts.ma-cloud.nl/antigravity/
 
+I am currently busy converting this game to the IoCPlus framework, you can view my progress on the fix-game-basics branch.
+
 Interesting Scripts:
 
 Field generator: https://github.com/Daniel95/Antigravity/blob/master/Assets/Scripts/UI/LevelSelect/FieldGenerator.cs
