@@ -19,5 +19,9 @@ public class GrapplingHookContext : Context {
 
         On<LeaveContextSignal>()
             .Do<GrapplingHookStopGrappleLockCommand>();
+
+        On<HookProjectileMoveTowardsOwnerCompletedEvent>()
+            .Do<GrapplingHookStopGrappleLockCommand>();
+
     }
 }

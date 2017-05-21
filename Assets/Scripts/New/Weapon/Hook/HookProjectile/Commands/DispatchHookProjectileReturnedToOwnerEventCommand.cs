@@ -2,7 +2,7 @@
 
 public class DispatchHookProjectileReturnedToOwnerEventCommand : Command {
 
-    [Inject] private HookProjectileReturnedToOwnerEvent hookProjectileReturnedToOwnerEvent;
+    [Inject] private HookProjectileMoveTowardsOwnerCompletedEvent hookProjectileReturnedToOwnerEvent;
 
     protected override void Execute() {
         hookProjectileReturnedToOwnerEvent.Dispatch();

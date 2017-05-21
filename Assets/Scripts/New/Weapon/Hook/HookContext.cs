@@ -66,6 +66,7 @@ public class HookContext : Context {
 
         On<HookProjectileMoveTowardsShootDestinationCompletedEvent>()
             //.Do<DebugLogMessageCommand>("HookProjectileMoveTowardsShootDestinationCompletedEvent")
+            .Do<WaitFrameCommand>()
             .Do<AbortIfHookedLayerIsZeroCommand>()
             .Do<HookProjectileSetParentToAttachedTransformCommand>()
             .Do<DispatchHookProjectileIsAttachedEventCommand>()
@@ -82,20 +83,19 @@ public class HookContext : Context {
             .Do<HookProjectileMoveTowardsOwnerCommand>()
             .OnAbort<DispatchHookProjectileReturnedToOwnerEventCommand>();
 
-        On<HookProjectileReturnedToOwnerEvent>()
+        On<HookProjectileMoveTowardsOwnerCompletedEvent>()
             //.Do<DebugLogMessageCommand>("HookProjectileReturnedToOwnerEvent")
             .Do<DeactivateHookRopeCommand>()
             .Do<DestroyHookAnchorsCommand>()
+            .Do<DeactivateHookProjectileCommand>()
             .Do<AbortIfHookStateIsActive>(HookState.HoldingShot)
             .Do<SetHookStateCommand>(HookState.Inactive)
-            .Do<DeactivateHookProjectileCommand>()
             .GotoState<InActiveContext>()
             .OnAbort<DispatchShootHookEventCommand>();
 
         On<TriggerEnter2DEvent>()
             .Do<AbortIfGameObjectIsNotHookProjectileCommand>()
             .Do<AbortIfTriggerLayerIndexIsNotTheSameCommand>(HookableLayers.GrappleSurface)
-            .Do<DebugLogMessageCommand>("collided with GrappleSurface")
             .Do<HookProjectileSetAttachedTransformCommand>()
             .GotoState<GrapplingHookContext>()
             .Do<HookProjectileSetHookedLayerIndexCommand>(HookableLayers.GrappleSurface);
@@ -103,7 +103,6 @@ public class HookContext : Context {
         On<TriggerEnter2DEvent>()
             .Do<AbortIfGameObjectIsNotHookProjectileCommand>()
             .Do<AbortIfTriggerLayerIndexIsNotTheSameCommand>(HookableLayers.PullSurface)
-            .Do<DebugLogMessageCommand>("collided with PullSurface")
             .GotoState<PullingHookContext>()
             .Do<HookProjectileSetHookedLayerIndexCommand>(HookableLayers.PullSurface);
 
