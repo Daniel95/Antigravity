@@ -8,7 +8,7 @@ public class AbortIfGameObjectIsNotHookProjectileCommand : Command {
     [InjectParameter] private GameObject gameObject;
 
     protected override void Execute() {
-        if(gameObject != hookProjectileRef.Get() as HookProjectileView) {
+        if(gameObject != (hookProjectileRef.Get() as HookProjectileView).gameObject) {
             Abort();
         }
     }

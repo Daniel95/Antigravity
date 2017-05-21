@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
 
-public interface ICharacterTriggerHitDetection {
+public interface ITriggerHitDetection {
     List<string> CurrentTriggerTags { get; }
 }

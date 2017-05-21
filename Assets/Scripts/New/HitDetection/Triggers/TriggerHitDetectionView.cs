@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterTriggerHitDetectionView : View, ICharacterTriggerHitDetection {
+public class TriggerHitDetectionView : View, ITriggerHitDetection {
 
     public List<string> CurrentTriggerTags { get { return currentTriggerTags; } }
 
-    [Inject] private Ref<ICharacterTriggerHitDetection> characterHitTriggerRef;
+    [Inject] private Ref<ITriggerHitDetection> characterHitTriggerRef;
 
     [Inject] private TriggerEnter2DEvent onTriggerEnter2DEvent;
     [Inject] private TriggerStay2DEvent onTriggerStay2DEvent;

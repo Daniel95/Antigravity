@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
 
-public interface ICharacterCollisionHitDetection {
+public interface ICollisionHitDetection {
     List<string> CurrentCollisionTags { get; }
 }

@@ -19,7 +19,7 @@ public class PlayerStateContext : Context {
             .GotoState<SlidingStateContext>()
             .OnAbort<DispatchCharacterBounceEventCommand>();
 
-        On<TriggerEnter2DEvent>()
+        On<PlayerTriggerEnter2DEvent>()
             .Do<AbortIfGameObjectIsNotPlayerCommand>()
             .Do<AbortIfCollider2DIsNotCheckpointCommand>()
             .Do<UpdateCheckpointStatusCommand>()

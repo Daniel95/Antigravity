@@ -20,8 +20,8 @@ public class PlayerContext : Context {
         Bind<Ref<ICharacterCollisionDirection>>();
         Bind<Ref<ICharacterJump>>();
         Bind<Ref<ICharacterDirectionPointer>>();
-        Bind<Ref<ICharacterCollisionHitDetection>>();
-        Bind<Ref<ICharacterTriggerHitDetection>>();
+        Bind<Ref<ICollisionHitDetection>>();
+        Bind<Ref<ITriggerHitDetection>>();
         Bind<Ref<ICharacterAimLine>>();
         Bind<Ref<ICharacterBounce>>();
         Bind<Ref<ICharacterDie>>();
@@ -100,7 +100,7 @@ public class PlayerContext : Context {
             .Do<DispatchEnableActionInputEventCommand>(true)
             .Do<DispatchEnableShootingInputEventCommand>(true);
 
-        On<TriggerEnter2DEvent>()
+        On<PlayerTriggerEnter2DEvent>()
             .Do<AbortIfTriggerTagIsNotTheSameCommand>("Checkpoint")
             .Do<SetCheckpointReachedCommand>(true);
 

@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterCollisionHitDetectionView : View {
+public class CollisionHitDetectionView : View {
 
     public List<string> CurrentCollisionTags { get { return currentCollisionTags; } }
 
-    [Inject] private Ref<ICharacterTriggerHitDetection> characterHitTriggerRef;
+    [Inject] private Ref<ITriggerHitDetection> characterHitTriggerRef;
 
     [Inject] private CollisionEnter2DEvent onCollisionEnter2DEvent;
     [Inject] private CollisionStay2DEvent onCollisionStay2DEvent;

@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class AbortIfCollidingOrInTriggerTagCommand : Command<string> {
 
-    [Inject] private Ref<ICharacterTriggerHitDetection> characterTriggerHitDetectionRef;
+    [Inject] private Ref<ITriggerHitDetection> characterTriggerHitDetectionRef;
 
     [InjectParameter] private Collision2D collision;
 

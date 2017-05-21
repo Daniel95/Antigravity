@@ -7,7 +7,7 @@ public class InstantiateHookProjectileCommand : Command {
 
     [Inject(Label.HookProjectile)] private Ref<IMoveTowards> moveTowards;
 
-    private const string prefabPath = "Character/Projectile/HookProjectile";
+    private const string prefabPath = "Characters/Projectiles/HookProjectile";
 
     protected override void Execute() {
         View prefab = Resources.Load<View>(prefabPath);
