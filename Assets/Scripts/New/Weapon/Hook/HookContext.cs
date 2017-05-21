@@ -32,14 +32,14 @@ public class HookContext : Context {
             .Do<CharacterStopAimLineCommand>();
 
         On<FireWeaponEvent>()
-            .Do<DebugLogMessageCommand>("FireWeaponEvent")
+            //.Do<DebugLogMessageCommand>("FireWeaponEvent")
             .Do<SetHookDestinationCommand>()
             .Do<AbortIfHookStateIsNotActive>(HookState.Inactive)
             .Do<DispatchShootHookEventCommand>()
             .OnAbort<DispatchHoldShotEventCommand>();
 
         On<HoldShotEvent>()
-            .Do<DebugLogMessageCommand>("HoldShotEvent")
+            //.Do<DebugLogMessageCommand>("HoldShotEvent")
             .Do<AbortIfHookStatesAreActive>(new List<HookState>() {
                 HookState.Inactive,
                 HookState.Canceling,
@@ -48,7 +48,7 @@ public class HookContext : Context {
             .Do<DispatchHookPullBackEventCommand>();
 
         On<ShootHookEvent>()
-            .Do<DebugLogMessageCommand>("ShootHookEvent")
+            //.Do<DebugLogMessageCommand>("ShootHookEvent")
             .Do<SetHookStateCommand>(HookState.Shooting)
             .Do<ActivateHookProjectileCommand>()
             .Do<SpawnHookProjectileAnchorCommand>()
@@ -57,7 +57,7 @@ public class HookContext : Context {
             .Do<HookProjectileGoToShootDestinationCommand>();
 
         On<PullBackHookEvent>()
-            .Do<DebugLogMessageCommand>("Pullbackhookevent")
+            //.Do<DebugLogMessageCommand>("Pullbackhookevent")
             .Do<HookProjectileResetAttachedTransformCommand>()
             .Do<HookProjectileSetHookedLayerIndexCommand>(0)
             .Do<HookProjectileResetParentCommand>()
@@ -65,26 +65,25 @@ public class HookContext : Context {
             .Do<DispatchHookProjectileMoveTowardsNextAnchorCommand>();
 
         On<HookProjectileMoveTowardsShootDestinationCompletedEvent>()
-            .Do<DebugLogMessageCommand>("HookProjectileMoveTowardsShootDestinationCompletedEvent")
+            //.Do<DebugLogMessageCommand>("HookProjectileMoveTowardsShootDestinationCompletedEvent")
             .Do<AbortIfHookedLayerIsZeroCommand>()
             .Do<HookProjectileSetParentToAttachedTransformCommand>()
             .Do<DispatchHookProjectileIsAttachedEventCommand>()
             .OnAbort<DispatchHookProjectileMoveTowardsNextAnchorCommand>();
 
         On<HookProjectileMoveTowardsNextAnchorEvent>()
-            .Do<DebugLogMessageCommand>("HookProjectileMoveTowardsNextAnchorEvent")
+            //.Do<DebugLogMessageCommand>("HookProjectileMoveTowardsNextAnchorEvent")
             .Do<AbortIfHookProjectileAnchorIndexIsHigherOrEqualThenAnchorCount>()
             .Do<HookProjectileMoveTowardNextAnchorCommand>()
             .OnAbort<DispatchHookProjectileMoveTowardsOwnerEventCommand>();
 
         On<HookProjectileMoveTowardsOwnerEvent>()
-            .Do<DebugLogMessageCommand>("HookProjectileMoveTowardsOwnerEvent")
-            .Do<AbortIfHookProjectileIsAlreadyMovingToOwnerCommand>()
+            //.Do<DebugLogMessageCommand>("HookProjectileMoveTowardsOwnerEvent")
             .Do<HookProjectileMoveTowardsOwnerCommand>()
             .OnAbort<DispatchHookProjectileReturnedToOwnerEventCommand>();
 
         On<HookProjectileReturnedToOwnerEvent>()
-            .Do<DebugLogMessageCommand>("HookProjectileReturnedToOwnerEvent")
+            //.Do<DebugLogMessageCommand>("HookProjectileReturnedToOwnerEvent")
             .Do<DeactivateHookRopeCommand>()
             .Do<DestroyHookAnchorsCommand>()
             .Do<AbortIfHookStateIsActive>(HookState.HoldingShot)

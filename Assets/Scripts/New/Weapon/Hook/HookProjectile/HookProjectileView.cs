@@ -7,7 +7,6 @@ public class HookProjectileView : View, IHookProjectile {
     public Transform AttachedTransform { get { return attachedTransform; } set { attachedTransform = value; } }
     public int HookedLayerIndex { get { return hookedLayer; } set { hookedLayer = value; } }
     public int AnchorsIndex { get { return anchorIndex; } set { anchorIndex = value; } }
-    public bool IsMovingTowardsOwner { get { return isMovingTowardsOwner; } set { isMovingTowardsOwner = value; } }
 
     [Inject] private Ref<IHookProjectile> hookProjectileRef;
 

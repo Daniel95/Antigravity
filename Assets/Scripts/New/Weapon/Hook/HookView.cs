@@ -53,7 +53,6 @@ public class HookView : View, IHook, ITriggerer {
 
     public void ActivateHookRope() {
         if (lineUpdateCoroutine != null) { return; }
-        Debug.Log("Activatehookrope");
         lineRenderer.enabled = true;
         lineRenderer.positionCount = 2;
         lineRenderer.SetPosition(0, anchors[0].position);
@@ -62,7 +61,6 @@ public class HookView : View, IHook, ITriggerer {
     }
 
     public void DeactivateHookRope() {
-        Debug.Log("DeactivateHookRope");
         StopCoroutine(lineUpdateCoroutine);
         lineUpdateCoroutine = null;
         lineRenderer.positionCount = 0;
