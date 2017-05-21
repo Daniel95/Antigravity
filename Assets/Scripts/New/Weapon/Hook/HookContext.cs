@@ -62,13 +62,6 @@ public class HookContext : Context {
             .Do<DispatchHookProjectileMoveTowardsNextAnchorCommand>();
 
         On<HookProjectileMoveTowardsShootDestinationCompletedEvent>()
-            .Do<WaitFrameCommand>()
-            .Do<WaitFrameCommand>()
-            .Do<WaitFrameCommand>()
-            .Do<WaitFrameCommand>()
-            .Do<WaitFrameCommand>()
-
-            .Do<DebugLogMessageCommand>("reached shoot destination")
             .Do<AbortIfHookedLayerIsZeroCommand>()
             .Do<HookProjectileSetParentToAttachedTransformCommand>()
             .Do<DispatchHookProjectileIsAttachedEventCommand>()
@@ -94,17 +87,17 @@ public class HookContext : Context {
 
         On<TriggerEnter2DEvent>()
             .Do<AbortIfGameObjectIsNotHookProjectileCommand>()
-            .Do<DebugLogMessageCommand>("hook projectile trigger enter")
             .Do<AbortIfTriggerLayerIndexIsNotTheSameCommand>(HookableLayers.GrappleSurface)
             .Do<DebugLogMessageCommand>("collided with GrappleSurface")
             .Do<HookProjectileSetAttachedTransformCommand>()
+            .GotoState<GrapplingHookContext>()
             .Do<HookProjectileSetHookedLayerIndexCommand>(HookableLayers.GrappleSurface);
 
         On<TriggerEnter2DEvent>()
             .Do<AbortIfGameObjectIsNotHookProjectileCommand>()
-            .Do<DebugLogMessageCommand>("hook projectile trigger enter")
             .Do<AbortIfTriggerLayerIndexIsNotTheSameCommand>(HookableLayers.PullSurface)
             .Do<DebugLogMessageCommand>("collided with PullSurface")
+            .GotoState<PullingHookContext>()
             .Do<HookProjectileSetHookedLayerIndexCommand>(HookableLayers.PullSurface);
 
         On<TriggerExit2DEvent>()

@@ -6,6 +6,7 @@ public class GrapplingHookContext : Context {
         base.SetBindings();
 
         On<HookProjectileIsAttachedEvent>()
+            .Do<DebugLogMessageCommand>("grapple attached")
             .Do<AbortIfHookAbleLayerIsNotHookedLayerCommand>(HookableLayers.GrappleSurface)
             .Do<GrapplingHookSetDistanceCommand>()
             .Do<AbortIfHookDistanceIsLowerThenMinimalDistance>()
