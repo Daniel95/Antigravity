@@ -52,6 +52,8 @@ public class HookView : View, IHook, ITriggerer {
     }
 
     public void ActivateHookRope() {
+        if (lineUpdateCoroutine != null) { return; }
+        Debug.Log("Activatehookrope");
         lineRenderer.enabled = true;
         lineRenderer.positionCount = 2;
         lineRenderer.SetPosition(0, anchors[0].position);
@@ -60,17 +62,18 @@ public class HookView : View, IHook, ITriggerer {
     }
 
     public void DeactivateHookRope() {
-        lineRenderer.enabled = false;
+        Debug.Log("DeactivateHookRope");
         StopCoroutine(lineUpdateCoroutine);
         lineUpdateCoroutine = null;
         lineRenderer.positionCount = 0;
+        lineRenderer.enabled = false;
     }
 
     private Transform CreateAnchor(Vector2 position, Transform parent) {
         GameObject anchor = new GameObject("HookRopeAnchor");
+        anchor.transform.SetParent(parent);
         anchor.transform.position = position;
         anchor.layer = LayerMask.NameToLayer("Ignore Raycast");
-        anchor.transform.SetParent(parent);
         return anchor.transform;
     }
 

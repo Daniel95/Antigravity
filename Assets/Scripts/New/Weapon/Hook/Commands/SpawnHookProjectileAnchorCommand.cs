@@ -1,7 +1,7 @@
 ﻿using IoCPlus;
 using UnityEngine;
 
-public class SpawnAnchorAtPlayerCommand : Command {
+public class SpawnHookProjectileAnchorCommand : Command {
 
     [Inject] private PlayerModel playerModel;
 
@@ -10,7 +10,7 @@ public class SpawnAnchorAtPlayerCommand : Command {
 
     protected override void Execute() {
         hookRef.Get().AddAnchor(
-            playerModel.Player.transform.position, 
+            hookProjectileRef.Get().Transform.position, 
             hookProjectileRef.Get().Transform
         );
     }
