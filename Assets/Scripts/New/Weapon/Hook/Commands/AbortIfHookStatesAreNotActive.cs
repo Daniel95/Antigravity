@@ -6,15 +6,7 @@ public class AbortIfHookStatesAreNotActive : Command<List<HookState>> {
     [Inject] private Ref<IHook> hookRef;
 
     protected override void Execute(List<HookState> hookStates) {
-        bool stateIsActive = false;
-
-        hookStates.ForEach(x => {
-            if (hookRef.Get().ActiveHookState == x) {
-                stateIsActive = true;
-            }
-        });
-
-        if(!stateIsActive) {
+        if(!hookStates.Contains(hookRef.Get().ActiveHookState)) {
             Abort();
         }
     }
