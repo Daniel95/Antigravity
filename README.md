@@ -4,21 +4,21 @@ This is a mobile game that playable with one hand. It contains several levels, s
 
 Play link: http://14411.hosts.ma-cloud.nl/antigravity/
 
-I am currently busy converting this game to the IoCPlus framework, you can view my progress on the fix-game-basics branch.
+This project has recently been remade with the IoCPlus framework.
 
 Interesting Scripts:
 
-Field generator: https://github.com/Daniel95/Antigravity/blob/master/Assets/Scripts/UI/LevelSelect/FieldGenerator.cs
-Used by the levelselect screen.
+CharacterVelocity: https://github.com/Daniel95/Antigravity/blob/master/Assets/Scripts/Character/Velocity/CharacterVelocityView.cs
+Used by all characters in the game to easily control their velocity.
 
-CollisionDirection: https://github.com/Daniel95/Antigravity/blob/master/Assets/Scripts/CharacterControl/CollisionDirection.cs
+Field generator: https://github.com/Daniel95/Antigravity/blob/master/Assets/Scripts/UI/LevelSelect/FieldGenerator.cs
+Used by the levelselect screen to generate a grid of levels.
+
+HookContext: https://github.com/Daniel95/Antigravity/blob/master/Assets/Scripts/Weapon/Hook/HookContext.cs
+HookContext uses signals and commands to dictate the behaviour of the hook, the weapon of the player.
+
+CollisionDirection: https://github.com/Daniel95/Antigravity/blob/master/Assets/Scripts/Character/CollisionDirection/CharacterCollisionDirectionView.cs
 Used by the player to detect the direction of collisions.
 
-ControlDirection: https://github.com/Daniel95/Antigravity/blob/master/Assets/Scripts/CharacterControl/ControlDirection.cs
-Decides which direction the the character goes to when colliding.
-
-PointsFollowerSmooth: https://github.com/Daniel95/Antigravity/blob/master/Assets/Scripts/WayPoints/PointFollowerSmooth.cs
-Used by the moving obstacles.
-
-TriggerBase: https://github.com/Daniel95/Antigravity/blob/master/Assets/Scripts/Enviroment/Triggers/TriggerBase.cs
-A base scripts to setup triggers. Triggers are used to scripts certain actions, like a tutorial or other events.
+MoveTowars: https://github.com/Daniel95/Antigravity/blob/master/Assets/Scripts/Tools/MoveTowards/MoveTowardsView.cs
+A scripts used by alot of components to move from one place to another.
