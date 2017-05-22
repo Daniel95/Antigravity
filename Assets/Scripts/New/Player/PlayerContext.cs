@@ -43,6 +43,8 @@ public class PlayerContext : Context {
         Bind<CharacterJumpEvent>();
         Bind<CharacterRetryJumpEvent>();
         Bind<CharacterBounceEvent>();
+        Bind<CharacterPointToDirectionEvent>();
+        Bind<CharacterSetVelocityEvent>();
 
         //player
         Bind<CancelDragInputEvent>();
