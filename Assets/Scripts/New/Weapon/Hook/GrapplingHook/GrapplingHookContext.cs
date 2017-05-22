@@ -6,10 +6,9 @@ public class GrapplingHookContext : Context {
         base.SetBindings();
 
         On<HookProjectileIsAttachedEvent>()
-            .Do<AbortIfHookAbleLayerIsNotHookedLayerCommand>(HookableLayers.GrappleSurface)
             .Do<GrapplingHookSetDistanceCommand>()
             .Do<AbortIfHookDistanceIsLowerThenMinimalDistance>()
-            .Dispatch<GrapplingHookStartedEvent>()
+            .Dispatch<EnterGrapplingHookContextEvent>()
             .Do<ChangeSpeedByAngleCommand>()
             .Do<GrapplingHookStartGrappleLockCommand>()
             .OnAbort<DispatchCancelHookEventCommand>();

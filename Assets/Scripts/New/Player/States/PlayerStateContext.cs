@@ -25,6 +25,9 @@ public class PlayerStateContext : Context {
             .Do<UpdateCheckpointStatusCommand>()
             .GotoState<GrapplingStateContext>();
 
+        On<EnterGrapplingHookContextEvent>()
+            .GotoState<GrapplingStateContext>();
+
         On<RespawnPlayerEvent>()
             .GotoState<RevivedStateContext>();
 

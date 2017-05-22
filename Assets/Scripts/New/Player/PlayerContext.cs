@@ -81,7 +81,6 @@ public class PlayerContext : Context {
         Bind<CancelAimWeaponEvent>();
 
         //hook
-        Bind<GrapplingHookStartedEvent>();
         Bind<CancelHookEvent>();
         Bind<HookProjectileMoveTowardsOwnerCompletedEvent>();
         Bind<HookProjectileIsAttachedEvent>();
@@ -89,6 +88,7 @@ public class PlayerContext : Context {
         Bind<HookProjectileMoveTowardsNextAnchorEvent>();
 
         //grapplinghook
+        Bind<EnterGrapplingHookContextEvent>();
         Bind<UpdateGrapplingHookRopeEvent>();
 
         On<EnterContextSignal>()

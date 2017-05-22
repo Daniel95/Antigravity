@@ -6,10 +6,9 @@ public class PullingHookContext : Context {
         base.SetBindings();
 
         On<HookProjectileIsAttachedEvent>()
-            .Do<AbortIfHookAbleLayerIsNotHookedLayerCommand>(HookableLayers.PullSurface)
             .Do<PullingHookPullCommand>()
-            .Dispatch<CancelHookEvent>()
-            .OnAbort<DispatchCancelHookEventCommand>();
+            .Dispatch<CancelHookEvent>();
+
     }
 }
 
