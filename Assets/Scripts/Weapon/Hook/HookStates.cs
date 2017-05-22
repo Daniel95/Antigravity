@@ -1,0 +1,1 @@
+﻿public enum HookState { Inactive, Canceling, Shooting, HoldingShot}
