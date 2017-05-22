@@ -1,7 +1,7 @@
 ﻿using IoCPlus;
 using UnityEngine;
 
-public class UpdateGrapplingStateCommand : Command {
+public class UpdateGrapplingStateVelocityCommand : Command {
 
     [Inject] private Ref<ICharacterVelocity> characterVelocityRef;
     [Inject] private Ref<IHook> hookRef;

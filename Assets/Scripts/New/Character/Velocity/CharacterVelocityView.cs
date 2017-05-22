@@ -65,7 +65,6 @@ public class CharacterVelocityView : View, ICharacterVelocity {
 
     public Vector2 GetCeilVelocityDirection() {
         Vector2 velocityNormalized = rigidbodyComponent.velocity.normalized;
-        Debug.Log(new Vector2(Rounding.InvertOnNegativeCeil(velocityNormalized.x), Rounding.InvertOnNegativeCeil(velocityNormalized.y)));
         return new Vector2(Rounding.InvertOnNegativeCeil(velocityNormalized.x), Rounding.InvertOnNegativeCeil(velocityNormalized.y));
     }
 

@@ -7,7 +7,7 @@ public class FloatingStateContext : Context {
 
         On<EnterContextSignal>()
             .Do<CharacterPointToCeiledVelocityDirectionCommand>()
-            .Do<DispatchCharacterEnableDirectionalMovementEventCommand>(true);
+            .Do<CharacterEnableDirectionalMovementCommand>(true);
 
     }
 }

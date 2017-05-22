@@ -33,7 +33,6 @@ public class PlayerContext : Context {
 
         //character
         Bind<CharacterTurnToNextDirectionEvent>();
-        Bind<CharacterEnableDirectionalMovementEvent>();
         Bind<CharacterSetMoveDirectionEvent>();
         Bind<CharacterBoostSpeedEvent>();
         Bind<CharacterTemporarySpeedChangeEvent>();

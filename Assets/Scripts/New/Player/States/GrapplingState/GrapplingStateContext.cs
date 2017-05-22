@@ -6,7 +6,7 @@ public class GrapplingStateContext : Context {
         base.SetBindings();
 
         On<EnterContextSignal>()
-            .Do<DispatchCharacterEnableDirectionalMovementEventCommand>(false);
+            .Do<CharacterEnableDirectionalMovementCommand>(false);
 
         On<LeaveContextSignal>()
             .Dispatch<CancelHookEvent>();
@@ -20,11 +20,12 @@ public class GrapplingStateContext : Context {
 
         On<UpdateGrapplingStateEvent>()
             .Do<AbortIfNotMovingCommand>()
-            .Do<UpdateGrapplingStateCommand>()
+            .Do<UpdateGrapplingStateVelocityCommand>()
+            .Do<CharacterPointToShootDestinationCommand>()
             .OnAbort<DispatchNotMovingEventCommand>();
 
         On<NotMovingEvent>()
             .Do<DispatchCharacterTurnToNextDirectionEventCommand>()
-            .OnAbort<GotoStateCommand<SlidingStateContext>>();
+            .Do<GotoStateCommand<SlidingStateContext>>();
     }
 }

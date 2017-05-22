@@ -18,17 +18,6 @@ public class CharacterDirectionPointerView : View, ICharacterDirectionPointer {
         lookAt.UpdateLookAt((Vector2)transform.position + lookdirection);
     }
 
-    public void PointToCeiledVelocityDirection(Vector2 ceiledVelocityDirection) {
-        if (ceiledVelocityDirection.x != 0) {
-            lookdirection.x = ceiledVelocityDirection.x;
-        }
-        if (ceiledVelocityDirection.y != 0) {
-            lookdirection.y = ceiledVelocityDirection.y;
-        }
-
-        lookAt.UpdateLookAt((Vector2)transform.position + lookdirection);
-    }
-
     private void Awake() {
         lookAt = GetComponent<LookAt>();
     }
