@@ -11,7 +11,7 @@ Interesting Scripts:
 CharacterVelocity: https://github.com/Daniel95/Antigravity/blob/master/Assets/Scripts/Character/Velocity/CharacterVelocityView.cs
 Used by all characters in the game to easily control their velocity.
 
-Field generator: https://github.com/Daniel95/Antigravity/blob/master/Assets/Scripts/UI/LevelSelect/FieldGenerator.cs
+Field generator: https://github.com/Daniel95/Antigravity/blob/master/Assets/Scripts/Legacy/UI/LevelSelect/FieldGenerator.cs
 Used by the levelselect screen to generate a grid of levels.
 
 HookContext: https://github.com/Daniel95/Antigravity/blob/master/Assets/Scripts/Weapon/Hook/HookContext.cs
