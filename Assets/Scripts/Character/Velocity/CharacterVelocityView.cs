@@ -6,6 +6,7 @@ using UnityEngine;
 public class CharacterVelocityView : View, ICharacterVelocity {
 
     public Vector2 Velocity { get { return rigidbodyComponent.velocity; } set { rigidbodyComponent.velocity = value; } }
+    public Vector2 PreviousVelocity { get { return previousVelocity; } }
     public Vector2 Direction { get { return direction; } }
     public float OriginalSpeed { get { return originalSpeed; }  }
     public float CurrentSpeed { get { return currentSpeed; } }
@@ -16,6 +17,7 @@ public class CharacterVelocityView : View, ICharacterVelocity {
     [SerializeField] private float currentSpeed;
     [SerializeField] private float minSpeedOffsetValue = 0.05f;
 
+    private Vector2 previousVelocity = new Vector2();
     private Vector2 direction = new Vector2(1, -1);
     private Rigidbody2D rigidbodyComponent;
     private Coroutine updateDirectionalMovementCoroutine;
@@ -64,8 +66,15 @@ public class CharacterVelocityView : View, ICharacterVelocity {
     }
 
     public Vector2 GetCeilVelocityDirection() {
-        Vector2 velocityNormalized = rigidbodyComponent.velocity.normalized;
-        return new Vector2(Rounding.InvertOnNegativeCeil(velocityNormalized.x), Rounding.InvertOnNegativeCeil(velocityNormalized.y));
+        return GetCeilDirection(rigidbodyComponent.velocity);
+    }
+
+    public Vector2 GetCeilPreviousVelocityDirection() {
+        return GetCeilDirection(previousVelocity);
+    }
+
+    public Vector2 GetPreviousVelocityDirection() {
+        return previousVelocity.normalized;
     }
 
     public void SetSpeed(float newSpeed) {
@@ -81,9 +90,9 @@ public class CharacterVelocityView : View, ICharacterVelocity {
         return updateDirectionalMovementCoroutine != null;
     }
 
-    private void Awake() {
-        rigidbodyComponent = GetComponent<Rigidbody2D>();
-        currentSpeed = originalSpeed;
+    public Vector2 GetCeilDirection(Vector2 velocity) {
+        Vector2 velocityNormalized = velocity.normalized;
+        return new Vector2(Rounding.InvertOnNegativeCeil(velocityNormalized.x), Rounding.InvertOnNegativeCeil(velocityNormalized.y));
     }
 
     private void EnableDirectionalMovement() {
@@ -111,6 +120,15 @@ public class CharacterVelocityView : View, ICharacterVelocity {
             yield return null;
         }
 
+        currentSpeed = originalSpeed;
+    }
+
+    private void FixedUpdate() {
+        previousVelocity = rigidbodyComponent.velocity;
+    }
+
+    private void Awake() {
+        rigidbodyComponent = GetComponent<Rigidbody2D>();
         currentSpeed = originalSpeed;
     }
 }

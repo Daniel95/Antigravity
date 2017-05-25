@@ -1,4 +1,5 @@
 ﻿using IoCPlus;
+using UnityEngine;
 
 public class DispatchCharacterTurnToNextDirectionEventCommand : Command {
 
@@ -9,8 +10,9 @@ public class DispatchCharacterTurnToNextDirectionEventCommand : Command {
     [Inject] private CharacterTurnToNextDirectionEvent characterTurnToNextDirectionEvent;
 
     protected override void Execute() {
+
         characterTurnToNextDirectionEvent.Dispatch(new CharacterTurnToNextDirectionEvent.Parameter(
-            characterVelocityRef.Get().Direction,
+            characterVelocityRef.Get().GetCeilPreviousVelocityDirection(),
             characterCollisionDirectionRef.Get().GetCurrentCollisionDirection(characterRaycastRef.Get().GetCornersDirection()),
             characterRaycastRef.Get().GetCornersDirection()
         ));

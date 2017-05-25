@@ -3,12 +3,15 @@
 public interface ICharacterVelocity {
 
     Vector2 Velocity { get; set; }
+    Vector2 PreviousVelocity { get; }
     Vector2 Direction { get; }
     float OriginalSpeed { get; }
     float CurrentSpeed { get; }
 
     Vector2 GetVelocityDirection();
     Vector2 GetCeilVelocityDirection();
+    Vector2 GetPreviousVelocityDirection();
+    Vector2 GetCeilPreviousVelocityDirection();
     bool GetMovingStandard();
 
     void EnableDirectionalMovement(bool enable);

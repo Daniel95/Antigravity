@@ -79,9 +79,6 @@ public class CharacterTurnDirectionView : View, ICharacterTurnDirection {
         Vector2 collisionDirection = characterTurnToNextDirectionParameter.CollisionDirection;
         Vector2 moveDirection = characterTurnToNextDirectionParameter.MoveDirection;
 
-        //use raycasting & collisionDir to to detect if we are in a corner.
-        //when colliding the rigidbody position correction can overshoot which means we exit collision, even thought it looks like we are still colliding
-
         //if we are not hitting a wall on both axis or are not moving in an angle
         if (cornerDirection == Vector2.zero) {
             if (collisionDirection.x == 0 || collisionDirection.y == 0) {
