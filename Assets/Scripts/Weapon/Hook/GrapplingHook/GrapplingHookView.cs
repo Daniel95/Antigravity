@@ -26,6 +26,7 @@ public class GrapplingHookView : View, IGrapplingHook {
     }
 
     public void StartGrappleLock() {
+        Debug.Log("StartGrappleLock f." + Time.frameCount);
         distanceJoint.enabled = true;
         distanceJoint.distance = distance;
 
@@ -33,6 +34,7 @@ public class GrapplingHookView : View, IGrapplingHook {
     }
 
     public void StopGrappleLock() {
+        Debug.Log("StopGrappleLock f." + Time.frameCount);
         if (grappleAnchorUpdateCoroutine != null) {
             StopCoroutine(grappleAnchorUpdateCoroutine);
             grappleAnchorUpdateCoroutine = null;
@@ -43,6 +45,7 @@ public class GrapplingHookView : View, IGrapplingHook {
 
     private IEnumerator GrappleAnchorUpdate() {
         while (true) {
+            Debug.Log("GrappleAnchorUpdate f." + Time.frameCount);
             updateGrapplingHookRopeEvent.Dispatch();
             yield return null;
         }

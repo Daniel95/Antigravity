@@ -6,9 +6,11 @@ public class GrapplingStateContext : Context {
         base.SetBindings();
 
         On<EnterContextSignal>()
-            .Do<CharacterEnableDirectionalMovementCommand>(false);
+            .Do<CharacterEnableDirectionalMovementCommand>(false)
+            .Do<StartUpdateGrapplingStateCommand>();
 
         On<LeaveContextSignal>()
+            .Do<StopUpdateGrapplingStateCommand>()
             .Dispatch<CancelHookEvent>();
 
         On<JumpInputEvent>()

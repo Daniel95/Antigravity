@@ -7,9 +7,6 @@ public class PlayerStateContext : Context {
 
         Bind<CheckpointStatus>();
 
-        Bind<Ref<IGrapplingState>>();
-        Bind<Ref<IRevivedState>>();
-
         On<EnterContextSignal>()
             .GotoState<FloatingStateContext>();
 

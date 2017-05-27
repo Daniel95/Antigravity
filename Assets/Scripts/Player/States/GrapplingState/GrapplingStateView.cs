@@ -17,10 +17,14 @@ public class GrapplingStateView : View, IGrapplingState, ITriggerer {
 
     public override void Initialize() {
         grapplingStateRef.Set(this);
+    }
+
+    public void StartUpdateGrapplingState() {
+
         updateGrapplingStateCoroutine = StartCoroutine(UpdateGrapplingState());
     }
 
-    public override void Dispose() {
+    public void StopUpdateGrapplingState() {
         StopCoroutine(updateGrapplingStateCoroutine);
         updateGrapplingStateCoroutine = null;
     }

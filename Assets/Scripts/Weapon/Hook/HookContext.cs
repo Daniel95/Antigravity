@@ -33,20 +33,19 @@ public class HookContext : Context {
             .Do<CharacterStopAimLineCommand>();
 
         On<FireWeaponEvent>()
-            //.Do<DebugLogMessageCommand>("FireWeaponEvent")
+            .Do<DebugLogMessageCommand>("FireWeaponEvent")
             .Do<SetHookDestinationCommand>()
             .Do<AbortIfHookStateIsNotActive>(HookState.Inactive)
             .Do<DispatchShootHookEventCommand>()
             .OnAbort<DispatchHoldShotEventCommand>();
 
         On<HoldShotEvent>()
-            //.Do<DebugLogMessageCommand>("HoldShotEvent")
+            .Do<DebugLogMessageCommand>("HoldShotEvent")
             .Do<AbortIfHookStatesAreActive>(new List<HookState>() {
                 HookState.Inactive,
                 HookState.Canceling,
                 HookState.HoldingShot })
             .Do<SetHookStateCommand>(HookState.HoldingShot)
-            .GotoState<InActiveContext>()
             .Do<DispatchHookPullBackEventCommand>();
 
         On<ShootHookEvent>()
@@ -66,16 +65,17 @@ public class HookContext : Context {
 
         On<HookProjectileMoveTowardsShootDestinationCompletedEvent>()
             .Do<AbortIfCollidingLayerIsNotLayerCommand>(HookableLayer.GrappleSurface)
-            .Do<DebugLogMessageCommand>("go GrappleSurface")
+            .Do<DebugLogMessageCommand>("Attached to GrappleSurface")
             .GotoState<GrapplingHookContext>();
 
         On<HookProjectileMoveTowardsShootDestinationCompletedEvent>()
             .Do<AbortIfCollidingLayerIsNotLayerCommand>(HookableLayer.PullSurface)
-            .Do<DebugLogMessageCommand>("go PullSurface")
+            .Do<DebugLogMessageCommand>("Attached to PullSurface")
             .GotoState<PullingHookContext>();
 
         On<HookProjectileMoveTowardsShootDestinationCompletedEvent>()
             .Do<AbortIfHookProjectileCollidingLayerIsAHookableLayerCommand>()
+            .Do<DebugLogMessageCommand>("No surface to attach")
             .Dispatch<HookProjectileMoveTowardsNextAnchorEvent>();
 
         On<HookProjectileMoveTowardsNextAnchorEvent>()
@@ -97,10 +97,10 @@ public class HookContext : Context {
             .Do<DebugLogMessageCommand>("HookProjectileReturnedToOwnerEvent")
             .Do<DeactivateHookRopeCommand>()
             .Do<DestroyHookAnchorsCommand>()
-            .GotoState<InActiveContext>()
             .Do<DeactivateHookProjectileCommand>()
             .Do<AbortIfHookStateIsActive>(HookState.HoldingShot)
             .Do<SetHookStateCommand>(HookState.Inactive)
+            .GotoState<InActiveContext>()
             .OnAbort<DispatchShootHookEventCommand>();
 
         On<TriggerEnter2DEvent>()
