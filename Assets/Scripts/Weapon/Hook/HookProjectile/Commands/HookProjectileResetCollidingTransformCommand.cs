@@ -1,10 +1,10 @@
 ﻿using IoCPlus;
 
-public class HookProjectileResetAttachedTransformCommand : Command {
+public class HookProjectileResetCollidingTransformCommand : Command {
 
     [Inject] private Ref<IHookProjectile> hookProjectileRef;
 
     protected override void Execute() {
-        hookProjectileRef.Get().AttachedTransform = null;
+        hookProjectileRef.Get().CollidingTransform = null;
     }
 }

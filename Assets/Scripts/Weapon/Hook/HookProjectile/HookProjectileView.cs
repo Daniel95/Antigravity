@@ -4,13 +4,17 @@ using UnityEngine;
 public class HookProjectileView : View, IHookProjectile {
 
     public Transform Transform { get { return transform; } }
-    public Transform AttachedTransform { get { return attachedTransform; } set { attachedTransform = value; } }
-    public int HookedLayerIndex { get { return hookedLayer; } set { hookedLayer = value; } }
-    public int AnchorsIndex { get { return anchorIndex; } set { anchorIndex = value; } }
+    public Transform CollidingTransform { get { return collidingTransform; } set { collidingTransform = value; } }
+    public int CollidingTransformLayer {
+        get {
+            if(collidingTransform == null) { return 0; }
+            return collidingTransform.gameObject.layer;
+        }
+    }
 
     [Inject] private Ref<IHookProjectile> hookProjectileRef;
 
-    private Transform attachedTransform;
+    private Transform collidingTransform;
     private int hookedLayer;
     private int anchorIndex;
     private bool isMovingTowardsOwner;

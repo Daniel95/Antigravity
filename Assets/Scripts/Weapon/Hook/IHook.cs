@@ -6,6 +6,7 @@ interface IHook {
     HookState ActiveHookState { get; set; }
     HookState LastHookState { get; set; }
     List<Transform> Anchors { get; }
+    List<int> HookableLayers { get; }
     LayerMask RayLayers { get; }
     LineRenderer LineRenderer { get; }
     float DirectionSpeedNeutralValue { get; }

@@ -8,10 +8,6 @@ public class UpdateGrapplingHookRopeCommand : Command {
 
     [Inject] private AddHookAnchorEvent addHookAnchorEvent;
 
-    /// <summary>
-    /// Check for collisions and update the anchor position of the grappling hook line.
-    /// </summary>
-    /// <returns></returns>
     protected override void Execute() {
         IHook hook = hookRef.Get();
         IGrapplingHook grapplingHook = grapplingHookRef.Get();

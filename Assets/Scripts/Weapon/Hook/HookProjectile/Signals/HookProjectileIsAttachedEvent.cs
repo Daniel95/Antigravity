@@ -1,3 +1,3 @@
 ﻿using IoCPlus;
 
-public class HookProjectileIsAttachedEvent : Signal<int> { }
+public class HookProjectileIsAttachedEvent : Signal { }

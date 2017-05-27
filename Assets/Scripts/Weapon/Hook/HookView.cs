@@ -1,8 +1,8 @@
 ﻿using IoCPlus;
-using UnityEngine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class HookView : View, IHook, ITriggerer {
 
@@ -10,6 +10,7 @@ public class HookView : View, IHook, ITriggerer {
     public HookState LastHookState { get { return lastHookState; } set { lastHookState = value; } }
     public List<Transform> Anchors { get { return anchors; } }
     public LineRenderer LineRenderer { get { return lineRenderer; } }
+    public List<int> HookableLayers { get { return hookableLayers; } }
     public LayerMask RayLayers { get { return rayLayers; } }
     public float DirectionSpeedNeutralValue { get { return directionSpeedNeutralValue; } }
     public float MinimalHookDistance { get { return minimalHookDistance; } }
@@ -28,6 +29,7 @@ public class HookView : View, IHook, ITriggerer {
     [SerializeField] private float minimalHookDistance = 0.75f;
 
     private LineRenderer lineRenderer;
+    private List<int> hookableLayers;
 
     private HookState activeHookState = HookState.Inactive;
     private HookState lastHookState = HookState.Inactive;
@@ -51,11 +53,10 @@ public class HookView : View, IHook, ITriggerer {
         anchors.RemoveAt(index);
         lineRenderer.positionCount = anchors.Count + 1;
         SetLineRendererPositions();
-
-        //hook.LineRenderer.positionCount--;
     }
 
     public void DestroyAnchors() {
+        Debug.Log("destroy all");
         foreach (Transform t in anchors) {
             UnityEngine.Object.Destroy(t.gameObject);
         }
@@ -102,5 +103,8 @@ public class HookView : View, IHook, ITriggerer {
 
     private void Awake() {
         lineRenderer = Instantiate(hookLinePrefab, transform).GetComponent<LineRenderer>();
+        hookableLayers = HookableLayer.GetHookableLayers();
     }
+
+
 }
