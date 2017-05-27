@@ -11,7 +11,7 @@ public class HookProjectileMoveTowardsOwnerCommand : Command {
 
     protected override void Execute() {
         moveTowardsRef.Get().StartMoving(
-            hookRef.Get().Owner.transform.position, 
+            hookRef.Get().Owner.transform, 
             hookProjectileReturnedToOwnerEvent
         );
     }
