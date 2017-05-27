@@ -67,6 +67,7 @@ public class HookContext : Context {
         On<HookProjectileMoveTowardsShootDestinationCompletedEvent>()
             //.Do<DebugLogMessageCommand>("HookProjectileMoveTowardsShootDestinationCompletedEvent")
             .Do<WaitFrameCommand>()
+            .Do<WaitFrameCommand>()
             .Do<AbortIfHookedLayerIsZeroCommand>()
             .Do<HookProjectileSetParentToAttachedTransformCommand>()
             .Do<DispatchHookProjectileIsAttachedEventCommand>()

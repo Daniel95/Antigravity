@@ -34,8 +34,11 @@ public class PlayerStateContext : Context {
         OnChild<RevivedStateContext, ReleaseInDirectionInputEvent>()
             .GotoState<FloatingStateContext>();
 
-        OnChild<GrapplingStateContext, StopGrapplingInAirEvent>()
+        OnChild<GrapplingStateContext, JumpInputEvent>()
             .GotoState<FloatingStateContext>();
+
+        OnChild<GrapplingStateContext, NotMovingEvent>()
+            .GotoState<SlidingStateContext>();
 
         OnChild<GrapplingStateContext, NotMovingEvent>()
             .GotoState<SlidingStateContext>();

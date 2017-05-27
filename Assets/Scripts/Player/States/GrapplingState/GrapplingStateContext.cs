@@ -12,20 +12,16 @@ public class GrapplingStateContext : Context {
             .Dispatch<CancelHookEvent>();
 
         On<JumpInputEvent>()
-            .Dispatch<StopGrapplingInAirEvent>();
-
-        On<StopGrapplingInAirEvent>()
             .Do<CharacterSetMoveDirectionToVelocityDirectionCommand>()
             .Do<CharacterTemporarySpeedIncreaseCommand>();
+
+        On<NotMovingEvent>()
+            .Do<DispatchCharacterTurnToNextDirectionEventCommand>();
 
         On<UpdateGrapplingStateEvent>()
             .Do<AbortIfNotMovingCommand>()
             .Do<UpdateGrapplingStateVelocityCommand>()
             .Do<CharacterPointToShootDestinationCommand>()
             .OnAbort<DispatchNotMovingEventCommand>();
-
-        On<NotMovingEvent>()
-            .Do<DispatchCharacterTurnToNextDirectionEventCommand>()
-            .Do<GotoStateCommand<SlidingStateContext>>();
     }
 }

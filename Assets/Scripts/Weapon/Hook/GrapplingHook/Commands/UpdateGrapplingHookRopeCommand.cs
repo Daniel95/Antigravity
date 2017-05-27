@@ -17,17 +17,14 @@ public class UpdateGrapplingHookRopeCommand : Command {
         IGrapplingHook grapplingHook = grapplingHookRef.Get();
         Vector2 ownerPosition = hook.Owner.transform.position;
 
-        RaycastHit2D hitToAnchor = Physics2D.Linecast(ownerPosition, hook.Anchors[hook.Anchors.Count - 1].position, hook.RayLayers);
+        RaycastHit2D hitToAnchor = Physics2D.Linecast(ownerPosition, hook.Anchors[hook.Anchors.Count - 1].position);
 
         if (hitToAnchor.collider != null) {
-            Vector2 anchorPos = hitToAnchor.point + (ownerPosition - hitToAnchor.point).normalized * 0.1f;
-            addHookAnchorEvent.Dispatch(anchorPos, hitToAnchor.transform);
-            hook.LineRenderer.positionCount = hook.Anchors.Count + 1;
+            Vector2 anchorPosition = hitToAnchor.point + (ownerPosition - hitToAnchor.point).normalized * 0.1f;
+            addHookAnchorEvent.Dispatch(anchorPosition, hitToAnchor.transform);
             grapplingHook.DistanceJoint.distance = Vector2.Distance(ownerPosition, hitToAnchor.point);
-
         } else if (hook.Anchors.Count > 1) {
-            RaycastHit2D hitToPreviousAnchor = Physics2D.Linecast(ownerPosition, hook.Anchors[hook.Anchors.Count - 2].position, hook.RayLayers);
-
+            RaycastHit2D hitToPreviousAnchor = Physics2D.Linecast(ownerPosition, hook.Anchors[hook.Anchors.Count - 2].position);
             if (hitToPreviousAnchor.collider == null) {
                 grapplingHook.DistanceJoint.distance = Vector2.Distance(ownerPosition, hook.Anchors[hook.Anchors.Count - 1].position) + Vector2.Distance(hook.Anchors[hook.Anchors.Count - 1].position, hook.Anchors[hook.Anchors.Count - 2].position);
                 hook.Anchors.RemoveAt(hook.Anchors.Count - 1);

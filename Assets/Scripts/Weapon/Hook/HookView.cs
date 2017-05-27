@@ -42,6 +42,8 @@ public class HookView : View, IHook, ITriggerer {
 
     public void AddAnchor(Vector2 position, Transform parent) {
         anchors.Add(CreateAnchor(position, parent));
+        lineRenderer.positionCount = anchors.Count + 1;
+        SetLineRenderenPositions();
     }
 
     public void DestroyAnchors() {
@@ -77,12 +79,16 @@ public class HookView : View, IHook, ITriggerer {
 
     private IEnumerator UpdateLineRendererPositions() {
         while (true) {
-            for (int i = 0; i < anchors.Count; i++) {
-                lineRenderer.SetPosition(i, anchors[i].position);
-            }
-            lineRenderer.SetPosition(lineRenderer.positionCount - 1, transform.position);
+            SetLineRenderenPositions();
             yield return null;
         }
+    }
+
+    private void SetLineRenderenPositions() {
+        for (int i = 0; i < anchors.Count; i++) {
+            lineRenderer.SetPosition(i, anchors[i].position);
+        }
+        lineRenderer.SetPosition(anchors.Count, transform.position);
     }
 
     private void Awake() {
