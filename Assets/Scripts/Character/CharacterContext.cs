@@ -17,7 +17,7 @@ public class CharacterContext : Context {
 
         On<CharacterJumpEvent>()
             .Do<CharacterJumpCommand>()
-            .Do<CharacterPointToCeiledVelocityDirectionCommand>();
+            .Do<CharacterPointToVelocityDirectionCommand>();
 
         On<CharacterBounceEvent>()
             .Do<CharacterBounceCommand>()

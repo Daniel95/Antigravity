@@ -8,9 +8,6 @@ public class SlidingStateContext : Context {
         On<EnterContextSignal>()
             .Do<GrapplingHookStopGrappleLockCommand>()
             .Do<CharacterActivateDirectionalMovementCommand>();
-
-        On<JumpInputEvent>()
-            .Do<CharacterTryJumpCommand>();
     }
 
 }
