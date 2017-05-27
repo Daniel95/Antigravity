@@ -41,9 +41,18 @@ public class HookView : View, IHook, ITriggerer {
     }
 
     public void AddAnchor(Vector2 position, Transform parent) {
-        anchors.Add(CreateAnchor(position, parent));
+        anchors.Insert(0, CreateAnchor(position, parent));
         lineRenderer.positionCount = anchors.Count + 1;
-        SetLineRenderenPositions();
+        SetLineRendererPositions();
+    }
+
+    public void DestroyAnchorAt(int index) {
+        UnityEngine.Object.Destroy(anchors[index].gameObject);
+        anchors.RemoveAt(index);
+        lineRenderer.positionCount = anchors.Count + 1;
+        SetLineRendererPositions();
+
+        //hook.LineRenderer.positionCount--;
     }
 
     public void DestroyAnchors() {
@@ -57,8 +66,8 @@ public class HookView : View, IHook, ITriggerer {
         if (lineUpdateCoroutine != null) { return; }
         lineRenderer.enabled = true;
         lineRenderer.positionCount = 2;
-        lineRenderer.SetPosition(0, anchors[0].position);
-        lineRenderer.SetPosition(1, transform.position);
+        lineRenderer.SetPosition(0, transform.position);
+        lineRenderer.SetPosition(1, anchors[0].position);
         lineUpdateCoroutine = StartCoroutine(UpdateLineRendererPositions());
     }
 
@@ -79,16 +88,16 @@ public class HookView : View, IHook, ITriggerer {
 
     private IEnumerator UpdateLineRendererPositions() {
         while (true) {
-            SetLineRenderenPositions();
+            SetLineRendererPositions();
             yield return null;
         }
     }
 
-    private void SetLineRenderenPositions() {
+    private void SetLineRendererPositions() {
+        lineRenderer.SetPosition(0, transform.position);
         for (int i = 0; i < anchors.Count; i++) {
-            lineRenderer.SetPosition(i, anchors[i].position);
+            lineRenderer.SetPosition(i + 1, anchors[i].position);
         }
-        lineRenderer.SetPosition(anchors.Count, transform.position);
     }
 
     private void Awake() {
