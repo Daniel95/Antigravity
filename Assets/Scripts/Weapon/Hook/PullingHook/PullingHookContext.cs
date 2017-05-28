@@ -9,7 +9,6 @@ public class PullingHookContext : Context {
             .Do<DebugLogMessageCommand>("LeaveContextSignal PullingHookContext")
             .Do<PullingHookPullCommand>()
             .Dispatch<CancelHookEvent>();
-
     }
 }
 

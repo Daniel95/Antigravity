@@ -99,9 +99,9 @@ public class HookContext : Context {
             .Do<DeactivateHookRopeCommand>()
             .Do<DestroyHookAnchorsCommand>()
             .Do<DeactivateHookProjectileCommand>()
-            .Do<SetHookStateCommand>(HookState.Inactive)
             .GotoState<InActiveContext>()
             .Do<AbortIfHookStateIsActive>(HookState.HoldingShot)
+            .Do<SetHookStateCommand>(HookState.Inactive)
             .OnAbort<DispatchShootHookEventCommand>();
 
         On<TriggerEnter2DEvent>()
