@@ -1,7 +1,8 @@
 //bugs:
+look into holding shot when grappling hook arrives at destination, what happens?
+CharacterPointToClosestAnchorCommand starts pointing when player shoots
+grappling hook rope not visible when retracting rope on jump.
+fix look direction when canceling grappling by jumping.
 fix slowtime when shooting.
-point to nearby anchor when grappling.
-grappling hook pullback line renderer point removed too early.
-
 
 //features
