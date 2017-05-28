@@ -31,8 +31,8 @@ public class MoveTowardsView : View, IMoveTowards {
 
     private IEnumerator MoveToPosition(Vector2 destination, Action onMoveTowardsCompleted = null) {
         while (Vector2.Distance(transform.position, destination) > minReachedDistance) {
-            transform.position = Vector2.MoveTowards(transform.position, destination, speed);
-            yield return new WaitForFixedUpdate();
+            transform.position = Vector2.MoveTowards(transform.position, destination, speed * Time.deltaTime);
+            yield return null;
         }
 
         gameObject.transform.position = destination;
@@ -45,8 +45,8 @@ public class MoveTowardsView : View, IMoveTowards {
 
     private IEnumerator MoveToTransform(Transform target, Action onMoveTowardsCompleted = null) {
         while (Vector2.Distance(transform.position, target.position) > minReachedDistance) {
-            transform.position = Vector2.MoveTowards(transform.position, target.position, speed);
-            yield return new WaitForFixedUpdate();
+            transform.position = Vector2.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
+            yield return null;
         }
 
         gameObject.transform.position = target.position;
