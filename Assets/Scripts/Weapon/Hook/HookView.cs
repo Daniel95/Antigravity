@@ -56,7 +56,6 @@ public class HookView : View, IHook, ITriggerer {
     }
 
     public void DestroyAnchors() {
-        Debug.Log("destroy all");
         foreach (Transform t in anchors) {
             UnityEngine.Object.Destroy(t.gameObject);
         }

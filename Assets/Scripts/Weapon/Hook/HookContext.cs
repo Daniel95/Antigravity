@@ -20,11 +20,8 @@ public class HookContext : Context {
                 HookState.Inactive,
                 HookState.Canceling,
             })
-            .Do<DebugLogMessageCommand>("CancelHookEvent")
             .Do<SetHookStateCommand>(HookState.Canceling)
-            .Do<DebugLogMessageCommand>("___Dispatch<PullBackHookEvent>()___")
-            .Dispatch<PullBackHookEvent>()
-            .GotoState<InActiveContext>();
+            .Dispatch<PullBackHookEvent>();
 
         On<AimWeaponEvent>()
             .Do<CharacterUpdateAimLineDestinationCommand>();
@@ -34,7 +31,6 @@ public class HookContext : Context {
             .Do<CharacterStopAimLineCommand>();
 
         On<FireWeaponEvent>()
-            .Do<DebugLogMessageCommand>("FireWeaponEvent")
             .Do<SetHookDestinationCommand>()
             .Do<AbortIfHookStateIsNotActive>(HookState.Inactive)
             .Do<DispatchShootHookEventCommand>()
@@ -44,12 +40,10 @@ public class HookContext : Context {
             .Do<AbortIfHookStatesAreActive>(new List<HookState>() {
                 HookState.Inactive,
                 HookState.HoldingShot })
-            .Do<DebugLogMessageCommand>("HoldShotEvent")
             .Do<SetHookStateCommand>(HookState.HoldingShot)
             .Do<DispatchHookPullBackEventCommand>();
 
         On<ShootHookEvent>()
-            .Do<DebugLogMessageCommand>("ShootHookEvent")
             .Do<SetHookStateCommand>(HookState.Shooting)
             .Do<ActivateHookProjectileCommand>()
             .Do<SpawnHookProjectileAnchorCommand>()
@@ -58,7 +52,6 @@ public class HookContext : Context {
             .Do<HookProjectileGoToShootDestinationCommand>();
 
         On<PullBackHookEvent>()
-            .Do<DebugLogMessageCommand>("Pullbackhookevent")
             .Do<HookProjectileResetCollidingTransformCommand>()
             .Do<HookProjectileResetParentCommand>()
             .GotoState<InActiveContext>()
@@ -66,22 +59,18 @@ public class HookContext : Context {
 
         On<HookProjectileMoveTowardsShootDestinationCompletedEvent>()
             .Do<AbortIfCollidingLayerIsNotLayerCommand>(HookableLayer.GrappleSurface)
-            .Do<DebugLogMessageCommand>("Attached to GrappleSurface")
             .GotoState<GrapplingHookContext>();
 
         On<HookProjectileMoveTowardsShootDestinationCompletedEvent>()
             .Do<AbortIfCollidingLayerIsNotLayerCommand>(HookableLayer.PullSurface)
-            .Do<DebugLogMessageCommand>("Attached to PullSurface")
             .GotoState<PullingHookContext>();
 
         On<HookProjectileMoveTowardsShootDestinationCompletedEvent>()
             .Do<AbortIfHookProjectileCollidingLayerIsAHookableLayerCommand>()
-            .Do<DebugLogMessageCommand>("No surface to attach")
             .Dispatch<HookProjectileMoveTowardsNextAnchorEvent>();
 
         On<HookProjectileMoveTowardsNextAnchorEvent>()
             .Do<AbortIfHookAnchorCountIsLowerThenOneCommand>()
-            .Do<DebugLogMessageCommand>("HookProjectileMoveTowardsNextAnchorEvent")
             .Do<HookProjectileMoveTowardNextAnchorCommand>()
             .OnAbort<DispatchHookProjectileMoveTowardsOwnerEventCommand>();
 
@@ -89,13 +78,10 @@ public class HookContext : Context {
             .Do<DestroyLastHookAnchorCommand>()
             .Dispatch<HookProjectileMoveTowardsNextAnchorEvent>();
 
-        //can be removed
         On<HookProjectileMoveTowardsOwnerEvent>()
-            .Do<DebugLogMessageCommand>("HookProjectileMoveTowardsOwnerEvent")
             .Do<HookProjectileMoveTowardsOwnerCommand>();
 
         On<HookProjectileMoveTowardsOwnerCompletedEvent>()
-            .Do<DebugLogMessageCommand>("HookProjectileMoveTowardsOwnerCompletedEvent")
             .Do<DeactivateHookRopeCommand>()
             .Do<DestroyHookAnchorsCommand>()
             .Do<DeactivateHookProjectileCommand>()
@@ -105,10 +91,12 @@ public class HookContext : Context {
             .OnAbort<DispatchShootHookEventCommand>();
 
         On<TriggerEnter2DEvent>()
+            .Do<AbortIfColliderIsNotATriggerCommand>()
             .Do<AbortIfGameObjectIsNotHookProjectileCommand>()
             .Do<HookProjectileSetCollidingTransformToCollider2DTranformCommand>();
 
         On<TriggerExit2DEvent>()
+            .Do<AbortIfColliderIsNotATriggerCommand>()
             .Do<AbortIfGameObjectIsNotHookProjectileCommand>()
             .Do<HookProjectileResetCollidingTransformCommand>();
 

@@ -6,6 +6,7 @@ public class FloatingStateContext : Context {
         base.SetBindings();
 
         On<EnterContextSignal>()
+            .Do<SetPlayerStateStatusCommand>(PlayerStateStatus.PlayerState.Floating)
             .Do<CharacterPointToCeiledVelocityDirectionCommand>()
             .Do<CharacterEnableDirectionalMovementCommand>(true);
 

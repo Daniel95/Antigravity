@@ -8,7 +8,6 @@ public class GrapplingHookContext : Context {
         On<EnterContextSignal>()
             .Do<GrapplingHookSetDistanceCommand>()
             .Do<AbortIfHookDistanceIsLowerThenMinimalDistance>()
-            .Do<DebugLogMessageCommand>("Start GrapplingHookStartGrappleLockCommand")
             .Do<GrapplingHookStartGrappleLockCommand>()
             .Do<HookProjectileSetParentToCollidingTransformCommand>()
             .Do<ChangeSpeedByAngleCommand>()
@@ -19,7 +18,6 @@ public class GrapplingHookContext : Context {
             .Do<UpdateGrapplingHookRopeCommand>();
 
         On<LeaveContextSignal>()
-            .Do<DebugLogMessageCommand>("LeaveContextSignal GrapplingHookContext")
             .Do<GrapplingHookStopGrappleLockCommand>();
     }
 }

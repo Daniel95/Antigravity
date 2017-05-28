@@ -6,6 +6,7 @@ public class RevivedStateContext : Context {
         base.SetBindings();
 
         On<EnterContextSignal>()
+            .Do<SetPlayerStateStatusCommand>(PlayerStateStatus.PlayerState.Revived)
             .Do<InstantiateViewOnPlayerCommand<RevivedStateView>>()
             .Do<SetRevivedStateIsInPositionCommand>(false)
             .Do<SetRevivedStateIsReadyForLaunchInput>(false)
