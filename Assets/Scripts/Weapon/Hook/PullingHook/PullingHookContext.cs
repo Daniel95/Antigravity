@@ -6,6 +6,7 @@ public class PullingHookContext : Context {
         base.SetBindings();
 
         On<EnterContextSignal>()
+            .Do<DebugLogMessageCommand>("LeaveContextSignal PullingHookContext")
             .Do<PullingHookPullCommand>()
             .Dispatch<CancelHookEvent>();
 

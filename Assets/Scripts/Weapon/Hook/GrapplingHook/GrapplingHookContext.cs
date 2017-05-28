@@ -20,6 +20,7 @@ public class GrapplingHookContext : Context {
 
         On<LeaveContextSignal>()
             .Do<DebugLogMessageCommand>("LeaveContextSignal GrapplingHookContext")
-            .Do<GrapplingHookStopGrappleLockCommand>();
+            .Do<GrapplingHookStopGrappleLockCommand>()
+            .Dispatch<CancelHookEvent>();
     }
 }

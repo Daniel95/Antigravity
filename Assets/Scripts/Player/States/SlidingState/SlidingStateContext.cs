@@ -6,7 +6,6 @@ public class SlidingStateContext : Context {
         base.SetBindings();
 
         On<EnterContextSignal>()
-            .Do<GrapplingHookStopGrappleLockCommand>()
             .Do<CharacterActivateDirectionalMovementCommand>();
     }
 

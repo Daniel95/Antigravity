@@ -16,14 +16,15 @@ public class HookContext : Context {
 
         On<CancelHookEvent>()
             .Do<StopSlowTimeCommand>()
-            .GotoState<InActiveContext>()
             .Do<AbortIfHookStatesAreActive>(new List<HookState>() {
                 HookState.Inactive,
                 HookState.Canceling,
-                HookState.HoldingShot
             })
+            .Do<DebugLogMessageCommand>("CancelHookEvent")
             .Do<SetHookStateCommand>(HookState.Canceling)
-            .Do<DispatchHookPullBackEventCommand>();
+            .Do<DebugLogMessageCommand>("___Dispatch<PullBackHookEvent>()___")
+            .Dispatch<PullBackHookEvent>()
+            .GotoState<InActiveContext>();
 
         On<AimWeaponEvent>()
             .Do<CharacterUpdateAimLineDestinationCommand>();
@@ -40,11 +41,10 @@ public class HookContext : Context {
             .OnAbort<DispatchHoldShotEventCommand>();
 
         On<HoldShotEvent>()
-            .Do<DebugLogMessageCommand>("HoldShotEvent")
             .Do<AbortIfHookStatesAreActive>(new List<HookState>() {
                 HookState.Inactive,
-                HookState.Canceling,
                 HookState.HoldingShot })
+            .Do<DebugLogMessageCommand>("HoldShotEvent")
             .Do<SetHookStateCommand>(HookState.HoldingShot)
             .Do<DispatchHookPullBackEventCommand>();
 
@@ -61,6 +61,7 @@ public class HookContext : Context {
             .Do<DebugLogMessageCommand>("Pullbackhookevent")
             .Do<HookProjectileResetCollidingTransformCommand>()
             .Do<HookProjectileResetParentCommand>()
+            .GotoState<InActiveContext>()
             .Do<DispatchHookProjectileMoveTowardsNextAnchorCommand>();
 
         On<HookProjectileMoveTowardsShootDestinationCompletedEvent>()
@@ -79,8 +80,8 @@ public class HookContext : Context {
             .Dispatch<HookProjectileMoveTowardsNextAnchorEvent>();
 
         On<HookProjectileMoveTowardsNextAnchorEvent>()
-            .Do<DebugLogMessageCommand>("HookProjectileMoveTowardsNextAnchorEvent")
             .Do<AbortIfHookAnchorCountIsLowerThenOneCommand>()
+            .Do<DebugLogMessageCommand>("HookProjectileMoveTowardsNextAnchorEvent")
             .Do<HookProjectileMoveTowardNextAnchorCommand>()
             .OnAbort<DispatchHookProjectileMoveTowardsOwnerEventCommand>();
 
@@ -94,13 +95,13 @@ public class HookContext : Context {
             .Do<HookProjectileMoveTowardsOwnerCommand>();
 
         On<HookProjectileMoveTowardsOwnerCompletedEvent>()
-            .Do<DebugLogMessageCommand>("HookProjectileReturnedToOwnerEvent")
+            .Do<DebugLogMessageCommand>("HookProjectileMoveTowardsOwnerCompletedEvent")
             .Do<DeactivateHookRopeCommand>()
             .Do<DestroyHookAnchorsCommand>()
             .Do<DeactivateHookProjectileCommand>()
-            .Do<AbortIfHookStateIsActive>(HookState.HoldingShot)
             .Do<SetHookStateCommand>(HookState.Inactive)
             .GotoState<InActiveContext>()
+            .Do<AbortIfHookStateIsActive>(HookState.HoldingShot)
             .OnAbort<DispatchShootHookEventCommand>();
 
         On<TriggerEnter2DEvent>()

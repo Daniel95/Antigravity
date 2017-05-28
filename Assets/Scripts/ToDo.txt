@@ -1,6 +1,9 @@
 //bugs:
+hookprojectile stuck when spamming shoot.
+hookprojectile not attaching right.
+movetowards should not work with fixedupdate
+fix slowtime when shooting.
 point to nearby anchor when grappling.
-cant shoot hook while grappling.
 grappling hook pullback line renderer point removed too early.
 grappling hook doesnt always attach.
 

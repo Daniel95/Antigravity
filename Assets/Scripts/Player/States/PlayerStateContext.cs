@@ -17,10 +17,9 @@ public class PlayerStateContext : Context {
             .OnAbort<DispatchCharacterBounceEventCommand>();
 
         On<PlayerTriggerEnter2DEvent>()
-            .Do<AbortIfGameObjectIsNotPlayerCommand>()
             .Do<AbortIfCollider2DIsNotCheckpointCommand>()
             .Do<UpdateCheckpointStatusCommand>()
-            .GotoState<GrapplingStateContext>();
+            .GotoState<RevivedStateContext>();
 
         On<EnterGrapplingHookContextEvent>()
             .GotoState<GrapplingStateContext>();
