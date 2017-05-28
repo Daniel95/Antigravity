@@ -77,14 +77,14 @@ public class HookContext : Context {
             .Dispatch<HookProjectileMoveTowardsNextAnchorEvent>();
 
         On<HookProjectileMoveTowardsNextAnchorEvent>()
-            .Do<AbortIfHookAnchorCountIsLowerThenOneCommand>()
+            .Do<AbortIfHookAnchorCountIsLowerOrEqualThenOneCommand>()
             .Do<DebugLogMessageCommand>("HookProjectileMoveTowardsNextAnchorEvent")
             .Do<HookProjectileMoveTowardNextAnchorCommand>()
             .OnAbort<DispatchHookProjectileMoveTowardsOwnerEventCommand>();
 
         On<HookProjectileMoveTowardsNextAnchorCompletedEvent>()
             .Do<DebugLogMessageCommand>("HookProjectileMoveTowardsNextAnchorCompletedEvent")
-            .Do<DestroyLastHookAnchorCommand>()
+            .Do<DestroyOneButLastHookAnchorCommand>()
             .Dispatch<HookProjectileMoveTowardsNextAnchorEvent>();
 
         On<HookProjectileMoveTowardsOwnerEvent>()
