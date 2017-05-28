@@ -8,7 +8,8 @@ public class MoveTowardsView : View, IMoveTowards {
     [SerializeField] private float speed = 10;
     [SerializeField] private float minReachedDistance = 0.5f;
 
-    private Coroutine moveToCoroutine;
+    private Coroutine moveToPositionCoroutine;
+    private Coroutine moveToTransformCoroutine;
 
     public void StartMoving(Vector2 destination, Signal onMoveTowardsCompletedEvent = null) {
         StartMoving(destination, () => onMoveTowardsCompletedEvent.Dispatch());
@@ -16,7 +17,7 @@ public class MoveTowardsView : View, IMoveTowards {
 
     public void StartMoving(Vector2 destination, Action onMoveTowardsCompleted = null) {
         StopMoving();
-        moveToCoroutine = StartCoroutine(MoveToPosition(destination, onMoveTowardsCompleted));
+        moveToPositionCoroutine = StartCoroutine(MoveToPosition(destination, onMoveTowardsCompleted));
     }
 
     public void StartMoving(Transform target, Signal onMoveTowardsCompletedEvent = null) {
@@ -25,7 +26,7 @@ public class MoveTowardsView : View, IMoveTowards {
 
     public void StartMoving(Transform target, Action onMoveTowardsCompleted = null) {
         StopMoving();
-        moveToCoroutine = StartCoroutine(MoveToTransform(target, onMoveTowardsCompleted));
+        moveToTransformCoroutine = StartCoroutine(MoveToTransform(target, onMoveTowardsCompleted));
     }
 
     private IEnumerator MoveToPosition(Vector2 destination, Action onMoveTowardsCompleted = null) {
@@ -39,7 +40,7 @@ public class MoveTowardsView : View, IMoveTowards {
         if (onMoveTowardsCompleted != null) {
             onMoveTowardsCompleted();
         }
-        moveToCoroutine = null;
+        moveToPositionCoroutine = null;
     }
 
     private IEnumerator MoveToTransform(Transform target, Action onMoveTowardsCompleted = null) {
@@ -53,12 +54,17 @@ public class MoveTowardsView : View, IMoveTowards {
         if (onMoveTowardsCompleted != null) {
             onMoveTowardsCompleted();
         }
-        moveToCoroutine = null;
+        moveToTransformCoroutine = null;
     }
 
     public void StopMoving() {
-        if (moveToCoroutine == null) { return; }
-        StopCoroutine(moveToCoroutine);
-        moveToCoroutine = null;
+        if (moveToPositionCoroutine != null) {
+            StopCoroutine(moveToPositionCoroutine);
+            moveToPositionCoroutine = null;
+        }
+        if (moveToTransformCoroutine != null) {
+            StopCoroutine(moveToTransformCoroutine);
+            moveToTransformCoroutine = null;
+        }
     }
 }
