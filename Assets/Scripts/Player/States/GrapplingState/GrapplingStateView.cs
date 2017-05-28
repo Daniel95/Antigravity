@@ -25,6 +25,7 @@ public class GrapplingStateView : View, IGrapplingState, ITriggerer {
     }
 
     public void StopUpdateGrapplingState() {
+        if(updateGrapplingStateCoroutine == null) { return; }
         StopCoroutine(updateGrapplingStateCoroutine);
         updateGrapplingStateCoroutine = null;
     }

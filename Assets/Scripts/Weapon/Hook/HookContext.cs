@@ -19,6 +19,7 @@ public class HookContext : Context {
             .Do<AbortIfHookStatesAreActive>(new List<HookState>() {
                 HookState.Inactive,
                 HookState.Canceling,
+                HookState.HoldingShot
             })
             .Do<SetHookStateCommand>(HookState.Canceling)
             .Dispatch<PullBackHookEvent>();
@@ -31,6 +32,7 @@ public class HookContext : Context {
             .Do<CharacterStopAimLineCommand>();
 
         On<FireWeaponEvent>()
+            .Do<DebugLogMessageCommand>("FireWeaponEvent")
             .Do<SetHookDestinationCommand>()
             .Do<AbortIfHookStateIsNotActive>(HookState.Inactive)
             .Do<DispatchShootHookEventCommand>()
@@ -40,10 +42,12 @@ public class HookContext : Context {
             .Do<AbortIfHookStatesAreActive>(new List<HookState>() {
                 HookState.Inactive,
                 HookState.HoldingShot })
+            .Do<DebugLogMessageCommand>("HoldShotEvent")
             .Do<SetHookStateCommand>(HookState.HoldingShot)
             .Do<DispatchHookPullBackEventCommand>();
 
         On<ShootHookEvent>()
+            .Do<DebugLogMessageCommand>("ShootHookEvent")
             .Do<SetHookStateCommand>(HookState.Shooting)
             .Do<ActivateHookProjectileCommand>()
             .Do<SpawnHookProjectileAnchorCommand>()
@@ -52,6 +56,7 @@ public class HookContext : Context {
             .Do<HookProjectileGoToShootDestinationCommand>();
 
         On<PullBackHookEvent>()
+            .Do<DebugLogMessageCommand>("PullBackHookEvent")
             .Do<HookProjectileResetCollidingTransformCommand>()
             .Do<HookProjectileResetParentCommand>()
             .GotoState<InActiveContext>()
@@ -59,10 +64,12 @@ public class HookContext : Context {
 
         On<HookProjectileMoveTowardsShootDestinationCompletedEvent>()
             .Do<AbortIfCollidingLayerIsNotLayerCommand>(HookableLayer.GrappleSurface)
+            .Do<DebugLogMessageCommand>("GotoState<GrapplingHookContext>()")
             .GotoState<GrapplingHookContext>();
 
         On<HookProjectileMoveTowardsShootDestinationCompletedEvent>()
             .Do<AbortIfCollidingLayerIsNotLayerCommand>(HookableLayer.PullSurface)
+            .Do<DebugLogMessageCommand>("GotoState<PullingHookContext>()")
             .GotoState<PullingHookContext>();
 
         On<HookProjectileMoveTowardsShootDestinationCompletedEvent>()
@@ -71,17 +78,22 @@ public class HookContext : Context {
 
         On<HookProjectileMoveTowardsNextAnchorEvent>()
             .Do<AbortIfHookAnchorCountIsLowerThenOneCommand>()
+            .Do<DebugLogMessageCommand>("HookProjectileMoveTowardsNextAnchorEvent")
             .Do<HookProjectileMoveTowardNextAnchorCommand>()
             .OnAbort<DispatchHookProjectileMoveTowardsOwnerEventCommand>();
 
         On<HookProjectileMoveTowardsNextAnchorCompletedEvent>()
+            .Do<DebugLogMessageCommand>("HookProjectileMoveTowardsNextAnchorCompletedEvent")
             .Do<DestroyLastHookAnchorCommand>()
             .Dispatch<HookProjectileMoveTowardsNextAnchorEvent>();
 
         On<HookProjectileMoveTowardsOwnerEvent>()
+            .Do<DebugLogMessageCommand>("HookProjectileMoveTowardsOwnerEvent")
             .Do<HookProjectileMoveTowardsOwnerCommand>();
 
         On<HookProjectileMoveTowardsOwnerCompletedEvent>()
+            .Do<DebugClearLogCommand>()
+            .Do<DebugLogMessageCommand>("HookProjectileMoveTowardsOwnerCompletedEvent")
             .Do<DeactivateHookRopeCommand>()
             .Do<DestroyHookAnchorsCommand>()
             .Do<DeactivateHookProjectileCommand>()

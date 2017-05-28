@@ -31,6 +31,11 @@ public class PlayerStateContext : Context {
             .Do<AbortIfPlayerStateStatusStateIsStateCommand>(PlayerStateStatus.PlayerState.Grappling)
             .GotoState<GrapplingStateContext>();
 
+        On<HoldShotEvent>()
+            .Do<AbortIfPlayerStateStatusStateIsStateCommand>(PlayerStateStatus.PlayerState.Floating)
+            .Do<CharacterSetMoveDirectionToVelocityDirectionCommand>()
+            .GotoState<FloatingStateContext>();
+
         On<RespawnPlayerEvent>()
             .Do<AbortIfPlayerStateStatusStateIsStateCommand>(PlayerStateStatus.PlayerState.Revived)
             .GotoState<RevivedStateContext>();

@@ -1,6 +1,6 @@
 ﻿using IoCPlus;
 
-public class AbortIfHookStateIsLastHookState : Command<HookState> {
+public class AbortIfLastHookStateIsHookState : Command<HookState> {
 
     [Inject] private Ref<IHook> hookRef;
 

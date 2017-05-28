@@ -6,8 +6,8 @@ using UnityEngine;
 
 public class HookView : View, IHook, ITriggerer {
 
-    public HookState ActiveHookState { get { return activeHookState; } set { activeHookState = value; } }
-    public HookState LastHookState { get { return lastHookState; } set { lastHookState = value; } }
+    public HookState ActiveHookState { get { return activeHookState; } }
+    public HookState LastHookState { get { return lastHookState; } }
     public List<Transform> Anchors { get { return anchors; } }
     public LineRenderer LineRenderer { get { return lineRenderer; } }
     public List<int> HookableLayers { get { return hookableLayers; } }
@@ -40,6 +40,11 @@ public class HookView : View, IHook, ITriggerer {
 
     public override void Initialize() {
         hookRef.Set(this);
+    }
+
+    public void SetHookState(HookState hookstate) {
+        lastHookState = activeHookState;
+        activeHookState = hookstate;
     }
 
     public void AddAnchor(Vector2 position, Transform parent) {

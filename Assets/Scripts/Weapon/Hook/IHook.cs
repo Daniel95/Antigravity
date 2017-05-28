@@ -3,8 +3,8 @@ using UnityEngine;
 
 interface IHook {
 
-    HookState ActiveHookState { get; set; }
-    HookState LastHookState { get; set; }
+    HookState ActiveHookState { get; }
+    HookState LastHookState { get; }
     List<Transform> Anchors { get; }
     List<int> HookableLayers { get; }
     LayerMask RayLayers { get; }
@@ -14,6 +14,7 @@ interface IHook {
     GameObject Owner { get; }
     Vector2 Destination { get; set; }
 
+    void SetHookState(HookState hookstate);
     void AddAnchor(Vector2 position, Transform parent);
     void DestroyAnchorAt(int index);
     void DestroyAnchors();
