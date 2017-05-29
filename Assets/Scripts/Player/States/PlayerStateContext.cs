@@ -46,7 +46,6 @@ public class PlayerStateContext : Context {
 
         OnChild<GrapplingStateContext, JumpInputEvent>()
             .Do<AbortIfPlayerStateStatusStateIsStateCommand>(PlayerStateStatus.PlayerState.Floating)
-            .Do<CharacterPointToVelocityDirectionCommand>()
             .GotoState<FloatingStateContext>();
 
         OnChild<GrapplingStateContext, NotMovingEvent>()

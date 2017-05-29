@@ -1,3 +1,4 @@
 //todo:
-CharacterPointToClosestAnchorCommand starts pointing when player shoots, put logic outside state?
+character point to velocity when exiting hook (jump, mis etc).
 Slowtime when shooting.
+Check if standstill checking is still needed.
