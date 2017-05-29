@@ -1,7 +1,3 @@
-//bugs:
-Look into holding shot when grappling hook arrives at destination, what happens?
-CharacterPointToClosestAnchorCommand starts pointing when player shoots
-
-
-//features
+//todo:
+CharacterPointToClosestAnchorCommand starts pointing when player shoots, put logic outside state?
 Slowtime when shooting.

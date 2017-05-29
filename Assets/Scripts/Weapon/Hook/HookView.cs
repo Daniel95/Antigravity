@@ -22,6 +22,8 @@ public class HookView : View, IHook, ITriggerer {
 
     [Inject] private Ref<IHook> hookRef;
 
+    [Inject] private UpdateHookEvent updateHookEvent;
+
     [SerializeField] private LayerMask rayLayers;
     [SerializeField] private GameObject hookLinePrefab;
     [SerializeField] private GameObject hookProjectilePrefab;
@@ -36,7 +38,7 @@ public class HookView : View, IHook, ITriggerer {
     private List<Transform> anchors = new List<Transform>();
     private Vector2 destination;
 
-    private Coroutine lineUpdateCoroutine;
+    private Coroutine hookUpdateCoroutine;
 
     public override void Initialize() {
         hookRef.Set(this);
@@ -67,18 +69,18 @@ public class HookView : View, IHook, ITriggerer {
         anchors.Clear();
     }
 
-    public void ActivateHookRope() {
-        if (lineUpdateCoroutine != null) { return; }
+    public void ActivateHook() {
+        if (hookUpdateCoroutine != null) { return; }
         lineRenderer.enabled = true;
         lineRenderer.positionCount = 2;
         lineRenderer.SetPosition(0, transform.position);
         lineRenderer.SetPosition(1, anchors[0].position);
-        lineUpdateCoroutine = StartCoroutine(UpdateLineRendererPositions());
+        hookUpdateCoroutine = StartCoroutine(UpdateHook());
     }
 
-    public void DeactivateHookRope() {
-        StopCoroutine(lineUpdateCoroutine);
-        lineUpdateCoroutine = null;
+    public void DeactivateHook() {
+        StopCoroutine(hookUpdateCoroutine);
+        hookUpdateCoroutine = null;
         lineRenderer.positionCount = 0;
         lineRenderer.enabled = false;
     }
@@ -91,8 +93,9 @@ public class HookView : View, IHook, ITriggerer {
         return anchor.transform;
     }
 
-    private IEnumerator UpdateLineRendererPositions() {
+    private IEnumerator UpdateHook() {
         while (true) {
+            updateHookEvent.Dispatch();
             SetLineRendererPositions();
             yield return null;
         }
@@ -109,6 +112,4 @@ public class HookView : View, IHook, ITriggerer {
         lineRenderer = Instantiate(hookLinePrefab, transform).GetComponent<LineRenderer>();
         hookableLayers = HookableLayer.GetHookableLayers();
     }
-
-
 }

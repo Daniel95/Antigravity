@@ -82,6 +82,7 @@ public class PlayerContext : Context {
         Bind<CancelAimWeaponEvent>();
 
         //hook
+        Bind<UpdateHookEvent>();
         Bind<CancelHookEvent>();
         Bind<HookProjectileMoveTowardsOwnerCompletedEvent>();
         Bind<HookProjectileIsAttachedEvent>();

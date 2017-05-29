@@ -24,7 +24,6 @@ public class GrapplingStateContext : Context {
         On<UpdateGrapplingStateEvent>()
             .Do<AbortIfNotMovingCommand>()
             .Do<UpdateGrapplingStateVelocityCommand>()
-            .Do<CharacterPointToClosestAnchorCommand>()
             .OnAbort<DispatchNotMovingEventCommand>();
     }
 }

@@ -1,10 +1,10 @@
 ﻿using IoCPlus;
 
-public class ActivateHoopRopeCommand : Command {
+public class DeactivateHookCommand : Command {
 
     [Inject] private Ref<IHook> hookRef;
 
     protected override void Execute() {
-        hookRef.Get().ActivateHookRope();
+        hookRef.Get().DeactivateHook();
     }
 }

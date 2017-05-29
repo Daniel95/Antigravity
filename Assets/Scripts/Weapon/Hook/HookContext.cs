@@ -51,7 +51,7 @@ public class HookContext : Context {
             .Do<SetHookStateCommand>(HookState.Shooting)
             .Do<ActivateHookProjectileCommand>()
             .Do<SpawnHookProjectileAnchorCommand>()
-            .Do<ActivateHoopRopeCommand>()
+            .Do<ActivateHookCommand>()
             .Do<HookProjectileResetCollidingTransformCommand>(0)
             .Do<HookProjectileGoToShootDestinationCommand>();
 
@@ -94,7 +94,7 @@ public class HookContext : Context {
         On<HookProjectileMoveTowardsOwnerCompletedEvent>()
             .Do<DebugClearLogCommand>()
             .Do<DebugLogMessageCommand>("HookProjectileMoveTowardsOwnerCompletedEvent")
-            .Do<DeactivateHookRopeCommand>()
+            .Do<DeactivateHookCommand>()
             .Do<DestroyHookAnchorsCommand>()
             .Do<DeactivateHookProjectileCommand>()
             .GotoState<InActiveContext>()
@@ -114,6 +114,9 @@ public class HookContext : Context {
 
         On<AddHookAnchorEvent>()
             .Do<AddHookAnchorCommand>();
+
+        On<UpdateHookEvent>()
+            .Do<CharacterPointToClosestAnchorCommand>();
     }
 }
 

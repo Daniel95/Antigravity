@@ -18,6 +18,6 @@ interface IHook {
     void AddAnchor(Vector2 position, Transform parent);
     void DestroyAnchorAt(int index);
     void DestroyAnchors();
-    void ActivateHookRope();
-    void DeactivateHookRope();
+    void ActivateHook();
+    void DeactivateHook();
 }
