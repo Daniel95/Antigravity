@@ -44,12 +44,10 @@ public class PCInputView : View, IPCInput {
 
     private IEnumerator InputUpdate() {
         while (true) {
-            //key inputs
             if (Input.GetKeyDown(jumpInput)) {
                 rawJumpInputEvent.Dispatch();
             }
 
-            //mouse inputs
             if (Input.GetKeyDown(aimInput) && !InputDetect.CheckUICollision(Input.mousePosition)) {
                 touchState = TouchStates.Tapped;
 
@@ -57,7 +55,6 @@ public class PCInputView : View, IPCInput {
             }
 
             if (touchState != TouchStates.None) {
-                //not yet released
                 if (!Input.GetKeyUp(aimInput)) {
                     if (Time.time - startDownTime > TimebeforeTappedExpired) {
                         if (touchState == TouchStates.Tapped) {
@@ -65,31 +62,30 @@ public class PCInputView : View, IPCInput {
                         }
 
                         if (Vector2.Distance(Camera.main.ScreenToWorldPoint(Input.mousePosition), transform.position) > minDistFromPlayer) {
-
                             touchState = TouchStates.Dragging;
-                            rawDraggingInputEvent.Dispatch(((Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition) - (Vector2)transform.position).normalized);
-                        } else if (touchState != TouchStates.Holding) {
+                            Vector2 direction = ((Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition) - (Vector2)transform.position).normalized;
+                            rawDraggingInputEvent.Dispatch(direction);
 
+                        } else if (touchState != TouchStates.Holding) {
                             if (touchState == TouchStates.Dragging) {
                                 rawCancelDragInputEvent.Dispatch();
                             }
 
                             touchState = TouchStates.Holding;
-
                             rawHoldingInputEvent.Dispatch();
                         }
                     }
-                } else { //released 
+                } else { 
                     rawReleaseInputEvent.Dispatch();
 
                     if (touchState != TouchStates.Holding) {
-                        rawReleaseInDirectionInputEvent.Dispatch(((Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition) - (Vector2)transform.position).normalized);
+                        Vector2 direction = ((Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition) - (Vector2)transform.position).normalized;
+                        rawReleaseInDirectionInputEvent.Dispatch(direction);
                     }
 
                     touchState = TouchStates.None;
                 }
             }
-
             yield return null;
         }
     }
