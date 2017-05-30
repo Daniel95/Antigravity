@@ -1,4 +1,3 @@
 //todo:
-character point to velocity when exiting hook (jump, mis etc).
-Slowtime when shooting.
-Check if standstill checking is still needed.
+Fix aim line.
+clean up mobile input view.

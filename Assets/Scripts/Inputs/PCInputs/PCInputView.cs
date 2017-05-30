@@ -19,13 +19,11 @@ public class PCInputView : View, IPCInput {
     [Inject] private RawReleaseInputEvent rawReleaseInputEvent;
     [Inject] private RawTappedExpiredInputEvent rawTappedExpiredInputEvent;
 
-    private Coroutine inputUpdateCoroutine;
-
     private enum TouchStates { Holding, Dragging, Tapped, None }
 
-    private TouchStates TouchState = TouchStates.None;
-
-    private float StartDownTime;
+    private TouchStates touchState = TouchStates.None;
+    private float startDownTime;
+    private Coroutine inputUpdateCoroutine;
 
     public override void Initialize() {
         pcInputRef.Set(this);
@@ -53,43 +51,42 @@ public class PCInputView : View, IPCInput {
 
             //mouse inputs
             if (Input.GetKeyDown(aimInput) && !InputDetect.CheckUICollision(Input.mousePosition)) {
-                TouchState = TouchStates.Tapped;
+                touchState = TouchStates.Tapped;
 
-                StartDownTime = Time.time;
+                startDownTime = Time.time;
             }
 
-            if (TouchState != TouchStates.None) {
+            if (touchState != TouchStates.None) {
                 //not yet released
                 if (!Input.GetKeyUp(aimInput)) {
-                    if (Time.time - StartDownTime > TimebeforeTappedExpired) {
-                        if (TouchState == TouchStates.Tapped) {
+                    if (Time.time - startDownTime > TimebeforeTappedExpired) {
+                        if (touchState == TouchStates.Tapped) {
                             rawTappedExpiredInputEvent.Dispatch();
                         }
 
                         if (Vector2.Distance(Camera.main.ScreenToWorldPoint(Input.mousePosition), transform.position) > minDistFromPlayer) {
 
-                            TouchState = TouchStates.Dragging;
+                            touchState = TouchStates.Dragging;
                             rawDraggingInputEvent.Dispatch(((Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition) - (Vector2)transform.position).normalized);
-                        } else if (TouchState != TouchStates.Holding) {
+                        } else if (touchState != TouchStates.Holding) {
 
-                            if (TouchState == TouchStates.Dragging) {
+                            if (touchState == TouchStates.Dragging) {
                                 rawCancelDragInputEvent.Dispatch();
                             }
 
-                            TouchState = TouchStates.Holding;
+                            touchState = TouchStates.Holding;
 
                             rawHoldingInputEvent.Dispatch();
                         }
                     }
-                } else //released
-                {
+                } else { //released 
                     rawReleaseInputEvent.Dispatch();
 
-                    if (TouchState != TouchStates.Holding) {
+                    if (touchState != TouchStates.Holding) {
                         rawReleaseInDirectionInputEvent.Dispatch(((Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition) - (Vector2)transform.position).normalized);
                     }
 
-                    TouchState = TouchStates.None;
+                    touchState = TouchStates.None;
                 }
             }
 

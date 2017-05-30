@@ -30,9 +30,10 @@ public class InputContext : Context {
             .Do<AbortIfShootingInputIsNotEnabled>()
             .Dispatch<HoldingInputEvent>();
 
-        On<RawCancelDragInputEvent>()
+        On<RawDraggingInputEvent>()
+            .Do<DebugLogMessageCommand>("yo")
             .Do<AbortIfShootingInputIsNotEnabled>()
-            .Dispatch<CancelDragInputEvent>();
+            .Do<DispatchDraggingInputEventCommand>();
 
         On<RawReleaseInDirectionInputEvent>()
             .Do<AbortIfShootingInputIsNotEnabled>()
