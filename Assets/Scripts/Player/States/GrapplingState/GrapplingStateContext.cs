@@ -22,8 +22,6 @@ public class GrapplingStateContext : Context {
             .Do<DispatchCharacterTurnToNextDirectionEventCommand>();
 
         On<UpdateGrapplingStateEvent>()
-            .Do<AbortIfNotMovingCommand>()
-            .Do<UpdateGrapplingStateVelocityCommand>()
-            .OnAbort<DispatchNotMovingEventCommand>();
+            .Do<UpdateGrapplingStateVelocityCommand>();
     }
 }
