@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CharacterAimLineView : View, ICharacterAimLine {
 
-    public bool AimLineActive { get { return aimLineActive; } }
+    public bool AimLineActive { get { return aimLineIsActive; } }
 
     [SerializeField] private GameObject aimLinePrefab;
 
@@ -13,14 +13,14 @@ public class CharacterAimLineView : View, ICharacterAimLine {
     private LineRenderer lineRenderer;
     private Vector2 lineDestination;
     private Coroutine updateLineRendererPositionsCoroutine;
-    private bool aimLineActive;
+    private bool aimLineIsActive;
 
     public override void Initialize() {
         characterAimLineRef.Set(this);
     }
 
     public void UpdateAimLineDestination(Vector2 destination) {
-        if (!aimLineActive) {
+        if (!aimLineIsActive) {
             StartAimLine(destination);
         }
 
@@ -28,19 +28,15 @@ public class CharacterAimLineView : View, ICharacterAimLine {
     }
 
     public void StopAimLine() {
-        if (!aimLineActive) { return; }
+        if (!aimLineIsActive) { return; }
         StopCoroutine(updateLineRendererPositionsCoroutine);
         updateLineRendererPositionsCoroutine = null;
-        lineRenderer.enabled = aimLineActive = false;
-    }
-
-    private void Awake() {
-        lineRenderer = Instantiate(aimLinePrefab, transform).GetComponent<LineRenderer>();
         lineRenderer.enabled = false;
+        aimLineIsActive = false;
     }
 
     private void StartAimLine(Vector2 destination) {
-        lineRenderer.enabled = aimLineActive = true;
+        lineRenderer.enabled = aimLineIsActive = true;
 
         lineRenderer.SetPosition(0, transform.position);
         lineRenderer.SetPosition(1, destination);
@@ -55,5 +51,10 @@ public class CharacterAimLineView : View, ICharacterAimLine {
             lineRenderer.SetPosition(1, lineDestination);
             yield return null;
         }
+    }
+
+    private void Awake() {
+        lineRenderer = Instantiate(aimLinePrefab, transform).GetComponent<LineRenderer>();
+        lineRenderer.enabled = false;
     }
 }

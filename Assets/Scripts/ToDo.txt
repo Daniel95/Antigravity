@@ -1,3 +1,5 @@
 //todo:
-Fix aim line.
-clean up mobile input view.
+Fix direction pointer when sliding and canceling aiming by going to the player with the mouse.
+Hook sometimes not attaching.
+Make proper slowtime.
+Balance dragging outside and inside player check distance.

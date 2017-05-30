@@ -24,9 +24,6 @@ public class HookContext : Context {
             .Do<SetHookStateCommand>(HookState.Canceling)
             .Dispatch<PullBackHookEvent>();
 
-        On<AimWeaponEvent>()
-            .Do<CharacterUpdateAimLineDestinationCommand>();
-
         On<CancelAimWeaponEvent>()
             .Do<CharacterStopAimLineCommand>();
 

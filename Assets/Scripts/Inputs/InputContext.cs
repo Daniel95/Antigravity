@@ -31,7 +31,6 @@ public class InputContext : Context {
             .Dispatch<HoldingInputEvent>();
 
         On<RawDraggingInputEvent>()
-            .Do<DebugLogMessageCommand>("yo")
             .Do<AbortIfShootingInputIsNotEnabled>()
             .Do<DispatchDraggingInputEventCommand>();
 

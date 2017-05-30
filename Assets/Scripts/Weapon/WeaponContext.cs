@@ -8,11 +8,6 @@ public class WeaponContext : Context {
         On<EnterContextSignal>()
             .AddContext<HookContext>();
 
-        On<ReleaseInDirectionInputEvent>()
-            .Do<AbortIfGameIsPauzedCommand>()
-            .Do<StopSlowTimeCommand>()
-            .Do<DispatchFireWeaponEventCommand>();
-
         On<DraggingInputEvent>()
             .Do<AbortIfGameIsPauzedCommand>()
             .Do<SlowTimeCommand>()
@@ -20,9 +15,15 @@ public class WeaponContext : Context {
             .Do<CharacterUpdateAimLineDestinationCommand>()
             .Do<DispatchAimWeaponEventCommand>();
 
-        On<CancelDragInputEvent>()
+        On<ReleaseInDirectionInputEvent>()
             .Do<AbortIfGameIsPauzedCommand>()
             .Do<StopSlowTimeCommand>()
+            .Do<CharacterStopAimLineCommand>()
+            .Do<DispatchFireWeaponEventCommand>();
+
+        On<CancelDragInputEvent>()
+            .Do<AbortIfGameIsPauzedCommand>()
+            .Do<CharacterStopAimLineCommand>()
             .Do<CharacterPointToCeiledVelocityDirectionCommand>()
             .Dispatch<CancelAimWeaponEvent>();
     }

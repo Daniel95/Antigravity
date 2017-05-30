@@ -33,12 +33,6 @@ public class CharacterContext : Context {
             .Do<CharacterTurnToNextDirectionCommand>()
             .Do<CharacterPointToSavedDirectionCommand>();
 
-        On<CharacterUpdateLineDestinationEvent>()
-            .Do<CharacterUpdateAimLineDestinationCommand>();
-
-        On<CharacterStopAimLineEvent>()
-            .Do<CharacterStopAimLineCommand>();
-
         On<CollisionEnter2DEvent>()
             .Do<AbortIfNotCollidingAndNotInTriggerKillerTagsCommand>();
 
