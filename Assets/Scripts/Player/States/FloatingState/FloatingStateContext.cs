@@ -11,5 +11,8 @@ public class FloatingStateContext : Context {
 
         On<HookProjectileMoveTowardsOwnerCompletedEvent>()
             .Do<CharacterPointToVelocityDirectionCommand>();
+
+        On<CancelDragInputEvent>()
+            .Do<CharacterPointToVelocityDirectionCommand>();
     }
 }

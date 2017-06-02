@@ -11,5 +11,8 @@ public class SlidingStateContext : Context {
 
         On<HookProjectileMoveTowardsOwnerCompletedEvent>()
             .Do<CharacterPointToSavedDirectionCommand>();
+
+        On<CancelDragInputEvent>()
+            .Do<CharacterPointToSavedDirectionCommand>();
     }
 }

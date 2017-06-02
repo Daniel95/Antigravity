@@ -24,7 +24,6 @@ public class WeaponContext : Context {
         On<CancelDragInputEvent>()
             .Do<AbortIfGameIsPauzedCommand>()
             .Do<CharacterStopAimLineCommand>()
-            .Do<CharacterPointToCeiledVelocityDirectionCommand>()
             .Dispatch<CancelAimWeaponEvent>();
     }
 }
