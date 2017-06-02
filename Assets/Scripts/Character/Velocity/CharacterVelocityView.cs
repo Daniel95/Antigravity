@@ -13,7 +13,7 @@ public class CharacterVelocityView : View, ICharacterVelocity {
 
     [Inject] private Ref<ICharacterVelocity> controlVelocityRef;
 
-    [SerializeField] private float originalSpeed = 4;
+    [SerializeField] private float originalSpeed = 3.2f;
     [SerializeField] private float currentSpeed;
     [SerializeField] private float minSpeedOffsetValue = 0.05f;
 

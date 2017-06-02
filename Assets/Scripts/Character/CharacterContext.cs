@@ -34,8 +34,12 @@ public class CharacterContext : Context {
             .Do<CharacterPointToSavedDirectionCommand>();
 
         On<CollisionEnter2DEvent>()
-            .Do<AbortIfNotCollidingAndNotInTriggerKillerTagsCommand>();
+            .Do<CharacterUpdateCollisionDirectionCommand>();
 
+        On<CollisionEnter2DEvent>()
+            .Do<AbortIfNotCollidingAndNotInTriggerKillerTagsCommand>()
+            .Do<DebugLogMessageCommand>("kill player");
+               
         On<CharacterPointToDirectionEvent>()
             .Do<CharacterPointToDirectionCommand>();
 

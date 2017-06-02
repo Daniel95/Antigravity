@@ -13,9 +13,14 @@ public class PlayerStateContext : Context {
 
         On<CollisionEnter2DEvent>()
             .Do<AbortIfCollidingOrInTriggerTagCommand>(Tags.Bouncy)
+            .Do<CharacterUpdateCollisionDirectionCommand>()
             .Do<DispatchCharacterTurnToNextDirectionEventCommand>()
             .Do<AbortIfPlayerStateStatusStateIsStateCommand>(PlayerStateStatus.PlayerState.Sliding)
             .GotoState<SlidingStateContext>();
+
+        On<CollisionExit2DEvent>()
+            .Do<AbortIfCollisionDirectionIsNotZeroCommand>()
+            .GotoState<FloatingStateContext>();
 
         On<CollisionEnter2DEvent>()
             .Do<AbortIfNotCollidingAndNotInTriggerTagCommand>(Tags.Bouncy)

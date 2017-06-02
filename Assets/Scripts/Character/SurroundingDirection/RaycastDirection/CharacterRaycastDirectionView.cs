@@ -2,7 +2,7 @@
 using System.Collections;
 using IoCPlus;
 
-public class CharacterRaycastView : View, ICharacterRaycast {
+public class CharacterRaycastDirectionView : View, ICharacterRaycastDirection {
 
     [SerializeField] private LayerMask layers;
     [SerializeField] private bool showDebugRays = false;
@@ -13,47 +13,32 @@ public class CharacterRaycastView : View, ICharacterRaycast {
     [SerializeField] private float cornerRayLength = 0.15f;
     [SerializeField] private float middleRayLength = 0.4f;
 
-    [Inject] private Ref<ICharacterRaycast> characterRaycastRef;
+    [Inject] private Ref<ICharacterRaycastDirection> characterRaycastDirectionRef;
 
     public override void Initialize() {
-        characterRaycastRef.Set(this);
+        characterRaycastDirectionRef.Set(this);
     }
 
-    /// <summary>
-    /// check the raycast results of our vertical corners, between -1 and 1.
-    /// </summary>
-    /// <returns></returns>
     public int GetVerticalCornersDirection() {
         if (CheckRayCornersUp()) {
             return 1;
-        }
-        else if (CheckRayCornersDown()) {
+        } else if (CheckRayCornersDown()) {
             return -1;
-        }
-        else {
+        } else {
             return 0;
         }
     }
 
-    /// <summary>
-    /// check the raycast results of our horizontal corners, between -1 and 1.
-    /// </summary>
-    /// <returns></returns>
     public int GetHorizontalCornersDirection() {
         if (CheckRayCornerRight()) {
             return 1;
         } else if (CheckRayCornerLeft()) {
             return -1;
-        }
-        else {
+        } else {
             return 0;
         }
     }
 
-    /// <summary>
-    /// check the raycast results of our vertical middle, between -1 and 1.
-    /// </summary>
-    /// <returns></returns>
     public int GetVerticalMiddleDirection() {
         if (CheckRaycastOther(transform.position, new Vector2(0, 1), middleRayLength, layers)) {
             return 1;
@@ -64,18 +49,12 @@ public class CharacterRaycastView : View, ICharacterRaycast {
         }
     }
 
-    /// <summary>
-    /// check the raycast results of our horizontal middle, between -1 and 1.
-    /// </summary>
-    /// <returns></returns>
     public int GetHorizontalMiddleDirection() {
         if (CheckRaycastOther(transform.position, new Vector2(1, 0), middleRayLength, layers)) {
             return 1;
-        }
-        else if (CheckRaycastOther(transform.position, new Vector2(-1, 0), middleRayLength, layers)) {
+        } else if (CheckRaycastOther(transform.position, new Vector2(-1, 0), middleRayLength, layers)) {
             return -1;
-        }
-        else {
+        } else {
             return 0;
         }
     }
@@ -93,8 +72,6 @@ public class CharacterRaycastView : View, ICharacterRaycast {
             StartCoroutine(DebugRays());
         }
     }
-
-    //a class that makes it simple to use raycasting in other scripts
 
     private bool CheckRayCornersUp() {
         return CheckIntersectionRaycast(topLeftCornerPoint.position, Quaternion.Euler(0, 0, -45) * transform.up, topRightCornerPoint.position, Quaternion.Euler(0, 0, 45) * transform.up, cornerRayLength);

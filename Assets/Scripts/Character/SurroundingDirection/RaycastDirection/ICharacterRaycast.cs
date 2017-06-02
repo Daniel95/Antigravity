@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public interface ICharacterRaycast {
+public interface ICharacterRaycastDirection {
 
     int GetVerticalCornersDirection();
     int GetHorizontalCornersDirection();

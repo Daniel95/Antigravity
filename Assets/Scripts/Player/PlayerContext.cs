@@ -16,8 +16,9 @@ public class PlayerContext : Context {
         Bind<Ref<IGrapplingHook>>();
         Bind<Ref<ICharacterVelocity>>();
         Bind<Ref<ICharacterTurnDirection>>();
-        Bind<Ref<ICharacterRaycast>>();
+        Bind<Ref<ICharacterRaycastDirection>>();
         Bind<Ref<ICharacterCollisionDirection>>();
+        Bind<Ref<ICharacterSurroundingDirection>>();
         Bind<Ref<ICharacterJump>>();
         Bind<Ref<ICharacterDirectionPointer>>();
         Bind<Ref<ICollisionHitDetection>>();

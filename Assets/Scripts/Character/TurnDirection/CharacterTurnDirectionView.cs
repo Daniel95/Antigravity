@@ -23,11 +23,6 @@ public class CharacterTurnDirectionView : View, ICharacterTurnDirection {
         characterMoveDirectionRef.Set(this);
     }
 
-    /// <summary>
-    /// apply the next logic direction (game logic), to our controlVelocity script.
-    /// </summary>
-    /// <param name="currentDir"></param>
-    /// <param name="collDir"></param>
     public void TurnToNextDirection(CharacterTurnToNextDirectionEvent.Parameter characterTurnToNextDirectionParameter) {
         //our next direction we are going to move towards, depending on our currentdirection, and the direction of our collision(s)
         Vector2 nextDirection = CalculateDirection(characterTurnToNextDirectionParameter);

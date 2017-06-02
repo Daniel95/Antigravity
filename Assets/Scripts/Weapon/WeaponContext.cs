@@ -17,13 +17,15 @@ public class WeaponContext : Context {
 
         On<ReleaseInDirectionInputEvent>()
             .Do<AbortIfGameIsPauzedCommand>()
-            .Do<StopSlowTimeCommand>()
-            .Do<CharacterStopAimLineCommand>()
             .Do<DispatchFireWeaponEventCommand>();
 
         On<CancelDragInputEvent>()
             .Do<AbortIfGameIsPauzedCommand>()
             .Do<CharacterStopAimLineCommand>()
             .Dispatch<CancelAimWeaponEvent>();
+
+        On<ReleaseInputEvent>()
+            .Do<StopSlowTimeCommand>()
+            .Do<CharacterStopAimLineCommand>();
     }
 }

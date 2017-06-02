@@ -13,17 +13,13 @@ public class CharacterCollisionDirectionView : View, ICharacterCollisionDirectio
         characterCollisionDirectionRef.Set(this);
     }
 
-    //get the rounded direction of the collisions
-    //each collision will be repesented by its highest axis (x or y)
-    public Vector2 GetUpdatedCollisionDirection(Collision2D collision, Vector2 cornersDirection) {
-        //save the new collision we recieved
+    public Vector2 GetUpdatedCollisionDirection(Collision2D collision) {
         SaveNewCollision(collision);
 
-        return GetCurrentCollisionDirection(cornersDirection);
+        return GetCurrentCollisionDirection();
     }
 
-    //get the current rounded direction of each
-    public Vector2 GetCurrentCollisionDirection(Vector2 cornersDirection) {
+    public Vector2 GetCurrentCollisionDirection() {
         Vector2 combinedRoundedCollDir = new Vector2();
 
         //check each saved collision for a direction
@@ -33,12 +29,6 @@ public class CharacterCollisionDirectionView : View, ICharacterCollisionDirectio
 
         //make sure the combinedRoundedCollDir axises are never above 1 or below -1
         combinedRoundedCollDir = new Vector2(Mathf.Clamp(combinedRoundedCollDir.x, -1, 1), Mathf.Clamp(combinedRoundedCollDir.y, -1, 1));
-
-        //when collision overshoots and we no longer collide with a object, even if it looks if we do,
-        //use raycasting instead as a backup plan
-        if(combinedRoundedCollDir == Vector2.zero) {
-            combinedRoundedCollDir = cornersDirection;
-        }
 
         return combinedRoundedCollDir;
     }
@@ -56,8 +46,6 @@ public class CharacterCollisionDirectionView : View, ICharacterCollisionDirectio
         savedCollisions.Clear();
     }
 
-    //save a new collision in the savedCollisions dictionary
-    //the collider and the collisionDirection is saved
     private void SaveNewCollision(Collision2D collision) {
         Vector2 roundedCollDir = new Vector2();
         Vector2 contactPoint = collision.contacts[0].point;

@@ -8,12 +8,12 @@ public class CharacterTurnToNextDirectionEvent : Signal<CharacterTurnToNextDirec
         public Vector2 CollisionDirection;
         public Vector2 CornerDirection;
 
-        public Parameter(Vector2 moveDirection, Vector2 collisionDirection, Vector2 cornersRaycastDirection) {
+        public Parameter(Vector2 moveDirection, Vector2 surroundingsDirection, Vector2 cornersRaycastDirection) {
             MoveDirection = moveDirection;
-            CollisionDirection = collisionDirection;
+            CollisionDirection = surroundingsDirection;
 
-            if (CheckIsCorner(collisionDirection)) {
-                CornerDirection = collisionDirection;
+            if (CheckIsCorner(surroundingsDirection)) {
+                CornerDirection = surroundingsDirection;
             } else if (CheckIsCorner(cornersRaycastDirection)) {
                 CornerDirection = cornersRaycastDirection;
             } else {
