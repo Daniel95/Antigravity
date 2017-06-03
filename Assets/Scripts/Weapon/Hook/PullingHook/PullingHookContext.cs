@@ -7,6 +7,7 @@ public class PullingHookContext : Context {
 
         On<EnterContextSignal>()
             .Do<PullingHookPullCommand>()
+            .Dispatch<EnterPullingHookContextSignal>()
             .Dispatch<CancelHookEvent>();
     }
 }

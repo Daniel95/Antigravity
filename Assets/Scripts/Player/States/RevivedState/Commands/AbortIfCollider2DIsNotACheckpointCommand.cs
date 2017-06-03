@@ -1,7 +1,7 @@
 ﻿using IoCPlus;
 using UnityEngine;
 
-public class AbortIfCollider2DIsNotCheckpointCommand : Command {
+public class AbortIfCollider2DIsNotACheckpointCommand : Command {
 
     [InjectParameter] private Collider2D collider;
 

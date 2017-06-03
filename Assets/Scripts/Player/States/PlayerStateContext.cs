@@ -30,13 +30,17 @@ public class PlayerStateContext : Context {
 
         On<PlayerTriggerEnter2DEvent>()
             .Do<AbortIfPlayerStateStatusStateIsStateCommand>(PlayerStateStatus.PlayerState.Revived)
-            .Do<AbortIfCollider2DIsNotCheckpointCommand>()
+            .Do<AbortIfCollider2DIsNotACheckpointCommand>()
             .Do<UpdateCheckpointStatusCommand>()
             .GotoState<RevivedStateContext>();
 
         On<EnterGrapplingHookContextEvent>()
             .Do<AbortIfPlayerStateStatusStateIsStateCommand>(PlayerStateStatus.PlayerState.Grappling)
             .GotoState<GrapplingStateContext>();
+
+        On<EnterPullingHookContextSignal>()
+            .Do<AbortIfPlayerStateStatusStateIsStateCommand>(PlayerStateStatus.PlayerState.Floating)
+            .GotoState<FloatingStateContext>();
 
         On<HoldShotEvent>()
             .Do<AbortIfPlayerStateStatusStateIsStateCommand>(PlayerStateStatus.PlayerState.Floating)

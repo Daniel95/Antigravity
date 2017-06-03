@@ -95,6 +95,9 @@ public class PlayerContext : Context {
         Bind<EnterGrapplingHookContextEvent>();
         Bind<UpdateGrapplingHookRopeEvent>();
 
+        //pullinghook
+        Bind<EnterPullingHookContextSignal>();
+
         On<EnterContextSignal>()
             .Do<InstantiatePlayerCommand>()
             .AddContext<InputContext>()
