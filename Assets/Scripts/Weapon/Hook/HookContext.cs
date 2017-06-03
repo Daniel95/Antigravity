@@ -109,6 +109,3 @@ public class HookContext : Context {
             .Do<CharacterPointToClosestAnchorCommand>();
     }
 }
-
-
-

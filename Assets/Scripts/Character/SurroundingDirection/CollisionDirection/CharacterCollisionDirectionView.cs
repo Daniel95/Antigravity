@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class CharacterCollisionDirectionView : View, ICharacterCollisionDirection {
 
+    public int SavedCollisionsCount { get { return savedCollisions.Count; } }
+
     [Inject] private Ref<ICharacterCollisionDirection> characterCollisionDirectionRef;
 
     //saves the collider and the rounded direction

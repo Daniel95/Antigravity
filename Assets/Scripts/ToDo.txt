@@ -1,4 +1,5 @@
 //todo:
-lookinto when hook is canceled on the ground
+pulling hook not yet using direction pointer properly.
 Make proper slowtime.
 Balance dragging outside and inside player check distance.
+
