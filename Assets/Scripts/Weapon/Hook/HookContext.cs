@@ -79,7 +79,6 @@ public class HookContext : Context {
             .Do<HookProjectileMoveTowardsOwnerCommand>();
 
         On<HookProjectileMoveTowardsOwnerCompletedEvent>()
-            .Do<DebugClearLogCommand>()
             .Do<DeactivateHookCommand>()
             .Do<DestroyHookAnchorsCommand>()
             .Do<DeactivateHookProjectileCommand>()
@@ -89,6 +88,11 @@ public class HookContext : Context {
             .OnAbort<DispatchShootHookEventCommand>();
 
         On<TriggerEnter2DEvent>()
+            .Do<AbortIfColliderIsNotATriggerCommand>()
+            .Do<AbortIfGameObjectIsNotHookProjectileCommand>()
+            .Do<HookProjectileSetCollidingTransformToCollider2DTranformCommand>();
+
+        On<TriggerStay2DEvent>()
             .Do<AbortIfColliderIsNotATriggerCommand>()
             .Do<AbortIfGameObjectIsNotHookProjectileCommand>()
             .Do<HookProjectileSetCollidingTransformToCollider2DTranformCommand>();
