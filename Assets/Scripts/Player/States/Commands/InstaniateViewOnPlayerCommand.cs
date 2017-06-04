@@ -4,10 +4,10 @@ public class InstantiateViewOnPlayerCommand<T> : Command where T : View {
 
     [Inject] IContext context;
 
-    [Inject] private PlayerModel playerModel;
+    [Inject] private PlayerStatus playerStatus;
 
     protected override void Execute() {
-        View view = playerModel.Player.AddComponent<T>();
+        View view = playerStatus.Player.AddComponent<T>();
 
         context.InstantiateView(view);
     }

@@ -12,8 +12,7 @@ public class WeaponContext : Context {
             .Do<AbortIfGameIsPauzedCommand>()
             .Do<SlowTimeCommand>()
             .Do<CharacterPointToDirectionCommand>()
-            .Do<CharacterUpdateAimLineDestinationCommand>()
-            .Do<DispatchAimWeaponEventCommand>();
+            .Do<CharacterUpdateAimLineDestinationCommand>();
 
         On<ReleaseInDirectionInputEvent>()
             .Do<AbortIfGameIsPauzedCommand>()

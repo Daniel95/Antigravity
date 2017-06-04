@@ -3,13 +3,13 @@ using UnityEngine;
 
 public class CharacterUpdateAimLineDestinationCommand : Command {
 
-    [Inject] private Ref<IAimDestination> shootRef;
+    [Inject] private Ref<IWeapon> weaponRef;
     [Inject] private Ref<ICharacterAimLine> aimLineRef;
 
     [InjectParameter] private Vector2 direction;
 
     protected override void Execute() {
-        Vector2 destination = shootRef.Get().GetDestinationPoint(direction);
+        Vector2 destination = weaponRef.Get().GetShootDestinationPoint(direction);
 
         aimLineRef.Get().UpdateAimLineDestination(destination);
     }

@@ -8,7 +8,7 @@ public class PlayerContext : Context {
         //BindLabeled<Ref<IShoot>>("Views/Player/ShootView");
         Bind<InputModel>();
 
-        Bind<Ref<IAimDestination>>();
+        Bind<Ref<IWeapon>>();
         Bind<Ref<IHook>>();
         Bind<Ref<IHookProjectile>>();
         Bind<Ref<IPCInput>>();
@@ -86,8 +86,6 @@ public class PlayerContext : Context {
         Bind<UpdateHookEvent>();
         Bind<CancelHookEvent>();
         Bind<HookProjectileMoveTowardsOwnerCompletedEvent>();
-        Bind<HookProjectileIsAttachedEvent>();
-        Bind<HookProjectileMoveTowardsShootDestinationCompletedEvent>();
         Bind<HookProjectileMoveTowardsNextAnchorEvent>();
         Bind<HoldShotEvent>();
 

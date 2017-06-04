@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class PlayerModel  {
+public class PlayerStatus  {
 
     public GameObject Player;
     public bool CheckpointReached;

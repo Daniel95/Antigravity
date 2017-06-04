@@ -12,7 +12,7 @@ interface IHook {
     float DirectionSpeedNeutralValue { get; }
     float MinimalHookDistance { get; }
     GameObject Owner { get; }
-    Vector2 Destination { get; set; }
+    Vector2 ShootDirection { get; set; }
 
     void SetHookState(HookState hookstate);
     void AddAnchor(Vector2 position, Transform parent);

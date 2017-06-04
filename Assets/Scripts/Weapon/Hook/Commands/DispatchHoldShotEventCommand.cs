@@ -8,7 +8,7 @@ public class DispatchHoldShotEventCommand : Command {
 
     protected override void Execute() {
         holdShotEvent.Dispatch(new HoldShotEvent.HoldShotEventParameter(
-            fireWeapFireWeaponEventParameter.Destination,
+            fireWeapFireWeaponEventParameter.Direction,
             fireWeapFireWeaponEventParameter.StartPosition
         ));
     }

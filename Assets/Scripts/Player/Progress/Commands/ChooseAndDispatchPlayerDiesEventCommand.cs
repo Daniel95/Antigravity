@@ -2,13 +2,13 @@
 
 public class ChooseAndDispatchPlayerDiesEventCommand : Command {
 
-    [Inject] private PlayerModel playerModel;
+    [Inject] private PlayerStatus playerStatus;
 
     [Inject] private ReloadSceneEvent reloadSceneEvent;
     [Inject] private RespawnPlayerEvent respawnPlayerEvent;
 
     protected override void Execute() {
-        if(playerModel.CheckpointReached) {
+        if(playerStatus.CheckpointReached) {
             respawnPlayerEvent.Dispatch();
         } else {
             reloadSceneEvent.Dispatch();

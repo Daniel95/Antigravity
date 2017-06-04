@@ -32,9 +32,9 @@ public class HookProjectileView : View, IHookProjectile {
         Destroy();
     }
 
-    public void ActivateHookProjectile(Vector2 spawnPosition) {
+    public void ActivateHookProjectile(Vector2 startPosition) {
         gameObject.SetActive(true);
-        transform.position = spawnPosition;
+        transform.position = startPosition;
     }
 
     public void DeactivateHookProjectile() {

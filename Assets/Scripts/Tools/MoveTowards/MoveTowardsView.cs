@@ -10,21 +10,27 @@ public class MoveTowardsView : View, IMoveTowards {
 
     private Coroutine moveToPositionCoroutine;
     private Coroutine moveToTransformCoroutine;
+    private Coroutine moveToDirectionCoroutine;
 
-    public void StartMoving(Vector2 destination, Signal onMoveTowardsCompletedEvent = null) {
-        StartMoving(destination, () => onMoveTowardsCompletedEvent.Dispatch());
-    }
-
-    public void StartMoving(Vector2 destination, Action onMoveTowardsCompleted = null) {
+    public void StartMovingToDirection(Vector2 direction) {
         StopMoving();
-        moveToPositionCoroutine = StartCoroutine(MoveToPosition(destination, onMoveTowardsCompleted));
+        moveToDirectionCoroutine = StartCoroutine(MoveToDirection(direction));
     }
 
-    public void StartMoving(Transform target, Signal onMoveTowardsCompletedEvent = null) {
-        StartMoving(target, () => onMoveTowardsCompletedEvent.Dispatch());
+    public void StartMovingToTarget(Vector2 targetDestination, Signal onMoveTowardsCompletedEvent = null) {
+        StartMovingToTarget(targetDestination, () => onMoveTowardsCompletedEvent.Dispatch());
     }
 
-    public void StartMoving(Transform target, Action onMoveTowardsCompleted = null) {
+    public void StartMovingToTarget(Vector2 targetDestination, Action onMoveTowardsCompleted = null) {
+        StopMoving();
+        moveToPositionCoroutine = StartCoroutine(MoveToPosition(targetDestination, onMoveTowardsCompleted));
+    }
+
+    public void StartMovingToTarget(Transform target, Signal onMoveTowardsCompletedEvent = null) {
+        StartMovingToTarget(target, () => onMoveTowardsCompletedEvent.Dispatch());
+    }
+
+    public void StartMovingToTarget(Transform target, Action onMoveTowardsCompleted = null) {
         StopMoving();
         moveToTransformCoroutine = StartCoroutine(MoveToTransform(target, onMoveTowardsCompleted));
     }
@@ -57,6 +63,13 @@ public class MoveTowardsView : View, IMoveTowards {
         moveToTransformCoroutine = null;
     }
 
+    private IEnumerator MoveToDirection(Vector2 direction) {
+        while (true) {
+            transform.position = Vector2.MoveTowards(transform.position, (Vector2)transform.position + (direction * speed), speed * Time.deltaTime);
+            yield return null;
+        }
+    }
+
     public void StopMoving() {
         if (moveToPositionCoroutine != null) {
             StopCoroutine(moveToPositionCoroutine);
@@ -65,6 +78,10 @@ public class MoveTowardsView : View, IMoveTowards {
         if (moveToTransformCoroutine != null) {
             StopCoroutine(moveToTransformCoroutine);
             moveToTransformCoroutine = null;
+        }
+        if(moveToDirectionCoroutine != null) {
+            StopCoroutine(moveToDirectionCoroutine);
+            moveToDirectionCoroutine = null;
         }
     }
 }

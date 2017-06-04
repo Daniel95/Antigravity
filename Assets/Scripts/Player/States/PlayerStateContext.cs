@@ -30,7 +30,7 @@ public class PlayerStateContext : Context {
 
         On<PlayerTriggerEnter2DEvent>()
             .Do<AbortIfPlayerStateStatusStateIsStateCommand>(PlayerStateStatus.PlayerState.Revived)
-            .Do<AbortIfCollider2DIsNotACheckpointCommand>()
+            .Do<AbortIfColliderIsNotACheckpointCommand>()
             .Do<UpdateCheckpointStatusCommand>()
             .GotoState<RevivedStateContext>();
 

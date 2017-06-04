@@ -5,7 +5,7 @@ public class InstantiatePlayerCommand : Command {
 
     [Inject] private IContext context;
 
-    [Inject] private PlayerModel playerModel;
+    [Inject] private PlayerStatus playerStatus;
 
     [Inject(Label.Player)] private Ref<IMoveTowards> moveTowards;
     
@@ -24,7 +24,7 @@ public class InstantiatePlayerCommand : Command {
         View playerView = context.InstantiateView(playerViewPrefab);
         GameObject playerGO = playerView.gameObject;
         playerGO.transform.position = startPosition;
-        playerModel.Player = playerGO;
+        playerStatus.Player = playerGO;
 
         moveTowards.Set(playerGO.GetComponent<MoveTowardsView>());
     }

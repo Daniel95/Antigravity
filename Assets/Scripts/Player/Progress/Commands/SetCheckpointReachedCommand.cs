@@ -2,9 +2,9 @@
 
 public class SetCheckpointReachedCommand : Command<bool> {
 
-    [Inject] private PlayerModel playerModel;
+    [Inject] private PlayerStatus playerStatus;
 
     protected override void Execute(bool state) {
-        playerModel.CheckpointReached = state;
+        playerStatus.CheckpointReached = state;
     }
 }

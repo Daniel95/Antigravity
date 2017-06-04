@@ -1,5 +1,4 @@
 //todo:
-Make proper slowtime.
-Balance dragging outside and inside player check distance.
-hook projectile not always attaching.
-
+first time shooting doesnt work
+hookprojectile not not always at right position when attached.
+hookprojectile rope updates 1 frame later.

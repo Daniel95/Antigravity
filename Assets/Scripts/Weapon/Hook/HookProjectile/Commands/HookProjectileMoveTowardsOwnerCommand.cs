@@ -10,7 +10,7 @@ public class HookProjectileMoveTowardsOwnerCommand : Command {
     [Inject] private HookProjectileMoveTowardsOwnerCompletedEvent hookProjectileReturnedToOwnerEvent;
 
     protected override void Execute() {
-        moveTowardsRef.Get().StartMoving(
+        moveTowardsRef.Get().StartMovingToTarget(
             hookRef.Get().Owner.transform, 
             hookProjectileReturnedToOwnerEvent
         );

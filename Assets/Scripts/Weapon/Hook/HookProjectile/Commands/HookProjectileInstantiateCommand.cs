@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using IoCPlus;
 
-public class InstantiateHookProjectileCommand : Command {
+public class HookProjectileInstantiateCommand : Command {
 
     [Inject] IContext context;
 

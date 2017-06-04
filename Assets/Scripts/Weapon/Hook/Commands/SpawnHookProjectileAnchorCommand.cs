@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class SpawnHookProjectileAnchorCommand : Command {
 
-    [Inject] private PlayerModel playerModel;
+    [Inject] private PlayerStatus playerStatus;
 
     [Inject] private Ref<IHook> hookRef;
     [Inject] private Ref<IHookProjectile> hookProjectileRef;

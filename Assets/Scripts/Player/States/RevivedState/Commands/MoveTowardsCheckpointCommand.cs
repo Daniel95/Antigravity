@@ -9,7 +9,7 @@ public class MoveTowardsCheckpointCommand : Command {
     [Inject] private MoveTowardsCheckpointCompletedEvent moveTowardsCheckpointCompletedEvent;
 
     protected override void Execute() {
-        moveTowardsRef.Get().StartMoving(
+        moveTowardsRef.Get().StartMovingToTarget(
             checkPointStatus.checkpoint.transform.position, 
             moveTowardsCheckpointCompletedEvent
         );
