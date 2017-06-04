@@ -1,22 +1,40 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class FpsCounter : MonoBehaviour {
+    
+    private Text text;
 
-    private Text _text;
+    public float updateInterval = 0.5f;
+    private float accumulated = 0;
+    private int frames = 0;
+    private float timeleft;
 
-    private float _deltaTime;
-
-	// Use this for initialization
-	void Start () {
-        _text = GetComponent<Text>();
+    void Awake () {
+        text = GetComponent<Text>();
 	}
-	
-	// Update is called once per frame
-	void Update () {
-        _deltaTime += (Time.deltaTime - _deltaTime) * 0.1f;
-        _text.text = Mathf.Round(1 / _deltaTime).ToString();
+
+    void Update() {
+        timeleft -= Time.deltaTime;
+        accumulated += Time.timeScale / Time.deltaTime;
+        ++frames;
+
+        if (timeleft <= 0.0) {
+            float fps = accumulated / frames;
+            text.text = Mathf.RoundToInt(fps).ToString();
+
+            if (fps < 30) {
+                text.color = Color.yellow;
+            } else if (fps < 10) {
+                text.color = Color.red;
+            } else {
+                text.color = Color.green;
+            }
+
+            timeleft = updateInterval;
+            accumulated = 0.0f;
+            frames = 0;
+        }
     }
+    
 }
