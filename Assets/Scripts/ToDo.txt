@@ -1,5 +1,5 @@
 //todo:
-pulling hook not yet using direction pointer properly.
 Make proper slowtime.
 Balance dragging outside and inside player check distance.
+hook projectile not always attaching.
 

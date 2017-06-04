@@ -6,7 +6,7 @@ public class PullingHookContext : Context {
         base.SetBindings();
 
         On<EnterContextSignal>()
-            .Do<PullingHookPullCommand>()
+            .Do<SetMoveDirectionToHookProjectileDirectionCommand>()
             .Dispatch<EnterPullingHookContextSignal>()
             .Dispatch<CancelHookEvent>();
     }
