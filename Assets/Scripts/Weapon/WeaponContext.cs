@@ -28,5 +28,8 @@ public class WeaponContext : Context {
         On<ReleaseInputEvent>()
             .Do<StopSlowTimeCommand>()
             .Do<CharacterStopAimLineCommand>();
+
+        On<HoldingInputEvent>()
+            .Do<SlowTimeCommand>();
     }
 }
