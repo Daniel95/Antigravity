@@ -93,7 +93,7 @@ public class HookView : View, IHook, ITriggerer {
         while (true) {
             updateHookEvent.Dispatch();
             SetLineRendererPositions();
-            yield return null;
+            yield return new WaitForEndOfFrame();
         }
     }
 
