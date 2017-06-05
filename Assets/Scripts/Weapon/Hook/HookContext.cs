@@ -43,6 +43,7 @@ public class HookContext : Context {
         On<ShootHookEvent>()
             .Do<SetHookStateCommand>(HookState.Shooting)
             .Do<ActivateHookProjectileCommand>()
+            .Do<HookProjectileEnableColliderCommand>()
             .Do<SpawnHookProjectileAnchorCommand>()
             .Do<ActivateHookCommand>()
             .Do<HookProjectileResetCollidingTransformCommand>(0)
@@ -51,6 +52,7 @@ public class HookContext : Context {
         On<PullBackHookEvent>()
             .Do<HookProjectileResetCollidingTransformCommand>()
             .Do<HookProjectileResetParentCommand>()
+            .Do<HookProjectileDisableColliderCommand>()
             .GotoState<InActiveContext>()
             .Do<DispatchHookProjectileMoveTowardsNextAnchorCommand>();
 
@@ -80,22 +82,22 @@ public class HookContext : Context {
             .Dispatch<HookProjectileTriggerEnterNonPlayerCollision2DEvent>();
 
         On<HookProjectileTriggerEnterNonPlayerCollision2DEvent>()
+            .Do<HookProjectileSetParentToCollidingTransformCommand>()
             .Do<HookProjectileStopMoveTowardsCommand>();
 
         On<HookProjectileTriggerEnterNonPlayerCollision2DEvent>()
             .Do<WaitFrameCommand>()
+            .Do<AbortIfHookProjectileCollidingLayerIsAHookableLayerCommand>()
+            .Dispatch<HookProjectileAttachedEvent>()
+            .OnAbort<DispatchPullBackHookEventCommand>();
+
+        On<HookProjectileAttachedEvent>()
             .Do<AbortIfCollidingLayerIsNotLayerCommand>(HookableLayer.GrappleSurface)
             .GotoState<GrapplingHookContext>();
 
-        On<HookProjectileTriggerEnterNonPlayerCollision2DEvent>()
-            .Do<WaitFrameCommand>()
+        On<HookProjectileAttachedEvent>()
             .Do<AbortIfCollidingLayerIsNotLayerCommand>(HookableLayer.PullSurface)
             .GotoState<PullingHookContext>();
-
-        On<HookProjectileTriggerEnterNonPlayerCollision2DEvent>()
-            .Do<WaitFrameCommand>()
-            .Do<AbortIfHookProjectileCollidingLayerIsAHookableLayerCommand>()
-            .Dispatch<HookProjectileMoveTowardsNextAnchorEvent>();
 
         On<TriggerEnter2DEvent>()
             .Do<AbortIfColliderIsNotATriggerCommand>()

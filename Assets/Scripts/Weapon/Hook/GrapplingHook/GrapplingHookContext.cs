@@ -9,7 +9,6 @@ public class GrapplingHookContext : Context {
             .Do<GrapplingHookSetDistanceCommand>()
             .Do<AbortIfHookDistanceIsLowerThenMinimalDistance>()
             .Do<GrapplingHookStartGrappleLockCommand>()
-            .Do<HookProjectileSetParentToCollidingTransformCommand>()
             .Do<ChangeSpeedByAngleCommand>()
             .Dispatch<EnterGrapplingHookContextEvent>()
             .OnAbort<DispatchCancelHookEventCommand>();

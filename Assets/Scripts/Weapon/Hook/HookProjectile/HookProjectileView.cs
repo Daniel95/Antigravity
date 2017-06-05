@@ -14,6 +14,7 @@ public class HookProjectileView : View, IHookProjectile {
 
     [Inject] private Ref<IHookProjectile> hookProjectileRef;
 
+    private Collider2D myCollider;
     private Transform collidingTransform;
     private int hookedLayer;
     private int anchorIndex;
@@ -28,16 +29,28 @@ public class HookProjectileView : View, IHookProjectile {
         transform.SetParent(parent, true);
     }
 
+    public void SetPosition(Vector2 position) {
+        transform.position = position;
+    }
+
+    public void SetColliderEnabled(bool enabled) {
+        myCollider.enabled = enabled;
+    }
+
     public void DestroyProjectile() {
         Destroy();
     }
 
     public void ActivateHookProjectile(Vector2 startPosition) {
-        gameObject.SetActive(true);
         transform.position = startPosition;
+        gameObject.SetActive(true);
     }
 
     public void DeactivateHookProjectile() {
         gameObject.SetActive(false);
+    }
+
+    private void Awake() {
+        myCollider = GetComponent<Collider2D>();
     }
 }

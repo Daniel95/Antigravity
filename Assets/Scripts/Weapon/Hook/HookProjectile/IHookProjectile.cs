@@ -9,5 +9,7 @@ public interface IHookProjectile {
     void ActivateHookProjectile(Vector2 startPosition);
     void DeactivateHookProjectile();
     void SetParent(Transform parent);
+    void SetPosition(Vector2 position);
+    void SetColliderEnabled(bool enabled);
     void DestroyProjectile();
 }

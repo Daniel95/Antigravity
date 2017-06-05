@@ -7,7 +7,7 @@ public class AbortIfHookProjectileCollidingLayerIsAHookableLayerCommand : Comman
     [Inject] private Ref<IHookProjectile> hookProjectileRef;
 
     protected override void Execute() {
-        if(hookRef.Get().HookableLayers.Contains(hookProjectileRef.Get().CollidingTransformLayer)) {
+        if(!hookRef.Get().HookableLayers.Contains(hookProjectileRef.Get().CollidingTransformLayer)) {
             Abort();
         }
     }

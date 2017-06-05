@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using UnityEngine;
 
 public class DontGoThroughThings : MonoBehaviour {
@@ -18,7 +19,7 @@ public class DontGoThroughThings : MonoBehaviour {
     private Rigidbody2D myRigidbody;
     private Collider2D myCollider;
 
-    void Awake() {
+    private void Awake() {
         myRigidbody = GetComponent<Rigidbody2D>();
         myCollider = GetComponents<Collider2D>().FirstOrDefault();
         if (myCollider == null || myRigidbody == null) {
@@ -32,21 +33,18 @@ public class DontGoThroughThings : MonoBehaviour {
         sqrMinimumExtent = minimumExtent * minimumExtent;
     }
 
-    void FixedUpdate() {
-        Vector2 originalPosition = transform.position;
-        Vector2 movementThisStep = (Vector2)transform.position - previousPosition;
-        float movementSqrMagnitude = movementThisStep.sqrMagnitude;
+    private void FixedUpdate() {
+        if (myCollider.enabled) {
+            Vector2 movementThisStep = (Vector2)transform.position - previousPosition;
+            float movementSqrMagnitude = movementThisStep.sqrMagnitude;
 
-        if (movementSqrMagnitude > sqrMinimumExtent) {
-            float movementMagnitude = Mathf.Sqrt(movementSqrMagnitude);
+            if (movementSqrMagnitude > sqrMinimumExtent) {
+                float movementMagnitude = Mathf.Sqrt(movementSqrMagnitude);
 
-            RaycastHit2D[] hitsInfo = Physics2D.RaycastAll(previousPosition, movementThisStep, movementMagnitude, hitLayers.value);
+                RaycastHit2D hitInfo = Physics2D.Raycast(previousPosition, movementThisStep, movementMagnitude, hitLayers.value);
 
-            for (int i = 0; i < hitsInfo.Length; ++i) {
-                RaycastHit2D hitInfo = hitsInfo[i];
                 if (hitInfo && hitInfo.collider != myCollider) {
                     transform.position = hitInfo.point;
-
                     if (((int)triggerTarget & (int)TriggerTarget.Other) != 0 && hitInfo.collider.isTrigger) {
                         hitInfo.collider.SendMessage("OnTriggerEnter2D", myCollider, SendMessageOptions.DontRequireReceiver);
                     }
@@ -55,8 +53,12 @@ public class DontGoThroughThings : MonoBehaviour {
                     }
                 }
             }
-        }
 
-        previousPosition = transform.position = originalPosition;
+            previousPosition = transform.position;
+        }
+    }
+
+    private void OnEnable() {
+        previousPosition = transform.position;
     }
 }
