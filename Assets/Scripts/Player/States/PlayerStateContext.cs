@@ -59,7 +59,7 @@ public class PlayerStateContext : Context {
             .Do<AbortIfPlayerStateStatusStateIsStateCommand>(PlayerStateStatus.PlayerState.Floating)
             .GotoState<FloatingStateContext>();
 
-        OnChild<GrapplingStateContext, NotMovingEvent>()
+        OnChild<GrapplingStateContext, CharacterIsStuckEvent>()
             .Do<AbortIfPlayerStateStatusStateIsStateCommand>(PlayerStateStatus.PlayerState.Sliding)
             .GotoState<SlidingStateContext>();
     }

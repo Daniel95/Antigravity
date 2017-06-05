@@ -1,5 +1,6 @@
 //todo:
-hookprojectile rope updates 1 frame later.
-player slowsdown when using pullinghook thats located under the player.
+Add screenshot with lighting effects on portfolio.
 player can standstill while grappling when shooting too close.
-
+slowmotion only works when aiming first.
+hook linerenderen is not coming from the gun.
+directionpointer direction has an offset.

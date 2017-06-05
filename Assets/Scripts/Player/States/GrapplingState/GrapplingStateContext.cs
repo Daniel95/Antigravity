@@ -18,10 +18,12 @@ public class GrapplingStateContext : Context {
             .Do<CharacterSetMoveDirectionToVelocityDirectionCommand>()
             .Do<CharacterTemporarySpeedIncreaseCommand>();
 
-        On<NotMovingEvent>()
-            .Do<DispatchCharacterTurnToNextDirectionEventCommand>();
-
         On<UpdateGrapplingStateEvent>()
             .Do<UpdateGrapplingStateVelocityCommand>();
+
+        On<UpdateGrapplingStateEvent>()
+            .Do<AbortIfCharacterIsNotStuckCommand>()
+            .Do<DispatchCharacterTurnToNextDirectionEventCommand>()
+            .Dispatch<CharacterIsStuckEvent>();
     }
 }
