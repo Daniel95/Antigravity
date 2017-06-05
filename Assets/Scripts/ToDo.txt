@@ -1,5 +1,5 @@
 //todo:
-update directionpointer before setting projectile in place so the projectile spawns at the right place.
 hookprojectile rope updates 1 frame later.
 player slowsdown when using pullinghook thats located under the player.
+player can standstill while grappling when shooting too close.
 

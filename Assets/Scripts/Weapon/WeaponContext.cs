@@ -16,6 +16,8 @@ public class WeaponContext : Context {
 
         On<ReleaseInDirectionInputEvent>()
             .Do<AbortIfGameIsPauzedCommand>()
+            .Do<WeaponSetShootDirectionCommand>()
+            .Do<CharacterPointToShootDirectionCommand>()
             .Do<DispatchFireWeaponEventCommand>();
 
         On<CancelDragInputEvent>()

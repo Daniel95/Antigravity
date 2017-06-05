@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class UpdateGrapplingHookRopeCommand : Command {
 
+    [Inject] private Ref<IWeapon> weaponRef;
     [Inject] private Ref<IHook> hookRef;
     [Inject] private Ref<IGrapplingHook> grapplingHookRef;
 
@@ -11,7 +12,7 @@ public class UpdateGrapplingHookRopeCommand : Command {
     protected override void Execute() {
         IHook hook = hookRef.Get();
         IGrapplingHook grapplingHook = grapplingHookRef.Get();
-        Vector2 ownerPosition = hook.Owner.transform.position;
+        Vector2 ownerPosition = weaponRef.Get().Owner.transform.position;
 
         RaycastHit2D hitToAnchor = Physics2D.Linecast(ownerPosition, hook.Anchors[0].position);
 

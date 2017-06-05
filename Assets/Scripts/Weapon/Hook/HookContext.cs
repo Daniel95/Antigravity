@@ -28,7 +28,6 @@ public class HookContext : Context {
             .Do<CharacterStopAimLineCommand>();
 
         On<FireWeaponEvent>()
-            .Do<SetHookShootDirectionCommand>()
             .Do<AbortIfHookStateIsNotActive>(HookState.Inactive)
             .Do<DispatchShootHookEventCommand>()
             .OnAbort<DispatchHoldShotEventCommand>();

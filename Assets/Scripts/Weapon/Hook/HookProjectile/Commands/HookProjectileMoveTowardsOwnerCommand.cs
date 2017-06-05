@@ -2,7 +2,7 @@
 
 public class HookProjectileMoveTowardsOwnerCommand : Command {
 
-    [Inject] private Ref<IHook> hookRef;
+    [Inject] private Ref<IWeapon> weaponRef;
     [Inject] private Ref<IHookProjectile> hookProjectileRef;
 
     [Inject(Label.HookProjectile)] private Ref<IMoveTowards> moveTowardsRef;
@@ -11,7 +11,7 @@ public class HookProjectileMoveTowardsOwnerCommand : Command {
 
     protected override void Execute() {
         moveTowardsRef.Get().StartMovingToTarget(
-            hookRef.Get().Owner.transform, 
+            weaponRef.Get().Owner.transform, 
             hookProjectileReturnedToOwnerEvent
         );
     }

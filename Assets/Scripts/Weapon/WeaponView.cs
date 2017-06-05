@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class WeaponView : View, IWeapon {
 
+    public GameObject Owner { get { return gameObject; } }
+    public Vector2 ShootDirection { get { return destination; } set { destination = value; } }
     public Vector2 SpawnPosition { get { return spawnTransform.position; } }
 
     [Inject] private Ref<IWeapon> weaponRef;
@@ -10,6 +12,8 @@ public class WeaponView : View, IWeapon {
     [SerializeField] private LayerMask rayLayers;
     [SerializeField] private int maxDistance = 40;
     [SerializeField] private Transform spawnTransform;
+
+    private Vector2 destination;
 
     public override void Initialize() {
         weaponRef.Set(this);

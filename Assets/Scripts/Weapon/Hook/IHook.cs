@@ -7,12 +7,8 @@ interface IHook {
     HookState LastHookState { get; }
     List<Transform> Anchors { get; }
     List<int> HookableLayers { get; }
-    LayerMask RayLayers { get; }
-    LineRenderer LineRenderer { get; }
     float DirectionSpeedNeutralValue { get; }
     float MinimalHookDistance { get; }
-    GameObject Owner { get; }
-    Vector2 ShootDirection { get; set; }
 
     void SetHookState(HookState hookstate);
     void AddAnchor(Vector2 position, Transform parent);

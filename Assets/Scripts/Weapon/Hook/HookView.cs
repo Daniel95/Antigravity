@@ -14,8 +14,6 @@ public class HookView : View, IHook, ITriggerer {
     public LayerMask RayLayers { get { return rayLayers; } }
     public float DirectionSpeedNeutralValue { get { return directionSpeedNeutralValue; } }
     public float MinimalHookDistance { get { return minimalHookDistance; } }
-    public GameObject Owner { get { return gameObject; } }
-    public Vector2 ShootDirection { get { return destination; } set { destination = value; } }
 
     public Action ActivateTrigger { get; set; }
     public Action StopTrigger { get; set; }
@@ -35,7 +33,6 @@ public class HookView : View, IHook, ITriggerer {
     private HookState activeHookState = HookState.Inactive;
     private HookState lastHookState = HookState.Inactive;
     private List<Transform> anchors = new List<Transform>();
-    private Vector2 destination;
 
     private Coroutine hookUpdateCoroutine;
 
