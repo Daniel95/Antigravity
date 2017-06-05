@@ -2,6 +2,7 @@
 
 public interface IHookProjectile {
 
+    float DistanceFromOwner { get; set; }
     int CollidingTransformLayer { get; }
     Transform CollidingTransform { get; set; }
     Transform Transform { get; }

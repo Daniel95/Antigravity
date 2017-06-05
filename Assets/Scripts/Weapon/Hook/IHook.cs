@@ -8,7 +8,7 @@ interface IHook {
     List<Transform> Anchors { get; }
     List<int> HookableLayers { get; }
     float DirectionSpeedNeutralValue { get; }
-    float MinimalHookDistance { get; }
+    float MinimalDistanceFromOwner { get; }
 
     void SetHookState(HookState hookstate);
     void AddAnchor(Vector2 position, Transform parent);

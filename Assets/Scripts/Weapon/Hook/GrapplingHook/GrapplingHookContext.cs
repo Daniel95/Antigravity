@@ -6,8 +6,8 @@ public class GrapplingHookContext : Context {
         base.SetBindings();
 
         On<EnterContextSignal>()
-            .Do<GrapplingHookSetDistanceCommand>()
-            .Do<AbortIfHookDistanceIsLowerThenMinimalDistance>()
+            .Do<HookProjectileSetDistanceToOwnerCommand>()
+            .Do<HookProjectileAbortIfDistanceToOwnerIsHigherThenMinimalDistance>()
             .Do<GrapplingHookStartGrappleLockCommand>()
             .Do<ChangeSpeedByAngleCommand>()
             .Dispatch<EnterGrapplingHookContextEvent>()

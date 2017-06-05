@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class HookProjectileView : View, IHookProjectile {
 
+    public float DistanceFromOwner { get { return distanceFromOwner; } set { distanceFromOwner = value; } }
     public Transform Transform { get { return transform; } }
     public Transform CollidingTransform { get { return collidingTransform; } set { collidingTransform = value; } }
     public int CollidingTransformLayer {
@@ -16,9 +17,7 @@ public class HookProjectileView : View, IHookProjectile {
 
     private Collider2D myCollider;
     private Transform collidingTransform;
-    private int hookedLayer;
-    private int anchorIndex;
-    private bool isMovingTowardsOwner;
+    private float distanceFromOwner;
 
     public override void Initialize() {
         hookProjectileRef.Set(this);

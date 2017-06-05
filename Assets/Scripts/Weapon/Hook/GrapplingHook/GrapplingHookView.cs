@@ -5,7 +5,6 @@ using UnityEngine;
 [RequireComponent(typeof(DistanceJoint2D))]
 public class GrapplingHookView : View, IGrapplingHook {
 
-    public float HookDistance { get { return distance; } set { distance = value; } }
     public DistanceJoint2D DistanceJoint { get { return distanceJoint; } set { distanceJoint = value; } }
 
     [Inject] private Ref<IGrapplingHook> grapplingHookRef;
@@ -14,7 +13,6 @@ public class GrapplingHookView : View, IGrapplingHook {
 
     private DistanceJoint2D distanceJoint;
     private Coroutine grappleAnchorUpdateCoroutine;
-    private float distance;
 
     private void Awake() {
         distanceJoint = GetComponent<DistanceJoint2D>();
@@ -25,9 +23,9 @@ public class GrapplingHookView : View, IGrapplingHook {
         grapplingHookRef.Set(this);
     }
 
-    public void StartGrappleLock() {
+    public void StartGrappleLock(float distanceJointDistance) {
         distanceJoint.enabled = true;
-        distanceJoint.distance = distance;
+        distanceJoint.distance = distanceJointDistance;
 
         grappleAnchorUpdateCoroutine = StartCoroutine(GrappleAnchorUpdate());
     }

@@ -13,7 +13,7 @@ public class HookView : View, IHook, ITriggerer {
     public List<int> HookableLayers { get { return hookableLayers; } }
     public LayerMask RayLayers { get { return rayLayers; } }
     public float DirectionSpeedNeutralValue { get { return directionSpeedNeutralValue; } }
-    public float MinimalHookDistance { get { return minimalHookDistance; } }
+    public float MinimalDistanceFromOwner { get { return minimalDistanceFromOwner; } }
 
     public Action ActivateTrigger { get; set; }
     public Action StopTrigger { get; set; }
@@ -25,7 +25,7 @@ public class HookView : View, IHook, ITriggerer {
     [SerializeField] private LayerMask rayLayers;
     [SerializeField] private GameObject hookLinePrefab;
     [SerializeField] private float directionSpeedNeutralValue = 0.15f;
-    [SerializeField] private float minimalHookDistance = 0.75f;
+    [SerializeField] private float minimalDistanceFromOwner = 0.75f;
 
     private LineRenderer lineRenderer;
     private List<int> hookableLayers;

@@ -6,7 +6,11 @@ public class PullingHookContext : Context {
         base.SetBindings();
 
         On<EnterContextSignal>()
-            .Do<SetMoveDirectionToHookProjectileDirectionCommand>()
+            .Do<HookProjectileSetDistanceToOwnerCommand>()
+            .Do<HookProjectileAbortIfDistanceToOwnerIsHigherThenMinimalDistance>()
+            .Do<SetMoveDirectionToHookProjectileDirectionCommand>();
+
+        On<EnterContextSignal>()
             .Dispatch<EnterPullingHookContextSignal>()
             .Dispatch<CancelHookEvent>();
     }
