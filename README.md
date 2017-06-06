@@ -8,17 +8,18 @@ This project has recently been remade with the IoCPlus framework.
 
 Interesting Scripts:
 
+HookContext: https://github.com/Daniel95/Antigravity/blob/master/Assets/Scripts/Weapon/Hook/HookContext.cs
+A context is used to pair events and commands to each other.
+The HookContext in particulair controls the behaviour of the hook, the weapon of the player.
+
 CharacterVelocity: https://github.com/Daniel95/Antigravity/blob/master/Assets/Scripts/Character/Velocity/CharacterVelocityView.cs
 Used by all characters in the game to easily control their velocity.
 
-Field generator: https://github.com/Daniel95/Antigravity/blob/master/Assets/Scripts/Legacy/UI/LevelSelect/FieldGenerator.cs
-Used by the levelselect screen to generate a grid of levels.
-
-HookContext: https://github.com/Daniel95/Antigravity/blob/master/Assets/Scripts/Weapon/Hook/HookContext.cs
-HookContext uses signals and commands to dictate the behaviour of the hook, the weapon of the player.
+MoveTowards: https://github.com/Daniel95/Antigravity/blob/master/Assets/Scripts/Tools/MoveTowards/MoveTowardsView.cs
+A scripts used by a lot of components to move from one place to another.
 
 CollisionDirection: https://github.com/Daniel95/Antigravity/blob/master/Assets/Scripts/Character/CollisionDirection/CharacterCollisionDirectionView.cs
 Used by the player to detect the direction of collisions.
 
-MoveTowars: https://github.com/Daniel95/Antigravity/blob/master/Assets/Scripts/Tools/MoveTowards/MoveTowardsView.cs
-A scripts used by alot of components to move from one place to another.
+Field generator: https://github.com/Daniel95/Antigravity/blob/master/Assets/Scripts/Legacy/UI/LevelSelect/FieldGenerator.cs
+Used by the levelselect screen to generate a grid of levels.
