@@ -1,4 +1,8 @@
 //todo:
-Add screenshot with lighting effects on portfolio.
-hook linerenderen is not coming from the gun.
-directionpointer direction has an offset.
+
+look into level loading (additive?) and how to add ui elements depending on level.
+water
+fix progress in levels.
+give overlap shader area's a glow.
+look into directionpointer and linerenderen update order in comparison to the hookprojectile.
+lighting is not working properly.
