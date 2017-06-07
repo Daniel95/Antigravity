@@ -9,7 +9,7 @@ public class CanvasUIView : View, ICanvasUI {
 
     [Inject] private Ref<ICanvasUI> canvasRef;
 
-    [SerializeField] private float dragThresholdInInches;
+    [SerializeField] private float dragThresholdInInches = 0.1f;
 
     private Dictionary<CanvasLayer, Transform> layers = new Dictionary<CanvasLayer, Transform>();
 
