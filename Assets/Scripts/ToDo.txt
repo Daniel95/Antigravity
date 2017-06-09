@@ -5,6 +5,8 @@ fix progress in levels.
 make selection of levels that are workable.
 Add ui elements depending on level
 
+improve main menu
+
 import SRDebugger.
 water
 import shaderforge

@@ -7,7 +7,7 @@ public class LoadSceneView : View {
 
     [Inject] private LoadSceneEvent loadSceneEvent;
 
-    public void LoadScene(Scenes scene) {
+    public void LoadScene() {
         loadSceneEvent.Dispatch(scene);
     }
 }

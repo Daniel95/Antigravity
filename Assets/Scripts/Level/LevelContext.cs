@@ -6,7 +6,8 @@ public class LevelContext : Context {
         base.SetBindings();
 
         On<EnterContextSignal>()
-            .Do<AddLevelViewCommand>();
+            .AddContext<PlayerContext>()
+            .AddContext<CameraContext>();
 
     }
 
