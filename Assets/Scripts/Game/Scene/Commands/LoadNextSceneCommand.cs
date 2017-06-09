@@ -6,9 +6,14 @@ public class LoadNextSceneCommand : Command {
     [Inject] private IContext context;
     [Inject] private SceneState gameStateModel;
 
+    [Inject] private LoadSceneCompletedEvent loadSceneCompletedEvent;
+
+    private Scenes scene;
+
     protected override void ExecuteOverTime() {
         int nextSceneIndex = gameStateModel.currentSceneIndex + 1;
-        string sceneName = ((Scenes)nextSceneIndex).ToString();
+        scene = (Scenes)nextSceneIndex;
+        string sceneName = scene.ToString();
 
         if (!SceneListCheck.Has(sceneName)) {
             Debug.LogWarning(sceneName + " is not available.");
@@ -22,8 +27,12 @@ public class LoadNextSceneCommand : Command {
     private void OnLoaded() {
         gameStateModel.currentSceneIndex++;
 
-        LevelView level = Object.FindObjectOfType<LevelView>();
-        context.AddView(level);
+        ViewContainerView ViewContainerView = Object.FindObjectOfType<ViewContainerView>();
+        if(ViewContainerView != null) {
+            context.AddView(ViewContainerView);
+        }
+
+        loadSceneCompletedEvent.Dispatch(scene);
 
         Release();
     }

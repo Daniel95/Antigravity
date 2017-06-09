@@ -6,7 +6,7 @@ public class GameUIPlayContext : Context {
         base.SetBindings();
 
         On<EnterContextSignal>()
-            .Do<InstantiateViewToCanvasLayerCommand>("UI/GameUI/PlayUI", CanvasLayer.UI)
+            .Do<InstantiateViewInCanvasLayerCommand>("UI/GameUI/PlayUI", CanvasLayer.UI)
             .Do<PauseTimeCommand>(false);
 
     }

@@ -6,6 +6,7 @@ public class LevelContext : Context {
         base.SetBindings();
 
         On<EnterContextSignal>()
+            .AddContext<GameUIContext>()
             .AddContext<PlayerContext>()
             .AddContext<CameraContext>();
 

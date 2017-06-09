@@ -1,15 +1,16 @@
 ﻿using IoCPlus;
 using UnityEngine;
 
-public class LoadSceneCommand : Command<Scenes> {
+public class LoadSceneCommand : Command {
 
     [Inject] private IContext context;
-    [Inject] private SceneState gameStateModel;
+    [Inject] private SceneState sceneState;
 
-    private Scenes scene;
+    [Inject] private LoadSceneCompletedEvent loadSceneCompletedEvent;
 
-    protected override void ExecuteOverTime(Scenes scene) {
-        this.scene = scene;
+    [InjectParameter] private Scenes scene;
+
+    protected override void ExecuteOverTime() {
         string sceneName = scene.ToString();
 
         if (!SceneListCheck.Has(sceneName)) {
@@ -22,10 +23,14 @@ public class LoadSceneCommand : Command<Scenes> {
     }
 
     private void OnLoaded() {
-        gameStateModel.currentSceneIndex = (int)scene;
+        sceneState.currentSceneIndex = (int)scene;
 
-        LevelView level = Object.FindObjectOfType<LevelView>();
-        context.AddView(level);
+        ViewContainerView ViewContainerView = Object.FindObjectOfType<ViewContainerView>();
+        if (ViewContainerView != null) {
+            context.AddView(ViewContainerView);
+        }
+
+        loadSceneCompletedEvent.Dispatch(scene);
 
         Release();
     }

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(Text))]
 public class FpsCounter : MonoBehaviour {
     
     private Text text;
@@ -14,7 +15,7 @@ public class FpsCounter : MonoBehaviour {
         text = GetComponent<Text>();
 	}
 
-    void Update() {
+    private void Update() {
         timeleft -= Time.deltaTime;
         accumulated += Time.timeScale / Time.deltaTime;
         ++frames;

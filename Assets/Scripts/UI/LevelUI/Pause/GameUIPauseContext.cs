@@ -6,7 +6,7 @@ public class GameUIPauseContext : Context {
         base.SetBindings();
 
         On<EnterContextSignal>()
-            .Do<InstantiateViewToCanvasLayerCommand>("UI/GameUI/PauseUI", CanvasLayer.UI)
+            .Do<InstantiateViewInCanvasLayerCommand>("UI/GameUI/PauseUI", CanvasLayer.UI)
             .Do<PauseTimeCommand>(true);
 
     }

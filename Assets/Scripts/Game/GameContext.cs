@@ -6,22 +6,25 @@ public class GameContext : Context {
     protected override void SetBindings() {
         base.SetBindings();
 
-        Bind<GameStateModel>();
+        Bind<SceneState>();
         Bind<PlayerStatus>();
 
-        On<EnterContextSignal>()
-            .Do<InstantiateViewPrefabCommand>("Views/UI/CanvasUI")
-            .AddContext<UIContext>();
+        Bind<Ref<ICanvasUI>>();
 
-        On<LoadSceneEvent>()
+        On<EnterContextSignal>()
+            .Do<InstantiateViewPrefabCommand>("UI/Canvas/CanvasUI")
+            .Do<InstantiateViewInCanvasLayerCommand>("UI/FPSCounterUI", CanvasLayer.UI)
+            .Do<DispatchLoadSceneCommand>(Scenes.MainMenu);
+
+        On<LoadSceneCompletedEvent>()
             .Do<AbortIfSceneIsScenesCommand>(new List<Scenes>() { Scenes.MainMenu, Scenes.LevelSelect })
             .GotoState<LevelContext>();
 
-        On<LoadSceneEvent>()
+        On<LoadSceneCompletedEvent>()
             .Do<AbortIfSceneIsNotSceneCommand>(Scenes.MainMenu)
-            .GotoState<MainMenuUIContext>();
+            .GotoState<MainMenuContext>();
 
-        On<LoadSceneEvent>()
+        On<LoadSceneCompletedEvent>()
             .Do<AbortIfSceneIsNotSceneCommand>(Scenes.LevelSelect)
             .GotoState<LevelSelectContext>();
 
