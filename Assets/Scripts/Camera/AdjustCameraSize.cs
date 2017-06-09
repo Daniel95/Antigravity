@@ -14,6 +14,6 @@ public class AdjustCameraSize : MonoBehaviour {
     {
         Camera cam = GetComponent<Camera>();
 
-        cam.orthographicSize = Platform.PlatformIsMobile() ? mobileCameraSize : pcCameraSize;
+        cam.orthographicSize = PlatformHelper.PlatformIsMobile() ? mobileCameraSize : pcCameraSize;
     }
 }

@@ -22,7 +22,7 @@ public class LoadNextSceneCommand : Command {
     private void OnLoaded() {
         gameStateModel.currentSceneIndex++;
 
-        LevelView level = UnityEngine.Object.FindObjectOfType<LevelView>();
+        LevelView level = Object.FindObjectOfType<LevelView>();
         context.AddView(level);
 
         Release();

@@ -1,8 +1,13 @@
 //todo:
 
-look into level loading (additive?) and how to add ui elements depending on level.
-water
+fix additive level loading.
 fix progress in levels.
+make selection of levels that are workable.
+Add ui elements depending on level
+
+import SRDebugger.
+water
+import shaderforge
 give overlap shader area's a glow.
 look into directionpointer and linerenderen update order in comparison to the hookprojectile.
 lighting is not working properly.

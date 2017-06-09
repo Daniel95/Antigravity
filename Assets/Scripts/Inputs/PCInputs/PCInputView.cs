@@ -48,7 +48,7 @@ public class PCInputView : View, IPCInput {
                 rawJumpInputEvent.Dispatch();
             }
 
-            if (Input.GetKeyDown(aimInput) && !InputDetect.CheckUICollision(Input.mousePosition)) {
+            if (Input.GetKeyDown(aimInput) && !InputHelper.CheckUICollision(Input.mousePosition)) {
                 touchState = TouchStates.Tapped;
 
                 startDownTime = Time.time;

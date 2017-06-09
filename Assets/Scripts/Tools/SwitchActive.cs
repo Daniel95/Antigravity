@@ -6,10 +6,8 @@ public class SwitchActive : MonoBehaviour {
 
     [SerializeField] private Element[] elements;
 
-    public void SwitchCurrentState()
-    {
-        for (int i = 0; i < elements.Length; i++)
-        {
+    public void SwitchCurrentState() {
+        for (int i = 0; i < elements.Length; i++) {
             //switch the current state
             elements[i].gameObject.SetActive(!elements[i].gameObject.activeSelf);
 
@@ -19,18 +17,15 @@ public class SwitchActive : MonoBehaviour {
     }
 
     public void SwitchToNextState() {
-        for (int i = 0; i < elements.Length; i++)
-        {
+        for (int i = 0; i < elements.Length; i++) {
             elements[i].gameObject.SetActive(elements[i].nextState);
 
             elements[i].nextState = !elements[i].gameObject.activeSelf;
         }
     }
 
-    public void SwitchToState(bool _state)
-    {
-        for (int i = 0; i < elements.Length; i++)
-        {
+    public void SwitchToState(bool _state) {
+        for (int i = 0; i < elements.Length; i++) {
             elements[i].gameObject.SetActive(_state);
 
             elements[i].nextState = !elements[i].gameObject.activeSelf;
@@ -42,5 +37,4 @@ public class SwitchActive : MonoBehaviour {
         public GameObject gameObject;
         public bool nextState;
     }
-
 }

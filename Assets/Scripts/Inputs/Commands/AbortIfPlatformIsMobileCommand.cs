@@ -3,7 +3,7 @@
 public class AbortIfPlatformIsMobileCommand : Command {
 
     protected override void Execute() {
-        if(Platform.PlatformIsMobile()) {
+        if(PlatformHelper.PlatformIsMobile()) {
             Abort();
         }
     }

@@ -55,7 +55,7 @@ public class MobileInputView : View, IMobileInput {
 
     private IEnumerator InputUpdate() {
         while (true) {
-            if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began && !InputDetect.CheckUICollision(Input.GetTouch(0).position)) {
+            if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began && !InputHelper.CheckUICollision(Input.GetTouch(0).position)) {
                 TouchState = TouchStates.Tapped;
                 startTouchPosition = Input.GetTouch(0).position;
                 StartDownTime = Time.time;
