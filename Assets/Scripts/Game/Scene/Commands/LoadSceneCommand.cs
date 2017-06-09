@@ -4,7 +4,7 @@ using UnityEngine;
 public class LoadSceneCommand : Command<Scenes> {
 
     [Inject] private IContext context;
-    [Inject] private GameStateModel gameStateModel;
+    [Inject] private SceneState gameStateModel;
 
     private Scenes scene;
 

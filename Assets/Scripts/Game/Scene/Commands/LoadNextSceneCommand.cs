@@ -4,7 +4,7 @@ using UnityEngine;
 public class LoadNextSceneCommand : Command {
 
     [Inject] private IContext context;
-    [Inject] private GameStateModel gameStateModel;
+    [Inject] private SceneState gameStateModel;
 
     protected override void ExecuteOverTime() {
         int nextSceneIndex = gameStateModel.currentSceneIndex + 1;
