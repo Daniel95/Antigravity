@@ -1,11 +1,11 @@
-﻿using UnityEngine;
+﻿using IoCPlus;
+using UnityEngine;
 
 public interface ICanvasUI {
 
-    Vector2 ScreenToCanvas(Vector2 screenPosition);
-    Vector2 ScaleToCanvas(Vector2 scale);
-    float GetCanvasScale();
-
-    void AddChild(GameObject child, CanvasLayer layer);
+    Transform GetCanvasLayerTransform(CanvasLayer canvasLayer);
+    void AddViewToCanvasLayer(View child, CanvasLayer layer);
+    void RemoveCanvasLayerContentView(View view, CanvasLayer canvasLayer);
+    View GetCanvasLayerContentView(string name, CanvasLayer canvasLayer);
 
 }

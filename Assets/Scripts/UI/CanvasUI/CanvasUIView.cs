@@ -11,34 +11,36 @@ public class CanvasUIView : View, ICanvasUI {
 
     [SerializeField] private float dragThresholdInInches = 0.1f;
 
-    private Dictionary<CanvasLayer, Transform> layers = new Dictionary<CanvasLayer, Transform>();
+    private Dictionary<CanvasLayer, Transform> canvasLayers = new Dictionary<CanvasLayer, Transform>();
+
+    private Dictionary<CanvasLayer, List<View>> canvasLayerViews = new Dictionary<CanvasLayer, List<View>>();
 
     public override void Initialize() {
         base.Initialize();
         canvasRef.Set(this);
     }
 
-    public Vector2 ScreenToCanvas(Vector2 screenPosition) {
-        Canvas canvas = GetComponent<Canvas>();
-        RectTransform rectTransform = canvas.GetComponent<RectTransform>();
-
-        Vector2 res;
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(rectTransform, screenPosition, canvas.worldCamera, out res);
-
-        return res;
+    public Transform GetCanvasLayerTransform(CanvasLayer canvasLayer) {
+        return canvasLayers[canvasLayer];
     }
 
-    public Vector2 ScaleToCanvas(Vector2 scale) {
-        return new Vector2(scale.x / transform.localScale.x, scale.y / transform.localScale.y);
+    public void AddViewToCanvasLayer(View view, CanvasLayer canvasLayer) {
+        Transform layerTransform = canvasLayers[canvasLayer];
+        canvasLayerViews[canvasLayer].Add(view);
+        view.transform.SetParent(layerTransform, false);
     }
 
-    public float GetCanvasScale() {
-        return transform.localScale.x;
+    public View GetCanvasLayerContentView(string name, CanvasLayer canvasLayer) {
+        View canvasLayerView = canvasLayerViews[canvasLayer].Find(x => x.name == name);
+        if (canvasLayerView == null) {
+            Debug.LogWarning("Can't find CanvasLayer content item " + name + " in " + canvasLayer.ToString());
+        }
+
+        return canvasLayerView;
     }
 
-    public void AddChild(GameObject child, CanvasLayer layer) {
-        Transform layerTransform = layers[layer];
-        child.transform.SetParent(layerTransform, false);
+    public void RemoveCanvasLayerContentView(View view, CanvasLayer canvasLayer) {
+        canvasLayerViews[canvasLayer].Remove(view);
     }
 
     private void Awake() {
@@ -59,7 +61,8 @@ public class CanvasUIView : View, ICanvasUI {
             layerGameObject.transform.SetParent(transform, false);
             layerGameObject.GetComponent<RectTransform>().sizeDelta = rectTransform.sizeDelta;
 
-            layers.Add((CanvasLayer)values.Current, layerGameObject.transform);
+            canvasLayers.Add((CanvasLayer)values.Current, layerGameObject.transform);
+            canvasLayerViews.Add((CanvasLayer)values.Current, new List<View>());
         }
     }
 }
