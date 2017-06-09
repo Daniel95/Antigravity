@@ -18,7 +18,7 @@ Used by all characters in the game to easily control their velocity.
 MoveTowards: https://github.com/Daniel95/Antigravity/blob/master/Assets/Scripts/Tools/MoveTowards/MoveTowardsView.cs
 A scripts used by a lot of components to move from one place to another.
 
-CollisionDirection: https://github.com/Daniel95/Antigravity/blob/master/Assets/Scripts/HitDetection/Collisions/CollisionHitDetectionView.cs
+CollisionDirection: https://github.com/Daniel95/Antigravity/blob/master/Assets/Scripts/Character/SurroundingDirection/CollisionDirection/CharacterCollisionDirectionView.cs
 Used by the player to detect the direction of collisions.
 
 Field generator: https://github.com/Daniel95/Antigravity/blob/master/Assets/Scripts/Legacy/UI/LevelSelect/FieldGenerator.cs
