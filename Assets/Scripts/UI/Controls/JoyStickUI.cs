@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class DragDirIndicator : MonoBehaviour {
+public class JoyStickUI : MonoBehaviour {
 
     [SerializeField] private Transform indicator;
 

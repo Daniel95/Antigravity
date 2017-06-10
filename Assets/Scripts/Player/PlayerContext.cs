@@ -5,7 +5,6 @@ public class PlayerContext : Context {
     protected override void SetBindings() {
         base.SetBindings();
 
-        //BindLabeled<Ref<IShoot>>("Views/Player/ShootView");
         Bind<InputModel>();
 
         Bind<Ref<IWeapon>>();
@@ -32,7 +31,6 @@ public class PlayerContext : Context {
         Bind<Ref<IRevivedState>>();
         BindLabeled<Ref<IMoveTowards>>(Label.Player);
 
-        //character
         Bind<CharacterTurnToNextDirectionEvent>();
         Bind<CharacterSetMoveDirectionEvent>();
         Bind<CharacterBoostSpeedEvent>();
@@ -46,7 +44,6 @@ public class PlayerContext : Context {
         Bind<CharacterPointToDirectionEvent>();
         Bind<CharacterSetVelocityEvent>();
 
-        //player
         Bind<CancelDragInputEvent>();
         Bind<DraggingInputEvent>();
         Bind<HoldingInputEvent>();
@@ -57,7 +54,6 @@ public class PlayerContext : Context {
         Bind<EnableActionInputEvent>();
         Bind<EnableShootingInputEvent>();
 
-        //player collisions
         Bind<PlayerCollisionEnter2DEvent>();
         Bind<PlayerCollisionStay2DEvent>();
         Bind<PlayerCollisionExit2DEvent>();
@@ -65,10 +61,8 @@ public class PlayerContext : Context {
         Bind<PlayerTriggerStay2DEvent>();
         Bind<PlayerTriggerExit2DEvent>();
 
-        //player states
         Bind<UpdateGrapplingStateEvent>();
 
-        //raw inputs
         Bind<RawCancelDragInputEvent>();
         Bind<RawDraggingInputEvent>();
         Bind<RawHoldingInputEvent>();
@@ -77,23 +71,19 @@ public class PlayerContext : Context {
         Bind<RawReleaseInputEvent>();
         Bind<RawTappedExpiredInputEvent>();
 
-        //weapons
         Bind<FireWeaponEvent>();
         Bind<AimWeaponEvent>();
         Bind<CancelAimWeaponEvent>();
 
-        //hook
         Bind<UpdateHookEvent>();
         Bind<CancelHookEvent>();
         Bind<HookProjectileMoveTowardsOwnerCompletedEvent>();
         Bind<HookProjectileMoveTowardsNextAnchorEvent>();
         Bind<HoldShotEvent>();
 
-        //grapplinghook
         Bind<EnterGrapplingHookContextEvent>();
         Bind<UpdateGrapplingHookRopeEvent>();
 
-        //pullinghook
         Bind<EnterPullingHookContextSignal>();
 
         On<EnterContextSignal>()
@@ -117,7 +107,6 @@ public class PlayerContext : Context {
             .Do<InstantiatePlayerCommand>()
             .Do<StartScreenShakeCommand>();
 
-        //collisions
         On<CollisionEnter2DEvent>()
             .Do<AbortIfGameObjectIsNotPlayerCommand>()
             .Do<DispatchPlayerCollisionEnter2DEvent>();

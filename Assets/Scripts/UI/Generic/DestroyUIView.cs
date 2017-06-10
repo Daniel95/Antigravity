@@ -7,7 +7,7 @@ public class DestroyUIView : View {
     private AnimatedPanel animatedPanel;
 
     public override void Dispose() {
-        if(animatedPanel == null) {
+        if (animatedPanel == null) {
             Destroy();
             return;
         }

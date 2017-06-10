@@ -9,6 +9,10 @@ public class InstantiateViewInCanvasLayerCommand : Command<string, CanvasLayer> 
 
     protected override void Execute(string prefabPath, CanvasLayer canvasLayer) {
         View prefab = Resources.Load<View>(prefabPath);
+        if (prefab == null) {
+            Debug.LogWarning("Can't instantiate view prefab as no prefab is found at given path '" + prefabPath + "'.");
+            return;
+        }
         View view = context.InstantiateView(prefab);
         canvasUIRef.Get().AddViewToCanvasLayer(view, canvasLayer);
     }

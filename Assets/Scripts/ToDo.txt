@@ -2,10 +2,10 @@
 
 
 current bugs:
-camera that lives in main and scenes set it right (target and bounds).
+rename and replace mainmenu to mainmenuui
+
 mainmenu gotoscene error after switching from startmenu to controlmenu
 check if GetCanvasLayerContentView doesnt need after name clone.
-switch screenshake updated one.
 
 
 fix additive level loading.

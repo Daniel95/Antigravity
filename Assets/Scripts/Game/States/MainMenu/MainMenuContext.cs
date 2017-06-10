@@ -10,11 +10,11 @@ public class MainMenuContext : Context {
         On<EnterContextSignal>()
             .GotoState<StartMenuContext>();
 
-        On<GoToMainMenuStateEvent>()
+        OnChild<ControlsMenuContext, GoToMainMenuStateEvent>()
             .Do<AbortIfMainMenuStateIsNotMainMenuStateCommand>(MainMenuState.StartMenu)
             .GotoState<StartMenuContext>();
 
-        On<GoToMainMenuStateEvent>()
+        OnChild<StartMenuContext, GoToMainMenuStateEvent>()
             .Do<AbortIfMainMenuStateIsNotMainMenuStateCommand>(MainMenuState.ControlsMenu)
             .GotoState<ControlsMenuContext>();
     }

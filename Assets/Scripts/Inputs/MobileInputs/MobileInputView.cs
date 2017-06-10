@@ -23,7 +23,7 @@ public class MobileInputView : View, IMobileInput {
     private TouchStates TouchState = TouchStates.None;
     private float StartDownTime;
     private GameObject joyStick;
-    private DragDirIndicator dragDirIndicator;
+    private JoyStickUI dragDirIndicator;
     private Vector2 startTouchPosition;
 
     public override void Initialize() {
@@ -37,7 +37,7 @@ public class MobileInputView : View, IMobileInput {
     public void EnableInput(bool enable) {
         if (enable) {
             joyStick = Instantiate(joyStickPrefab, Vector2.zero, new Quaternion(0, 0, 0, 0));
-            dragDirIndicator = joyStick.GetComponent<DragDirIndicator>();
+            dragDirIndicator = joyStick.GetComponent<JoyStickUI>();
             joyStick.SetActive(false);
             inputUpdateCoroutine = StartCoroutine(InputUpdate());
 

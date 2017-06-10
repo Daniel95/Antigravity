@@ -7,7 +7,7 @@ public class LevelContext : Context {
 
         On<EnterContextSignal>()
             .Do<DebugLogMessageCommand>("EnterContextSignal LevelContext")
-            .AddContext<GameUIContext>()
+            .AddContext<LevelUIContext>()
             .AddContext<PlayerContext>()
             .Do<SetCameraTargetCommand>()
             .Do<SetCameraBoundsCommand>();
