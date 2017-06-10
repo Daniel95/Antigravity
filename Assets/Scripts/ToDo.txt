@@ -2,14 +2,9 @@
 
 
 current bugs:
-
-DestroyUIView should be popout
-
-unload previous scene.
-rename and replace mainmenu to mainmenuui
-
-mainmenu gotoscene error after switching from startmenu to controlmenu
-check if GetCanvasLayerContentView doesnt need after name clone.
+Unload previous scene.
+Fix camera and player behaving weird.
+fix errors when going back to MainMenu.
 
 
 fix additive level loading.
