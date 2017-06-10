@@ -1,6 +1,6 @@
 ﻿using IoCPlus;
 
-public class StartMenuContext : Context {
+public class StartMenuUIContext : Context {
 
     protected override void SetBindings() {
         base.SetBindings();

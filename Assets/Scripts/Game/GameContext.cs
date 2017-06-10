@@ -13,6 +13,8 @@ public class GameContext : Context {
         Bind<Ref<IScreenShake>>();
         Bind<Ref<IFollowCamera>>();
 
+        Bind<LoadSceneEvent>();
+
         On<EnterContextSignal>()
             .Do<InstantiateViewPrefabCommand>("UI/Canvas/CanvasUI")
             .Do<InstantiateViewInCanvasLayerCommand>("UI/FPSCounterUI", CanvasLayer.UI)
@@ -25,7 +27,7 @@ public class GameContext : Context {
 
         On<LoadSceneCompletedEvent>()
             .Do<AbortIfSceneIsNotSceneCommand>(Scenes.MainMenu)
-            .GotoState<MainMenuContext>();
+            .GotoState<MainMenuUIContext>();
 
         On<LoadSceneCompletedEvent>()
             .Do<AbortIfSceneIsNotSceneCommand>(Scenes.LevelSelect)

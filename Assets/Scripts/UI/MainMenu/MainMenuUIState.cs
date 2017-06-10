@@ -1,4 +1,4 @@
-﻿public enum MainMenuState {
+﻿public enum MainMenuUIState {
 
     ControlsMenu,
     StartMenu,

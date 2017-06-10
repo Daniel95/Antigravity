@@ -1,6 +1,6 @@
 ﻿using IoCPlus;
 
-public class ControlsMenuContext : Context {
+public class ControlsMenuUIContext : Context {
 
     protected override void SetBindings() {
         base.SetBindings();
