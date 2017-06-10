@@ -1,6 +1,12 @@
 //todo:
 
-check if GetCanvasLayerContentView doesnt need clone
+
+current bugs:
+camera that lives in main and scenes set it right (target and bounds).
+mainmenu gotoscene error after switching from startmenu to controlmenu
+check if GetCanvasLayerContentView doesnt need after name clone.
+switch screenshake updated one.
+
 
 fix additive level loading.
 fix progress in levels.
@@ -15,3 +21,6 @@ import shaderforge
 give overlap shader area's a glow.
 look into directionpointer and linerenderen update order in comparison to the hookprojectile.
 lighting is not working properly.
+
+
+switch scr

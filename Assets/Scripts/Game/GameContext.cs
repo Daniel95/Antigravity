@@ -10,14 +10,18 @@ public class GameContext : Context {
         Bind<PlayerStatus>();
 
         Bind<Ref<ICanvasUI>>();
+        Bind<Ref<IScreenShake>>();
+        Bind<Ref<IFollowCamera>>();
 
         On<EnterContextSignal>()
             .Do<InstantiateViewPrefabCommand>("UI/Canvas/CanvasUI")
             .Do<InstantiateViewInCanvasLayerCommand>("UI/FPSCounterUI", CanvasLayer.UI)
+            .Do<AddCameraViewsCommand>()
             .Do<DispatchLoadSceneCommand>(Scenes.MainMenu);
 
         On<LoadSceneCompletedEvent>()
             .Do<AbortIfSceneIsScenesCommand>(new List<Scenes>() { Scenes.MainMenu, Scenes.LevelSelect })
+            .Do<DebugLogMessageCommand>("loaded level")
             .GotoState<LevelContext>();
 
         On<LoadSceneCompletedEvent>()

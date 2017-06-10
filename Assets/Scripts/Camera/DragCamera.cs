@@ -1,8 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class DragCamera : MonoBehaviour
-{
+public class DragCamera : MonoBehaviour {
     [SerializeField]
     private float dragSpeed = 4.6f;
 
@@ -13,13 +12,13 @@ public class DragCamera : MonoBehaviour
 
     private Vector2 _lastMousePos;
 
-    private BoundsCamera _boundsCamera;
+    private CameraBounds _boundsCamera;
 
     private float zStartPos;
 
     private void Start()
     {
-        _boundsCamera = GetComponent<BoundsCamera>();
+        _boundsCamera = GetComponent<CameraBounds>();
         zStartPos = transform.position.z;
     }
 
@@ -39,7 +38,7 @@ public class DragCamera : MonoBehaviour
             _lastMousePos = Input.mousePosition;
         }
 
-        transform.position = _boundsCamera.GetBoundsPosition((Vector2)transform.position + _velocity);
+        transform.position = _boundsCamera.GetClampedBoundsPosition((Vector2)transform.position + _velocity);
         transform.position = new Vector3(transform.position.x, transform.position.y, zStartPos);
         _velocity /= velocityDivider;
     }
