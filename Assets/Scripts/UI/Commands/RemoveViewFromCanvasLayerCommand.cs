@@ -9,8 +9,9 @@ public class RemoveViewFromCanvasLayerCommand : Command<string, CanvasLayer> {
 
     protected override void Execute(string viewName, CanvasLayer canvasLayer) {
         View view = canvasUIRef.Get().GetCanvasLayerContentView(viewName, canvasLayer);
+        canvasUIRef.Get().RemoveCanvasLayerContentView(view, canvasLayer);
 
-        DestroyUIView destroyUIView = view.GetComponent<DestroyUIView>();
+        PopOutAndDestroyUIView destroyUIView = view.GetComponent<PopOutAndDestroyUIView>();
 
         if (destroyUIView != null) {
             destroyUIView.PopOutAndDestroy();

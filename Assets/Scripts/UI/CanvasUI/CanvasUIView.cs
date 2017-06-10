@@ -31,9 +31,9 @@ public class CanvasUIView : View, ICanvasUI {
     }
 
     public View GetCanvasLayerContentView(string name, CanvasLayer canvasLayer) {
-        View canvasLayerView = canvasLayerViews[canvasLayer].Find(x => x.name == name);
+        View canvasLayerView = canvasLayerViews[canvasLayer].Find(x => x.name == name + "(Clone)");
         if (canvasLayerView == null) {
-            Debug.LogWarning("Can't find CanvasLayer content item " + name + " in " + canvasLayer.ToString());
+            Debug.LogWarning("Can't find CanvasLayer view " + name + " in CanvasLayer." + canvasLayer.ToString());
         }
 
         return canvasLayerView;

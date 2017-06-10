@@ -2,18 +2,10 @@
 using System;
 using UnityEngine;
 
-public class DestroyUIView : View {
+[RequireComponent(typeof(AnimatedPanel))]
+public class PopOutAndDestroyUIView : View {
 
     private AnimatedPanel animatedPanel;
-
-    public override void Dispose() {
-        if (animatedPanel == null) {
-            Destroy();
-            return;
-        }
-
-        PopOutAndDestroy(null);
-    }
 
     public void PopOutAndDestroy(Action onPopOutCompleted = null) {
         animatedPanel.PopOut(onPopOutCompleted, true);

@@ -2,6 +2,10 @@
 
 
 current bugs:
+
+DestroyUIView should be popout
+
+unload previous scene.
 rename and replace mainmenu to mainmenuui
 
 mainmenu gotoscene error after switching from startmenu to controlmenu

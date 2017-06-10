@@ -21,7 +21,6 @@ public class GameContext : Context {
 
         On<LoadSceneCompletedEvent>()
             .Do<AbortIfSceneIsScenesCommand>(new List<Scenes>() { Scenes.MainMenu, Scenes.LevelSelect })
-            .Do<DebugLogMessageCommand>("loaded level")
             .GotoState<LevelContext>();
 
         On<LoadSceneCompletedEvent>()
