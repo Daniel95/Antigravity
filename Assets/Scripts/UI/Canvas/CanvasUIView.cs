@@ -12,7 +12,6 @@ public class CanvasUIView : View, ICanvasUI {
     [SerializeField] private float dragThresholdInInches = 0.1f;
 
     private Dictionary<CanvasLayer, Transform> canvasLayers = new Dictionary<CanvasLayer, Transform>();
-
     private Dictionary<CanvasLayer, List<View>> canvasLayerViews = new Dictionary<CanvasLayer, List<View>>();
 
     public override void Initialize() {
@@ -32,6 +31,7 @@ public class CanvasUIView : View, ICanvasUI {
 
     public View GetCanvasLayerView(string name, CanvasLayer canvasLayer) {
         View canvasLayerView = canvasLayerViews[canvasLayer].Find(x => x.name == name + "(Clone)");
+
         if (canvasLayerView == null) {
             Debug.LogWarning("Can't find CanvasLayer view " + name + " in CanvasLayer." + canvasLayer.ToString());
         }
@@ -42,10 +42,10 @@ public class CanvasUIView : View, ICanvasUI {
     public void DestroyCanvasLayerView(View view, CanvasLayer canvasLayer, Action onDestroyCompleted = null) {
         canvasLayerViews[canvasLayer].Remove(view);
 
-        PopOutAndDestroyUIView destroyUIView = view.GetComponent<PopOutAndDestroyUIView>();
+        PopOutAndDestroyUIView popOutAndDestroyUIView = view.GetComponent<PopOutAndDestroyUIView>();
 
-        if (destroyUIView != null) {
-            destroyUIView.PopOutAndDestroy(onDestroyCompleted);
+        if (popOutAndDestroyUIView != null) {
+            popOutAndDestroyUIView.PopOutAndDestroy(onDestroyCompleted);
             return;
         }
 
