@@ -18,15 +18,15 @@ public class ControlsMenuContext : Context {
 
 
         On<LeaveContextSignal>()
-            .Do<RemoveViewFromCanvasLayerCommand>("GoToStartMenuButtonUI", CanvasLayer.UI);
+            .Do<DestroyViewFromCanvasLayerCommand>("GoToStartMenuButtonUI", CanvasLayer.UI);
 
         On<LeaveContextSignal>()
             .Do<AbortIfPlatformIsMobileCommand>()
-            .Do<RemoveViewFromCanvasLayerCommand>("ControlsTextPCUI", CanvasLayer.UI);
+            .Do<DestroyViewFromCanvasLayerCommand>("ControlsTextPCUI", CanvasLayer.UI);
 
         On<LeaveContextSignal>()
             .Do<AbortIfPlatformIsNotMobileCommand>()
-            .Do<RemoveViewFromCanvasLayerCommand>("ControlsTextMobileUI", CanvasLayer.UI);
+            .Do<DestroyViewFromCanvasLayerCommand>("ControlsTextMobileUI", CanvasLayer.UI);
 
     }
 }

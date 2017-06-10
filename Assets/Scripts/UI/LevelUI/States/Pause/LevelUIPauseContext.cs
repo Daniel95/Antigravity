@@ -11,8 +11,8 @@ public class LevelUIPauseContext : Context {
             .Do<PauseTimeCommand>(true);
 
         On<LeaveContextSignal>()
-            .Do<RemoveViewFromCanvasLayerCommand>("PlayButtonUI", CanvasLayer.UI)
-            .Do<RemoveViewFromCanvasLayerCommand>("GoToMainMenuButtonUI", CanvasLayer.UI);
+            .Do<DestroyViewFromCanvasLayerCommand>("PlayButtonUI", CanvasLayer.UI)
+            .Do<DestroyViewFromCanvasLayerCommand>("GoToMainMenuButtonUI", CanvasLayer.UI);
 
     }
 

@@ -30,7 +30,7 @@ public class CanvasUIView : View, ICanvasUI {
         view.transform.SetParent(layerTransform, false);
     }
 
-    public View GetCanvasLayerContentView(string name, CanvasLayer canvasLayer) {
+    public View GetCanvasLayerView(string name, CanvasLayer canvasLayer) {
         View canvasLayerView = canvasLayerViews[canvasLayer].Find(x => x.name == name + "(Clone)");
         if (canvasLayerView == null) {
             Debug.LogWarning("Can't find CanvasLayer view " + name + " in CanvasLayer." + canvasLayer.ToString());
@@ -39,8 +39,17 @@ public class CanvasUIView : View, ICanvasUI {
         return canvasLayerView;
     }
 
-    public void RemoveCanvasLayerContentView(View view, CanvasLayer canvasLayer) {
+    public void DestroyCanvasLayerView(View view, CanvasLayer canvasLayer, Action onDestroyCompleted = null) {
         canvasLayerViews[canvasLayer].Remove(view);
+
+        PopOutAndDestroyUIView destroyUIView = view.GetComponent<PopOutAndDestroyUIView>();
+
+        if (destroyUIView != null) {
+            destroyUIView.PopOutAndDestroy(onDestroyCompleted);
+            return;
+        }
+
+        view.Destroy();
     }
 
     private void Awake() {
