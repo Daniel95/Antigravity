@@ -1,18 +1,9 @@
 //todo:
-
-
-current bugs:
-Unload previous scene.
-Fix camera and player behaving weird.
 fix errors when going back to MainMenu.
 
-
-fix additive level loading.
 fix progress in levels.
 make selection of levels that are workable.
 Add ui elements depending on level
-
-improve main menu
 
 import SRDebugger.
 water
@@ -20,6 +11,3 @@ import shaderforge
 give overlap shader area's a glow.
 look into directionpointer and linerenderen update order in comparison to the hookprojectile.
 lighting is not working properly.
-
-
-switch scr

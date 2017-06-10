@@ -6,7 +6,7 @@ public class LoadNextSceneCommand : Command {
     [Inject] private IContext context;
     [Inject] private SceneState gameStateModel;
 
-    [Inject] private LoadSceneCompletedEvent loadSceneCompletedEvent;
+    [Inject] private GoToSceneCompletedEvent loadSceneCompletedEvent;
 
     private Scenes scene;
 

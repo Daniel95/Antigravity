@@ -6,7 +6,7 @@ public class LoadSceneCommand : Command {
     [Inject] private IContext context;
     [Inject] private SceneState sceneState;
 
-    [Inject] private LoadSceneCompletedEvent loadSceneCompletedEvent;
+    [Inject] private GoToSceneCompletedEvent loadSceneCompletedEvent;
 
     [InjectParameter] private Scenes scene;
 

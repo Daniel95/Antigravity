@@ -5,7 +5,7 @@ public class LoadSceneView : View {
 
     [SerializeField] private Scenes scene;
 
-    [Inject] private LoadSceneEvent loadSceneEvent;
+    [Inject] private GoToSceneEvent loadSceneEvent;
 
     public void LoadScene() {
         loadSceneEvent.Dispatch(scene);

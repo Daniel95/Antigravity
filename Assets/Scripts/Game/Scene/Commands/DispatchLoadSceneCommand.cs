@@ -2,7 +2,7 @@
 
 public class DispatchLoadSceneCommand : Command<Scenes> {
 
-    [Inject] private LoadSceneEvent loadSceneEvent;
+    [Inject] private GoToSceneEvent loadSceneEvent;
 
     protected override void Execute(Scenes scene) {
         loadSceneEvent.Dispatch(scene);

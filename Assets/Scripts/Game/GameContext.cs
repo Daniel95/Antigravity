@@ -13,7 +13,7 @@ public class GameContext : Context {
         Bind<Ref<IScreenShake>>();
         Bind<Ref<IFollowCamera>>();
 
-        Bind<LoadSceneEvent>();
+        Bind<GoToSceneEvent>();
 
         On<EnterContextSignal>()
             .Do<InstantiateViewPrefabCommand>("UI/Canvas/CanvasUI")
@@ -21,23 +21,26 @@ public class GameContext : Context {
             .Do<AddCameraViewsCommand>()
             .Do<DispatchLoadSceneCommand>(Scenes.MainMenu);
 
-        On<LoadSceneCompletedEvent>()
+        On<GoToSceneCompletedEvent>()
             .Do<AbortIfSceneIsScenesCommand>(new List<Scenes>() { Scenes.MainMenu, Scenes.LevelSelect })
             .GotoState<LevelContext>();
 
-        On<LoadSceneCompletedEvent>()
+        On<GoToSceneCompletedEvent>()
             .Do<AbortIfSceneIsNotSceneCommand>(Scenes.MainMenu)
             .GotoState<MainMenuUIContext>();
 
-        On<LoadSceneCompletedEvent>()
+        On<GoToSceneCompletedEvent>()
             .Do<AbortIfSceneIsNotSceneCommand>(Scenes.LevelSelect)
             .GotoState<LevelSelectContext>();
 
         On<ReloadSceneEvent>()
             .Do<ReloadSceneCommand>();
 
-        On<LoadSceneEvent>()
-            .Do<LoadSceneCommand>();
+        On<GoToSceneEvent>()
+            .Do<AbortIfSceneIsSceneCommand>(Scenes.Main)
+            .Do<UnloadCurrentSceneCommand>()
+            .Do<LoadSceneCommand>()
+            .OnAbort<LoadSceneCommand>();
     }
 
 }
