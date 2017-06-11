@@ -18,14 +18,20 @@ public class DontGoThroughThings : MonoBehaviour {
     private Vector2 previousPosition;
     private Rigidbody2D myRigidbody;
     private Collider2D myCollider;
+    private TriggerHitDetectionView triggerHitDetectionView;
 
     private void Awake() {
         myRigidbody = GetComponent<Rigidbody2D>();
         myCollider = GetComponents<Collider2D>().FirstOrDefault();
         if (myCollider == null || myRigidbody == null) {
-            Debug.LogError("ProjectileCollisionTrigger2D is missing Collider2D or Rigidbody2D component", this);
+            Debug.LogError(name + " is missing Collider2D or Rigidbody2D component", this);
             enabled = false;
             return;
+        }
+
+        triggerHitDetectionView = GetComponent<TriggerHitDetectionView>();
+        if (triggerHitDetectionView == null) {
+            Debug.LogError(name + " is missing triggerHitDetectionView component", this);
         }
 
         previousPosition = myRigidbody.transform.position;
@@ -46,10 +52,14 @@ public class DontGoThroughThings : MonoBehaviour {
                 if (hitInfo && hitInfo.collider != myCollider) {
                     transform.position = hitInfo.point;
                     if (((int)triggerTarget & (int)TriggerTarget.Other) != 0 && hitInfo.collider.isTrigger) {
-                        hitInfo.collider.SendMessage("OnTriggerEnter2D", myCollider, SendMessageOptions.DontRequireReceiver);
+                        GameObject otherObject = hitInfo.collider.gameObject;
+                        TriggerHitDetectionView otherTriggerHitDetectionView = otherObject.GetComponent<TriggerHitDetectionView>();
+                        if (otherTriggerHitDetectionView != null) {
+                            otherTriggerHitDetectionView.OnTriggerEnter2D(myCollider);
+                        }
                     }
                     if (((int)triggerTarget & (int)TriggerTarget.Self) != 0) {
-                        SendMessage("OnTriggerEnter2D", hitInfo.collider, SendMessageOptions.DontRequireReceiver);
+                        triggerHitDetectionView.OnTriggerEnter2D(hitInfo.collider);
                     }
                 }
             }
