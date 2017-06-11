@@ -4,7 +4,7 @@ public class ChooseAndDispatchPlayerDiesEventCommand : Command {
 
     [Inject] private PlayerStatus playerStatus;
 
-    [Inject] private ReloadSceneEvent reloadSceneEvent;
+    [Inject] private GoToCurrentSceneEvent reloadSceneEvent;
     [Inject] private RespawnPlayerEvent respawnPlayerEvent;
 
     protected override void Execute() {

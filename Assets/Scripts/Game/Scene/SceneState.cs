@@ -1,6 +1,5 @@
-﻿using System;
+﻿public class SceneStatus {
 
-public class SceneState {
-
-    public int currentSceneIndex = 0;
+    public Scenes currentScene;
+    public Scenes nextScene;
 }

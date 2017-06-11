@@ -1,12 +1,12 @@
 ﻿using IoCPlus;
 using UnityEngine;
 
-public class UnloadCurrentSceneCommand : Command {
+public class UnloadCurrentSceneOverTimeCommand : Command {
 
-    [Inject] private SceneState sceneState;
+    [Inject] private SceneStatus sceneStatus;
 
     protected override void ExecuteOverTime() {
-        string sceneName = ((Scenes)sceneState.currentSceneIndex).ToString();
+        string sceneName = (sceneStatus.currentScene).ToString();
 
         if (!SceneListCheck.Has(sceneName)) {
             Debug.LogWarning(sceneName + " is not available.");
