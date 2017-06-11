@@ -12,11 +12,13 @@ public class InputContext : Context {
 
         On<ActivateInputPlatformEvent>()
             .Do<AbortIfPlatformIsNotMobileCommand>()
-            .GotoState<MobileInputContext>();
+            .Do<EnablePCInputCommand>(false)
+            .Do<EnableMobileInputCommand>(true);
 
         On<ActivateInputPlatformEvent>()
             .Do<AbortIfPlatformIsMobileCommand>()
-            .GotoState<PCInputContext>();
+            .Do<EnableMobileInputCommand>(false)
+            .Do<EnablePCInputCommand>(true);
 
         On<RawJumpInputEvent>()
             .Do<AbortIfActionInputIsNotEnabled>()
