@@ -1,4 +1,5 @@
 //todo:
+fix canvasui deleting objects by reference
 fix progress in levels.
 make selection of levels that are workable.
 Add ui elements depending on level

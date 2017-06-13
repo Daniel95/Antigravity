@@ -21,7 +21,7 @@ public class MobileInputView : View, IMobileInput {
     private Coroutine inputUpdateCoroutine;
     private enum TouchStates { Holding, Dragging, Tapped, None }
     private TouchStates TouchState = TouchStates.None;
-    private float StartDownTime;
+    private float touchDownTime;
     private GameObject joyStick;
     private JoyStickUI dragDirIndicator;
     private Vector2 startTouchPosition;
@@ -55,30 +55,36 @@ public class MobileInputView : View, IMobileInput {
 
     private IEnumerator InputUpdate() {
         while (true) {
-            if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began && !InputHelper.CheckUICollision(Input.GetTouch(0).position)) {
+            bool startedTouching = Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began;
+            if (startedTouching && !InputHelper.CheckUICollision(Input.GetTouch(0).position)) {
                 TouchState = TouchStates.Tapped;
                 startTouchPosition = Input.GetTouch(0).position;
-                StartDownTime = Time.time;
+                touchDownTime = Time.time;
             }
 
             if (TouchState != TouchStates.None) {
                 if (Input.GetTouch(0).phase != TouchPhase.Ended) {
-                    if (Time.time - StartDownTime > TimebeforeTappedExpired) {
+                    float timePassedSinceTouchDown = Time.time - touchDownTime;
+                    if (timePassedSinceTouchDown > TimebeforeTappedExpired) {
                         if (TouchState == TouchStates.Tapped) {
                             rawTappedExpiredInputEvent.Dispatch();
                         }
 
-                        float dragDistance = Vector2.Distance(Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position), Camera.main.ScreenToWorldPoint(startTouchPosition));
+                        Vector2 worldCurrentTouchPosition = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
+                        Vector2 worldStartTouchPosition = Camera.main.ScreenToWorldPoint(startTouchPosition);
+                        float dragDistance = Vector2.Distance(worldStartTouchPosition, worldCurrentTouchPosition);
+
                         if (dragDistance > minimalDistanceToDrag) {
                             joyStick.SetActive(true);
-                            Vector2 touchWorldPos = Camera.main.ScreenToWorldPoint(startTouchPosition);
-                            joyStick.transform.position = new Vector3(touchWorldPos.x, touchWorldPos.y, -4);
+                            joyStick.transform.position = new Vector3(worldStartTouchPosition.x, worldStartTouchPosition.y, -4);
+
                             Vector2 direction = (Input.GetTouch(0).position - startTouchPosition).normalized;
                             dragDirIndicator.SetDragDir(direction);
+
                             TouchState = TouchStates.Dragging;
                             rawDraggingInputEvent.Dispatch(direction);
 
-                        } else if (Time.time - StartDownTime > TimebeforeTappedExpired && TouchState != TouchStates.Holding) {
+                        } else if (timePassedSinceTouchDown > TimebeforeTappedExpired && TouchState != TouchStates.Holding) {
                             if (TouchState == TouchStates.Dragging) {
                                 rawCancelDragInputEvent.Dispatch();
                             }
@@ -107,4 +113,5 @@ public class MobileInputView : View, IMobileInput {
             yield return null;
         }
     }
+    
 }
