@@ -18,15 +18,15 @@ public class ControlsMenuUIContext : Context {
 
 
         On<LeaveContextSignal>()
-            .Do<DestroyViewFromCanvasLayerCommand>("GoToStartMenuButtonUI", CanvasLayer.UI);
+            .Do<DestroyChildInCanvasLayerCommand>("UI/MainMenu/GoToStartMenuButtonUI", CanvasLayer.UI);
 
         On<LeaveContextSignal>()
             .Do<AbortIfPlatformIsMobileCommand>()
-            .Do<DestroyViewFromCanvasLayerCommand>("ControlsTextPCUI", CanvasLayer.UI);
+            .Do<DestroyChildInCanvasLayerCommand>("UI/MainMenu/ControlsMenu/ControlsTextPCUI", CanvasLayer.UI);
 
         On<LeaveContextSignal>()
             .Do<AbortIfPlatformIsNotMobileCommand>()
-            .Do<DestroyViewFromCanvasLayerCommand>("ControlsTextMobileUI", CanvasLayer.UI);
+            .Do<DestroyChildInCanvasLayerCommand>("UI/MainMenu/ControlsMenu/ControlsTextMobileUI", CanvasLayer.UI);
 
     }
 }

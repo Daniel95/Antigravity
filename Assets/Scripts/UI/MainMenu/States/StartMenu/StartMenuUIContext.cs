@@ -11,9 +11,9 @@ public class StartMenuUIContext : Context {
             .Do<InstantiateViewInCanvasLayerCommand>("UI/MainMenu/StartMenu/StartMenuTextUI", CanvasLayer.UI);
 
         On<LeaveContextSignal>()
-            .Do<DestroyViewFromCanvasLayerCommand>("PlayButtonUI", CanvasLayer.UI)
-            .Do<DestroyViewFromCanvasLayerCommand>("GoToControlsMenuButtonUI", CanvasLayer.UI)
-            .Do<DestroyViewFromCanvasLayerCommand>("StartMenuTextUI", CanvasLayer.UI);
+            .Do<DestroyChildInCanvasLayerCommand>("UI/MainMenu/StartMenu/PlayButtonUI", CanvasLayer.UI)
+            .Do<DestroyChildInCanvasLayerCommand>("UI/MainMenu/StartMenu/GoToControlsMenuButtonUI", CanvasLayer.UI)
+            .Do<DestroyChildInCanvasLayerCommand>("UI/MainMenu/StartMenu/StartMenuTextUI", CanvasLayer.UI);
     }
 
 }

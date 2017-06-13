@@ -10,7 +10,7 @@ public class LevelUIPlayContext : Context {
             .Do<PauseTimeCommand>(false);
 
         On<LeaveContextSignal>()
-            .Do<DestroyViewFromCanvasLayerCommand>("PauseButtonUI", CanvasLayer.UI);
+            .Do<DestroyChildInCanvasLayerCommand>("UI/Level/Play/PauseButtonUI", CanvasLayer.UI);
     }
 
 }

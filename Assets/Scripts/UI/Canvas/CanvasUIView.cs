@@ -12,7 +12,7 @@ public class CanvasUIView : View, ICanvasUI {
     [SerializeField] private float dragThresholdInInches = 0.1f;
 
     private Dictionary<CanvasLayer, Transform> canvasLayers = new Dictionary<CanvasLayer, Transform>();
-    private Dictionary<CanvasLayer, List<View>> canvasLayerViews = new Dictionary<CanvasLayer, List<View>>();
+    private Dictionary<CanvasLayer, Dictionary<string, GameObject>> canvasLayerChildIds = new Dictionary<CanvasLayer, Dictionary<string, GameObject>>();
 
     public override void Initialize() {
         base.Initialize();
@@ -23,33 +23,48 @@ public class CanvasUIView : View, ICanvasUI {
         return canvasLayers[canvasLayer];
     }
 
-    public void AddViewToCanvasLayer(View view, CanvasLayer canvasLayer) {
-        Transform layerTransform = canvasLayers[canvasLayer];
-        canvasLayerViews[canvasLayer].Add(view);
-        view.transform.SetParent(layerTransform, false);
-    }
+    public void AddChildToCanvasLayer(GameObject child, CanvasLayer canvasLayer) {
+        Transform layer = canvasLayers[canvasLayer];
 
-    public View GetCanvasLayerView(string name, CanvasLayer canvasLayer) {
-        View canvasLayerView = canvasLayerViews[canvasLayer].Find(x => x.name == name + "(Clone)");
-
-        if (canvasLayerView == null) {
-            Debug.LogWarning("Can't find CanvasLayer view " + name + " in CanvasLayer." + canvasLayer.ToString());
+        ObjectId objectId = child.GetComponent<ObjectId>();
+        if(objectId == null) {
+            Debug.Log("Cant find child id on " + child.name);
         }
 
-        return canvasLayerView;
+        canvasLayerChildIds[canvasLayer].Add(objectId.Id, child);
+
+        child.transform.SetParent(layer, false);
     }
 
-    public void DestroyCanvasLayerView(View view, CanvasLayer canvasLayer, Action onDestroyCompleted = null) {
-        canvasLayerViews[canvasLayer].Remove(view);
+    public GameObject GetCanvasLayerChild(string id, CanvasLayer canvasLayer) {
+        Dictionary<string, GameObject> layerChilds = canvasLayerChildIds[canvasLayer];
 
-        PopOutAndDestroyUIView popOutAndDestroyUIView = view.GetComponent<PopOutAndDestroyUIView>();
+        GameObject child;
+        layerChilds.TryGetValue(id, out child);
 
+        if (!layerChilds.TryGetValue(id, out child)) {
+            Debug.LogWarning("Can't find child id " + id + " in CanvasLayer." + canvasLayer.ToString());
+        }
+
+        return child;
+    }
+
+    public void DestroyCanvasLayerChild(GameObject child, string id, CanvasLayer canvasLayer, Action onDestroyCompleted = null) {
+        canvasLayerChildIds[canvasLayer].Remove(id);
+
+        PopOutAndDestroyUIView popOutAndDestroyUIView = child.GetComponent<PopOutAndDestroyUIView>();
         if (popOutAndDestroyUIView != null) {
             popOutAndDestroyUIView.PopOutAndDestroy(onDestroyCompleted);
             return;
         }
 
-        view.Destroy();
+        View view = child.GetComponent<View>();
+        if(view != null) {
+            view.Destroy();
+            return;
+        }
+
+        Destroy(child);
     }
 
     private void Awake() {
@@ -71,7 +86,7 @@ public class CanvasUIView : View, ICanvasUI {
             layerGameObject.GetComponent<RectTransform>().sizeDelta = rectTransform.sizeDelta;
 
             canvasLayers.Add((CanvasLayer)values.Current, layerGameObject.transform);
-            canvasLayerViews.Add((CanvasLayer)values.Current, new List<View>());
+            canvasLayerChildIds.Add((CanvasLayer)values.Current, new Dictionary<string, GameObject>());
         }
     }
 }
