@@ -1,12 +1,11 @@
 //todo:
-fix canvasui deleting objects by reference
-fix progress in levels.
-make selection of levels that are workable.
-Add ui elements depending on level
+Fix level select.
+Fix progress and clean 5 levels.
+Add water feature.
+Add new intro levels with water.
+Add ui elements depending on level.
 
-import SRDebugger.
-water
+look into directionpointer and linerenderen update order in comparison to the hookprojectile.
+fix lighting is not working properly.
 import shaderforge
 give overlap shader area's a glow.
-look into directionpointer and linerenderen update order in comparison to the hookprojectile.
-lighting is not working properly.
