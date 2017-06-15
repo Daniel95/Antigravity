@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-using System.Collections;
-using IoCPlus;
+﻿using IoCPlus;
 
 public class AbortIfCurrentSceneIsNotALevelCommand : Command {
 
@@ -8,10 +6,10 @@ public class AbortIfCurrentSceneIsNotALevelCommand : Command {
     [Inject] private SceneStatus sceneStatus;
 
     protected override void Execute() {
-        int levelNumber = LevelHelper.ConvertSceneToLevelNumber((int)sceneStatus.currentScene);
+        int levelNumber = LevelHelper.GetLevelNumber(sceneStatus.currentScene);
 
-        if(!LevelHelper.CheckLevelExistence(levelNumber) {
-
+        if(!LevelHelper.CheckLevelExistence(levelNumber)) {
+            Abort();
         }
     }
 }

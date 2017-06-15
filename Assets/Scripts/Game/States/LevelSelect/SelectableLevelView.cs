@@ -5,6 +5,7 @@ public class SelectableLevelView : View, ISelectableLevel {
 
     public int LevelNumber { get { return levelNumber; } set { levelNumber = value; } }
     public LevelProgressState LevelProgressState { get { return levelProgressState; } set { levelProgressState = value; } }
+    public Vector2 WorldPosition { get { return transform.position; } }
 
     [Inject] private GoToSceneEvent goToSceneEvent;
 

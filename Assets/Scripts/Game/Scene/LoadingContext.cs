@@ -6,6 +6,10 @@ public class LoadingContext : Context {
         base.SetBindings();
 
         On<EnterContextSignal>()
+            .Do<AbortIfCurrentSceneIsNotALevelCommand>()
+            .Do<SetLastLevelToCurrentSceneCommand>();
+
+        On<EnterContextSignal>()
             .Do<AbortIfCurrentSceneIsSceneCommand>(Scenes.Main)
             .Do<UnloadCurrentSceneOverTimeCommand>()
             .Dispatch<LoadNextSceneEvent>()

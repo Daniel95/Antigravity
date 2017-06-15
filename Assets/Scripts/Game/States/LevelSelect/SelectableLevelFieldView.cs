@@ -32,6 +32,17 @@ public class SelectableLevelFieldView : View, ISelectableLevelField {
         selectableLevelFieldRef.Set(this);
     }
 
+    public ISelectableLevel GetSelectableLevelByLevelNumber(int levelNumber) {
+        foreach (ISelectableLevel selectableLevel in selectableLevelFieldRef.Get().SelectableLevels.Values) {
+            if (selectableLevel.LevelNumber == levelNumber) {
+                return selectableLevel;
+            }
+        }
+
+        Debug.LogWarning("Selectable Level with level number " + levelNumber + " not found.");
+        return null;
+    }
+
     public void GenerateSelectableLevelFields() {
         if(fieldGenerator == null) {
             fieldGenerator = GetComponent<FieldGenerator>();

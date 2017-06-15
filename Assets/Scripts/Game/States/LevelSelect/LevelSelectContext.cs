@@ -13,7 +13,8 @@ public class LevelSelectContext : Context {
             .Do<ApplySelectableLevelValuesCommand>();
 
         On<EnterContextSignal>()
-            .Do<AbortIfLastLevelIsZeroCommand>();
+            .Do<AbortIfLastLevelIsZeroCommand>()
+            .Do<FixateOnSelectableLevelWithLastLevelNumberCommand>();
     }
 
 }
