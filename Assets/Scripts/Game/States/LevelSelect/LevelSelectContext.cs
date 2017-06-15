@@ -10,7 +10,9 @@ public class LevelSelectContext : Context {
             .Do<GenerateSelectableLevelFieldsCommand>()
             .Do<SetFirstSelectableLevelUnlockedCommand>()
             .Do<UnlockNeighboursOfFinishedSelectableLevelsCommand>()
-            .Do<ApplySelectableLevelValuesCommand>();
+            .Do<ApplySelectableLevelValuesCommand>()
+            .Do<EnableFollowCameraCommand>(false)
+            .Do<EnableDragCameraCommand>(true);
 
         On<EnterContextSignal>()
             .Do<AbortIfLastLevelIsZeroCommand>()

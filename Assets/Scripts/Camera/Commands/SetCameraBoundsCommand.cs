@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class SetCameraBoundsCommand : Command {
 
-    [Inject] private Ref<IFollowCamera> followCameraRef;
+    [Inject] private Ref<ICamera> cameraRef;
 
     protected override void Execute() {
         CameraBounds cameraBounds = Object.FindObjectOfType<CameraBounds>();
@@ -12,6 +12,6 @@ public class SetCameraBoundsCommand : Command {
             Debug.Log("CameraDounds doesn't exist.");
         }
 
-        followCameraRef.Get().SetCameraBounds(cameraBounds);
+        cameraRef.Get().SetCameraBounds(cameraBounds);
     }
 }

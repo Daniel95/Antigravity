@@ -1,45 +1,52 @@
 ﻿using UnityEngine;
 using System.Collections;
+using IoCPlus;
 
-public class DragCamera : MonoBehaviour {
-    [SerializeField]
-    private float dragSpeed = 4.6f;
+public class DragCamera : View, IDragCamera {
 
-    [SerializeField]
-    private float velocityDivider = 1.3f;
 
-    private Vector2 _velocity;
+    [SerializeField] private float dragSpeed = 4.6f;
+    [SerializeField] private float velocityDivider = 1.3f;
 
-    private Vector2 _lastMousePos;
+    [Inject] private Ref<ICamera> cameraRef;
+    [Inject] private Ref<IDragCamera> dragCameraRef;
 
-    private CameraBounds _boundsCamera;
+    private Vector2 velocity;
+    private Vector2 lastMousePos;
 
-    private float zStartPos;
+    private Coroutine dragUpdateCoroutine;
 
-    private void Start()
-    {
-        _boundsCamera = GetComponent<CameraBounds>();
-        zStartPos = transform.position.z;
+    public override void Initialize() {
+        dragCameraRef.Set(this);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (Input.GetMouseButtonDown(0))
-        {
-            _lastMousePos = Input.mousePosition;
+    public void EnableDragCamera(bool enable) {
+        if(enable) {
+            dragUpdateCoroutine = StartCoroutine(DragUpdate());
+        } else if(dragUpdateCoroutine != null) {
+            StopCoroutine(dragUpdateCoroutine);
+            dragUpdateCoroutine = null;
         }
+    }
 
-        if (Input.GetMouseButton(0))
-        {
-            Vector2 _offset = -Camera.main.ScreenToViewportPoint((Vector2)Input.mousePosition - _lastMousePos);
-            _velocity += _offset * dragSpeed;
+    private IEnumerator DragUpdate() {
+        while(true) {
+            if (Input.GetMouseButtonDown(0)) {
+                lastMousePos = Input.mousePosition;
+            }
 
-            _lastMousePos = Input.mousePosition;
+            if (Input.GetMouseButton(0)) {
+                Vector2 _offset = -Camera.main.ScreenToViewportPoint((Vector2)Input.mousePosition - lastMousePos);
+                velocity += _offset * dragSpeed;
+
+                lastMousePos = Input.mousePosition;
+            }
+
+            transform.position = cameraRef.Get().CameraBounds.GetClampedBoundsPosition((Vector2)transform.position + velocity);
+            transform.position = new Vector3(transform.position.x, transform.position.y, cameraRef.Get().StartPosition.z);
+            velocity /= velocityDivider;
+
+            yield return null;
         }
-
-        transform.position = _boundsCamera.GetClampedBoundsPosition((Vector2)transform.position + _velocity);
-        transform.position = new Vector3(transform.position.x, transform.position.y, zStartPos);
-        _velocity /= velocityDivider;
     }
 }

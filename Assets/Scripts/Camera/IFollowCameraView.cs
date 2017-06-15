@@ -3,5 +3,5 @@
 public interface IFollowCamera {
 
     void SetTarget(Transform target);
-    void SetCameraBounds(CameraBounds cameraBounds);
+    void EnableFollowCamera(bool enable);
 }

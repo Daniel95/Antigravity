@@ -67,7 +67,9 @@ public class GameContext : Context {
         Bind<GoToSceneCompletedEvent>();
 
         Bind<Ref<ICanvasUI>>();
+        Bind<Ref<ICamera>>();
         Bind<Ref<ISelectableLevelField>>();
+        Bind<Ref<ICamera>>();
         Bind<Ref<IScreenShake>>();
         Bind<Ref<IFollowCamera>>();
         Bind<Ref<IWeapon>>();
