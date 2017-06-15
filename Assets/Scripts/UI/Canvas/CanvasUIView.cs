@@ -24,7 +24,7 @@ public class CanvasUIView : View, ICanvasUI {
     }
 
     public void AddChildToCanvasLayer(GameObject child, CanvasLayer canvasLayer) {
-        Transform layer = canvasLayers[canvasLayer];
+        Transform layerTransform = canvasLayers[canvasLayer];
 
         ObjectId objectId = child.GetComponent<ObjectId>();
         if(objectId == null) {
@@ -34,15 +34,13 @@ public class CanvasUIView : View, ICanvasUI {
 
         canvasLayerChildIds[canvasLayer].Add(objectId.Id, child);
 
-        child.transform.SetParent(layer, false);
+        child.transform.SetParent(layerTransform, false);
     }
 
     public GameObject GetCanvasLayerChild(string id, CanvasLayer canvasLayer) {
         Dictionary<string, GameObject> layerChilds = canvasLayerChildIds[canvasLayer];
 
         GameObject child;
-        layerChilds.TryGetValue(id, out child);
-
         if (!layerChilds.TryGetValue(id, out child)) {
             Debug.LogWarning("Can't find child id " + id + " in CanvasLayer." + canvasLayer.ToString());
         }
