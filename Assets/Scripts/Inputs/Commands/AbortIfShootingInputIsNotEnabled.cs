@@ -2,10 +2,10 @@
 
 public class AbortIfShootingInputIsNotEnabled : Command {
 
-    [Inject] private InputModel inputModel;
+    [Inject] private InputStatus inputStatus;
 
     protected override void Execute() {
-        if(!inputModel.shootingInputIsEnabled) {
+        if(!inputStatus.shootingInputIsEnabled) {
             Abort();
         }
     }

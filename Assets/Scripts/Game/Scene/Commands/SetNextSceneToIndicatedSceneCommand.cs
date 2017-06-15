@@ -5,6 +5,6 @@ public class SetNextSceneToIndicatedSceneCommand : Command<Scenes> {
     [Inject] private SceneStatus sceneStatus;
 
     protected override void Execute(Scenes scene) {
-        sceneStatus.nextScene = scene;
+        sceneStatus.sceneToLoad = scene;
     }
 }

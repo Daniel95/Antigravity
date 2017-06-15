@@ -1,5 +1,6 @@
 ﻿using IoCPlus;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class GameContext : Context {
 
@@ -66,6 +67,7 @@ public class GameContext : Context {
         Bind<GoToSceneCompletedEvent>();
 
         Bind<Ref<ICanvasUI>>();
+        Bind<Ref<ISelectableLevelField>>();
         Bind<Ref<IScreenShake>>();
         Bind<Ref<IFollowCamera>>();
         Bind<Ref<IWeapon>>();
@@ -92,11 +94,17 @@ public class GameContext : Context {
         Bind<Ref<IRevivedState>>();
         BindLabeled<Ref<IMoveTowards>>(Label.Player);
 
+        Bind<IGameStateService, LocalGameStateService>();
+
+        Bind<Ref<GameStateModel>>();
+
+        Bind<LevelStatus>();
         Bind<SceneStatus>();
         Bind<ViewContainerStatus>();
-        Bind<InputModel>();
+        Bind<InputStatus>();
 
         On<EnterContextSignal>()
+            .Do<LoadGameStateCommand>()
             .Do<InstantiateViewPrefabCommand>("UI/Canvas/CanvasUI")
             .Do<InstantiateViewInCanvasLayerCommand>("UI/FPSCounterUI", CanvasLayer.UI)
             .Do<AddCameraViewsCommand>()
@@ -126,6 +134,15 @@ public class GameContext : Context {
         On<GoToSceneEvent>()
             .Do<SetNextSceneToSceneCommand>()
             .GotoState<LoadingContext>();
+
+        On<ApplicationPauseEvent>()
+            .Do<SaveGameStateCommand>();
+
+        if (Application.isEditor) {
+            On<ApplicationQuitEvent>()
+                .Do<SaveGameStateCommand>();
+        }
+
     }
 
 }

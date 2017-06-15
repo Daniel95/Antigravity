@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class SelectableLevelView : View, ISelectableLevel {
 
+    public int LevelNumber { get { return levelNumber; } set { levelNumber = value; } }
+    public LevelProgressState LevelProgressState { get { return levelProgressState; } set { levelProgressState = value; } }
+
     [Inject] private GoToSceneEvent goToSceneEvent;
 
     private SpriteRenderer spriteRenderer;
@@ -19,12 +22,8 @@ public class SelectableLevelView : View, ISelectableLevel {
     public void IncreaseLevelProgressStateTo(LevelProgressState levelProgressState) {
         bool nextLevelProgressStateIsHigher = levelProgressState > this.levelProgressState;
         if (nextLevelProgressStateIsHigher) {
-            SetLevelProgressState(levelProgressState);
+            this.levelProgressState = levelProgressState;
         }
-    }
-
-    private void SetLevelProgressState(LevelProgressState levelProgressState) {
-        this.levelProgressState = levelProgressState;
     }
 
     public void ApplyLevelProgressState() {

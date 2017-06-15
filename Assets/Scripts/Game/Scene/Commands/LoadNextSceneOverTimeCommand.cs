@@ -8,7 +8,7 @@ public class LoadNextSceneOverTimeCommand : Command {
     [Inject] private ViewContainerStatus viewContainerStatus;
 
     protected override void ExecuteOverTime() {
-        string sceneName = sceneStatus.nextScene.ToString();
+        string sceneName = sceneStatus.sceneToLoad.ToString();
 
         if (!SceneListCheck.Has(sceneName)) {
             Debug.LogWarning(sceneName + " is not available.");
@@ -20,7 +20,7 @@ public class LoadNextSceneOverTimeCommand : Command {
     }
 
     private void OnLoaded() {
-        sceneStatus.currentScene = sceneStatus.nextScene;
+        sceneStatus.currentScene = sceneStatus.sceneToLoad;
 
         viewContainerStatus.ViewContainer = Object.FindObjectOfType<ViewContainer>();
         if (viewContainerStatus.ViewContainer != null) {

@@ -1,9 +1,14 @@
 //todo:
-Fix level select.
+Fix game saving.
+Fix level select logic.
 Fix progress and clean 5 levels.
+Fix level select UI.
+
 Add water feature.
+Fix game triggers.
 Add new intro levels with water.
 Add ui elements depending on level.
+Tweak popout/popin on ui elements.
 
 look into directionpointer and linerenderen update order in comparison to the hookprojectile.
 fix lighting is not working properly.

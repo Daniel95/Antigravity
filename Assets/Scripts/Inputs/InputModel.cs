@@ -1,4 +1,4 @@
-﻿public class InputModel {
+﻿public class InputStatus {
 
     public bool isActive;
 

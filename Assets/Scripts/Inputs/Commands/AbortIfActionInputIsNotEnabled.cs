@@ -2,10 +2,10 @@
 
 public class AbortIfActionInputIsNotEnabled : Command {
 
-    [Inject] private InputModel inputModel;
+    [Inject] private InputStatus inputStatus;
 
     protected override void Execute() {
-        if(!inputModel.actionInputIsEnabled) {
+        if(!inputStatus.actionInputIsEnabled) {
             Abort();
         }
     }

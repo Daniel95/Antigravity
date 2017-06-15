@@ -18,6 +18,10 @@ public class PlayerContext : Context {
             .Do<AbortIfTriggerTagIsNotTheSameCommand>("Checkpoint")
             .Do<SetCheckpointReachedCommand>(true);
 
+        On<PlayerTriggerEnter2DEvent>()
+            .Do<AbortIfTriggerTagIsNotTheSameCommand>("Finish")
+            .Dispatch<GoToNextSceneEvent>();
+
         On<CharacterDieEvent>()
             .Do<AbortIfGameObjectIsNotPlayerCommand>()
             .Do<ChooseAndDispatchPlayerDiesEventCommand>();

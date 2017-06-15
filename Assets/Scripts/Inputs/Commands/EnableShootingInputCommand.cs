@@ -2,11 +2,11 @@
 
 public class EnableShootingInputCommand : Command {
 
-    [Inject] private InputModel inputModel;
+    [Inject] private InputStatus inputStatus;
 
     [InjectParameter] private bool enable;
 
     protected override void Execute() {
-        inputModel.shootingInputIsEnabled = enable;
+        inputStatus.shootingInputIsEnabled = enable;
     }
 }

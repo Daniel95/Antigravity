@@ -7,6 +7,6 @@ public class SetNextSceneToSceneCommand : Command {
     [InjectParameter] private Scenes scene;
 
     protected override void Execute() {
-        sceneStatus.nextScene = scene;
+        sceneStatus.sceneToLoad = scene;
     }
 }

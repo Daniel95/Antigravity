@@ -1,4 +1,5 @@
 ﻿using IoCPlus;
+using UnityEngine;
 
 public class SaveGameStateCommand : Command {
 
@@ -6,6 +7,7 @@ public class SaveGameStateCommand : Command {
     [Inject] private Ref<GameStateModel> gameStateModelRef;
 
 	protected override void Execute() {
+        Debug.Log("save game");
         gameStateService.Save(gameStateModelRef.Get());
     }
 

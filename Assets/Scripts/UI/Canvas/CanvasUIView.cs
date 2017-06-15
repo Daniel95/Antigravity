@@ -15,7 +15,6 @@ public class CanvasUIView : View, ICanvasUI {
     private Dictionary<CanvasLayer, Dictionary<string, GameObject>> canvasLayerChildIds = new Dictionary<CanvasLayer, Dictionary<string, GameObject>>();
 
     public override void Initialize() {
-        base.Initialize();
         canvasRef.Set(this);
     }
 

@@ -3,11 +3,11 @@ using UnityEngine;
 
 public class EnableActionInputCommand : Command {
 
-    [Inject] private InputModel inputModel;
+    [Inject] private InputStatus inputStatus;
 
     [InjectParameter] private bool enable;
 
     protected override void Execute() {
-        inputModel.actionInputIsEnabled = enable;
+        inputStatus.actionInputIsEnabled = enable;
     }
 }

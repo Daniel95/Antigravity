@@ -1,5 +1,5 @@
 ﻿public class SceneStatus {
 
     public Scenes currentScene;
-    public Scenes nextScene;
+    public Scenes sceneToLoad;
 }
