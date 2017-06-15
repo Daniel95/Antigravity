@@ -29,6 +29,7 @@ public class CanvasUIView : View, ICanvasUI {
         ObjectId objectId = child.GetComponent<ObjectId>();
         if(objectId == null) {
             Debug.Log("Cant find child id on " + child.name);
+            return;
         }
 
         canvasLayerChildIds[canvasLayer].Add(objectId.Id, child);
