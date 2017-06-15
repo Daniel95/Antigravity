@@ -1,5 +1,4 @@
 //todo:
-Fix Level select Camera.
 Fix Level select selectablelevels clickablitiy.
 
 Test game saving.

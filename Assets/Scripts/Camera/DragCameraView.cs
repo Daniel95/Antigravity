@@ -2,8 +2,7 @@
 using System.Collections;
 using IoCPlus;
 
-public class DragCamera : View, IDragCamera {
-
+public class DragCameraView : View, IDragCamera {
 
     [SerializeField] private float dragSpeed = 4.6f;
     [SerializeField] private float velocityDivider = 1.3f;

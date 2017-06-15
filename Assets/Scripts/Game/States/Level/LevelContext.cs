@@ -10,10 +10,10 @@ public class LevelContext : Context {
         On<EnterContextSignal>()
             .AddContext<LevelUIContext>()
             .AddContext<PlayerContext>()
-            .Do<EnableDragCameraCommand>(false)
-            .Do<EnableFollowCameraCommand>(true)
             .Do<SetCameraTargetCommand>()
-            .Do<SetCameraBoundsCommand>();
+            .Do<SetCameraBoundsCommand>()
+            .Do<EnableDragCameraCommand>(false)
+            .Do<EnableFollowCameraCommand>(true);
 
     }
 

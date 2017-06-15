@@ -11,7 +11,6 @@ public class FollowCameraView : View, IFollowCamera {
     [Inject] private Ref<IFollowCamera> followCameraRef;
 
     private Transform target;
-    private float yStartPos;
     private Vector2 velocity;
 
     private Coroutine followUpdateCoroutine;
@@ -31,7 +30,7 @@ public class FollowCameraView : View, IFollowCamera {
 
     public void SetTarget(Transform target) {
         this.target = target;
-        transform.position = new Vector3(target.position.x, target.position.y, yStartPos);
+        transform.position = new Vector3(target.position.x, target.position.y, cameraRef.Get().StartPosition.z);
     }
 
     private IEnumerator FollowUpdate() {
@@ -39,7 +38,7 @@ public class FollowCameraView : View, IFollowCamera {
             Vector2 delta = target.position - transform.position;
             Vector2 destination = (Vector2)transform.position + delta;
             Vector2 nextPos = Vector2.SmoothDamp(transform.position, cameraRef.Get().CameraBounds.GetClampedBoundsPosition(destination), ref velocity, smoothness, Mathf.Infinity, Time.deltaTime);
-            transform.position = new Vector3(nextPos.x, nextPos.y, yStartPos);
+            transform.position = new Vector3(nextPos.x, nextPos.y, cameraRef.Get().StartPosition.z);
 
             yield return new WaitForEndOfFrame();
         }

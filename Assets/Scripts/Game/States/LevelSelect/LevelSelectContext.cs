@@ -11,6 +11,7 @@ public class LevelSelectContext : Context {
             .Do<SetFirstSelectableLevelUnlockedCommand>()
             .Do<UnlockNeighboursOfFinishedSelectableLevelsCommand>()
             .Do<ApplySelectableLevelValuesCommand>()
+            .Do<SetCameraBoundsCommand>()
             .Do<EnableFollowCameraCommand>(false)
             .Do<EnableDragCameraCommand>(true);
 
