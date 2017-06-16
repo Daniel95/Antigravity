@@ -88,7 +88,7 @@ public class SelectableLevelFieldView : View, ISelectableLevelField {
             selectableLevel.ApplyLevelNumber();
             selectableLevel.ApplyLevelProgressState();
 
-            if(selectableLevel.LevelProgressState > LevelProgressState.Locked) {
+            if(selectableLevel.LevelProgressState >= LevelProgressState.Unlocked) {
                 selectableLevel.OnGoToScene += x => goToSceneEvent.Dispatch(x);
             }
         }
@@ -110,8 +110,10 @@ public class SelectableLevelFieldView : View, ISelectableLevelField {
     }
 
     public void UnlockAllNeighboursOfFinishedSelectableLevels() {
-        foreach (Vector2 selectableLevelGridPosition in selectableLevels.Keys) {
-            UnlockNeighboursOfSelectableLevel(selectableLevelGridPosition);
+        foreach (KeyValuePair<Vector2, ISelectableLevel> selectableKeyPair in selectableLevels) {
+            if(selectableKeyPair.Value.LevelProgressState >= LevelProgressState.Finished) {
+                UnlockNeighboursOfSelectableLevel(selectableKeyPair.Key);
+            }
         }
     }
 

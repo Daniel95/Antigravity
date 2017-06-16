@@ -30,7 +30,7 @@ public class SelectableLevel : MonoBehaviour, ISelectableLevel {
     public void ApplyLevelProgressState() {
         if (!LevelHelper.CheckLevelExistence(levelNumber)) {
             levelProgressState = LevelProgressState.Unset;
-        } 
+        }
 
         spriteRenderer.color = LevelStatusAppearances.LevelStatusColors[(int)levelProgressState];
     }
@@ -40,7 +40,7 @@ public class SelectableLevel : MonoBehaviour, ISelectableLevel {
     }
 
     public void Clicked() {
-        if (levelProgressState > LevelProgressState.Locked) {
+        if (levelProgressState >= LevelProgressState.Unlocked) {
             Scenes sceneLevel = LevelHelper.GetLevelScene(levelNumber);
             if(OnGoToScene != null) {
                 OnGoToScene(sceneLevel);
@@ -55,7 +55,6 @@ public class SelectableLevel : MonoBehaviour, ISelectableLevel {
 
         clickableCollider.OnClicked += Clicked;
     }
-
 
     private void OnDestroy() {
         OnGoToScene = null;
