@@ -11,6 +11,16 @@ using Random = UnityEngine.Random;
 
 public partial class SROptions {
 
+    DebugInputView debugInputView;
+
+    [Category("Unlock :")]
+    public void CompleteAllLevels() {
+        if (HasDebugView) {
+            debugInputView.CompleteAllLevels();
+            SRDebug.Instance.HideDebugPanel();
+        }
+    }
+
     [Category("Delete on startup :")]
     public bool DeleteGameSaveOnStart {
         get {
@@ -18,6 +28,15 @@ public partial class SROptions {
         }
         set {
             PlayerPrefs.SetInt("DeleteGameSaveOnStart", Convert.ToInt16(value));
+        }
+    }
+
+    private bool HasDebugView {
+        get {
+            if (debugInputView == null) {
+                debugInputView = GameObject.FindObjectOfType<DebugInputView>();
+            }
+            return debugInputView != null;
         }
     }
 }

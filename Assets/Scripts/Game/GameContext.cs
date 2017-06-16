@@ -106,6 +106,8 @@ public class GameContext : Context {
         Bind<InputStatus>();
 
         On<EnterContextSignal>()
+            .InstantiateView<ApplicationView>()
+            .InstantiateView<DebugInputView>()
             .Do<LoadGameStateCommand>()
             .Do<InstantiateViewPrefabCommand>("UI/Canvas/CanvasUI")
             .Do<InstantiateViewInCanvasLayerCommand>("UI/FPSCounterUI", CanvasLayer.UI)
