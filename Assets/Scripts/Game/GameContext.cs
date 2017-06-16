@@ -26,8 +26,6 @@ public class GameContext : Context {
         Bind<ReleaseInputEvent>();
         Bind<ReleaseInDirectionInputEvent>();
         Bind<TappedExpiredInputEvent>();
-        Bind<EnableActionInputEvent>();
-        Bind<EnableShootingInputEvent>();
         Bind<PlayerCollisionEnter2DEvent>();
         Bind<PlayerCollisionStay2DEvent>();
         Bind<PlayerCollisionExit2DEvent>();
@@ -93,7 +91,6 @@ public class GameContext : Context {
         Bind<Ref<ITriggerHitDetection>>();
         Bind<Ref<ISlowTime>>();
         Bind<Ref<IGrapplingState>>();
-        Bind<Ref<IRevivedState>>();
         BindLabeled<Ref<IMoveTowards>>(Label.Player);
 
         Bind<IGameStateService, LocalGameStateService>();
@@ -104,6 +101,8 @@ public class GameContext : Context {
         Bind<SceneStatus>();
         Bind<ViewContainerStatus>();
         Bind<InputStatus>();
+        Bind<WeaponStatus>();
+        Bind<JumpStatus>();
 
         On<EnterContextSignal>()
             .InstantiateView<ApplicationView>()

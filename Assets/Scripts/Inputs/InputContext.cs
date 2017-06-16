@@ -21,31 +21,31 @@ public class InputContext : Context {
             .Do<EnablePCInputCommand>(true);
 
         On<RawJumpInputEvent>()
-            .Do<AbortIfActionInputIsNotEnabled>()
+            .Do<AbortIfInputIsNotEnabledCommand>()
             .Dispatch<JumpInputEvent>();
 
         On<RawCancelDragInputEvent>()
-            .Do<AbortIfShootingInputIsNotEnabled>()
+            .Do<AbortIfInputIsNotEnabledCommand>()
             .Dispatch<CancelDragInputEvent>();
 
         On<RawHoldingInputEvent>()
-            .Do<AbortIfShootingInputIsNotEnabled>()
+            .Do<AbortIfInputIsNotEnabledCommand>()
             .Dispatch<HoldingInputEvent>();
 
         On<RawDraggingInputEvent>()
-            .Do<AbortIfShootingInputIsNotEnabled>()
+            .Do<AbortIfInputIsNotEnabledCommand>()
             .Do<DispatchDraggingInputEventCommand>();
 
         On<RawReleaseInDirectionInputEvent>()
-            .Do<AbortIfShootingInputIsNotEnabled>()
+            .Do<AbortIfInputIsNotEnabledCommand>()
             .Do<DispatchReleaseInDirectionEventCommand>();
 
         On<RawReleaseInputEvent>()
-            .Do<AbortIfShootingInputIsNotEnabled>()
+            .Do<AbortIfInputIsNotEnabledCommand>()
             .Dispatch<ReleaseInputEvent>();
 
         On<RawTappedExpiredInputEvent>()
-            .Do<AbortIfShootingInputIsNotEnabled>()
+            .Do<AbortIfInputIsNotEnabledCommand>()
             .Dispatch<TappedExpiredInputEvent>();
     }
 

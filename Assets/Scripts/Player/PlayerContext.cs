@@ -11,15 +11,12 @@ public class PlayerContext : Context {
             .AddContext<WeaponContext>()
             .AddContext<PlayerStateContext>()
             .AddContext<CharacterContext>()
-            .Do<DispatchEnableActionInputEventCommand>(true)
-            .Do<DispatchEnableShootingInputEventCommand>(true);
+            .Do<EnableInputCommand>(true)
+            .Do<EnableWeaponCommand>(true)
+            .Do<EnableJumpCommand>(true);
 
         On<PlayerTriggerEnter2DEvent>()
-            .Do<AbortIfTriggerTagIsNotTheSameCommand>("Checkpoint")
-            .Do<SetCheckpointReachedCommand>(true);
-
-        On<PlayerTriggerEnter2DEvent>()
-            .Do<AbortIfTriggerTagIsNotTheSameCommand>("Finish")
+            .Do<AbortIfTriggerTagIsNotTheSameCommand>(Tags.Finish)
             .Do<AddCurrentSceneToCompletedLevelsCommand>()
             .Do<SaveGameStateCommand>()
             .Dispatch<GoToNextSceneEvent>();
@@ -55,11 +52,5 @@ public class PlayerContext : Context {
         On<TriggerExit2DEvent>()
             .Do<AbortIfGameObjectIsNotPlayerCommand>()
             .Do<DispatchPlayerTriggerExit2DEvent>();
-
-        On<EnableActionInputEvent>()
-            .Do<EnableActionInputCommand>();
-
-        On<EnableShootingInputEvent>()
-            .Do<EnableShootingInputCommand>();
     }
 }

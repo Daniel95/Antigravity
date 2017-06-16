@@ -7,30 +7,27 @@ public class RevivedStateContext : Context {
 
         On<EnterContextSignal>()
             .Do<SetPlayerStateStatusCommand>(PlayerStateStatus.PlayerState.Revived)
-            .Do<InstantiateViewOnPlayerCommand<RevivedStateView>>()
-            .Do<SetRevivedStateIsInPositionCommand>(false)
-            .Do<SetRevivedStateIsReadyForLaunchInput>(false)
+            .Dispatch<CancelDragInputEvent>()
             .Do<CharacterResetVelocityCommand>()
             .Do<CharacterResetMoveDirectionCommand>()
-            .Dispatch<CancelDragInputEvent>()
-            .Do<DispatchEnableShootingInputEventCommand>(false)
+            .Do<EnableInputCommand>(false)
+            .Do<EnableWeaponCommand>(false)
+            .Do<EnableJumpCommand>(false)
             .Do<CharacterResetCollisionDirectionCommand>()
-            .Do<StartRevivedStateDelayLaunchInputCommand>()
-            .Do<MoveTowardsCheckpointCommand>();
+            .Do<PlayerMoveTowardsCheckpointCommand>();
+
+        On<PlayerMoveTowardsCheckpointCompletedEvent>()
+            .Do<EnableInputCommand>(true);
 
         On<DraggingInputEvent>()
             .Do<CharacterUpdateAimLineDestinationCommand>()
             .Do<CharacterPointToDirectionCommand>();
 
         On<ReleaseInDirectionInputEvent>()
-            .Do<AbortIfRevivedStateIsInPositionIsFalseCommand>()
-            .Do<AbortIfRevivedStateIsReadyForLaunchInputIsFalseCommand>()
-            .Do<DispatchEnableShootingInputEventCommand>(true)
+            .Do<EnableWeaponCommand>(true)
+            .Do<EnableJumpCommand>(true)
             .Do<CharacterStopAimLineCommand>()
             .Do<CharacterSetMoveDirectionCommand>()
             .Do<CharacterTemporarySpeedIncreaseCommand>();
-
-        On<MoveTowardsCheckpointCompletedEvent>()
-            .Do<SetRevivedStateIsInPositionCommand>(true);
     }
 }

@@ -1,11 +1,11 @@
 ﻿using IoCPlus;
 
-public class AbortIfActionInputIsNotEnabled : Command {
+public class AbortIfInputIsNotEnabledCommand : Command {
 
     [Inject] private InputStatus inputStatus;
 
     protected override void Execute() {
-        if(!inputStatus.actionInputIsEnabled) {
+        if(!inputStatus.inputIsEnabled) {
             Abort();
         }
     }

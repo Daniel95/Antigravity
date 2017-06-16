@@ -10,6 +10,7 @@ public class CharacterContext : Context {
             .Do<CharacterActivateDirectionalMovementCommand>();
 
         On<JumpInputEvent>()
+            .Do<AbortIfJumpIsNotEnabledCommand>()
             .Do<CharacterTryJumpCommand>();
 
         On<CharacterRetryJumpEvent>()
