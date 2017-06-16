@@ -47,6 +47,7 @@ public class DragCameraView : View, IDragCamera {
 
             yield return null;
         }
+
         dragUpdateCoroutine = null;
     }
 }

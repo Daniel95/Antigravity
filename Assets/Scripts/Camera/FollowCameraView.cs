@@ -40,7 +40,7 @@ public class FollowCameraView : View, IFollowCamera {
             Vector2 nextPos = Vector2.SmoothDamp(transform.position, cameraRef.Get().CameraBounds.GetClampedBoundsPosition(destination), ref velocity, smoothness, Mathf.Infinity, Time.deltaTime);
             transform.position = new Vector3(nextPos.x, nextPos.y, cameraRef.Get().StartPosition.z);
 
-            yield return new WaitForEndOfFrame();
+            yield return null;
         }
 
         followUpdateCoroutine = null;
