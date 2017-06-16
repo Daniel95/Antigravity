@@ -42,6 +42,13 @@ public class DebugInputView : View {
         if (sceneStatus.currentScene == Scenes.LevelSelect) {
             goToCurrentSceneEvent.Dispatch();
         }
+    }
 
+    public void DeleteCompletedLevelsSave() {
+        gameStateModelRef.Get().CompletedLevels.Clear();
+
+        if (sceneStatus.currentScene == Scenes.LevelSelect) {
+            goToCurrentSceneEvent.Dispatch();
+        }
     }
 }
