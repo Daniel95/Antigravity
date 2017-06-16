@@ -29,7 +29,7 @@ public class DragCameraView : View, IDragCamera {
     }
 
     private IEnumerator DragUpdate() {
-        while(true) {
+        while(cameraRef.Get().CameraBounds != null) {
             if (Input.GetMouseButtonDown(0)) {
                 lastMousePos = Input.mousePosition;
             }
@@ -47,5 +47,6 @@ public class DragCameraView : View, IDragCamera {
 
             yield return null;
         }
+        dragUpdateCoroutine = null;
     }
 }

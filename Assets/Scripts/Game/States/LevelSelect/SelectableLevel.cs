@@ -1,17 +1,17 @@
-﻿using IoCPlus;
+﻿using System;
 using UnityEngine;
 
-public class SelectableLevelView : View, ISelectableLevel {
+public class SelectableLevel : MonoBehaviour, ISelectableLevel {
 
+    public Action<Scenes> OnGoToScene { get { return onGoToScene; } set { onGoToScene = value; } }
     public int LevelNumber { get { return levelNumber; } set { levelNumber = value; } }
     public LevelProgressState LevelProgressState { get { return levelProgressState; } set { levelProgressState = value; } }
     public Vector2 WorldPosition { get { return transform.position; } }
 
-    [Inject] private GoToSceneEvent goToSceneEvent;
-
     private SpriteRenderer spriteRenderer;
     private TextMesh textMesh;
-
+    private ClickableCollider clickableCollider;
+    private Action<Scenes> onGoToScene;
     private int levelNumber;
     private LevelProgressState levelProgressState;
 
@@ -28,11 +28,11 @@ public class SelectableLevelView : View, ISelectableLevel {
     }
 
     public void ApplyLevelProgressState() {
-        if (LevelHelper.CheckLevelExistence(levelNumber)) {
-            spriteRenderer.color = LevelStatusAppearances.LevelStatusColors[(int)levelProgressState];
-        } else {
-            spriteRenderer.color = LevelStatusAppearances.LevelStatusColors[0];
-        }
+        if (!LevelHelper.CheckLevelExistence(levelNumber)) {
+            levelProgressState = LevelProgressState.Unset;
+        } 
+
+        spriteRenderer.color = LevelStatusAppearances.LevelStatusColors[(int)levelProgressState];
     }
 
     public void ApplyLevelNumber() {
@@ -40,14 +40,24 @@ public class SelectableLevelView : View, ISelectableLevel {
     }
 
     public void Clicked() {
-        if(levelProgressState > LevelProgressState.Locked) {
+        if (levelProgressState > LevelProgressState.Locked) {
             Scenes sceneLevel = LevelHelper.GetLevelScene(levelNumber);
-            goToSceneEvent.Dispatch(sceneLevel);
+            if(OnGoToScene != null) {
+                OnGoToScene(sceneLevel);
+            }
         }
     }
 
     private void Awake() {
         textMesh = GetComponentInChildren<TextMesh>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        clickableCollider = GetComponent<ClickableCollider>();
+
+        clickableCollider.OnClicked += Clicked;
+    }
+
+
+    private void OnDestroy() {
+        OnGoToScene = null;
     }
 }

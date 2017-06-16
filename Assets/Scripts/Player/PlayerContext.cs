@@ -20,6 +20,8 @@ public class PlayerContext : Context {
 
         On<PlayerTriggerEnter2DEvent>()
             .Do<AbortIfTriggerTagIsNotTheSameCommand>("Finish")
+            .Do<AddCurrentSceneToCompletedLevelsCommand>()
+            .Do<SaveGameStateCommand>()
             .Dispatch<GoToNextSceneEvent>();
 
         On<CharacterDieEvent>()

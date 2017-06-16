@@ -21,6 +21,8 @@ public class SelectableLevelFieldView : View, ISelectableLevelField {
     [SerializeField] private LevelNodeField[] levelNodeFields;
     [SerializeField] private Vector2 gridSpacing;
 
+    [Inject] private GoToSceneEvent goToSceneEvent;
+
     [Inject] private Ref<ISelectableLevelField> selectableLevelFieldRef;
     [Inject] private Ref<GameStateModel> gameStateModel;
 
@@ -71,6 +73,27 @@ public class SelectableLevelFieldView : View, ISelectableLevelField {
         }
     }
 
+    private ISelectableLevel InstantiateSelectableLevel(GameObject objectToBuild, GameObject parent, Vector2 worldPosition, int counter, LevelProgressState status) {
+        GameObject node = Instantiate(objectToBuild, worldPosition, new Quaternion(0, 0, 0, 0));
+        node.transform.parent = parent.transform;
+
+        ISelectableLevel selectableLevel = node.GetComponent<ISelectableLevel>();
+        selectableLevel.Instantiate(status, counter);
+
+        return selectableLevel;
+    }
+
+    public void ApplySelectableLevelValues() {
+        foreach (ISelectableLevel selectableLevel in selectableLevels.Values) {
+            selectableLevel.ApplyLevelNumber();
+            selectableLevel.ApplyLevelProgressState();
+
+            if(selectableLevel.LevelProgressState > LevelProgressState.Locked) {
+                selectableLevel.OnGoToScene += x => goToSceneEvent.Dispatch(x);
+            }
+        }
+    }
+
     public void DestroySelectableLevelFields() {
         selectableLevels.Clear();
         gameObject.DestroyAllChildren();
@@ -90,23 +113,6 @@ public class SelectableLevelFieldView : View, ISelectableLevelField {
         foreach (Vector2 selectableLevelGridPosition in selectableLevels.Keys) {
             UnlockNeighboursOfSelectableLevel(selectableLevelGridPosition);
         }
-    }
-
-    public void ApplySelectableLevelValues() {
-        foreach (ISelectableLevel selectableLevel in selectableLevels.Values) {
-            selectableLevel.ApplyLevelNumber();
-            selectableLevel.ApplyLevelProgressState();
-        }
-    }
-
-    private static ISelectableLevel InstantiateSelectableLevel(GameObject objectToBuild, GameObject parent, Vector2 worldPosition, int counter, LevelProgressState status) {
-        GameObject node = Instantiate(objectToBuild, worldPosition, new Quaternion(0, 0, 0, 0));
-        node.transform.parent = parent.transform;
-
-        ISelectableLevel levelNode = node.GetComponent<ISelectableLevel>();
-        levelNode.Instantiate(status, counter);
-
-        return levelNode;
     }
 
     private void UnlockNeighboursOfSelectableLevel(Vector2 gridPosition) {

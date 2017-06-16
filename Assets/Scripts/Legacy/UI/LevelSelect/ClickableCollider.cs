@@ -6,14 +6,14 @@ public class ClickableCollider : MonoBehaviour {
 
     public Action OnClicked;
  
-    private bool touching = false;
+    private bool downOnCollider = false;
 
     private void OnMouseOver() {
         if (Input.GetMouseButtonDown(0)) {
-             touching = true;
+             downOnCollider = true;
         }
 
-        if (Input.GetMouseButtonUp(0) && touching) {
+        if (Input.GetMouseButtonUp(0) && downOnCollider) {
             if(OnClicked != null) {
                 OnClicked();
             }
@@ -21,6 +21,6 @@ public class ClickableCollider : MonoBehaviour {
     }
 
     private void OnMouseExit() {
-        touching = false;
+        downOnCollider = false;
     }
 }

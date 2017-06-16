@@ -1,7 +1,9 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public interface ISelectableLevel {
 
+    Action<Scenes> OnGoToScene { get; set; }
     int LevelNumber { get; set; }
     LevelProgressState LevelProgressState { get; set; }
     Vector2 WorldPosition { get; }

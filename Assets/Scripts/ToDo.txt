@@ -1,13 +1,10 @@
 //todo:
-Fix Level select selectablelevels clickablitiy.
-
-Test game saving.
-Test level select logic.
+Fix checkpoints.
+Add boundary checkpoints.
 Fix progress and clean 5 levels.
 Fix level select UI.
 
 Add water feature.
-Add boundary checkpoints.
 Fix game triggers.
 Add new intro levels with water.
 Add ui elements depending on level.
