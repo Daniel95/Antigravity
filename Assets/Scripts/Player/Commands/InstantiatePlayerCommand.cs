@@ -15,7 +15,7 @@ public class InstantiatePlayerCommand : Command {
         View playerViewPrefab = Resources.Load<View>(PLAYER_PREFAB_PATH);
 
         if (GameObject.FindGameObjectWithTag(Tags.Start) == null) {
-            Debug.Log("Cant find start, aborting");
+            Debug.LogWarning("Cant find start in level for player to spawn at.");
             Abort();
             return;
         }

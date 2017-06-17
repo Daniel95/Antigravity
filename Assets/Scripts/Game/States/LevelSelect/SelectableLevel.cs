@@ -5,7 +5,7 @@ public class SelectableLevel : MonoBehaviour, ISelectableLevel {
 
     public Action<Scenes> OnGoToScene { get { return onGoToScene; } set { onGoToScene = value; } }
     public int LevelNumber { get { return levelNumber; } set { levelNumber = value; } }
-    public LevelProgressState LevelProgressState { get { return levelProgressState; } set { levelProgressState = value; } }
+    public LevelProgressState LevelProgressState { get { return levelProgressState; } }
     public Vector2 WorldPosition { get { return transform.position; } }
 
     private SpriteRenderer spriteRenderer;
@@ -21,7 +21,8 @@ public class SelectableLevel : MonoBehaviour, ISelectableLevel {
     }
 
     public void IncreaseLevelProgressStateTo(LevelProgressState levelProgressState) {
-        bool nextLevelProgressStateIsHigher = levelProgressState > this.levelProgressState;
+        bool nextLevelProgressStateIsHigher = this.levelProgressState < levelProgressState;
+
         if (nextLevelProgressStateIsHigher) {
             this.levelProgressState = levelProgressState;
         }

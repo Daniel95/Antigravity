@@ -1,5 +1,5 @@
 //todo:
-Fix progress and clean 5 levels.
+Fix clean 5 levels.
 Fix level select UI.
 
 Fix kill player.

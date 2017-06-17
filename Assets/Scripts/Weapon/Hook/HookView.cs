@@ -75,7 +75,9 @@ public class HookView : View, IHook, ITriggerer {
     }
 
     public void DeactivateHook() {
-        StopCoroutine(hookUpdateCoroutine);
+        if(hookUpdateCoroutine != null) {
+            StopCoroutine(hookUpdateCoroutine);
+        }
         hookUpdateCoroutine = null;
         lineRenderer.positionCount = 0;
         lineRenderer.enabled = false;

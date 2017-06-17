@@ -1,6 +1,5 @@
-﻿using UnityEngine;
-using System.Collections;
-using IoCPlus;
+﻿using IoCPlus;
+using UnityEngine;
 
 public class AddCurrentSceneToCompletedLevelsCommand : Command {
 
@@ -10,7 +9,7 @@ public class AddCurrentSceneToCompletedLevelsCommand : Command {
     protected override void Execute() {
         int levelNumber = LevelHelper.GetLevelNumber(sceneStatus.currentScene);
 
-        if(!gameStateModel.Get().CompletedLevels.Contains(levelNumber)) {
+        if (!gameStateModel.Get().CompletedLevels.Contains(levelNumber)) {
             gameStateModel.Get().CompletedLevels.Add(levelNumber);
         }
     }
