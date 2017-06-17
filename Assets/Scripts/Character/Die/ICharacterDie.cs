@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 
-public interface ICharacterDie
-{
-    List<string> KillerTags { get; }
+public interface ICharacterDie {
+    List<string> DeadlyTags { get; }
 }

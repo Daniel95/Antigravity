@@ -2,7 +2,6 @@
 Fix clean 5 levels.
 Fix level select UI.
 
-Fix kill player.
 Add boundary checkpoints.
 Add water feature.
 Fix game triggers.

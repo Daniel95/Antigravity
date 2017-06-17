@@ -4,22 +4,22 @@ using UnityEngine;
 
 public class TriggerHitDetectionView : View, ITriggerHitDetection {
 
-    public List<string> CurrentTriggerTags { get { return currentTriggerTags; } }
+    public List<string> HittingTriggerTags { get { return hittingTriggerTags; } }
 
-    [Inject] private Ref<ITriggerHitDetection> characterHitTriggerRef;
+    [Inject] private Ref<ITriggerHitDetection> triggerHitDetectionRef;
 
     [Inject] private TriggerEnter2DEvent onTriggerEnter2DEvent;
     [Inject] private TriggerStay2DEvent onTriggerStay2DEvent;
     [Inject] private TriggerExit2DEvent onTriggerExit2DEvent;
 
-    private List<string> currentTriggerTags = new List<string>();
+    private List<string> hittingTriggerTags = new List<string>();
 
     public override void Initialize() {
-        characterHitTriggerRef.Set(this);
+        triggerHitDetectionRef.Set(this);
     }
 
     public void OnTriggerEnter2D(Collider2D collision) {
-        currentTriggerTags.Add(collision.tag);
+        hittingTriggerTags.Add(collision.tag);
         onTriggerEnter2DEvent.Dispatch(gameObject, collision);
     }
 
@@ -28,7 +28,7 @@ public class TriggerHitDetectionView : View, ITriggerHitDetection {
     }
 
     public void OnTriggerExit2D(Collider2D collision) {
-        currentTriggerTags.Remove(collision.tag);
+        hittingTriggerTags.Remove(collision.tag);
         onTriggerExit2DEvent.Dispatch(gameObject, collision);
     }
 }

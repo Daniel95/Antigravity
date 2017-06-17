@@ -34,7 +34,7 @@ public class FollowCameraView : View, IFollowCamera {
     }
 
     private IEnumerator FollowUpdate() {
-        while (target != null || cameraRef.Get().CameraBounds != null) {
+        while (target != null && cameraRef.Get().CameraBounds != null) {
             Vector2 delta = target.position - transform.position;
             Vector2 destination = (Vector2)transform.position + delta;
             Vector2 nextPos = Vector2.SmoothDamp(transform.position, cameraRef.Get().CameraBounds.GetClampedBoundsPosition(destination), ref velocity, smoothness, Mathf.Infinity, Time.deltaTime);

@@ -37,10 +37,23 @@ public class CharacterContext : Context {
         On<CollisionEnter2DEvent>()
             .Do<CharacterUpdateCollisionDirectionCommand>();
 
+
         On<CollisionEnter2DEvent>()
-            .Do<AbortIfNotCollidingAndNotInTriggerKillerTagsCommand>()
-            .Do<DebugLogMessageCommand>("kill player");
+            .Do<AbortIfGameObjectIsNotACharacterCommand>()
+            .Do<AbortIfHittingTriggerTagsDoesNotContainCharacterKillerTagsCommand>()
+            .Do<GameObjectDestroyViewCommand>();
+
+        On<CollisionStay2DEvent>()
+            .Do<AbortIfGameObjectIsNotACharacterCommand>()
+            .Do<AbortIfHittingTriggerTagsDoesNotContainCharacterKillerTagsCommand>()
+            .Do<GameObjectDestroyViewCommand>();
+
+        On<CollisionEnter2DEvent>()
+            .Do<AbortIfGameObjectIsNotACharacterCommand>()
+            .Do<AbortIfCollidingTagIsCharacterKillerTagCommand>()
+            .Do<GameObjectDestroyViewCommand>();
                
+
         On<CharacterPointToDirectionEvent>()
             .Do<CharacterPointToDirectionCommand>();
 
