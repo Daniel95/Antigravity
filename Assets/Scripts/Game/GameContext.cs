@@ -76,21 +76,23 @@ public class GameContext : Context {
         Bind<Ref<IPCInput>>();
         Bind<Ref<IMobileInput>>();
         Bind<Ref<IGrapplingHook>>();
-        Bind<Ref<ICharacterVelocity>>();
-        Bind<Ref<ICharacterTurnDirection>>();
-        Bind<Ref<ICharacterRaycastDirection>>();
-        Bind<Ref<ICharacterCollisionDirection>>();
-        Bind<Ref<ICharacterSurroundingDirection>>();
-        Bind<Ref<ICharacterJump>>();
-        Bind<Ref<ICharacterDirectionPointer>>();
-        Bind<Ref<ICharacterAimLine>>();
-        Bind<Ref<ICharacterBounce>>();
-        Bind<Ref<ICharacterDie>>();
-        Bind<Ref<ICharacterSpeed>>();
-        Bind<Ref<ICollisionHitDetection>>();
-        Bind<Ref<ITriggerHitDetection>>();
         Bind<Ref<ISlowTime>>();
         Bind<Ref<IGrapplingState>>();
+
+        //need owner---
+        Bind<Ref<ICharacterSpeed>>();
+        Bind<Ref<ICharacterDie>>();
+        Bind<Ref<ICharacterBounce>>();
+        Bind<Ref<ICharacterAimLine>>();
+        Bind<Ref<ICharacterJump>>();
+        Bind<Ref<ICharacterRaycastDirection>>();
+        Bind<Ref<ICharacterTurnDirection>>();
+        Bind<Ref<ICharacterVelocity>>();
+        Bind<Ref<ITriggerHitDetection>>();
+        Bind<Ref<ICharacterCollisionDirection>>();
+        Bind<Ref<ICharacterSurroundingDirection>>();
+        Bind<Ref<ICharacterDirectionPointer>>();
+        Bind<Ref<ICollisionHitDetection>>();
         BindLabeled<Ref<IMoveTowards>>(Label.Player);
 
         Bind<IGameStateService, LocalGameStateService>();

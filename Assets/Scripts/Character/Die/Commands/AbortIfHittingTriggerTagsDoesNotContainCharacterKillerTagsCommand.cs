@@ -1,5 +1,6 @@
 ﻿using IoCPlus;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class AbortIfHittingTriggerTagsDoesNotContainCharacterKillerTagsCommand : Command {
 
@@ -12,7 +13,11 @@ public class AbortIfHittingTriggerTagsDoesNotContainCharacterKillerTagsCommand :
 
         bool hittingTagsContainsDeadlyTags = false;
 
+        Debug.Log("get triggerHitDetectionRef from " + ((View)triggerHitDetectionRef.Get()).gameObject);
+        Debug.Log(hittingTriggerTags.Count);
+
         foreach (string hittingTag in hittingTriggerTags) {
+            Debug.Log(hittingTag);
             if(deadlyTags.Contains(hittingTag)) {
                 hittingTagsContainsDeadlyTags = true;
             }

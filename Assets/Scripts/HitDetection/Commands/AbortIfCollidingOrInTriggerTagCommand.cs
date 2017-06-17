@@ -3,12 +3,12 @@ using UnityEngine;
 
 public class AbortIfCollidingOrInTriggerTagCommand : Command<string> {
 
-    [Inject] private Ref<ITriggerHitDetection> characterTriggerHitDetectionRef;
+    [Inject] private Ref<ITriggerHitDetection> triggerHitDetectionRef;
 
     [InjectParameter] private Collision2D collision;
 
     protected override void Execute(string tag) {
-        if (collision.transform.CompareTag(tag) || characterTriggerHitDetectionRef.Get().HittingTriggerTags.Contains(tag)) {
+        if (collision.transform.CompareTag(tag) || triggerHitDetectionRef.Get().HittingTriggerTags.Contains(tag)) {
             Abort();
         }
     }

@@ -34,6 +34,15 @@ public class CharacterContext : Context {
             .Do<CharacterTurnToNextDirectionCommand>()
             .Do<CharacterPointToSavedDirectionCommand>();
 
+        On<CharacterPointToDirectionEvent>()
+            .Do<CharacterPointToDirectionCommand>();
+
+        On<CharacterSetMoveDirectionEvent>()
+            .Do<CharacterSetMoveDirectionCommand>();
+
+        On<CharacterSetVelocityEvent>()
+            .Do<CharacterSetVelocityCommand>();
+
         On<CollisionEnter2DEvent>()
             .Do<CharacterUpdateCollisionDirectionCommand>();
 
@@ -52,15 +61,5 @@ public class CharacterContext : Context {
             .Do<AbortIfGameObjectIsNotACharacterCommand>()
             .Do<AbortIfCollidingTagIsCharacterKillerTagCommand>()
             .Do<GameObjectDestroyViewCommand>();
-               
-
-        On<CharacterPointToDirectionEvent>()
-            .Do<CharacterPointToDirectionCommand>();
-
-        On<CharacterSetMoveDirectionEvent>()
-            .Do<CharacterSetMoveDirectionCommand>();
-
-        On<CharacterSetVelocityEvent>()
-            .Do<CharacterSetVelocityCommand>();
     }
 }
