@@ -6,6 +6,6 @@ public class SetLastLevelToCurrentSceneCommand : Command {
     [Inject] private SceneStatus sceneStatus;
 
     protected override void Execute() {
-        levelStatus.LastLevelNumber = (int)sceneStatus.currentScene;
+        levelStatus.LastLevelNumber = LevelHelper.GetSceneLevelNumber(sceneStatus.currentScene);
     }
 }

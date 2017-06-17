@@ -29,7 +29,7 @@ public class SelectableLevel : MonoBehaviour, ISelectableLevel {
     }
 
     public void ApplyLevelProgressState() {
-        if (!LevelHelper.CheckLevelExistence(levelNumber)) {
+        if (!LevelHelper.CheckLevelNumberExistence(levelNumber)) {
             levelProgressState = LevelProgressState.Unset;
         }
 

@@ -6,9 +6,8 @@ public class AbortIfCurrentSceneIsNotALevelCommand : Command {
     [Inject] private SceneStatus sceneStatus;
 
     protected override void Execute() {
-        int levelNumber = LevelHelper.GetLevelNumber(sceneStatus.currentScene);
-
-        if(!LevelHelper.CheckLevelExistence(levelNumber)) {
+        int levelNumber = 0;
+        if(!LevelHelper.CheckSceneLevelExistence(sceneStatus.currentScene, out levelNumber)) {
             Abort();
         }
     }

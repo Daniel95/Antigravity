@@ -32,7 +32,7 @@ public class DebugInputView : View {
         int highestLevel = LevelHelper.LevelCount;
 
         for (int i = 1; i <= highestLevel; i++) {
-            if(!LevelHelper.CheckLevelExistence(i)) {
+            if(!LevelHelper.CheckLevelNumberExistence(i)) {
                 highestLevel++;
                 continue;
             }
