@@ -12,6 +12,10 @@ public class HookContext : Context {
             .Do<HookProjectileInstantiateCommand>();
 
         On<LeaveContextSignal>()
+            .Do<DeactivateHookCommand>()
+            .Do<DestroyHookAnchorsCommand>()
+            .Do<DeactivateHookProjectileCommand>()
+            .Do<StopUpdateGrapplingStateCommand>()
             .Do<HookProjectileDestroyCommand>();
 
         On<CancelHookEvent>()
