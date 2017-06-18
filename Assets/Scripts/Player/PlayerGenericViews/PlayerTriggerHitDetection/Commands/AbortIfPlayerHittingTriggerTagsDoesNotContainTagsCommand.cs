@@ -1,12 +1,12 @@
 ﻿using IoCPlus;
 using System.Collections.Generic;
 
-public class AbortIfHittingTriggerTagsDoesNotContainTagsCommand : Command<List<string>> {
+public class AbortIfPlayerHittingTriggerTagsDoesNotContainTagsCommand : Command<List<string>> {
 
-    [Inject] private Ref<ITriggerHitDetection> triggerHitDetectionRef;
+    [Inject(Label.Player)] private Ref<ITriggerHitDetection> playerTriggerHitDetectionRef;
 
     protected override void Execute(List<string> tags) {
-        List<string> hittingTriggerTags = triggerHitDetectionRef.Get().HittingTriggerTags;
+        List<string> hittingTriggerTags = playerTriggerHitDetectionRef.Get().HittingTriggerTags;
 
         foreach (string hittingTag in hittingTriggerTags) {
             if(tags.Contains(hittingTag)) {

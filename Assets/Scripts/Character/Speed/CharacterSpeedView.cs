@@ -13,7 +13,7 @@ public class CharacterSpeedView : View, ICharacterSpeed {
     public int ChangeSpeedCDCounter { get { return changeSpeedCDCounter; } set { changeSpeedCDCounter = value; } }
     public bool ChangeSpeedCDIsActive { get { return changeSpeedCDIsActive; } }
 
-    [Inject] private Refs<ICharacterSpeed> characterSpeedRef;
+    [Inject] private Ref<ICharacterSpeed> characterSpeedRef;
 
     [Inject] private PlayerBoostSpeedEvent boostSpeedEvent;
 
@@ -28,7 +28,7 @@ public class CharacterSpeedView : View, ICharacterSpeed {
     private bool changeSpeedCDIsActive;
 
     public override void Initialize() {
-        characterSpeedRef.Add(this);
+        characterSpeedRef.Set(this);
     }
 
     public float CalculateNewSpeed(float currentSpeed, float amount, float neutralValue) {

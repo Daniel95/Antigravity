@@ -3,9 +3,9 @@
 public class HookProjectileStopMoveTowardsCommand : Command {
 
     [Inject] private Ref<IHook> hookRef;
-    [Inject(Label.HookProjectile)] private Ref<IMoveTowards> moveTowardsRef;
+    [Inject(Label.HookProjectile)] private Ref<IMoveTowards> hookProjectileMoveTowardsRef;
 
     protected override void Execute() {
-        moveTowardsRef.Get().StopMoving();
+        hookProjectileMoveTowardsRef.Get().StopMoving();
     }
 }

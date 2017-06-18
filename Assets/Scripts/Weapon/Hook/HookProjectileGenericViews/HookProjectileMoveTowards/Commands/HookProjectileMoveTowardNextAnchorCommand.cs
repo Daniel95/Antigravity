@@ -1,9 +1,9 @@
 ﻿using IoCPlus;
 using UnityEngine;
 
-public class HookProjectileMoveTowardNextAnchorCommand : Command {
+public class HookProjectileMoveTowardsNextAnchorCommand : Command {
 
-    [Inject(Label.HookProjectile)] private Ref<IMoveTowards> moveTowardsRef;
+    [Inject(Label.HookProjectile)] private Ref<IMoveTowards> hookProjectileMoveTowardsRef;
     [Inject] private Ref<IHookProjectile> hookProjectileRef;
     [Inject] private Ref<IHook> hookRef;
 
@@ -11,6 +11,6 @@ public class HookProjectileMoveTowardNextAnchorCommand : Command {
 
     protected override void Execute() {
         Vector2 nextPoint = hookRef.Get().Anchors[hookRef.Get().Anchors.Count - 2].position;
-        moveTowardsRef.Get().StartMovingToTarget(nextPoint, hookProjectileMoveTowardsNextAnchorCompletedEvent);
+        hookProjectileMoveTowardsRef.Get().StartMovingToTarget(nextPoint, hookProjectileMoveTowardsNextAnchorCompletedEvent);
     }
 }

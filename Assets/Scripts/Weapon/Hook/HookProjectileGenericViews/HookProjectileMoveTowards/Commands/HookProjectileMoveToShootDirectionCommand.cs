@@ -2,12 +2,12 @@
 
 public class HookProjectileMoveToShootDirectionCommand : Command {
 
-    [Inject(Label.HookProjectile)] private Ref<IMoveTowards> moveTowardsRef;
+    [Inject(Label.HookProjectile)] private Ref<IMoveTowards> hookProjectileMoveTowardsRef;
 
     [Inject] private Ref<IWeapon> weaponRef;
     [InjectParameter] private ShootHookEvent.Parameter shootHookEventParameter;
 
     protected override void Execute() {
-        moveTowardsRef.Get().StartMovingToDirection(shootHookEventParameter.Direction);
+        hookProjectileMoveTowardsRef.Get().StartMovingToDirection(shootHookEventParameter.Direction);
     }
 }

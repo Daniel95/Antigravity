@@ -7,7 +7,7 @@ public class HookContext : Context {
         base.SetBindings();
 
         On<EnterContextSignal>()
-            .Do<HookProjectileInstantiateCommand>();
+            .Do<InstantiateViewPrefabCommand>("Characters/Projectiles/HookProjectile");
 
         On<LeaveContextSignal>()
             .Do<DeactivateHookCommand>()
@@ -59,7 +59,7 @@ public class HookContext : Context {
 
         On<HookProjectileMoveTowardsNextAnchorEvent>()
             .Do<AbortIfHookAnchorCountIsLowerOrEqualThenOneCommand>()
-            .Do<HookProjectileMoveTowardNextAnchorCommand>()
+            .Do<HookProjectileMoveTowardsNextAnchorCommand>()
             .OnAbort<HookProjectileMoveTowardsOwnerCommand>();
 
         On<HookProjectileMoveTowardsNextAnchorCompletedEvent>()

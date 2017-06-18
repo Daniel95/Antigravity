@@ -12,7 +12,7 @@ public class PlayerStateContext : Context {
             .GotoState<FloatingStateContext>();
 
         On<CollisionEnter2DEvent>()
-            .Do<AbortIfCollidingOrInTriggerTagCommand>(Tags.Bouncy)
+            .Do<AbortIfPlayerCollidingOrInTriggerWithTagCommand>(Tags.Bouncy)
             .Do<CharacterUpdateCollisionDirectionCommand>()
             .Do<DispatchCharacterTurnToNextDirectionEventCommand>()
             .Do<AbortIfSavedCollisionCountIsHigherThenOneCommand>()
@@ -25,7 +25,7 @@ public class PlayerStateContext : Context {
             .GotoState<FloatingStateContext>();
 
         On<CollisionEnter2DEvent>()
-            .Do<AbortIfNotCollidingAndNotInTriggerTagCommand>(Tags.Bouncy)
+            .Do<AbortIfPlayerNotCollidingAndNotInTriggerWithTagCommand>(Tags.Bouncy)
             .Do<DispatchCharacterBounceEventCommand>();
 
         On<PlayerTriggerEnter2DEvent>()

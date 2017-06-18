@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AbortIfHittingTriggerTagsDoesNotContainCharacterKillerTagsCommand : Command {
+public class AbortIfPlayerHittingTriggerTagsDoesNotContainCharacterKillerTagsCommand : Command {
 
-    [Inject] private Ref<ITriggerHitDetection> triggerHitDetectionRef;
+    [Inject(Label.Player)] private Ref<ITriggerHitDetection> playerTriggerHitDetectionRef;
     [Inject] private Ref<ICharacterDie> characterDieRef;
 
     protected override void Execute() {
-        List<string> hittingTriggerTags = triggerHitDetectionRef.Get().HittingTriggerTags;
+        List<string> hittingTriggerTags = playerTriggerHitDetectionRef.Get().HittingTriggerTags;
         List<string> deadlyTags = characterDieRef.Get().DeadlyTags;
 
         bool hittingTagsContainsDeadlyTags = false;

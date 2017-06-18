@@ -7,8 +7,6 @@ public class InstantiatePlayerCommand : Command {
 
     [Inject] private PlayerStatus playerStatus;
 
-    [Inject(Label.Player)] private Ref<IMoveTowards> moveTowards;
-    
     private const string PLAYER_PREFAB_PATH = "Characters/Player";
 
     protected override void Execute() {
@@ -25,7 +23,5 @@ public class InstantiatePlayerCommand : Command {
         GameObject playerGO = playerView.gameObject;
         playerGO.transform.position = startPosition;
         playerStatus.Player = playerGO;
-
-        moveTowards.Set(playerGO.GetComponent<MoveTowardsView>());
     }
 }

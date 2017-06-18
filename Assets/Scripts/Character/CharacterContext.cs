@@ -49,12 +49,12 @@ public class CharacterContext : Context {
 
         On<CollisionEnter2DEvent>()
             .Do<AbortIfGameObjectIsNotACharacterCommand>()
-            .Do<AbortIfHittingTriggerTagsDoesNotContainCharacterKillerTagsCommand>()
+            .Do<AbortIfPlayerHittingTriggerTagsDoesNotContainCharacterKillerTagsCommand>()
             .Do<GameObjectDestroyViewCommand>();
 
         On<CollisionStay2DEvent>()
             .Do<AbortIfGameObjectIsNotACharacterCommand>()
-            .Do<AbortIfHittingTriggerTagsDoesNotContainCharacterKillerTagsCommand>()
+            .Do<AbortIfPlayerHittingTriggerTagsDoesNotContainCharacterKillerTagsCommand>()
             .Do<GameObjectDestroyViewCommand>();
 
         On<CollisionEnter2DEvent>()
