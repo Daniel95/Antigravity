@@ -89,7 +89,6 @@ public class GameContext : Context {
         Bind<Ref<ICharacterTurnDirection>>();
         Bind<Ref<ICharacterVelocity>>();
         Bind<Ref<ICharacterCollisionDirection>>();
-        Bind<Ref<ICharacterSurroundingDirection>>();
         Bind<Ref<ICharacterDirectionPointer>>();
         Bind<Ref<ITriggerHitDetection>>();
         Bind<Ref<ICollisionHitDetection>>();

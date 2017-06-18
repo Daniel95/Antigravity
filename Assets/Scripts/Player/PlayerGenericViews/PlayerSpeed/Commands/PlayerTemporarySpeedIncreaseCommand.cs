@@ -2,7 +2,7 @@
 
 public class PlayerTemporarySpeedIncreaseCommand : Command {
 
-    [Inject] private Ref<ICharacterSpeed> playerSpeedRef;
+    [Inject(Label.Player)] private Ref<ICharacterSpeed> playerSpeedRef;
 
     [Inject] private PlayerTemporarySpeedChangeEvent playerTemporarySpeedChangeEvent;
 
