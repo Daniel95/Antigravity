@@ -3,6 +3,7 @@
 Sunday: {
 	Refactor commands using player labeled view bindings.
 
+	refactor character jump & signal.
 	CharacterSurroundingDirectionView should be playersurroundingdirectionview.
 }
 

@@ -6,6 +6,6 @@ public interface ICharacterRaycastDirection {
     int GetHorizontalCornersDirection();
     int GetVerticalMiddleDirection();
     int GetHorizontalMiddleDirection();
-    Vector2 GetMiddleDirection();
+    Vector2 CenterRaycastDirection();
     Vector2 GetCornersDirection();
 }

@@ -8,7 +8,7 @@ public class CharacterTurnDirectionView : View, ICharacterTurnDirection {
 
     public Action<Vector2> FinishedDirectionLogic;
 
-    [Inject] private CharacterSetMoveDirectionEvent characterSetMoveDirectionEvent;
+    [Inject] private PlayerSetMoveDirectionEvent characterSetMoveDirectionEvent;
     [Inject] private PlayerTemporarySpeedChangeEvent characterTemporarySpeedChangeEvent;
     [Inject] private CharacterTemporarySpeedDecreaseEvent characterTemporarySpeedDecreaseEvent;
 

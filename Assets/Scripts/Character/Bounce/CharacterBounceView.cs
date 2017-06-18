@@ -2,7 +2,7 @@
 
 public class CharacterBounceView : View, ICharacterBounce {
 
-    [Inject] private CharacterSetMoveDirectionEvent characterSetMoveDirectionEvent;
+    [Inject] private PlayerSetMoveDirectionEvent characterSetMoveDirectionEvent;
 
     public void Bounce(PlayerBounceEvent.Parameter characterBounceParameter) {
         if (characterBounceParameter.CollisionDirection.x != 0 || characterBounceParameter.CollisionDirection.y != 0) {

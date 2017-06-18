@@ -7,7 +7,7 @@ public class CharacterVelocityView : View, ICharacterVelocity {
 
     public Vector2 Velocity { get { return rigidbodyComponent.velocity; } set { rigidbodyComponent.velocity = value; } }
     public Vector2 PreviousVelocity { get { return previousVelocity; } }
-    public Vector2 Direction { get { return direction; } }
+    public Vector2 MoveDirection { get { return moveDirection; } }
     public float OriginalSpeed { get { return originalSpeed; }  }
     public float CurrentSpeed { get { return currentSpeed; } }
 
@@ -16,7 +16,7 @@ public class CharacterVelocityView : View, ICharacterVelocity {
     [SerializeField] private float minSpeedOffsetValue = 0.05f;
 
     private Vector2 previousVelocity = new Vector2();
-    private Vector2 direction = new Vector2(1, -1);
+    private Vector2 moveDirection = new Vector2(1, -1);
     private Rigidbody2D rigidbodyComponent;
     private Coroutine updateDirectionalMovementCoroutine;
     private Coroutine returnSpeedToOriginalCoroutine;
@@ -39,8 +39,8 @@ public class CharacterVelocityView : View, ICharacterVelocity {
     }
 
     public void SetMoveDirection(Vector2 moveDirection) {
-        direction = moveDirection;
-        rigidbodyComponent.velocity = direction * currentSpeed;
+        this.moveDirection = moveDirection;
+        rigidbodyComponent.velocity = this.moveDirection * currentSpeed;
     }
 
     public void AddVelocity(Vector2 velocity) {
@@ -52,7 +52,7 @@ public class CharacterVelocityView : View, ICharacterVelocity {
     }
 
     public void SwitchDirection() {
-        direction *= -1;
+        moveDirection *= -1;
     }
 
     public Vector2 GetVelocityDirection() {
@@ -103,7 +103,7 @@ public class CharacterVelocityView : View, ICharacterVelocity {
 
     private IEnumerator UpdateDirectionalMovement() {
         while (true) {
-            rigidbodyComponent.velocity = direction * currentSpeed;
+            rigidbodyComponent.velocity = moveDirection * currentSpeed;
             yield return new WaitForFixedUpdate();
         }
     }

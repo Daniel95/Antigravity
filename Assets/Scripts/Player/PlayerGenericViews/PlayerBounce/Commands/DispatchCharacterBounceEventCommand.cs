@@ -9,7 +9,7 @@ public class DispatchPlayerBounceEventCommand : Command {
 
     protected override void Execute() {
         playerBounceEvent.Dispatch(new PlayerBounceEvent.Parameter(
-            characterVelocityRef.Get().Direction,
+            characterVelocityRef.Get().MoveDirection,
             characterSurroundingsDirection.Get().GetSurroundingsDirection()
         ));
     }

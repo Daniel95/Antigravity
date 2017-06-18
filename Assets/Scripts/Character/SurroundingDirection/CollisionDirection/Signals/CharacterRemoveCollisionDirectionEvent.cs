@@ -1,4 +1,4 @@
 ﻿using IoCPlus;
 using UnityEngine;
 
-public class CharacterRemoveCollisionDirectionEvent : Signal<Vector2> { }
+public class PlayerRemoveCollisionDirectionEvent : Signal<Vector2> { }

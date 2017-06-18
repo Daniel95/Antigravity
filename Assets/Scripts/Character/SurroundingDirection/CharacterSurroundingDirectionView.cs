@@ -38,7 +38,7 @@ public class CharacterSurroundingDirectionView : View, ICharacterSurroundingDire
     }
 
     private Vector2 GetUpdatedRaycastDirectionMiddleDirection() {
-        return raycastDirectionMiddleDirection = characterRaycastDirection.Get().GetMiddleDirection();
+        return raycastDirectionMiddleDirection = characterRaycastDirection.Get().CenterRaycastDirection();
     }
 
     private Vector2 GetUpdatedRaycastDirectionCornersDirection() {

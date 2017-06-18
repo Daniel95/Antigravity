@@ -8,14 +8,12 @@ public class GameContext : Context {
         base.SetBindings();
 
         Bind<CharacterTurnToNextDirectionEvent>();
-        Bind<CharacterSetMoveDirectionEvent>();
+        Bind<PlayerSetMoveDirectionEvent>();
         Bind<PlayerBoostSpeedEvent>();
         Bind<PlayerTemporarySpeedChangeEvent>();
         Bind<CharacterTemporarySpeedDecreaseEvent>();
         Bind<PlayerTemporarySpeedChangeEvent>();
-        Bind<CharacterRemoveCollisionDirectionEvent>();
-        Bind<CharacterJumpEvent>();
-        Bind<CharacterRetryJumpEvent>();
+        Bind<PlayerRemoveCollisionDirectionEvent>();
         Bind<PlayerBounceEvent>();
         Bind<CharacterPointToDirectionEvent>();
         Bind<CharacterSetVelocityEvent>();
@@ -80,7 +78,6 @@ public class GameContext : Context {
         Bind<Ref<IGrapplingState>>();
 
         // old
-        Bind<Ref<ICharacterJump>>();
         Bind<Ref<ICharacterRaycastDirection>>();
         Bind<Ref<ICharacterTurnDirection>>();
         Bind<Ref<ICharacterVelocity>>();
@@ -91,7 +88,6 @@ public class GameContext : Context {
         //
 
         /*
-        BindLabeled<Ref<ICharacterJump>>(Label.Player);
         BindLabeled<Ref<ICharacterRaycastDirection>>(Label.Player);
         BindLabeled<Ref<ICharacterTurnDirection>>(Label.Player);
         BindLabeled<Ref<ICharacterVelocity>>(Label.Player);
@@ -102,6 +98,7 @@ public class GameContext : Context {
         */
 
         //player
+        BindLabeled<Ref<ICharacterJump>>(Label.Player);
         BindLabeled<Ref<ICharacterAimLine>>(Label.Player);
         BindLabeled<Ref<ICharacterBounce>>(Label.Player);
         BindLabeled<Ref<ICharacterDie>>(Label.Player);
@@ -123,7 +120,7 @@ public class GameContext : Context {
         Bind<ViewContainerStatus>();
         Bind<InputStatus>();
         Bind<WeaponStatus>();
-        Bind<JumpStatus>();
+        Bind<PlayerJumpStatus>();
 
         On<EnterContextSignal>()
             .InstantiateView<ApplicationView>()

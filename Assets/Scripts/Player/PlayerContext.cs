@@ -14,7 +14,7 @@ public class PlayerContext : Context {
             .AddContext<CharacterContext>()
             .Do<EnableInputCommand>(true)
             .Do<EnableWeaponCommand>(true)
-            .Do<EnableJumpCommand>(true);
+            .Do<EnablePlayerJumpCommand>(true);
 
         On<PlayerTriggerEnter2DEvent>()
             .Do<AbortIfTriggerTagIsNotTheSameCommand>(Tags.Finish)

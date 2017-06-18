@@ -2,14 +2,16 @@
 using UnityEngine;
 using System.Collections;
 
-public class WaitFrameCommand : Command {
+public class WaitFrameCommand : Command<int> {
 
-	protected override void ExecuteOverTime() {
-        CoroutineHelper.Start(Wait());
+	protected override void ExecuteOverTime(int frames) {
+        CoroutineHelper.Start(Wait(frames));
 	}
 
-    private IEnumerator Wait() {
-        yield return new WaitForEndOfFrame();
+    private IEnumerator Wait(int frames) {
+        for (int i = 0; i < frames; i++) {
+            yield return new WaitForEndOfFrame();
+        }
         Release();
     }
 

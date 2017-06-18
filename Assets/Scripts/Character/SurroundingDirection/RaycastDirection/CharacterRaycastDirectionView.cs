@@ -53,7 +53,7 @@ public class CharacterRaycastDirectionView : View, ICharacterRaycastDirection {
         }
     }
 
-    public Vector2 GetMiddleDirection() {
+    public Vector2 CenterRaycastDirection() {
         return new Vector2(GetHorizontalMiddleDirection(), GetVerticalMiddleDirection());
     }
 

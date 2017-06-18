@@ -12,7 +12,7 @@ public class RevivedStateContext : Context {
             .Do<CharacterResetMoveDirectionCommand>()
             .Do<EnableInputCommand>(false)
             .Do<EnableWeaponCommand>(false)
-            .Do<EnableJumpCommand>(false)
+            .Do<EnablePlayerJumpCommand>(false)
             .Do<CharacterResetCollisionDirectionCommand>()
             .Do<PlayerMoveTowardsCheckpointCommand>();
 
@@ -25,7 +25,7 @@ public class RevivedStateContext : Context {
 
         On<ReleaseInDirectionInputEvent>()
             .Do<EnableWeaponCommand>(true)
-            .Do<EnableJumpCommand>(true)
+            .Do<EnablePlayerJumpCommand>(true)
             .Do<PlayerStopAimLineCommand>()
             .Do<CharacterSetMoveDirectionCommand>()
             .Do<PlayerTemporarySpeedIncreaseCommand>();
