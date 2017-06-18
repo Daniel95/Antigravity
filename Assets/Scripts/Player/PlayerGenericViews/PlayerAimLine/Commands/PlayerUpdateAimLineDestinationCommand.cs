@@ -1,16 +1,16 @@
 ﻿using IoCPlus;
 using UnityEngine;
 
-public class CharacterUpdateAimLineDestinationCommand : Command {
+public class PlayerUpdateAimLineDestinationCommand : Command {
 
     [Inject] private Ref<IWeapon> weaponRef;
-    [Inject] private Ref<ICharacterAimLine> aimLineRef;
+    [Inject(Label.Player)] private Ref<ICharacterAimLine> playerAimLineRef;
 
     [InjectParameter] private Vector2 direction;
 
     protected override void Execute() {
         Vector2 destination = weaponRef.Get().GetShootDestinationPoint(direction);
 
-        aimLineRef.Get().UpdateAimLineDestination(destination);
+        playerAimLineRef.Get().UpdateAimLineDestination(destination);
     }
 }

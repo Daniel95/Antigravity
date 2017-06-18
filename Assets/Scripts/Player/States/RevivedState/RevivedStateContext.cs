@@ -20,13 +20,13 @@ public class RevivedStateContext : Context {
             .Do<EnableInputCommand>(true);
 
         On<DraggingInputEvent>()
-            .Do<CharacterUpdateAimLineDestinationCommand>()
+            .Do<PlayerUpdateAimLineDestinationCommand>()
             .Do<CharacterPointToDirectionCommand>();
 
         On<ReleaseInDirectionInputEvent>()
             .Do<EnableWeaponCommand>(true)
             .Do<EnableJumpCommand>(true)
-            .Do<CharacterStopAimLineCommand>()
+            .Do<PlayerStopAimLineCommand>()
             .Do<CharacterSetMoveDirectionCommand>()
             .Do<PlayerTemporarySpeedIncreaseCommand>();
     }

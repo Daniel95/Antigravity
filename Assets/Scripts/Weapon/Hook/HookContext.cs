@@ -27,7 +27,7 @@ public class HookContext : Context {
             .Dispatch<PullBackHookEvent>();
 
         On<CancelAimWeaponEvent>()
-            .Do<CharacterStopAimLineCommand>();
+            .Do<PlayerStopAimLineCommand>();
 
         On<FireWeaponEvent>()
             .Do<AbortIfHookStateIsNotActive>(HookState.Inactive)

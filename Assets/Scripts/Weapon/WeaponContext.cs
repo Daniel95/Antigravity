@@ -13,7 +13,7 @@ public class WeaponContext : Context {
             .Do<AbortIfWeaponIsNotEnabledCommand>()
             .Do<SlowTimeCommand>()
             .Do<CharacterPointToDirectionCommand>()
-            .Do<CharacterUpdateAimLineDestinationCommand>();
+            .Do<PlayerUpdateAimLineDestinationCommand>();
 
         On<ReleaseInDirectionInputEvent>()
             .Do<AbortIfGameIsPauzedCommand>()
@@ -25,14 +25,14 @@ public class WeaponContext : Context {
         On<CancelDragInputEvent>()
             .Do<AbortIfGameIsPauzedCommand>()
             .Do<AbortIfWeaponIsNotEnabledCommand>()
-            .Do<CharacterStopAimLineCommand>()
+            .Do<PlayerStopAimLineCommand>()
             .Dispatch<CancelAimWeaponEvent>();
 
         On<ReleaseInputEvent>()
             .Do<AbortIfGameIsPauzedCommand>()
             .Do<AbortIfWeaponIsNotEnabledCommand>()
             .Do<StopSlowTimeCommand>()
-            .Do<CharacterStopAimLineCommand>();
+            .Do<PlayerStopAimLineCommand>();
 
         On<HoldingInputEvent>()
             .Do<AbortIfGameIsPauzedCommand>()
