@@ -1,14 +1,14 @@
 ﻿using IoCPlus;
 
-public class DispatchCharacterBounceEventCommand : Command {
+public class DispatchPlayerBounceEventCommand : Command {
 
     [Inject] private Ref<ICharacterVelocity> characterVelocityRef;
     [Inject] private Ref<ICharacterSurroundingDirection> characterSurroundingsDirection;
 
-    [Inject] private CharacterBounceEvent characterBounceEvent;
+    [Inject] private PlayerBounceEvent playerBounceEvent;
 
     protected override void Execute() {
-        characterBounceEvent.Dispatch(new CharacterBounceEvent.Parameter(
+        playerBounceEvent.Dispatch(new PlayerBounceEvent.Parameter(
             characterVelocityRef.Get().Direction,
             characterSurroundingsDirection.Get().GetSurroundingsDirection()
         ));

@@ -26,7 +26,7 @@ public class PlayerStateContext : Context {
 
         On<CollisionEnter2DEvent>()
             .Do<AbortIfPlayerNotCollidingAndNotInTriggerWithTagCommand>(Tags.Bouncy)
-            .Do<DispatchCharacterBounceEventCommand>();
+            .Do<DispatchPlayerBounceEventCommand>();
 
         On<PlayerTriggerEnter2DEvent>()
             .Do<AbortIfPlayerStateStatusStateIsStateCommand>(PlayerStateStatus.PlayerState.Revived)

@@ -20,8 +20,8 @@ public class CharacterContext : Context {
             .Do<CharacterJumpCommand>()
             .Do<CharacterPointToVelocityDirectionCommand>();
 
-        On<CharacterBounceEvent>()
-            .Do<CharacterBounceCommand>()
+        On<PlayerBounceEvent>()
+            .Do<PlayerBounceCommand>()
             .Do<CharacterPointToCeiledVelocityDirectionCommand>();
 
         On<CharacterRemoveCollisionDirectionEvent>()

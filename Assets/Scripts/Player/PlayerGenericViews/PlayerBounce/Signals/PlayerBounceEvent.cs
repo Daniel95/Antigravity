@@ -1,7 +1,7 @@
 ﻿using IoCPlus;
 using UnityEngine;
 
-public class CharacterBounceEvent : Signal<CharacterBounceEvent.Parameter> {
+public class PlayerBounceEvent : Signal<PlayerBounceEvent.Parameter> {
 
     public class Parameter {
         public Vector2 MoveDirection;
