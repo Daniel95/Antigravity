@@ -11,8 +11,6 @@ public class CharacterVelocityView : View, ICharacterVelocity {
     public float OriginalSpeed { get { return originalSpeed; }  }
     public float CurrentSpeed { get { return currentSpeed; } }
 
-    [Inject] private Ref<ICharacterVelocity> controlVelocityRef;
-
     [SerializeField] private float originalSpeed = 3.2f;
     [SerializeField] private float currentSpeed;
     [SerializeField] private float minSpeedOffsetValue = 0.05f;
@@ -22,10 +20,6 @@ public class CharacterVelocityView : View, ICharacterVelocity {
     private Rigidbody2D rigidbodyComponent;
     private Coroutine updateDirectionalMovementCoroutine;
     private Coroutine returnSpeedToOriginalCoroutine;
-
-    public override void Initialize() {
-        controlVelocityRef.Set(this);
-    }
 
     public void EnableDirectionalMovement(bool enable) {
         if(enable) {

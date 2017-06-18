@@ -6,14 +6,7 @@ public class CharacterCollisionDirectionView : View, ICharacterCollisionDirectio
 
     public int SavedCollisionsCount { get { return savedCollisions.Count; } }
 
-    [Inject] private Ref<ICharacterCollisionDirection> characterCollisionDirectionRef;
-
-    //saves the collider and the rounded direction
     private Dictionary<Collider2D, Vector2> savedCollisions = new Dictionary<Collider2D, Vector2>();
-
-    public override void Initialize() {
-        characterCollisionDirectionRef.Set(this);
-    }
 
     public Vector2 GetUpdatedCollisionDirection(Collision2D collision) {
         SaveNewCollision(collision);

@@ -7,8 +7,6 @@ public class CharacterJumpView : View, ICharacterJump, ITriggerer {
     public Action ActivateTrigger { get; set; }
     public Action StopTrigger { get; set; }
 
-    [Inject] private Ref<ICharacterJump> characterJumpRef;
-
     [Inject] private PlayerTemporarySpeedChangeEvent characterTemporarySpeedChangeEvent;
     [Inject] private CharacterSetMoveDirectionEvent characterSetMoveDirectionEvent;
     [Inject] private CharacterRemoveCollisionDirectionEvent characterRemoveCollisionDirectionEvent;
@@ -22,10 +20,6 @@ public class CharacterJumpView : View, ICharacterJump, ITriggerer {
     private Coroutine retryJumpAfterDelayCoroutine;
 
     private Frames frames;
-
-    public override void Initialize() {
-        characterJumpRef.Set(this);
-    }
 
     public void TryJump(CharacterJumpEvent.Parameter characterJumpParameter) {
         if (StopTrigger != null) {

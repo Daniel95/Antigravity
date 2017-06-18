@@ -13,12 +13,6 @@ public class CharacterRaycastDirectionView : View, ICharacterRaycastDirection {
     [SerializeField] private float cornerRayLength = 0.15f;
     [SerializeField] private float middleRayLength = 0.4f;
 
-    [Inject] private Ref<ICharacterRaycastDirection> characterRaycastDirectionRef;
-
-    public override void Initialize() {
-        characterRaycastDirectionRef.Set(this);
-    }
-
     public int GetVerticalCornersDirection() {
         if (CheckRayCornersUp()) {
             return 1;

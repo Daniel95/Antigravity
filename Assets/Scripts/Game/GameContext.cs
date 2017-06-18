@@ -114,11 +114,8 @@ public class GameContext : Context {
         BindLabeled<Ref<ITriggerHitDetection>>(Label.Player);
         BindLabeled<Ref<IMoveTowards>>(Label.Player);
 
-        //hook
         BindLabeled<Ref<ITriggerHitDetection>>(Label.HookProjectile);
         BindLabeled<Ref<IMoveTowards>>(Label.HookProjectile);
-
-
 
 
         Bind<IGameStateService, LocalGameStateService>();

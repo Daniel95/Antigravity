@@ -8,16 +8,10 @@ public class CharacterAimLineView : View, ICharacterAimLine {
 
     [SerializeField] private GameObject aimLinePrefab;
 
-    [Inject] private Ref<ICharacterAimLine> characterAimLineRef;
-
     private LineRenderer lineRenderer;
     private Vector2 lineDestination;
     private Coroutine updateLineRendererPositionsCoroutine;
     private bool aimLineIsActive;
-
-    public override void Initialize() {
-        characterAimLineRef.Set(this);
-    }
 
     public void UpdateAimLineDestination(Vector2 destination) {
         if (!aimLineIsActive) {

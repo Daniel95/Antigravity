@@ -2,7 +2,8 @@
 
 Sunday: {
 	Refactor commands using player labeled view bindings.
-	Refactor commands using hookprojectile labeled view bindings.
+
+	CharacterSurroundingDirectionView should be playersurroundingdirectionview.
 }
 
 Monday: {

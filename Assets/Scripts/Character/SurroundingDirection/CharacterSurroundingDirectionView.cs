@@ -11,10 +11,6 @@ public class CharacterSurroundingDirectionView : View, ICharacterSurroundingDire
     private Vector2 raycastDirectionMiddleDirection;
     private Vector2 raycastDirectionCornersDirection;
 
-    public override void Initialize() {
-        surroundingDetectionRef.Set(this);
-    }
-
     public Vector2 GetSurroundingsDirection(bool countCollisionDirection = true, bool countRaycastMiddleDirection = true, bool countRaycastCornerDirection = true) {
         Vector2 surroundingsDirection = new Vector2();
 

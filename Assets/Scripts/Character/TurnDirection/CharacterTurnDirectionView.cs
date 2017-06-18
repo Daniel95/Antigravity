@@ -8,8 +8,6 @@ public class CharacterTurnDirectionView : View, ICharacterTurnDirection {
 
     public Action<Vector2> FinishedDirectionLogic;
 
-    [Inject] private Ref<ICharacterTurnDirection> characterMoveDirectionRef;
-
     [Inject] private CharacterSetMoveDirectionEvent characterSetMoveDirectionEvent;
     [Inject] private PlayerTemporarySpeedChangeEvent characterTemporarySpeedChangeEvent;
     [Inject] private CharacterTemporarySpeedDecreaseEvent characterTemporarySpeedDecreaseEvent;
@@ -19,25 +17,11 @@ public class CharacterTurnDirectionView : View, ICharacterTurnDirection {
 
     private Vector2 savedDirection;
 
-    public override void Initialize() {
-        characterMoveDirectionRef.Set(this);
-    }
-
     public void TurnToNextDirection(CharacterTurnToNextDirectionEvent.Parameter characterTurnToNextDirectionParameter) {
-        //our next direction we are going to move towards, depending on our currentdirection, and the direction of our collision(s)
         Vector2 nextDirection = CalculateDirection(characterTurnToNextDirectionParameter);
 
         Vector2 nextLookDirection = savedDirection;
 
-        //Debug.Log("____");
-        //Debug.Log("move dir: " + characterTurnToNextDirectionParameter.MoveDirection);
-        //Debug.Log("coll dir: " + characterTurnToNextDirectionParameter.CollisionDirection);
-        //Debug.Log("corner dir: " + characterTurnToNextDirectionParameter.CornerDirection);
-
-        //Debug.Log("saved dir: " + savedDirection);
-        //Debug.Log("next dir: " + nextDirection);
-
-        //use the direction logic for our new dir, but invert it if our speed multiplier is also inverted
         characterSetMoveDirectionEvent.Dispatch(nextDirection);
 
         if (FinishedDirectionLogic != null) {

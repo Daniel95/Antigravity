@@ -13,8 +13,6 @@ public class CharacterSpeedView : View, ICharacterSpeed {
     public int ChangeSpeedCDCounter { get { return changeSpeedCDCounter; } set { changeSpeedCDCounter = value; } }
     public bool ChangeSpeedCDIsActive { get { return changeSpeedCDIsActive; } }
 
-    [Inject] private Ref<ICharacterSpeed> characterSpeedRef;
-
     [Inject] private PlayerBoostSpeedEvent boostSpeedEvent;
 
     [SerializeField] private float maxSpeedMultiplier = 5f;
@@ -26,10 +24,6 @@ public class CharacterSpeedView : View, ICharacterSpeed {
 
     private int changeSpeedCDCounter = -1;
     private bool changeSpeedCDIsActive;
-
-    public override void Initialize() {
-        characterSpeedRef.Set(this);
-    }
 
     public float CalculateNewSpeed(float currentSpeed, float amount, float neutralValue) {
         return currentSpeed + currentSpeed * (amount / neutralValue - 1) / (currentSpeed * speedChangeDivider);
