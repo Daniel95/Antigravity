@@ -1,6 +1,6 @@
 ﻿using IoCPlus;
 
-public class CharacterBoostSpeedEvent : Signal<CharacterBoostSpeedEvent.Parameter> {
+public class PlayerBoostSpeedEvent : Signal<PlayerBoostSpeedEvent.Parameter> {
 
     public class Parameter {
 

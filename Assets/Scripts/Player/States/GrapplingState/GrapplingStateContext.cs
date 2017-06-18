@@ -16,7 +16,7 @@ public class GrapplingStateContext : Context {
 
         On<JumpInputEvent>()
             .Do<CharacterSetMoveDirectionToVelocityDirectionCommand>()
-            .Do<CharacterTemporarySpeedIncreaseCommand>();
+            .Do<PlayerTemporarySpeedIncreaseCommand>();
 
         On<UpdateGrapplingStateEvent>()
             .Do<UpdateGrapplingStateVelocityCommand>();

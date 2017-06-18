@@ -4,7 +4,7 @@ public class CharacterBoostCharacterSpeedCommand : Command {
 
     [Inject] private Ref<ICharacterVelocity> characterVelocityRef;
 
-    [InjectParameter] private CharacterBoostSpeedEvent.Parameter characterBoostSpeedParameter;
+    [InjectParameter] private PlayerBoostSpeedEvent.Parameter characterBoostSpeedParameter;
 
     protected override void Execute() {
         characterVelocityRef.Get().SetSpeed(characterBoostSpeedParameter.NewSpeed);

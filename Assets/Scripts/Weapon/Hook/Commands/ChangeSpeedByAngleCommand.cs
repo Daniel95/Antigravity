@@ -9,7 +9,7 @@ public class ChangeSpeedByAngleCommand : Command {
     [Inject] private Ref<IHook> hookRef;
     [Inject] private Ref<IHookProjectile> hookProjectileRef;
 
-    [Inject] private CharacterTemporarySpeedChangeEvent characterTemporarySpeedChangeEvent;
+    [Inject] private PlayerTemporarySpeedChangeEvent characterTemporarySpeedChangeEvent;
 
     protected override void Execute() {
         float angleDifference = Mathf.Abs(Vector2.Dot(
@@ -19,6 +19,6 @@ public class ChangeSpeedByAngleCommand : Command {
 
         float speedChange = angleDifference * -1 + 1;
 
-        characterTemporarySpeedChangeEvent.Dispatch(new CharacterTemporarySpeedChangeEvent.Parameter(speedChange, hookRef.Get().DirectionSpeedNeutralValue));
+        characterTemporarySpeedChangeEvent.Dispatch(new PlayerTemporarySpeedChangeEvent.Parameter(speedChange, hookRef.Get().DirectionSpeedNeutralValue));
     }
 }

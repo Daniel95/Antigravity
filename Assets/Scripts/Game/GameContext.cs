@@ -9,10 +9,10 @@ public class GameContext : Context {
 
         Bind<CharacterTurnToNextDirectionEvent>();
         Bind<CharacterSetMoveDirectionEvent>();
-        Bind<CharacterBoostSpeedEvent>();
-        Bind<CharacterTemporarySpeedChangeEvent>();
+        Bind<PlayerBoostSpeedEvent>();
+        Bind<PlayerTemporarySpeedChangeEvent>();
         Bind<CharacterTemporarySpeedDecreaseEvent>();
-        Bind<CharacterTemporarySpeedChangeEvent>();
+        Bind<PlayerTemporarySpeedChangeEvent>();
         Bind<CharacterRemoveCollisionDirectionEvent>();
         Bind<CharacterJumpEvent>();
         Bind<CharacterRetryJumpEvent>();
@@ -79,7 +79,7 @@ public class GameContext : Context {
         Bind<Ref<ISlowTime>>();
         Bind<Ref<IGrapplingState>>();
 
-        //need owner---
+        // old
         Bind<Ref<ICharacterSpeed>>();
         Bind<Ref<ICharacterDie>>();
         Bind<Ref<ICharacterBounce>>();
@@ -88,12 +88,38 @@ public class GameContext : Context {
         Bind<Ref<ICharacterRaycastDirection>>();
         Bind<Ref<ICharacterTurnDirection>>();
         Bind<Ref<ICharacterVelocity>>();
-        Bind<Ref<ITriggerHitDetection>>();
         Bind<Ref<ICharacterCollisionDirection>>();
         Bind<Ref<ICharacterSurroundingDirection>>();
         Bind<Ref<ICharacterDirectionPointer>>();
+        Bind<Ref<ITriggerHitDetection>>();
         Bind<Ref<ICollisionHitDetection>>();
+        //
+
+        /*
+        BindLabeled<Ref<ICharacterSpeed>>(Label.Player);
+        BindLabeled<Ref<ICharacterDie>>(Label.Player);
+        BindLabeled<Ref<ICharacterBounce>>(Label.Player);
+        BindLabeled<Ref<ICharacterAimLine>>(Label.Player);
+        BindLabeled<Ref<ICharacterJump>>(Label.Player);
+        BindLabeled<Ref<ICharacterRaycastDirection>>(Label.Player);
+        BindLabeled<Ref<ICharacterTurnDirection>>(Label.Player);
+        BindLabeled<Ref<ICharacterVelocity>>(Label.Player);
+        BindLabeled<Ref<ICharacterCollisionDirection>>(Label.Player);
+        BindLabeled<Ref<ICharacterSurroundingDirection>>(Label.Player);
+        BindLabeled<Ref<ICharacterDirectionPointer>>(Label.Player);
+        BindLabeled<Ref<ICollisionHitDetection>>(Label.Player);
+        */
+
+        //player
+        BindLabeled<Ref<ITriggerHitDetection>>(Label.Player);
         BindLabeled<Ref<IMoveTowards>>(Label.Player);
+
+        //hook
+        BindLabeled<Ref<ITriggerHitDetection>>(Label.HookProjectile);
+        BindLabeled<Ref<IMoveTowards>>(Label.HookProjectile);
+
+
+
 
         Bind<IGameStateService, LocalGameStateService>();
 

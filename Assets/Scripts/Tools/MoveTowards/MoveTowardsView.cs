@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class MoveTowardsView : View, IMoveTowards {
 
-    [SerializeField] private float speed = 10;
-    [SerializeField] private float minReachedDistance = 0.5f;
+    [SerializeField] private float speed = 3;
+    [SerializeField] private float minReachedDistance = 0.1f;
 
     private Coroutine moveToPositionCoroutine;
     private Coroutine moveToTransformCoroutine;

@@ -28,6 +28,6 @@ public class RevivedStateContext : Context {
             .Do<EnableJumpCommand>(true)
             .Do<CharacterStopAimLineCommand>()
             .Do<CharacterSetMoveDirectionCommand>()
-            .Do<CharacterTemporarySpeedIncreaseCommand>();
+            .Do<PlayerTemporarySpeedIncreaseCommand>();
     }
 }

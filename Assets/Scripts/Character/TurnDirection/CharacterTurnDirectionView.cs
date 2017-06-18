@@ -11,7 +11,7 @@ public class CharacterTurnDirectionView : View, ICharacterTurnDirection {
     [Inject] private Ref<ICharacterTurnDirection> characterMoveDirectionRef;
 
     [Inject] private CharacterSetMoveDirectionEvent characterSetMoveDirectionEvent;
-    [Inject] private CharacterTemporarySpeedChangeEvent characterTemporarySpeedChangeEvent;
+    [Inject] private PlayerTemporarySpeedChangeEvent characterTemporarySpeedChangeEvent;
     [Inject] private CharacterTemporarySpeedDecreaseEvent characterTemporarySpeedDecreaseEvent;
 
     [SerializeField] private float directionSpeedNeutralValue = 0.4f;
@@ -93,7 +93,7 @@ public class CharacterTurnDirectionView : View, ICharacterTurnDirection {
                     speedChange = maxSpeedChange;
                 }
 
-                characterTemporarySpeedChangeEvent.Dispatch(new CharacterTemporarySpeedChangeEvent.Parameter(speedChange, directionSpeedNeutralValue));
+                characterTemporarySpeedChangeEvent.Dispatch(new PlayerTemporarySpeedChangeEvent.Parameter(speedChange, directionSpeedNeutralValue));
 
                 //replace the dir on the axis that we dont have a collision with
                 //example: if we hit something under us, move to the left or right, depeding on our lastDir

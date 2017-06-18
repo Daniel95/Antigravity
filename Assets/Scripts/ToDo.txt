@@ -1,14 +1,40 @@
 //todo:
-bindings in gamecontext need owner (player/enemy)
-hitting triggers is filled in triggerhitdetectionview, but zero in AbortIfHittingTriggerTagsDoesNotContainCharacterKillerTagsCommand.
 
-Particle on character kill.
-Respawn player on kill.
-Fix clean 5 levels.
-Fix level select UI.
+Sunday: {
+	Refactor commands using player labeled view bindings.
+	Refactor commands using hookprojectile labeled view bindings.
+}
 
-Add boundary checkpoints.
-Add water feature.
+Monday: {
+	Respawn player on kill.
+	Particle on character kill.
+}
+
+Tuesday: {
+	Fix clean 5 levels.
+}
+
+Wednesday: {
+	Fix level select UI.
+}
+
+Thursday: {
+	Add boundary checkpoints.
+}
+
+Friday: { }
+
+Saturday {
+	Add water feature. 1/2
+}
+
+Sunday {
+	Add water feature. 2/2
+}
+
+___________________________
+
+
 Fix game triggers.
 Add new intro levels with water.
 Add ui elements depending on level.

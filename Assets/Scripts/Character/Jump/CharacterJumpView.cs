@@ -9,7 +9,7 @@ public class CharacterJumpView : View, ICharacterJump, ITriggerer {
 
     [Inject] private Ref<ICharacterJump> characterJumpRef;
 
-    [Inject] private CharacterTemporarySpeedChangeEvent characterTemporarySpeedChangeEvent;
+    [Inject] private PlayerTemporarySpeedChangeEvent characterTemporarySpeedChangeEvent;
     [Inject] private CharacterSetMoveDirectionEvent characterSetMoveDirectionEvent;
     [Inject] private CharacterRemoveCollisionDirectionEvent characterRemoveCollisionDirectionEvent;
     [Inject] private CharacterJumpEvent characterJumpEvent;
@@ -67,7 +67,7 @@ public class CharacterJumpView : View, ICharacterJump, ITriggerer {
 
         characterSetMoveDirectionEvent.Dispatch(newDirection);
         characterRemoveCollisionDirectionEvent.Dispatch(characterJumpParameter.CollisionDirection);
-        characterTemporarySpeedChangeEvent.Dispatch(new CharacterTemporarySpeedChangeEvent.Parameter(0.5f + jumpSpeedBoost));
+        characterTemporarySpeedChangeEvent.Dispatch(new PlayerTemporarySpeedChangeEvent.Parameter(0.5f + jumpSpeedBoost));
     }
 
     void Start() {

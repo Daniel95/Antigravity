@@ -1,6 +1,6 @@
 ﻿using IoCPlus;
 
-public class CharacterTemporarySpeedChangeEvent : Signal<CharacterTemporarySpeedChangeEvent.Parameter> {
+public class PlayerTemporarySpeedChangeEvent : Signal<PlayerTemporarySpeedChangeEvent.Parameter> {
 
     public class Parameter {
         public float Amount;

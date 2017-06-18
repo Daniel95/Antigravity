@@ -6,8 +6,6 @@ public class HookContext : Context {
     protected override void SetBindings() {
         base.SetBindings();
 
-        BindLabeled<Ref<IMoveTowards>>(Label.HookProjectile);
-
         On<EnterContextSignal>()
             .Do<HookProjectileInstantiateCommand>();
 
