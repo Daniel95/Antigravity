@@ -1,15 +1,14 @@
 ﻿using IoCPlus;
 using System.Collections.Generic;
-using UnityEngine;
 
-public class AbortIfPlayerHittingTriggerTagsDoesNotContainCharacterKillerTagsCommand : Command {
+public class AbortIfPlayerHittingTriggerTagsDoesNotContainPlayerKillerTagsCommand : Command {
 
     [Inject(Label.Player)] private Ref<ITriggerHitDetection> playerTriggerHitDetectionRef;
-    [Inject] private Ref<ICharacterDie> characterDieRef;
+    [Inject(Label.Player)] private Ref<ICharacterDie> playerDieRef;
 
     protected override void Execute() {
         List<string> hittingTriggerTags = playerTriggerHitDetectionRef.Get().HittingTriggerTags;
-        List<string> deadlyTags = characterDieRef.Get().DeadlyTags;
+        List<string> deadlyTags = playerDieRef.Get().DeadlyTags;
 
         bool hittingTagsContainsDeadlyTags = false;
 

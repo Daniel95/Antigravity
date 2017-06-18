@@ -80,8 +80,6 @@ public class GameContext : Context {
         Bind<Ref<IGrapplingState>>();
 
         // old
-        Bind<Ref<ICharacterSpeed>>();
-        Bind<Ref<ICharacterDie>>();
         Bind<Ref<ICharacterBounce>>();
         Bind<Ref<ICharacterAimLine>>();
         Bind<Ref<ICharacterJump>>();
@@ -95,8 +93,6 @@ public class GameContext : Context {
         //
 
         /*
-        BindLabeled<Ref<ICharacterSpeed>>(Label.Player);
-        BindLabeled<Ref<ICharacterDie>>(Label.Player);
         BindLabeled<Ref<ICharacterBounce>>(Label.Player);
         BindLabeled<Ref<ICharacterAimLine>>(Label.Player);
         BindLabeled<Ref<ICharacterJump>>(Label.Player);
@@ -110,6 +106,9 @@ public class GameContext : Context {
         */
 
         //player
+        BindLabeled<Ref<ICharacterDie>>(Label.Player);
+        BindLabeled<Ref<ICharacterSpeed>>(Label.Player);
+
         BindLabeled<Ref<ITriggerHitDetection>>(Label.Player);
         BindLabeled<Ref<IMoveTowards>>(Label.Player);
 
