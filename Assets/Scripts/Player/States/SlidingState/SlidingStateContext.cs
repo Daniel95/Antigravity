@@ -10,9 +10,9 @@ public class SlidingStateContext : Context {
             .Do<CharacterActivateDirectionalMovementCommand>();
 
         On<HookProjectileMoveTowardsOwnerCompletedEvent>()
-            .Do<CharacterPointToSavedDirectionCommand>();
+            .Do<PlayerPointToSavedDirectionCommand>();
 
         On<CancelDragInputEvent>()
-            .Do<CharacterPointToSavedDirectionCommand>();
+            .Do<PlayerPointToSavedDirectionCommand>();
     }
 }

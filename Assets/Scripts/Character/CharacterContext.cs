@@ -6,7 +6,7 @@ public class CharacterContext : Context {
         base.SetBindings();
 
         On<EnterContextSignal>()
-            .Do<CharacterSetSavedDirectionToStartDirectionCommand>()
+            .Do<PlayerSetSavedDirectionToStartDirectionCommand>()
             .Do<CharacterActivateDirectionalMovementCommand>();
 
         On<JumpInputEvent>()
@@ -31,9 +31,9 @@ public class CharacterContext : Context {
         On<CharacterResetCollisionDirectionEvent>()
             .Do<CharacterResetCollisionDirectionCommand>();
 
-        On<CharacterTurnToNextDirectionEvent>()
-            .Do<CharacterTurnToNextDirectionCommand>()
-            .Do<CharacterPointToSavedDirectionCommand>();
+        On<PlayerTurnToNextDirectionEvent>()
+            .Do<PlayerTurnToNextDirectionCommand>()
+            .Do<PlayerPointToSavedDirectionCommand>();
 
         On<CharacterPointToDirectionEvent>()
             .Do<CharacterPointToDirectionCommand>();

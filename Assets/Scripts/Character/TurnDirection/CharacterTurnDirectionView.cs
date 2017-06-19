@@ -17,7 +17,7 @@ public class CharacterTurnDirectionView : View, ICharacterTurnDirection {
 
     private Vector2 savedDirection;
 
-    public void TurnToNextDirection(CharacterTurnToNextDirectionEvent.Parameter characterTurnToNextDirectionParameter) {
+    public void TurnToNextDirection(PlayerTurnToNextDirectionEvent.Parameter characterTurnToNextDirectionParameter) {
         Vector2 nextDirection = CalculateDirection(characterTurnToNextDirectionParameter);
 
         Vector2 nextLookDirection = savedDirection;
@@ -51,7 +51,7 @@ public class CharacterTurnDirectionView : View, ICharacterTurnDirection {
     /// <param name="currentDirection"></param>
     /// <param name="collisionDirection"></param>
     /// <returns></returns>
-    private Vector2 CalculateDirection(CharacterTurnToNextDirectionEvent.Parameter characterTurnToNextDirectionParameter) {     
+    private Vector2 CalculateDirection(PlayerTurnToNextDirectionEvent.Parameter characterTurnToNextDirectionParameter) {     
         Vector2 newDirection;
 
         Vector2 cornerDirection = characterTurnToNextDirectionParameter.CornerDirection;

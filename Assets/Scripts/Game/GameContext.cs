@@ -7,7 +7,7 @@ public class GameContext : Context {
     protected override void SetBindings() {
         base.SetBindings();
 
-        Bind<CharacterTurnToNextDirectionEvent>();
+        Bind<PlayerTurnToNextDirectionEvent>();
         Bind<PlayerSetMoveDirectionEvent>();
         Bind<PlayerBoostSpeedEvent>();
         Bind<PlayerTemporarySpeedChangeEvent>();
@@ -79,7 +79,6 @@ public class GameContext : Context {
 
         // old
         Bind<Ref<ICharacterRaycastDirection>>();
-        Bind<Ref<ICharacterTurnDirection>>();
         Bind<Ref<ICharacterVelocity>>();
         Bind<Ref<ICharacterCollisionDirection>>();
         Bind<Ref<ICharacterDirectionPointer>>();
@@ -89,7 +88,6 @@ public class GameContext : Context {
 
         /*
         BindLabeled<Ref<ICharacterRaycastDirection>>(Label.Player);
-        BindLabeled<Ref<ICharacterTurnDirection>>(Label.Player);
         BindLabeled<Ref<ICharacterVelocity>>(Label.Player);
         BindLabeled<Ref<ICharacterCollisionDirection>>(Label.Player);
         BindLabeled<Ref<ICharacterSurroundingDirection>>(Label.Player);
@@ -98,6 +96,7 @@ public class GameContext : Context {
         */
 
         //player
+        BindLabeled<Ref<ICharacterTurnDirection>>(Label.Player);
         BindLabeled<Ref<ICharacterJump>>(Label.Player);
         BindLabeled<Ref<ICharacterAimLine>>(Label.Player);
         BindLabeled<Ref<ICharacterBounce>>(Label.Player);

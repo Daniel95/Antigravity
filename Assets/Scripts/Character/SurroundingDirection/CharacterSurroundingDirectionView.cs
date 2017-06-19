@@ -4,7 +4,7 @@ using UnityEngine;
 public class CharacterSurroundingDirectionView : View, ICharacterSurroundingDirection {
 
     [Inject] private Ref<ICharacterCollisionDirection> characterCollisionDirection;
-    [Inject] private Ref<ICharacterRaycastDirection> characterRaycastDirection;
+    [Inject(Label.Player)] private Ref<ICharacterRaycastDirection> playerRaycastDirection;
     [Inject] private Ref<ICharacterSurroundingDirection> surroundingDetectionRef;
 
     private Vector2 collisionDirection;
@@ -38,10 +38,10 @@ public class CharacterSurroundingDirectionView : View, ICharacterSurroundingDire
     }
 
     private Vector2 GetUpdatedRaycastDirectionMiddleDirection() {
-        return raycastDirectionMiddleDirection = characterRaycastDirection.Get().CenterRaycastDirection();
+        return raycastDirectionMiddleDirection = playerRaycastDirection.Get().CenterRaycastDirection();
     }
 
     private Vector2 GetUpdatedRaycastDirectionCornersDirection() {
-        return raycastDirectionCornersDirection = characterRaycastDirection.Get().GetCornersDirection();
+        return raycastDirectionCornersDirection = playerRaycastDirection.Get().GetCornersDirection();
     }
 }

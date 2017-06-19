@@ -23,7 +23,7 @@ public class GrapplingStateContext : Context {
 
         On<UpdateGrapplingStateEvent>()
             .Do<AbortIfCharacterIsNotStuckCommand>()
-            .Do<DispatchCharacterTurnToNextDirectionEventCommand>()
+            .Do<DispatchPlayerTurnToNextDirectionEventCommand>()
             .Dispatch<CharacterIsStuckEvent>();
     }
 }

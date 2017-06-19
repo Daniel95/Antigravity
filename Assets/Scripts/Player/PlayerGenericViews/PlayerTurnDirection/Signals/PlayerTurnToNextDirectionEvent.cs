@@ -1,7 +1,7 @@
 ﻿using IoCPlus;
 using UnityEngine;
 
-public class CharacterTurnToNextDirectionEvent : Signal<CharacterTurnToNextDirectionEvent.Parameter> {
+public class PlayerTurnToNextDirectionEvent : Signal<PlayerTurnToNextDirectionEvent.Parameter> {
     
     public class Parameter {
         public Vector2 MoveDirection;
