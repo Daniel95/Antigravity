@@ -77,20 +77,17 @@ public class GameContext : Context {
         Bind<Ref<IGrapplingState>>();
 
         // old
-        Bind<Ref<ICharacterCollisionDirection>>();
         Bind<Ref<ICharacterDirectionPointer>>();
         Bind<Ref<ITriggerHitDetection>>();
-        Bind<Ref<ICollisionHitDetection>>();
         //
 
         /*
-        BindLabeled<Ref<ICharacterCollisionDirection>>(Label.Player);
         BindLabeled<Ref<ICharacterSurroundingDirection>>(Label.Player);
         BindLabeled<Ref<ICharacterDirectionPointer>>(Label.Player);
-        BindLabeled<Ref<ICollisionHitDetection>>(Label.Player);
         */
 
         //player
+        BindLabeled<Ref<ICharacterCollisionDirection>>(Label.Player);
         BindLabeled<Ref<ICharacterVelocity>>(Label.Player);
         BindLabeled<Ref<ICharacterRaycastDirection>>(Label.Player);
         BindLabeled<Ref<ICharacterTurnDirection>>(Label.Player);
@@ -99,7 +96,7 @@ public class GameContext : Context {
         BindLabeled<Ref<ICharacterBounce>>(Label.Player);
         BindLabeled<Ref<ICharacterDie>>(Label.Player);
         BindLabeled<Ref<ICharacterSpeed>>(Label.Player);
-
+        BindLabeled<Ref<ICollisionHitDetection>>(Label.Player);
         BindLabeled<Ref<ITriggerHitDetection>>(Label.Player);
         BindLabeled<Ref<IMoveTowards>>(Label.Player);
 

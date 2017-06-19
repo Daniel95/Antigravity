@@ -13,7 +13,7 @@ public class RevivedStateContext : Context {
             .Do<EnableInputCommand>(false)
             .Do<EnableWeaponCommand>(false)
             .Do<EnablePlayerJumpCommand>(false)
-            .Do<CharacterResetCollisionDirectionCommand>()
+            .Do<PlayerResetCollisionDirectionCommand>()
             .Do<PlayerMoveTowardsCheckpointCommand>();
 
         On<PlayerMoveTowardsCheckpointCompletedEvent>()

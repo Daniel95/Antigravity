@@ -26,10 +26,7 @@ public class CharacterContext : Context {
             .Do<PlayerPointToCeiledVelocityDirectionCommand>();
 
         On<PlayerRemoveCollisionDirectionEvent>()
-            .Do<CharacterRemoveCollisionDirectionCommand>();
-
-        On<CharacterResetCollisionDirectionEvent>()
-            .Do<CharacterResetCollisionDirectionCommand>();
+            .Do<PlayerRemoveCollisionDirectionCommand>();
 
         On<PlayerTurnToNextDirectionEvent>()
             .Do<PlayerTurnToNextDirectionCommand>()
@@ -42,7 +39,7 @@ public class CharacterContext : Context {
             .Do<PlayerSetMoveDirectionCommand>();
 
         On<CollisionEnter2DEvent>()
-            .Do<CharacterUpdateCollisionDirectionCommand>();
+            .Do<PlayerUpdateCollisionDirectionCommand>();
 
         On<CollisionEnter2DEvent>()
             .Do<AbortIfGameObjectIsNotACharacterCommand>()

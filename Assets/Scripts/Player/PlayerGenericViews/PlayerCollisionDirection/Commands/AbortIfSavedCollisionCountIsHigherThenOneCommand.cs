@@ -3,10 +3,10 @@ using UnityEngine;
 
 public class AbortIfSavedCollisionCountIsHigherThenOneCommand : Command {
 
-    [Inject] private Ref<ICharacterCollisionDirection> characterCollisionDirectionRef;
+    [Inject(Label.Player)] private Ref<ICharacterCollisionDirection> playerCollisionDirectionRef;
 
     protected override void Execute() {
-        if(characterCollisionDirectionRef.Get().SavedCollisionsCount > 1) {
+        if(playerCollisionDirectionRef.Get().SavedCollisionsCount > 1) {
             Abort();
         }
     }
