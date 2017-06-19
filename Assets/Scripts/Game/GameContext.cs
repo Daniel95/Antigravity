@@ -15,7 +15,6 @@ public class GameContext : Context {
         Bind<PlayerTemporarySpeedChangeEvent>();
         Bind<PlayerRemoveCollisionDirectionEvent>();
         Bind<PlayerBounceEvent>();
-        Bind<CharacterPointToDirectionEvent>();
         Bind<CancelDragInputEvent>();
         Bind<DraggingInputEvent>();
         Bind<HoldingInputEvent>();
@@ -76,17 +75,13 @@ public class GameContext : Context {
         Bind<Ref<ISlowTime>>();
         Bind<Ref<IGrapplingState>>();
 
-        // old
-        Bind<Ref<ICharacterDirectionPointer>>();
-        Bind<Ref<ITriggerHitDetection>>();
-        //
 
-        /*
+        /* todo:
         BindLabeled<Ref<ICharacterSurroundingDirection>>(Label.Player);
-        BindLabeled<Ref<ICharacterDirectionPointer>>(Label.Player);
         */
 
         //player
+        BindLabeled<Ref<ICharacterDirectionPointer>>(Label.Player);
         BindLabeled<Ref<ICharacterCollisionDirection>>(Label.Player);
         BindLabeled<Ref<ICharacterVelocity>>(Label.Player);
         BindLabeled<Ref<ICharacterRaycastDirection>>(Label.Player);

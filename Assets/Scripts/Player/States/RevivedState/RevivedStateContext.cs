@@ -21,7 +21,7 @@ public class RevivedStateContext : Context {
 
         On<DraggingInputEvent>()
             .Do<PlayerUpdateAimLineDestinationCommand>()
-            .Do<CharacterPointToDirectionCommand>();
+            .Do<PlayerPointToDirectionCommand>();
 
         On<ReleaseInDirectionInputEvent>()
             .Do<EnableWeaponCommand>(true)

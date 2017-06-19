@@ -32,9 +32,6 @@ public class CharacterContext : Context {
             .Do<PlayerTurnToNextDirectionCommand>()
             .Do<PlayerPointToSavedDirectionCommand>();
 
-        On<CharacterPointToDirectionEvent>()
-            .Do<CharacterPointToDirectionCommand>();
-
         On<PlayerSetMoveDirectionEvent>()
             .Do<PlayerSetMoveDirectionCommand>();
 

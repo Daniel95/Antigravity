@@ -119,6 +119,6 @@ public class HookContext : Context {
             .Do<AddHookAnchorCommand>();
 
         On<UpdateHookEvent>()
-            .Do<CharacterPointToClosestAnchorCommand>();
+            .Do<PlayerPointToClosestAnchorCommand>();
     }
 }
