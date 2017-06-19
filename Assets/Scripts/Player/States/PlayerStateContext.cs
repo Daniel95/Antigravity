@@ -45,7 +45,7 @@ public class PlayerStateContext : Context {
 
         On<HoldShotEvent>()
             .Do<AbortIfPlayerStateStatusStateIsStateCommand>(PlayerStateStatus.PlayerState.Floating)
-            .Do<CharacterSetMoveDirectionToVelocityDirectionCommand>()
+            .Do<PlayerSetMoveDirectionToVelocityDirectionCommand>()
             .GotoState<FloatingStateContext>();
 
         On<RespawnPlayerEvent>()
@@ -60,7 +60,7 @@ public class PlayerStateContext : Context {
             .Do<AbortIfPlayerStateStatusStateIsStateCommand>(PlayerStateStatus.PlayerState.Floating)
             .GotoState<FloatingStateContext>();
 
-        OnChild<GrapplingStateContext, CharacterIsStuckEvent>()
+        OnChild<GrapplingStateContext, PlayerIsStuckEvent>()
             .Do<AbortIfPlayerStateStatusStateIsStateCommand>(PlayerStateStatus.PlayerState.Sliding)
             .GotoState<SlidingStateContext>();
     }

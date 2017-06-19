@@ -2,14 +2,14 @@
 
 public class DispatchPlayerBounceEventCommand : Command {
 
-    [Inject] private Ref<ICharacterVelocity> characterVelocityRef;
+    [Inject(Label.Player)] private Ref<ICharacterVelocity> playerVelocityRef;
     [Inject] private Ref<ICharacterSurroundingDirection> characterSurroundingsDirection;
 
     [Inject] private PlayerBounceEvent playerBounceEvent;
 
     protected override void Execute() {
         playerBounceEvent.Dispatch(new PlayerBounceEvent.Parameter(
-            characterVelocityRef.Get().MoveDirection,
+            playerVelocityRef.Get().MoveDirection,
             characterSurroundingsDirection.Get().GetSurroundingsDirection()
         ));
     }

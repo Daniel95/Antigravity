@@ -5,7 +5,7 @@ public class DispatchPlayerTurnToNextDirectionEventCommand : Command {
 
     [Inject(Label.Player)] private Ref<ICharacterVelocity> playerVelocityRef;
     [Inject(Label.Player)] private Ref<ICharacterSurroundingDirection> playerSurroundingDirection;
-    [Inject(Label.Player)] private Ref<ICharacterRaycastDirection> playerRaycastRef;
+    [Inject(Label.Player)] private Ref<ICharacterRaycastDirection> playerRaycastDirectionRef;
 
     [Inject] private PlayerTurnToNextDirectionEvent playerTurnToNextDirectionEvent;
 
@@ -13,7 +13,7 @@ public class DispatchPlayerTurnToNextDirectionEventCommand : Command {
         playerTurnToNextDirectionEvent.Dispatch(new PlayerTurnToNextDirectionEvent.Parameter(
             playerVelocityRef.Get().GetCeilPreviousVelocityDirection(),
             playerSurroundingDirection.Get().GetSurroundingsDirection(true, false, true),
-            playerRaycastRef.Get().GetCornersDirection()
+            playerRaycastDirectionRef.Get().GetCornersDirection()
         ));
     }
 }

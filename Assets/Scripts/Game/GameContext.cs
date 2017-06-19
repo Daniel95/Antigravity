@@ -16,7 +16,6 @@ public class GameContext : Context {
         Bind<PlayerRemoveCollisionDirectionEvent>();
         Bind<PlayerBounceEvent>();
         Bind<CharacterPointToDirectionEvent>();
-        Bind<CharacterSetVelocityEvent>();
         Bind<CancelDragInputEvent>();
         Bind<DraggingInputEvent>();
         Bind<HoldingInputEvent>();
@@ -78,8 +77,6 @@ public class GameContext : Context {
         Bind<Ref<IGrapplingState>>();
 
         // old
-        Bind<Ref<ICharacterRaycastDirection>>();
-        Bind<Ref<ICharacterVelocity>>();
         Bind<Ref<ICharacterCollisionDirection>>();
         Bind<Ref<ICharacterDirectionPointer>>();
         Bind<Ref<ITriggerHitDetection>>();
@@ -87,8 +84,6 @@ public class GameContext : Context {
         //
 
         /*
-        BindLabeled<Ref<ICharacterRaycastDirection>>(Label.Player);
-        BindLabeled<Ref<ICharacterVelocity>>(Label.Player);
         BindLabeled<Ref<ICharacterCollisionDirection>>(Label.Player);
         BindLabeled<Ref<ICharacterSurroundingDirection>>(Label.Player);
         BindLabeled<Ref<ICharacterDirectionPointer>>(Label.Player);
@@ -96,6 +91,8 @@ public class GameContext : Context {
         */
 
         //player
+        BindLabeled<Ref<ICharacterVelocity>>(Label.Player);
+        BindLabeled<Ref<ICharacterRaycastDirection>>(Label.Player);
         BindLabeled<Ref<ICharacterTurnDirection>>(Label.Player);
         BindLabeled<Ref<ICharacterJump>>(Label.Player);
         BindLabeled<Ref<ICharacterAimLine>>(Label.Player);

@@ -9,7 +9,7 @@ public class GrapplingHookContext : Context {
             .Do<HookProjectileSetDistanceToOwnerCommand>()
             .Do<HookProjectileAbortIfDistanceToOwnerIsHigherThenMinimalDistance>()
             .Do<GrapplingHookStartGrappleLockCommand>()
-            .Do<ChangeSpeedByAngleCommand>()
+            .Do<PlayerChangeSpeedByAngleCommand>()
             .Dispatch<EnterGrapplingHookContextEvent>()
             .OnAbort<DispatchCancelHookEventCommand>();
 

@@ -1,24 +1,24 @@
 ﻿using IoCPlus;
 using UnityEngine;
 
-public class ChangeSpeedByAngleCommand : Command {
+public class PlayerChangeSpeedByAngleCommand : Command {
 
     [Inject] private PlayerStatus playerStatus;
 
-    [Inject] private Ref<ICharacterVelocity> characterVelocityRef;
+    [Inject(Label.Player)] private Ref<ICharacterVelocity> playerVelocityRef;
     [Inject] private Ref<IHook> hookRef;
     [Inject] private Ref<IHookProjectile> hookProjectileRef;
 
-    [Inject] private PlayerTemporarySpeedChangeEvent characterTemporarySpeedChangeEvent;
+    [Inject] private PlayerTemporarySpeedChangeEvent playerTemporarySpeedChangeEvent;
 
     protected override void Execute() {
         float angleDifference = Mathf.Abs(Vector2.Dot(
             (hookProjectileRef.Get().Transform.position - playerStatus.Player.transform.position).normalized,
-            characterVelocityRef.Get().GetVelocityDirection()
+            playerVelocityRef.Get().GetVelocityDirection()
         ));
 
         float speedChange = angleDifference * -1 + 1;
 
-        characterTemporarySpeedChangeEvent.Dispatch(new PlayerTemporarySpeedChangeEvent.Parameter(speedChange, hookRef.Get().DirectionSpeedNeutralValue));
+        playerTemporarySpeedChangeEvent.Dispatch(new PlayerTemporarySpeedChangeEvent.Parameter(speedChange, hookRef.Get().DirectionSpeedNeutralValue));
     }
 }

@@ -7,12 +7,12 @@ public class FloatingStateContext : Context {
 
         On<EnterContextSignal>()
             .Do<SetPlayerStateStatusCommand>(PlayerStateStatus.PlayerState.Floating)
-            .Do<CharacterEnableDirectionalMovementCommand>(true);
+            .Do<PlayerEnableDirectionalMovementCommand>(true);
 
         On<HookProjectileMoveTowardsOwnerCompletedEvent>()
-            .Do<CharacterPointToVelocityDirectionCommand>();
+            .Do<PlayerPointToVelocityDirectionCommand>();
 
         On<CancelDragInputEvent>()
-            .Do<CharacterPointToVelocityDirectionCommand>();
+            .Do<PlayerPointToVelocityDirectionCommand>();
     }
 }

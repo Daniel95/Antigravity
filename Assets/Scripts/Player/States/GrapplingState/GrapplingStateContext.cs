@@ -7,7 +7,7 @@ public class GrapplingStateContext : Context {
 
         On<EnterContextSignal>()
             .Do<SetPlayerStateStatusCommand>(PlayerStateStatus.PlayerState.Grappling)
-            .Do<CharacterEnableDirectionalMovementCommand>(false)
+            .Do<PlayerEnableDirectionalMovementCommand>(false)
             .Do<StartUpdateGrapplingStateCommand>();
 
         On<LeaveContextSignal>()
@@ -15,15 +15,15 @@ public class GrapplingStateContext : Context {
             .Dispatch<CancelHookEvent>();
 
         On<JumpInputEvent>()
-            .Do<CharacterSetMoveDirectionToVelocityDirectionCommand>()
+            .Do<PlayerSetMoveDirectionToVelocityDirectionCommand>()
             .Do<PlayerTemporarySpeedIncreaseCommand>();
 
         On<UpdateGrapplingStateEvent>()
-            .Do<UpdateGrapplingStateVelocityCommand>();
+            .Do<PlayerSetVelocityToVelocityDirectionSpeedCommand>();
 
         On<UpdateGrapplingStateEvent>()
-            .Do<AbortIfCharacterIsNotStuckCommand>()
+            .Do<AbortIfPlayerIsNotStuckCommand>()
             .Do<DispatchPlayerTurnToNextDirectionEventCommand>()
-            .Dispatch<CharacterIsStuckEvent>();
+            .Dispatch<PlayerIsStuckEvent>();
     }
 }

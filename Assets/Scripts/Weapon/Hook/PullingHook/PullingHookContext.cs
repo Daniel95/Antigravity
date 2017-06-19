@@ -8,7 +8,7 @@ public class PullingHookContext : Context {
         On<EnterContextSignal>()
             .Do<HookProjectileSetDistanceToOwnerCommand>()
             .Do<HookProjectileAbortIfDistanceToOwnerIsHigherThenMinimalDistance>()
-            .Do<SetMoveDirectionToHookProjectileDirectionCommand>();
+            .Do<PlayerSetMoveDirectionToHookProjectileDirectionCommand>();
 
         On<EnterContextSignal>()
             .Dispatch<EnterPullingHookContextSignal>()

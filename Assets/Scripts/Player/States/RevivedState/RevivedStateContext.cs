@@ -8,8 +8,8 @@ public class RevivedStateContext : Context {
         On<EnterContextSignal>()
             .Do<SetPlayerStateStatusCommand>(PlayerStateStatus.PlayerState.Revived)
             .Dispatch<CancelDragInputEvent>()
-            .Do<CharacterResetVelocityCommand>()
-            .Do<CharacterResetMoveDirectionCommand>()
+            .Do<PlayerResetVelocityCommand>()
+            .Do<PlayerResetMoveDirectionCommand>()
             .Do<EnableInputCommand>(false)
             .Do<EnableWeaponCommand>(false)
             .Do<EnablePlayerJumpCommand>(false)
@@ -27,7 +27,7 @@ public class RevivedStateContext : Context {
             .Do<EnableWeaponCommand>(true)
             .Do<EnablePlayerJumpCommand>(true)
             .Do<PlayerStopAimLineCommand>()
-            .Do<CharacterSetMoveDirectionCommand>()
+            .Do<PlayerSetMoveDirectionCommand>()
             .Do<PlayerTemporarySpeedIncreaseCommand>();
     }
 }

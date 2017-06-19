@@ -11,14 +11,14 @@ public class PlayerJumpCommand : Command {
     [Inject] private PlayerSetMoveDirectionEvent playerSetMoveDirectionEvent;
     [Inject] private PlayerRemoveCollisionDirectionEvent playerRemoveCollisionDirectionEvent;
 
-    [Inject] private Ref<ICharacterVelocity> characterVelocityRef;
-    [Inject] private Ref<ICharacterCollisionDirection> characterCollisionDirectionRef;
-    [Inject] private Ref<ICharacterRaycastDirection> characterRaycastRef;
+    [Inject(Label.Player)] private Ref<ICharacterVelocity> playerVelocityRef;
+    [Inject(Label.Player)] private Ref<ICharacterCollisionDirection> playerCollisionDirectionRef;
+    [Inject(Label.Player)] private Ref<ICharacterRaycastDirection> playerRaycastDirectionRef;
 
     protected override void Execute() {
-        Vector2 newDirection = characterVelocityRef.Get().MoveDirection;
-        Vector2 collisionDirection = characterCollisionDirectionRef.Get().GetCurrentCollisionDirection();
-        Vector2 centerRaycastDirection = characterRaycastRef.Get().CenterRaycastDirection();
+        Vector2 newDirection = playerVelocityRef.Get().MoveDirection;
+        Vector2 collisionDirection = playerCollisionDirectionRef.Get().GetCurrentCollisionDirection();
+        Vector2 centerRaycastDirection = playerRaycastDirectionRef.Get().CenterRaycastDirection();
 
         if (collisionDirection.x != 0) {
             newDirection.x = collisionDirection.x * -1;

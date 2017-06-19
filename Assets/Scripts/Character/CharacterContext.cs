@@ -7,23 +7,23 @@ public class CharacterContext : Context {
 
         On<EnterContextSignal>()
             .Do<PlayerSetSavedDirectionToStartDirectionCommand>()
-            .Do<CharacterActivateDirectionalMovementCommand>();
+            .Do<PlayerActivateDirectionalMovementCommand>();
 
         On<JumpInputEvent>()
             .Do<AbortIfPlayerCollisionDirectionIsZeroCommand>()
             .Do<PlayerJumpCommand>()
-            .Do<CharacterPointToVelocityDirectionCommand>();
+            .Do<PlayerPointToVelocityDirectionCommand>();
 
         On<JumpInputEvent>()
             .Do<AbortIfPlayerCollisionDirectionIsNotZeroCommand>()
             .Do<WaitForPlayerRetryJumpFramesCommand>()
             .Do<AbortIfPlayerCollisionDirectionIsZeroCommand>()
             .Do<PlayerJumpCommand>()
-            .Do<CharacterPointToVelocityDirectionCommand>();
+            .Do<PlayerPointToVelocityDirectionCommand>();
 
         On<PlayerBounceEvent>()
             .Do<PlayerBounceCommand>()
-            .Do<CharacterPointToCeiledVelocityDirectionCommand>();
+            .Do<PlayerPointToCeiledVelocityDirectionCommand>();
 
         On<PlayerRemoveCollisionDirectionEvent>()
             .Do<CharacterRemoveCollisionDirectionCommand>();
@@ -39,10 +39,7 @@ public class CharacterContext : Context {
             .Do<CharacterPointToDirectionCommand>();
 
         On<PlayerSetMoveDirectionEvent>()
-            .Do<CharacterSetMoveDirectionCommand>();
-
-        On<CharacterSetVelocityEvent>()
-            .Do<CharacterSetVelocityCommand>();
+            .Do<PlayerSetMoveDirectionCommand>();
 
         On<CollisionEnter2DEvent>()
             .Do<CharacterUpdateCollisionDirectionCommand>();
