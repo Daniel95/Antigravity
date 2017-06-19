@@ -1,17 +1,13 @@
 //todo:
 
-Sunday: {
-
-}
-
 Monday: {
-	Refactor commands using player labeled view bindings.
+
 }
 
 Tuesday: {
 	Move refactored player commands & signal to appropiate destinations.
 	CharacterSurroundingDirectionView should be playersurroundingdirectionview.
-	Fix clean 5 levels.
+	Fix/Clean 4 levels.
 }
 
 Wednesday: {
