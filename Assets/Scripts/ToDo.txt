@@ -5,23 +5,19 @@ Monday: {
 }
 
 Tuesday: {
-	Move refactored player commands & signal to appropiate destinations.
-	CharacterSurroundingDirectionView should be playersurroundingdirectionview.
 	Fix/Clean 4 levels.
 }
 
 Wednesday: {
-	Respawn player on kill.
 	Particle on player kill.
+	Fix level select UI.
 }
 
 Thursday: {
 	Add boundary checkpoints.
 }
 
-Friday: {
-	Fix level select UI.
-}
+Friday: { }
 
 Saturday {
 	Add water feature. 1/2
