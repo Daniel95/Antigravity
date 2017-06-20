@@ -10,7 +10,6 @@ public class PlayerBounceCommand : Command {
     [InjectParameter] private PlayerBounceEvent.Parameter playerBounceParameter;
 
     protected override void Execute() {
-
         if (playerBounceParameter.CollisionDirection.x != 0) {
             playerBounceParameter.MoveDirection.x *= -1;
         }
