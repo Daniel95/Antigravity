@@ -75,12 +75,6 @@ public class GameContext : Context {
         Bind<Ref<ISlowTime>>();
         Bind<Ref<IGrapplingState>>();
 
-
-        /* todo:
-        BindLabeled<Ref<ICharacterSurroundingDirection>>(Label.Player);
-        */
-
-        //player
         BindLabeled<Ref<ICharacterDirectionPointer>>(Label.Player);
         BindLabeled<Ref<ICharacterCollisionDirection>>(Label.Player);
         BindLabeled<Ref<ICharacterVelocity>>(Label.Player);
@@ -97,7 +91,6 @@ public class GameContext : Context {
 
         BindLabeled<Ref<ITriggerHitDetection>>(Label.HookProjectile);
         BindLabeled<Ref<IMoveTowards>>(Label.HookProjectile);
-
 
         Bind<IGameStateService, LocalGameStateService>();
 
