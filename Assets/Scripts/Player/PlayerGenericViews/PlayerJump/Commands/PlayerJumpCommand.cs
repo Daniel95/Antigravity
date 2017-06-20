@@ -17,21 +17,22 @@ public class PlayerJumpCommand : Command {
 
     protected override void Execute() {
         Vector2 newDirection = playerVelocityRef.Get().MoveDirection;
-        Vector2 collisionDirection = playerCollisionDirectionRef.Get().GetCurrentCollisionDirection();
-        Vector2 centerRaycastDirection = playerRaycastDirectionRef.Get().CenterRaycastDirection();
+        //Vector2 collisionDirection = playerCollisionDirectionRef.Get().GetCurrentCollisionDirection();
+        //Vector2 centerRaycastDirection = playerRaycastDirectionRef.Get().CenterRaycastDirection();
 
-        if (collisionDirection.x != 0) {
-            newDirection.x = collisionDirection.x * -1;
-        } else if (collisionDirection.y != 0) {
-            newDirection.y = collisionDirection.y * -1;
+        Vector2 surroundingsDirection = SurroundingDirectionHelper.GetSurroundingsDirection(playerCollisionDirectionRef.Get(), playerRaycastDirectionRef.Get());
+
+        if (surroundingsDirection.x != 0) {
+            newDirection.x = surroundingsDirection.x * -1;
+        } else if (surroundingsDirection.y != 0) {
+            newDirection.y = surroundingsDirection.y * -1;
         }
 
-        if (centerRaycastDirection.x == 0 || centerRaycastDirection.y == 0) {
+        if (surroundingsDirection.x == 0 || surroundingsDirection.y == 0) {
             playerStatus.Player.transform.position += (Vector3)(newDirection * playerJumpRef.Get().InstantJumpStrength);
         }
 
         playerSetMoveDirectionEvent.Dispatch(newDirection);
-        playerRemoveCollisionDirectionEvent.Dispatch(collisionDirection);
         playerTemporarySpeedChangeEvent.Dispatch(new PlayerTemporarySpeedChangeEvent.Parameter(0.5f + playerJumpRef.Get().JumpSpeedBoost));
     }
 }

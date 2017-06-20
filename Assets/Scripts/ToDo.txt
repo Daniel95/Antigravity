@@ -5,9 +5,7 @@ Monday: {
 }
 
 Tuesday: {
-	Player retryjump time shorter and based on time instead of frames.
-	Player jump not using raycast properly.
-	Player retryjump time too long.
+	Corners direction not working properly.
 	Add levelnumber ui at level.
 }
 
