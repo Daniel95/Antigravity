@@ -6,8 +6,10 @@ public class LevelContext : Context {
         base.SetBindings();
 
         Bind<PlayerStatus>();
+        Bind<CheckpointStatus>();
 
         On<EnterContextSignal>()
+            .Do<SetCheckpointToNullCommand>()
             .AddContext<LevelUIContext>()
             .AddContext<PlayerContext>()
             .Do<SetCameraTargetCommand>()

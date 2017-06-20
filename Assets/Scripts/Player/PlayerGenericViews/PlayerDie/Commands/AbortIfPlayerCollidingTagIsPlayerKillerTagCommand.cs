@@ -1,7 +1,7 @@
 ﻿using IoCPlus;
 using UnityEngine;
 
-public class AbortIfPlayerCollidingTagIsCharacterKillerTagCommand : Command {
+public class AbortIfPlayerCollidingTagIsPlayerKillerTagCommand : Command {
 
     [Inject(Label.Player)] private Ref<ICharacterDie> playerDieRef;
 

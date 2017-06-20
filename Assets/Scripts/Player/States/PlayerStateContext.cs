@@ -5,7 +5,6 @@ public class PlayerStateContext : Context {
     protected override void SetBindings() {
         base.SetBindings();
 
-        Bind<CheckpointStatus>();
         Bind<PlayerStateStatus>();
 
         On<EnterContextSignal>()
@@ -31,7 +30,6 @@ public class PlayerStateContext : Context {
         On<PlayerTriggerEnter2DEvent>()
             .Do<AbortIfPlayerStateStatusStateIsStateCommand>(PlayerStateStatus.PlayerState.Revived)
             .Do<AbortIfTriggerTagIsNotTheSameCommand>(Tags.CheckPoint)
-            .Do<SetCheckpointReachedCommand>(true)
             .Do<UpdateCheckpointStatusCommand>()
             .GotoState<RevivedStateContext>();
 

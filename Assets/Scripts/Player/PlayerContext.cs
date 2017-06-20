@@ -23,8 +23,17 @@ public class PlayerContext : Context {
             .Do<SaveGameStateCommand>()
             .Dispatch<GoToNextSceneEvent>();
 
+        On<PlayerDiedEvent>()
+            .Do<AbortIfCheckPointIsNullCommand>()
+            .Dispatch<RespawnPlayerEvent>();
+
+        On<PlayerDiedEvent>()
+            .Do<AbortIfCheckPointIsNotNullCommand>()
+            .Dispatch<GoToCurrentSceneEvent>();
+
         On<RespawnPlayerEvent>()
             .Do<InstantiatePlayerCommand>()
+            .Do<SetPlayerPositionToCheckpointPositionCommand>()
             .Do<StartScreenShakeCommand>();
 
         On<JumpInputEvent>()
@@ -57,17 +66,16 @@ public class PlayerContext : Context {
             .Do<PlayerUpdateCollisionDirectionCommand>();
 
         On<PlayerCollisionEnter2DEvent>()
-            .Do<AbortIfPlayerHittingTriggerTagsDoesNotContainPlayerKillerTagsCommand>()
-            .Do<GameObjectDestroyViewCommand>();
+            .Do<AbortIfPlayerCollidingTagIsPlayerKillerTagCommand>()
+            .Dispatch<PlayerDiedEvent>();
 
         On<PlayerCollisionEnter2DEvent>()
-            .Do<AbortIfPlayerCollidingTagIsCharacterKillerTagCommand>()
-            .Do<GameObjectDestroyViewCommand>()
-            .Dispatch<RespawnPlayerEvent>();
+            .Do<AbortIfPlayerHittingTriggerTagsDoesNotContainPlayerKillerTagsCommand>()
+            .Dispatch<PlayerDiedEvent>();
 
         On<PlayerCollisionStay2DEvent>()
             .Do<AbortIfPlayerHittingTriggerTagsDoesNotContainPlayerKillerTagsCommand>()
-            .Do<GameObjectDestroyViewCommand>();
+            .Dispatch<PlayerDiedEvent>();
 
         On<CollisionEnter2DEvent>()
             .Do<AbortIfGameObjectIsNotPlayerCommand>()
