@@ -2,7 +2,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class WaitFrameCommand : Command<int> {
+public class WaitFramesCommand : Command<int> {
 
 	protected override void ExecuteOverTime(int frames) {
         CoroutineHelper.Start(Wait(frames));

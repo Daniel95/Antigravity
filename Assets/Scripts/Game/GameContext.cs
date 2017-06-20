@@ -82,7 +82,6 @@ public class GameContext : Context {
         BindLabeled<Ref<ICharacterTurnDirection>>(Label.Player);
         BindLabeled<Ref<ICharacterJump>>(Label.Player);
         BindLabeled<Ref<ICharacterAimLine>>(Label.Player);
-        BindLabeled<Ref<ICharacterBounce>>(Label.Player);
         BindLabeled<Ref<ICharacterDie>>(Label.Player);
         BindLabeled<Ref<ICharacterSpeed>>(Label.Player);
         BindLabeled<Ref<ICollisionHitDetection>>(Label.Player);

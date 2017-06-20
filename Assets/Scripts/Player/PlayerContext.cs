@@ -49,6 +49,7 @@ public class PlayerContext : Context {
             .Do<PlayerPointToVelocityDirectionCommand>();
 
         On<PlayerBounceEvent>()
+            .Do<AbortIfPlayerBounceEventParameterCollisionDirectionIsZeroCommand>()
             .Do<PlayerBounceCommand>()
             .Do<PlayerPointToCeiledVelocityDirectionCommand>();
 

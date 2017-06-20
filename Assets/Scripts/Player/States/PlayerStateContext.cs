@@ -10,7 +10,7 @@ public class PlayerStateContext : Context {
         On<EnterContextSignal>()
             .GotoState<FloatingStateContext>();
 
-        On<CollisionEnter2DEvent>()
+        On<PlayerCollisionEnter2DEvent>()
             .Do<AbortIfPlayerCollidingOrInTriggerWithTagCommand>(Tags.Bouncy)
             .Do<PlayerUpdateCollisionDirectionCommand>()
             .Do<DispatchPlayerTurnToNextDirectionEventCommand>()
@@ -18,12 +18,12 @@ public class PlayerStateContext : Context {
             .Do<AbortIfPlayerStateStatusStateIsStateCommand>(PlayerStateStatus.PlayerState.Sliding)
             .GotoState<SlidingStateContext>();
 
-        On<CollisionExit2DEvent>()
+        On<PlayerCollisionExit2DEvent>()
             .Do<AbortIfPlayerCollisionDirectionIsNotZeroCommand>()
             .Do<AbortIfPlayerStateStatusStateIsStateCommand>(PlayerStateStatus.PlayerState.Grappling)
             .GotoState<FloatingStateContext>();
 
-        On<CollisionEnter2DEvent>()
+        On<PlayerCollisionEnter2DEvent>()
             .Do<AbortIfPlayerNotCollidingAndNotInTriggerWithTagCommand>(Tags.Bouncy)
             .Do<DispatchPlayerBounceEventCommand>();
 

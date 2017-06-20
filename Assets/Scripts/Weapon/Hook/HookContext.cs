@@ -87,7 +87,7 @@ public class HookContext : Context {
             .Do<HookProjectileStopMoveTowardsCommand>();
 
         On<HookProjectileTriggerEnterNonPlayerCollision2DEvent>()
-            .Do<WaitFrameCommand>()
+            .Do<WaitFramesCommand>(1)
             .Do<AbortIfHookProjectileCollidingLayerIsAHookableLayerCommand>()
             .Dispatch<HookProjectileAttachedEvent>()
             .OnAbort<DispatchPullBackHookEventCommand>();
