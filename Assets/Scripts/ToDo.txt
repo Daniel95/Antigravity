@@ -12,7 +12,7 @@ Tuesday: {
 
 Wednesday: {
 	Respawn player on kill.
-	Particle on character kill.
+	Particle on player kill.
 }
 
 Thursday: {

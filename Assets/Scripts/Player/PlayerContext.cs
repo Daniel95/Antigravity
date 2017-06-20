@@ -11,10 +11,11 @@ public class PlayerContext : Context {
             .AddContext<InputContext>()
             .AddContext<WeaponContext>()
             .AddContext<PlayerStateContext>()
-            .AddContext<CharacterContext>()
             .Do<EnableInputCommand>(true)
             .Do<EnableWeaponCommand>(true)
-            .Do<EnablePlayerJumpCommand>(true);
+            .Do<EnablePlayerJumpCommand>(true)
+            .Do<PlayerSetSavedDirectionToStartDirectionCommand>()
+            .Do<PlayerActivateDirectionalMovementCommand>();
 
         On<PlayerTriggerEnter2DEvent>()
             .Do<AbortIfTriggerTagIsNotTheSameCommand>(Tags.Finish)
@@ -22,13 +23,51 @@ public class PlayerContext : Context {
             .Do<SaveGameStateCommand>()
             .Dispatch<GoToNextSceneEvent>();
 
-        On<CharacterDieEvent>()
-            .Do<AbortIfGameObjectIsNotPlayerCommand>()
-            .Do<ChooseAndDispatchPlayerDiesEventCommand>();
-
         On<RespawnPlayerEvent>()
             .Do<InstantiatePlayerCommand>()
             .Do<StartScreenShakeCommand>();
+
+        On<JumpInputEvent>()
+            .Do<AbortIfPlayerCollisionDirectionIsZeroCommand>()
+            .Do<PlayerJumpCommand>()
+            .Do<PlayerPointToVelocityDirectionCommand>();
+
+        On<JumpInputEvent>()
+            .Do<AbortIfPlayerCollisionDirectionIsNotZeroCommand>()
+            .Do<WaitForPlayerRetryJumpFramesCommand>()
+            .Do<AbortIfPlayerCollisionDirectionIsZeroCommand>()
+            .Do<PlayerJumpCommand>()
+            .Do<PlayerPointToVelocityDirectionCommand>();
+
+        On<PlayerBounceEvent>()
+            .Do<PlayerBounceCommand>()
+            .Do<PlayerPointToCeiledVelocityDirectionCommand>();
+
+        On<PlayerRemoveCollisionDirectionEvent>()
+            .Do<PlayerRemoveCollisionDirectionCommand>();
+
+        On<PlayerTurnToNextDirectionEvent>()
+            .Do<PlayerTurnToNextDirectionCommand>()
+            .Do<PlayerPointToSavedDirectionCommand>();
+
+        On<PlayerSetMoveDirectionEvent>()
+            .Do<PlayerSetMoveDirectionCommand>();
+
+        On<PlayerCollisionEnter2DEvent>()
+            .Do<PlayerUpdateCollisionDirectionCommand>();
+
+        On<PlayerCollisionEnter2DEvent>()
+            .Do<AbortIfPlayerHittingTriggerTagsDoesNotContainPlayerKillerTagsCommand>()
+            .Do<GameObjectDestroyViewCommand>();
+
+        On<PlayerCollisionEnter2DEvent>()
+            .Do<AbortIfPlayerCollidingTagIsCharacterKillerTagCommand>()
+            .Do<GameObjectDestroyViewCommand>()
+            .Dispatch<RespawnPlayerEvent>();
+
+        On<PlayerCollisionStay2DEvent>()
+            .Do<AbortIfPlayerHittingTriggerTagsDoesNotContainPlayerKillerTagsCommand>()
+            .Do<GameObjectDestroyViewCommand>();
 
         On<CollisionEnter2DEvent>()
             .Do<AbortIfGameObjectIsNotPlayerCommand>()

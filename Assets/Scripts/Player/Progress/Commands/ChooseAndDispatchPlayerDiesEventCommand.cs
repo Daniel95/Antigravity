@@ -9,7 +9,6 @@ public class ChooseAndDispatchPlayerDiesEventCommand : Command {
 
     protected override void Execute() {
         if(playerStatus.CheckpointReached) {
-            respawnPlayerEvent.Dispatch();
         } else {
             reloadSceneEvent.Dispatch();
         }
