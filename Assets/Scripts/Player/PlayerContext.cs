@@ -43,7 +43,7 @@ public class PlayerContext : Context {
 
         On<JumpInputEvent>()
             .Do<AbortIfPlayerCollisionDirectionIsNotZeroCommand>()
-            .Do<WaitForPlayerRetryJumpFramesCommand>()
+            .Do<WaitForPlayerRetryJumpTimeCommand>()
             .Do<AbortIfPlayerCollisionDirectionIsZeroCommand>()
             .Do<PlayerJumpCommand>()
             .Do<PlayerPointToVelocityDirectionCommand>();

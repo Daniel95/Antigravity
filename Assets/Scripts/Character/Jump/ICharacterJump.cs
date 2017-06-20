@@ -1,6 +1,6 @@
 ﻿public interface ICharacterJump  {
 
-    int RetryJumpWaitFrames { get; }
+    float RetryJumpWaitTime { get; }
     float InstantJumpStrength { get; }
     float JumpSpeedBoost { get; }
 

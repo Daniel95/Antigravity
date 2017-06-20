@@ -2,18 +2,16 @@
 using System.Collections;
 using IoCPlus;
 
-public class WaitForPlayerRetryJumpFramesCommand : Command {
+public class WaitForPlayerRetryJumpTimeCommand : Command {
 
     [Inject(Label.Player)] private Ref<ICharacterJump> playerJumpRef;
 
     protected override void ExecuteOverTime() {
-        CoroutineHelper.Start(Wait(playerJumpRef.Get().RetryJumpWaitFrames));
+        CoroutineHelper.Start(Wait(playerJumpRef.Get().RetryJumpWaitTime));
     }
 
-    private IEnumerator Wait(int frames) {
-        for (int i = 0; i < frames; i++) {
-            yield return new WaitForEndOfFrame();
-        }
+    private IEnumerator Wait(float time) {
+        yield return new WaitForSecondsRealtime(time);
         Release();
     }
 }
