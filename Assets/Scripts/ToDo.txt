@@ -9,13 +9,11 @@ Tuesday: {
 }
 
 Wednesday: {
-	Particle on player kill.
-	Fix level select UI.
+
 }
 
 Thursday: {
-	Error when respawning at checkpoint.
-	Add boundary checkpoints.
+
 }
 
 Friday: {
@@ -23,28 +21,29 @@ Friday: {
 }
 
 Saturday {
-	Add water feature. 1/2
+	Particle on player kill.
 }
 
 Sunday {
-	Add water feature. 2/2
+	Error when respawning at checkpoint.
+	Add boundary checkpoints.
 }
 
-//To Scheduled: {
+//To Schedule: {
+	Add water feature.
+
 	Add levelnumber ui at level.
-	When hitting a corner, turning view sends the character straight away horizontally or vertically
+	When hitting a corner, turning view sends the character straight away horizontally or vertically. (no raycasts hit anything)
+
+	Sometimes unable to jump.
+	Fix game triggers.
+	Add new intro levels with water.
+	Add ui elements depending on level.
+	Tweak popout/popin on ui elements.
+
+	Look into directionpointer and linerenderen update order in comparison to the hookprojectile.
+	Fix lighting is not working properly.
+	Import shaderforge
+	Give overlap shader area's a glow.
+	Make Level Editor.
 }
-
-___________________________
-
-
-Fix game triggers.
-Add new intro levels with water.
-Add ui elements depending on level.
-Tweak popout/popin on ui elements.
-
-Look into directionpointer and linerenderen update order in comparison to the hookprojectile.
-Fix lighting is not working properly.
-Import shaderforge
-Give overlap shader area's a glow.
-Make Level Editor.

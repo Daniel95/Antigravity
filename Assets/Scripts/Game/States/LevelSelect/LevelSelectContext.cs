@@ -6,6 +6,7 @@ public class LevelSelectContext : Context {
         base.SetBindings();
 
         On<EnterContextSignal>()
+            .AddContext<LevelSelectUIContext>()
             .Do<DestroySelectLevelFieldsCommand>()
             .Do<GenerateSelectableLevelFieldsCommand>()
             .Do<SetSelectableLevelUnlockedCommand>(1)
