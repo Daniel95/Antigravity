@@ -24,6 +24,9 @@ public class PlayerContext : Context {
             .Dispatch<GoToNextSceneEvent>();
 
         On<PlayerDiedEvent>()
+            .Do<InstantiatePrefabOnPlayerPositionCommand>("Effects/DieEffect");
+
+        On<PlayerDiedEvent>()
             .Do<AbortIfCheckPointIsNullCommand>()
             .Dispatch<RespawnPlayerEvent>();
 
