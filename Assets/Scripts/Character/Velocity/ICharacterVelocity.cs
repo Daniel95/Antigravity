@@ -5,6 +5,7 @@ public interface ICharacterVelocity {
     Vector2 Velocity { get; set; }
     Vector2 PreviousVelocity { get; }
     Vector2 MoveDirection { get; }
+    Vector2 StartDirection { get; }
     float OriginalSpeed { get; }
     float CurrentSpeed { get; }
 

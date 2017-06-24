@@ -10,7 +10,7 @@ public class CharacterTurnDirectionView : View, ICharacterTurnDirection {
 
     [Inject] private PlayerSetMoveDirectionEvent characterSetMoveDirectionEvent;
     [Inject] private PlayerTemporarySpeedChangeEvent characterTemporarySpeedChangeEvent;
-    [Inject] private CharacterTemporarySpeedDecreaseEvent characterTemporarySpeedDecreaseEvent;
+    [Inject] private PlayerTemporarySpeedDecreaseEvent characterTemporarySpeedDecreaseEvent;
 
     [SerializeField] private float directionSpeedNeutralValue = 0.4f;
     [SerializeField] private float maxSpeedChange = 0.7f;

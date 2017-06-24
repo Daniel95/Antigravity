@@ -3,4 +3,5 @@
 public class PlayerStatus  {
 
     public GameObject Player;
+
 }

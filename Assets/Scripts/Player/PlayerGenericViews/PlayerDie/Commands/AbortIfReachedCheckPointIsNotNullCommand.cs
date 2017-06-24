@@ -1,11 +1,11 @@
 ﻿using IoCPlus;
 
-public class AbortIfCheckPointIsNotNullCommand : Command {
+public class AbortIfReachedCheckPointIsNotNullCommand : Command {
 
     [Inject] private CheckpointStatus checkpointStatus;
 
     protected override void Execute() {
-        if (checkpointStatus.checkpoint != null) {
+        if (checkpointStatus.ReachedCheckpoint != null) {
             Abort();
         }
     }

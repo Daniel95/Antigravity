@@ -2,5 +2,6 @@
 
 public class CheckpointStatus {
 
-    public GameObject checkpoint;
+    public GameObject ReachedCheckpoint;
+
 }

@@ -8,15 +8,17 @@ public class CharacterVelocityView : View, ICharacterVelocity {
     public Vector2 Velocity { get { return rigidbodyComponent.velocity; } set { rigidbodyComponent.velocity = value; } }
     public Vector2 PreviousVelocity { get { return previousVelocity; } }
     public Vector2 MoveDirection { get { return moveDirection; } }
+    public Vector2 StartDirection { get { return startDirection; } }
     public float OriginalSpeed { get { return originalSpeed; }  }
     public float CurrentSpeed { get { return currentSpeed; } }
 
+    [SerializeField] private Vector2 startDirection = new Vector2(1, -1);
     [SerializeField] private float originalSpeed = 3.2f;
     [SerializeField] private float currentSpeed;
     [SerializeField] private float minSpeedOffsetValue = 0.05f;
 
     private Vector2 previousVelocity = new Vector2();
-    private Vector2 moveDirection = new Vector2(1, -1);
+    private Vector2 moveDirection = new Vector2();
     private Rigidbody2D rigidbodyComponent;
     private Coroutine updateDirectionalMovementCoroutine;
     private Coroutine returnSpeedToOriginalCoroutine;
@@ -125,5 +127,6 @@ public class CharacterVelocityView : View, ICharacterVelocity {
         rigidbodyComponent = GetComponent<Rigidbody2D>();
         currentSpeed = originalSpeed;
     }
+
 }
 

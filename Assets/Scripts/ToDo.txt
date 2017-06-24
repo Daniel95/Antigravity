@@ -21,7 +21,7 @@ Friday: {
 }
 
 Saturday {
-
+	On player dead, when no checkpoint is reached yet, spawn player at the level start and .
 }
 
 Sunday {
@@ -32,7 +32,9 @@ Sunday {
 //To Schedule: {
 	Add water feature.
 
-	On player dead, when no checkpoint is reached yet, spawn player at the level start and start moving when camera is in place.
+	look through character views to see if they are linked to player.
+	Fix screenshake.
+	On respawn without checkpoint, start moving when camera is in place.
 
 	Add levelnumber ui at level.
 	When hitting a corner, turning view sends the character straight away horizontally or vertically. (no raycasts hit anything)

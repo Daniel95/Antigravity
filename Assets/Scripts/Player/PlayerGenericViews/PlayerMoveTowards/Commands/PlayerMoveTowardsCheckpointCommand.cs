@@ -11,7 +11,7 @@ public class PlayerMoveTowardsCheckpointCommand : Command {
 
     protected override void Execute() {
         playerMoveTowardsRef.Get().StartMovingToTarget(
-            checkPointStatus.checkpoint.transform.position, 
+            checkPointStatus.ReachedCheckpoint.transform.position, 
             playerMoveTowardsCheckpointCompletedEvent
         );
     }

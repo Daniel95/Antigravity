@@ -8,6 +8,7 @@ public class PlayerContext : Context {
 
         On<EnterContextSignal>()
             .Do<InstantiatePlayerCommand>()
+            .Do<SetPlayerPositionToStartPositionCommand>()
             .AddContext<InputContext>()
             .AddContext<WeaponContext>()
             .AddContext<PlayerStateContext>()
@@ -15,6 +16,7 @@ public class PlayerContext : Context {
             .Do<EnableWeaponCommand>(true)
             .Do<EnablePlayerJumpCommand>(true)
             .Do<PlayerSetSavedDirectionToStartDirectionCommand>()
+            .Do<PlayerSetMoveDirectionToStartDirectionCommand>()
             .Do<PlayerActivateDirectionalMovementCommand>();
 
         On<PlayerTriggerEnter2DEvent>()
@@ -27,17 +29,13 @@ public class PlayerContext : Context {
             .Do<InstantiatePrefabOnPlayerPositionCommand>("Effects/DieEffect");
 
         On<PlayerDiedEvent>()
-            .Do<AbortIfCheckPointIsNullCommand>()
-            .Dispatch<RespawnPlayerEvent>();
+            .Do<AbortIfReachedCheckPointIsNullCommand>()
+            .Dispatch<PlayerRespawnAtCheckpointEvent>();
 
         On<PlayerDiedEvent>()
-            .Do<AbortIfCheckPointIsNotNullCommand>()
-            .Dispatch<GoToCurrentSceneEvent>();
-
-        On<RespawnPlayerEvent>()
-            .Do<InstantiatePlayerCommand>()
-            .Do<SetPlayerPositionToCheckpointPositionCommand>()
-            .Do<StartScreenShakeCommand>();
+            .Do<AbortIfReachedCheckPointIsNotNullCommand>()
+            .Do<SetPlayerPositionToStartPositionCommand>()
+            .Do<PlayerSetMoveDirectionToStartDirectionCommand>();
 
         On<JumpInputEvent>()
             .Do<AbortIfPlayerCollisionDirectionIsZeroCommand>()

@@ -8,6 +8,6 @@ public class UpdateCheckpointStatusCommand : Command {
     [InjectParameter] private Collider2D collider;
 
     protected override void Execute() {
-        checkpointStatus.checkpoint = collider.gameObject;
+        checkpointStatus.ReachedCheckpoint = collider.gameObject;
     }
 }

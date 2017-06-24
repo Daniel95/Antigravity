@@ -28,10 +28,10 @@ public class PlayerStateContext : Context {
             .Do<DispatchPlayerBounceEventCommand>();
 
         On<PlayerTriggerEnter2DEvent>()
-            .Do<AbortIfPlayerStateStatusStateIsStateCommand>(PlayerStateStatus.PlayerState.Revived)
+            .Do<AbortIfPlayerStateStatusStateIsStateCommand>(PlayerStateStatus.PlayerState.RevivedAtCheckpoint)
             .Do<AbortIfTriggerTagIsNotTheSameCommand>(Tags.CheckPoint)
             .Do<UpdateCheckpointStatusCommand>()
-            .GotoState<RevivedStateContext>();
+            .GotoState<RevivedAtCheckpointStateContext>();
 
         On<EnterGrapplingHookContextEvent>()
             .Do<AbortIfPlayerStateStatusStateIsStateCommand>(PlayerStateStatus.PlayerState.Grappling)
@@ -46,11 +46,12 @@ public class PlayerStateContext : Context {
             .Do<PlayerSetMoveDirectionToVelocityDirectionCommand>()
             .GotoState<FloatingStateContext>();
 
-        On<RespawnPlayerEvent>()
-            .Do<AbortIfPlayerStateStatusStateIsStateCommand>(PlayerStateStatus.PlayerState.Revived)
-            .GotoState<RevivedStateContext>();
+        On<PlayerRespawnAtCheckpointEvent>()
+            .Do<AbortIfPlayerStateStatusStateIsStateCommand>(PlayerStateStatus.PlayerState.RevivedAtCheckpoint)
+            .Do<SetPlayerPositionToCheckpointPositionCommand>()
+            .GotoState<RevivedAtCheckpointStateContext>();
 
-        OnChild<RevivedStateContext, ReleaseInDirectionInputEvent>()
+        OnChild<RevivedAtCheckpointStateContext, ReleaseInDirectionInputEvent>()
             .Do<AbortIfPlayerStateStatusStateIsStateCommand>(PlayerStateStatus.PlayerState.Floating)
             .GotoState<FloatingStateContext>();
 

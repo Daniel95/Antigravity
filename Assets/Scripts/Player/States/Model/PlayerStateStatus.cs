@@ -4,7 +4,7 @@
         Grappling,
         Sliding,
         Floating,
-        Revived,
+        RevivedAtCheckpoint,
     }
 
     public PlayerState State;

@@ -6,6 +6,6 @@ public class SetPlayerPositionToCheckpointPositionCommand : Command {
     [Inject] private PlayerStatus playerStatus;
 
     protected override void Execute() {
-        playerStatus.Player.transform.position = checkpointStatus.checkpoint.transform.position;
+        playerStatus.Player.transform.position = checkpointStatus.ReachedCheckpoint.transform.position;
     }
 }

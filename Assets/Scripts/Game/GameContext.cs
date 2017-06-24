@@ -11,10 +11,11 @@ public class GameContext : Context {
         Bind<PlayerSetMoveDirectionEvent>();
         Bind<PlayerBoostSpeedEvent>();
         Bind<PlayerTemporarySpeedChangeEvent>();
-        Bind<CharacterTemporarySpeedDecreaseEvent>();
+        Bind<PlayerTemporarySpeedDecreaseEvent>();
         Bind<PlayerTemporarySpeedChangeEvent>();
         Bind<PlayerRemoveCollisionDirectionEvent>();
         Bind<PlayerBounceEvent>();
+        Bind<PlayerRespawnAtCheckpointEvent>();
         Bind<CancelDragInputEvent>();
         Bind<DraggingInputEvent>();
         Bind<HoldingInputEvent>();
