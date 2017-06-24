@@ -8,7 +8,7 @@ public class PlayerContext : Context {
 
         On<EnterContextSignal>()
             .Do<InstantiatePlayerCommand>()
-            .Do<SetPlayerPositionToStartPositionCommand>()
+            .Do<PlayerSetPositionToStartPositionCommand>()
             .AddContext<InputContext>()
             .AddContext<WeaponContext>()
             .AddContext<PlayerStateContext>()
@@ -17,7 +17,7 @@ public class PlayerContext : Context {
             .Do<EnablePlayerJumpCommand>(true)
             .Do<PlayerSetSavedDirectionToStartDirectionCommand>()
             .Do<PlayerSetMoveDirectionToStartDirectionCommand>()
-            .Do<PlayerActivateDirectionalMovementCommand>();
+            .Do<PlayerEnableDirectionalMovementCommand>(true);
 
         On<PlayerTriggerEnter2DEvent>()
             .Do<AbortIfTriggerTagIsNotTheSameCommand>(Tags.Finish)
@@ -26,6 +26,7 @@ public class PlayerContext : Context {
             .Dispatch<GoToNextSceneEvent>();
 
         On<PlayerDiedEvent>()
+            //.Do<StartScreenShakeCommand>()
             .Do<InstantiatePrefabOnPlayerPositionCommand>("Effects/DieEffect");
 
         On<PlayerDiedEvent>()
@@ -34,8 +35,7 @@ public class PlayerContext : Context {
 
         On<PlayerDiedEvent>()
             .Do<AbortIfReachedCheckPointIsNotNullCommand>()
-            .Do<SetPlayerPositionToStartPositionCommand>()
-            .Do<PlayerSetMoveDirectionToStartDirectionCommand>();
+            .Dispatch<PlayerRespawnAtStartEvent>();
 
         On<JumpInputEvent>()
             .Do<AbortIfPlayerCollisionDirectionIsZeroCommand>()
@@ -48,6 +48,10 @@ public class PlayerContext : Context {
             .Do<AbortIfPlayerCollisionDirectionIsZeroCommand>()
             .Do<PlayerJumpCommand>()
             .Do<PlayerPointToVelocityDirectionCommand>();
+
+        On<PlayerCollisionEnter2DEvent>()
+            .Do<AbortIfPlayerNotCollidingAndNotInTriggerWithTagCommand>(Tags.Bouncy)
+            .Do<DispatchPlayerBounceEventCommand>();
 
         On<PlayerBounceEvent>()
             .Do<AbortIfPlayerBounceEventParameterCollisionDirectionIsZeroCommand>()

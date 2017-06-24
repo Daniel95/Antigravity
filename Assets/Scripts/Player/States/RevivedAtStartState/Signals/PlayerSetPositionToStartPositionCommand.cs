@@ -1,7 +1,7 @@
 ﻿using IoCPlus;
 using UnityEngine;
 
-public class SetPlayerPositionToStartPositionCommand : Command {
+public class PlayerSetPositionToStartPositionCommand : Command {
 
     [Inject] private PlayerStatus playerStatus;
 

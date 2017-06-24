@@ -21,7 +21,8 @@ Friday: {
 }
 
 Saturday {
-	On player dead, when no checkpoint is reached yet, spawn player at the level start and .
+	Rename player states to just contexts, not states, but in folder states.
+	Make player go into revivedAtStartContext in playerStateContext
 }
 
 Sunday {
@@ -30,14 +31,16 @@ Sunday {
 }
 
 //To Schedule: {
-	Add water feature.
 
-	look through character views to see if they are linked to player.
 	Fix screenshake.
+	Fix player directio when respawning without checkpoint.
+	look through character views to see if they are linked to player.
 	On respawn without checkpoint, start moving when camera is in place.
 
 	Add levelnumber ui at level.
 	When hitting a corner, turning view sends the character straight away horizontally or vertically. (no raycasts hit anything)
+
+	Add water feature.
 
 	Sometimes unable to jump.
 	Fix game triggers.

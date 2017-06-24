@@ -23,14 +23,6 @@ public class CharacterVelocityView : View, ICharacterVelocity {
     private Coroutine updateDirectionalMovementCoroutine;
     private Coroutine returnSpeedToOriginalCoroutine;
 
-    public void EnableDirectionalMovement(bool enable) {
-        if(enable) {
-            EnableDirectionalMovement();
-        } else {
-            DisableDirectionalMovement();
-        }
-    }
-
     public void StartReturnSpeedToOriginal(float returnSpeed) {
         if (returnSpeedToOriginalCoroutine != null) {
             StopCoroutine(returnSpeedToOriginalCoroutine);
@@ -42,7 +34,9 @@ public class CharacterVelocityView : View, ICharacterVelocity {
 
     public void SetMoveDirection(Vector2 moveDirection) {
         this.moveDirection = moveDirection;
-        rigidbodyComponent.velocity = this.moveDirection * currentSpeed;
+        if (updateDirectionalMovementCoroutine != null) {
+            rigidbodyComponent.velocity = this.moveDirection * currentSpeed;
+        }
     }
 
     public void AddVelocity(Vector2 velocity) {
@@ -91,12 +85,12 @@ public class CharacterVelocityView : View, ICharacterVelocity {
         return new Vector2(Rounding.InvertOnNegativeCeil(velocityNormalized.x), Rounding.InvertOnNegativeCeil(velocityNormalized.y));
     }
 
-    private void EnableDirectionalMovement() {
+    public void EnableDirectionalMovement() {
         DisableDirectionalMovement();
         updateDirectionalMovementCoroutine = StartCoroutine(UpdateDirectionalMovement());
     }
 
-    private void DisableDirectionalMovement() {
+    public void DisableDirectionalMovement() {
         if (updateDirectionalMovementCoroutine != null) {
             StopCoroutine(updateDirectionalMovementCoroutine);
             updateDirectionalMovementCoroutine = null;
@@ -106,6 +100,7 @@ public class CharacterVelocityView : View, ICharacterVelocity {
     private IEnumerator UpdateDirectionalMovement() {
         while (true) {
             rigidbodyComponent.velocity = moveDirection * currentSpeed;
+            previousVelocity = rigidbodyComponent.velocity;
             yield return new WaitForFixedUpdate();
         }
     }
@@ -117,10 +112,6 @@ public class CharacterVelocityView : View, ICharacterVelocity {
         }
 
         currentSpeed = originalSpeed;
-    }
-
-    private void FixedUpdate() {
-        previousVelocity = rigidbodyComponent.velocity;
     }
 
     private void Awake() {

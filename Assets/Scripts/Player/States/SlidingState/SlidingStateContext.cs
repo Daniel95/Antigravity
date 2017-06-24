@@ -7,7 +7,7 @@ public class SlidingStateContext : Context {
 
         On<EnterContextSignal>()
             .Do<SetPlayerStateStatusCommand>(PlayerStateStatus.PlayerState.Sliding)
-            .Do<PlayerActivateDirectionalMovementCommand>();
+            .Do<PlayerEnableDirectionalMovementCommand>(true);
 
         On<HookProjectileMoveTowardsOwnerCompletedEvent>()
             .Do<PlayerPointToSavedDirectionCommand>();

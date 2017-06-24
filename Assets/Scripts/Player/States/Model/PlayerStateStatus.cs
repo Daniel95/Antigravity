@@ -5,6 +5,7 @@
         Sliding,
         Floating,
         RevivedAtCheckpoint,
+        RevivedAtStart,
     }
 
     public PlayerState State;

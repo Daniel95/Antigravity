@@ -15,7 +15,8 @@ public interface ICharacterVelocity {
     Vector2 GetCeilPreviousVelocityDirection();
     bool GetMovingStandard();
 
-    void EnableDirectionalMovement(bool enable);
+    void EnableDirectionalMovement();
+    void DisableDirectionalMovement();
     void StartReturnSpeedToOriginal(float returnSpeed);
     void SetMoveDirection(Vector2 moveDirection);
     void AddVelocity(Vector2 velocity);

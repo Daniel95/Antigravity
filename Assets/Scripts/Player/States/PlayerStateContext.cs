@@ -16,16 +16,16 @@ public class PlayerStateContext : Context {
             .Do<DispatchPlayerTurnToNextDirectionEventCommand>()
             .Do<AbortIfSavedCollisionCountIsHigherThenOneCommand>()
             .Do<AbortIfPlayerStateStatusStateIsStateCommand>(PlayerStateStatus.PlayerState.Sliding)
+            .Do<AbortIfPlayerStateStatusStateIsStateCommand>(PlayerStateStatus.PlayerState.RevivedAtStart)
+            .Do<AbortIfPlayerStateStatusStateIsStateCommand>(PlayerStateStatus.PlayerState.RevivedAtCheckpoint)
             .GotoState<SlidingStateContext>();
 
         On<PlayerCollisionExit2DEvent>()
             .Do<AbortIfPlayerCollisionDirectionIsNotZeroCommand>()
             .Do<AbortIfPlayerStateStatusStateIsStateCommand>(PlayerStateStatus.PlayerState.Floating)
+            .Do<AbortIfPlayerStateStatusStateIsStateCommand>(PlayerStateStatus.PlayerState.RevivedAtStart)
+            .Do<AbortIfPlayerStateStatusStateIsStateCommand>(PlayerStateStatus.PlayerState.RevivedAtCheckpoint)
             .GotoState<FloatingStateContext>();
-
-        On<PlayerCollisionEnter2DEvent>()
-            .Do<AbortIfPlayerNotCollidingAndNotInTriggerWithTagCommand>(Tags.Bouncy)
-            .Do<DispatchPlayerBounceEventCommand>();
 
         On<PlayerTriggerEnter2DEvent>()
             .Do<AbortIfPlayerStateStatusStateIsStateCommand>(PlayerStateStatus.PlayerState.RevivedAtCheckpoint)
@@ -50,6 +50,10 @@ public class PlayerStateContext : Context {
             .Do<AbortIfPlayerStateStatusStateIsStateCommand>(PlayerStateStatus.PlayerState.RevivedAtCheckpoint)
             .Do<SetPlayerPositionToCheckpointPositionCommand>()
             .GotoState<RevivedAtCheckpointStateContext>();
+
+        On<PlayerRespawnAtStartEvent>()
+            .Do<AbortIfPlayerStateStatusStateIsStateCommand>(PlayerStateStatus.PlayerState.RevivedAtStart)
+            .GotoState<RevivedAtStartContext>();
 
         OnChild<RevivedAtCheckpointStateContext, ReleaseInDirectionInputEvent>()
             .Do<AbortIfPlayerStateStatusStateIsStateCommand>(PlayerStateStatus.PlayerState.Floating)
