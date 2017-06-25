@@ -8,5 +8,8 @@ public class AbortIfPlayerSurroundingDirectionIsZeroCommand : Command {
 
     protected override void Execute() {
         Vector2 surroundingsDirection = SurroundingDirectionHelper.GetSurroundingsDirection(playerCollisionDirectionRef.Get(), playerRaycastDirectionRef.Get());
+        if(surroundingsDirection == Vector2.zero) {
+            Abort();
+        }
     }
 }
