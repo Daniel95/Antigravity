@@ -17,7 +17,8 @@ public class RespawnAtStartContext : Context {
             .Do<PlayerSetMoveDirectionToStartDirectionCommand>()
             .Do<PlayerPointToMoveDirectionCommand>()
             .Do<WaitForSecondsCommand>(1f)
-            .Do<PlayerEnableDirectionalMovementCommand>(true);
+            .Do<PlayerEnableDirectionalMovementCommand>(true)
+            .Dispatch<PlayerRespawnAtStartCompletedEvent>();
 
     }
 }

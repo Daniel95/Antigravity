@@ -17,6 +17,7 @@ public class GameContext : Context {
         Bind<PlayerBounceEvent>();
         Bind<PlayerRespawnAtCheckpointEvent>();
         Bind<PlayerRespawnAtStartEvent>();
+        Bind<PlayerRespawnAtStartCompletedEvent>();
         Bind<CancelDragInputEvent>();
         Bind<DraggingInputEvent>();
         Bind<HoldingInputEvent>();

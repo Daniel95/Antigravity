@@ -55,6 +55,10 @@ public class PlayerStateContext : Context {
             .Do<AbortIfPlayerStateStatusStateIsStateCommand>(PlayerStateStatus.PlayerState.RespawnAtStart)
             .GotoState<RespawnAtStartContext>();
 
+        OnChild<RespawnAtStartContext, PlayerRespawnAtStartCompletedEvent>()
+            .Do<AbortIfPlayerStateStatusStateIsStateCommand>(PlayerStateStatus.PlayerState.Floating)
+            .GotoState<FloatingStateContext>();
+
         OnChild<RespawnAtCheckpointContext, ReleaseInDirectionInputEvent>()
             .Do<AbortIfPlayerStateStatusStateIsStateCommand>(PlayerStateStatus.PlayerState.Floating)
             .GotoState<FloatingStateContext>();
