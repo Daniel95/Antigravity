@@ -6,6 +6,6 @@ public class PlayerSwitchDirectionCommand : Command {
     [Inject(Label.Player)] private Ref<ICharacterVelocity> playerVelocityRef;
 
     protected override void Execute() {
-        playerVelocityRef.Get().SwitchDirection();
+        playerVelocityRef.Get().SwitchMoveDirection();
     }
 }

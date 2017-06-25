@@ -43,11 +43,11 @@ public class CharacterVelocityView : View, ICharacterVelocity {
         rigidbodyComponent.velocity += velocity;
     }
 
-    public void SwitchVelocityDirection() {
+    public void SwitchVelocity() {
         rigidbodyComponent.velocity *= -1;
     }
 
-    public void SwitchDirection() {
+    public void SwitchMoveDirection() {
         moveDirection *= -1;
     }
 

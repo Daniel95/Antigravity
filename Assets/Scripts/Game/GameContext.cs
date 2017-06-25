@@ -89,6 +89,7 @@ public class GameContext : Context {
         BindLabeled<Ref<ICollisionHitDetection>>(Label.Player);
         BindLabeled<Ref<ITriggerHitDetection>>(Label.Player);
         BindLabeled<Ref<IMoveTowards>>(Label.Player);
+        BindLabeled<Ref<ICharacterTrail>>(Label.Player);
 
         BindLabeled<Ref<ITriggerHitDetection>>(Label.HookProjectile);
         BindLabeled<Ref<IMoveTowards>>(Label.HookProjectile);
@@ -115,12 +116,12 @@ public class GameContext : Context {
             .GotoState<LoadingContext>();
 
         OnChild<LoadingContext, GoToSceneCompletedEvent>()
-            .Do<AbortIfSceneIsScenesCommand>(new List<Scenes>() { Scenes.MainMenu, Scenes.LevelSelect })
-            .GotoState<LevelContext>();
-
-        OnChild<LoadingContext, GoToSceneCompletedEvent>()
             .Do<AbortIfSceneIsNotSceneCommand>(Scenes.MainMenu)
             .GotoState<MainMenuUIContext>();
+
+        OnChild<LoadingContext, GoToSceneCompletedEvent>()
+            .Do<AbortIfSceneIsScenesCommand>(new List<Scenes>() { Scenes.MainMenu, Scenes.LevelSelect })
+            .GotoState<LevelContext>();
 
         OnChild<LoadingContext, GoToSceneCompletedEvent>()
             .Do<AbortIfSceneIsNotSceneCommand>(Scenes.LevelSelect)

@@ -1,12 +1,12 @@
 ﻿using IoCPlus;
 
-public class RevivedAtCheckpointStateContext : Context {
+public class RespawnAtCheckpointContext : Context {
 
     protected override void SetBindings() {
         base.SetBindings();
 
         On<EnterContextSignal>()
-            .Do<SetPlayerStateStatusCommand>(PlayerStateStatus.PlayerState.RevivedAtCheckpoint)
+            .Do<SetPlayerStateStatusCommand>(PlayerStateStatus.PlayerState.RespawnAtCheckpoint)
             .Dispatch<CancelDragInputEvent>()
             .Do<PlayerResetVelocityCommand>()
             .Do<PlayerResetMoveDirectionCommand>()

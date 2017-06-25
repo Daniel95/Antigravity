@@ -17,8 +17,6 @@ public class PlayerJumpCommand : Command {
 
     protected override void Execute() {
         Vector2 newDirection = playerVelocityRef.Get().MoveDirection;
-        //Vector2 collisionDirection = playerCollisionDirectionRef.Get().GetCurrentCollisionDirection();
-        //Vector2 centerRaycastDirection = playerRaycastDirectionRef.Get().CenterRaycastDirection();
 
         Vector2 surroundingsDirection = SurroundingDirectionHelper.GetSurroundingsDirection(playerCollisionDirectionRef.Get(), playerRaycastDirectionRef.Get());
 

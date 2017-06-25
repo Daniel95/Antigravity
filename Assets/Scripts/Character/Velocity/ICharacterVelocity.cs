@@ -21,6 +21,6 @@ public interface ICharacterVelocity {
     void SetMoveDirection(Vector2 moveDirection);
     void AddVelocity(Vector2 velocity);
     void SetSpeed(float newSpeed);
-    void SwitchVelocityDirection();
-    void SwitchDirection();
+    void SwitchVelocity();
+    void SwitchMoveDirection();
 }

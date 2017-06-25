@@ -21,19 +21,20 @@ Friday: {
 }
 
 Saturday {
-	Rename player states to just contexts, not states, but in folder states.
-	Make player go into revivedAtStartContext in playerStateContext
+
+
 }
 
 Sunday {
+	Fix rebuilding player.
+	Rename player states to just contexts, not states, but in folder states.
 	Error when respawning at checkpoint.
-	Add boundary checkpoints.
+	Fix screenshake.
 }
 
 //To Schedule: {
 
-	Fix screenshake.
-	Fix player directio when respawning without checkpoint.
+	Add boundary checkpoints.
 	look through character views to see if they are linked to player.
 	On respawn without checkpoint, start moving when camera is in place.
 

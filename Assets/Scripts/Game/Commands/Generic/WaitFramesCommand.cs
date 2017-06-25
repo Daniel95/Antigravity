@@ -10,7 +10,7 @@ public class WaitFramesCommand : Command<int> {
 
     private IEnumerator Wait(int frames) {
         for (int i = 0; i < frames; i++) {
-            yield return new WaitForEndOfFrame();
+            yield return null;
         }
         Release();
     }
