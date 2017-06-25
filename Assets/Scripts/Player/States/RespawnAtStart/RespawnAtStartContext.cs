@@ -11,7 +11,6 @@ public class RespawnAtStartContext : Context {
             .Do<PlayerSetPositionToStartPositionCommand>()
             .Do<PlayerResetVelocityCommand>()
             .Do<PlayerEnableDirectionalMovementCommand>(false)
-            .Do<WaitFramesCommand>(1)
             .Do<PlayerEnableTrailCommand>(true)
             .Do<PlayerResetCollisionDirectionCommand>()
             .Do<PlayerSetSavedDirectionToStartDirectionCommand>()

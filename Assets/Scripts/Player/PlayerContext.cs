@@ -25,18 +25,6 @@ public class PlayerContext : Context {
             .Do<SaveGameStateCommand>()
             .Dispatch<GoToNextSceneEvent>();
 
-        On<PlayerDiedEvent>()
-            //.Do<StartScreenShakeCommand>()
-            .Do<InstantiatePrefabOnPlayerPositionCommand>("Effects/DieEffect");
-
-        On<PlayerDiedEvent>()
-            .Do<AbortIfReachedCheckPointIsNullCommand>()
-            .Dispatch<PlayerRespawnAtCheckpointEvent>();
-
-        On<PlayerDiedEvent>()
-            .Do<AbortIfReachedCheckPointIsNotNullCommand>()
-            .Dispatch<PlayerRespawnAtStartEvent>();
-
         On<JumpInputEvent>()
             .Do<AbortIfPlayerSurroundingDirectionIsZeroCommand>()
             .Do<PlayerJumpCommand>()
@@ -67,6 +55,18 @@ public class PlayerContext : Context {
 
         On<PlayerSetMoveDirectionEvent>()
             .Do<PlayerSetMoveDirectionCommand>();
+
+        On<PlayerDiedEvent>()
+            //.Do<StartScreenShakeCommand>()
+            .Do<InstantiatePrefabOnPlayerPositionCommand>("Effects/DieEffect");
+
+        On<PlayerDiedEvent>()
+            .Do<AbortIfReachedCheckPointIsNullCommand>()
+            .Dispatch<PlayerRespawnAtCheckpointEvent>();
+
+        On<PlayerDiedEvent>()
+            .Do<AbortIfReachedCheckPointIsNotNullCommand>()
+            .Dispatch<PlayerRespawnAtStartEvent>();
 
         On<PlayerCollisionEnter2DEvent>()
             .Do<PlayerUpdateCollisionDirectionCommand>();
