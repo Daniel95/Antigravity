@@ -38,14 +38,14 @@ public class PlayerContext : Context {
             .Dispatch<PlayerRespawnAtStartEvent>();
 
         On<JumpInputEvent>()
-            .Do<AbortIfPlayerCollisionDirectionIsZeroCommand>()
+            .Do<AbortIfPlayerSurroundingDirectionIsZeroCommand>()
             .Do<PlayerJumpCommand>()
             .Do<PlayerPointToVelocityDirectionCommand>();
 
         On<JumpInputEvent>()
-            .Do<AbortIfPlayerCollisionDirectionIsNotZeroCommand>()
+            .Do<AbortIfPlayerSurroundingDirectionIsZeroCommand>()
             .Do<WaitForPlayerRetryJumpTimeCommand>()
-            .Do<AbortIfPlayerCollisionDirectionIsZeroCommand>()
+            .Do<AbortIfPlayerSurroundingDirectionIsZeroCommand>()
             .Do<PlayerJumpCommand>()
             .Do<PlayerPointToVelocityDirectionCommand>();
 
