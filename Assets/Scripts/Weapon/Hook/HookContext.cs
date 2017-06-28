@@ -13,7 +13,7 @@ public class HookContext : Context {
             .Do<DeactivateHookCommand>()
             .Do<DestroyHookAnchorsCommand>()
             .Do<DeactivateHookProjectileCommand>()
-            .Do<StopUpdateGrapplingStateCommand>()
+            .Do<StopUpdatePlayerGrapplingCommand>()
             .Do<HookProjectileDestroyCommand>();
 
         On<CancelHookEvent>()

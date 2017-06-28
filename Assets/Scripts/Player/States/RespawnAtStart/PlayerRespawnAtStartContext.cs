@@ -1,6 +1,6 @@
 ﻿using IoCPlus;
 
-public class RespawnAtStartContext : Context {
+public class PlayerRespawnAtStartContext : Context {
 
     protected override void SetBindings() {
         base.SetBindings();

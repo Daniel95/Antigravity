@@ -1,4 +1,4 @@
-﻿interface IGrapplingState {
+﻿interface IPlayerGrappling {
 
     void StartUpdateGrapplingState();
     void StopUpdateGrapplingState();

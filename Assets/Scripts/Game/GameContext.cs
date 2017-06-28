@@ -31,7 +31,7 @@ public class GameContext : Context {
         Bind<PlayerTriggerEnter2DEvent>();
         Bind<PlayerTriggerStay2DEvent>();
         Bind<PlayerTriggerExit2DEvent>();
-        Bind<UpdateGrapplingStateEvent>();
+        Bind<UpdatePlayerGrapplingEvent>();
         Bind<RawCancelDragInputEvent>();
         Bind<RawDraggingInputEvent>();
         Bind<RawHoldingInputEvent>();
@@ -76,7 +76,7 @@ public class GameContext : Context {
         Bind<Ref<IMobileInput>>();
         Bind<Ref<IGrapplingHook>>();
         Bind<Ref<ISlowTime>>();
-        Bind<Ref<IGrapplingState>>();
+        Bind<Ref<IPlayerGrappling>>();
 
         BindLabeled<Ref<ICharacterDirectionPointer>>(Label.Player);
         BindLabeled<Ref<ICharacterCollisionDirection>>(Label.Player);

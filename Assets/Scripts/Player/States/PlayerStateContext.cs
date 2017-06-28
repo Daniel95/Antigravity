@@ -8,7 +8,7 @@ public class PlayerStateContext : Context {
         Bind<PlayerStateStatus>();
 
         On<EnterContextSignal>()
-            .GotoState<FloatingStateContext>();
+            .GotoState<PlayerFloatingContext>();
 
         On<PlayerCollisionEnter2DEvent>()
             .Do<AbortIfPlayerCollidingOrInTriggerWithTagCommand>(Tags.Bouncy)
@@ -18,57 +18,57 @@ public class PlayerStateContext : Context {
             .Do<AbortIfPlayerStateStatusStateIsStateCommand>(PlayerStateStatus.PlayerState.Sliding)
             .Do<AbortIfPlayerStateStatusStateIsStateCommand>(PlayerStateStatus.PlayerState.RespawnAtStart)
             .Do<AbortIfPlayerStateStatusStateIsStateCommand>(PlayerStateStatus.PlayerState.RespawnAtCheckpoint)
-            .GotoState<SlidingStateContext>();
+            .GotoState<PlayerSlidingContext>();
 
         On<PlayerCollisionExit2DEvent>()
             .Do<AbortIfPlayerCollisionDirectionIsNotZeroCommand>()
             .Do<AbortIfPlayerStateStatusStateIsStateCommand>(PlayerStateStatus.PlayerState.Floating)
             .Do<AbortIfPlayerStateStatusStateIsStateCommand>(PlayerStateStatus.PlayerState.RespawnAtStart)
             .Do<AbortIfPlayerStateStatusStateIsStateCommand>(PlayerStateStatus.PlayerState.RespawnAtCheckpoint)
-            .GotoState<FloatingStateContext>();
+            .GotoState<PlayerFloatingContext>();
 
         On<PlayerTriggerEnter2DEvent>()
             .Do<AbortIfPlayerStateStatusStateIsStateCommand>(PlayerStateStatus.PlayerState.RespawnAtCheckpoint)
             .Do<AbortIfTriggerTagIsNotTheSameCommand>(Tags.CheckPoint)
             .Do<UpdateCheckpointStatusCommand>()
-            .GotoState<RespawnAtCheckpointContext>();
+            .GotoState<PlayerRespawnAtCheckpointContext>();
 
         On<EnterGrapplingHookContextEvent>()
             .Do<AbortIfPlayerStateStatusStateIsStateCommand>(PlayerStateStatus.PlayerState.Grappling)
-            .GotoState<GrapplingStateContext>();
+            .GotoState<PlayerGrapplingContext>();
 
         On<EnterPullingHookContextSignal>()
             .Do<AbortIfPlayerStateStatusStateIsStateCommand>(PlayerStateStatus.PlayerState.Floating)
-            .GotoState<FloatingStateContext>();
+            .GotoState<PlayerFloatingContext>();
 
         On<HoldShotEvent>()
             .Do<AbortIfPlayerStateStatusStateIsStateCommand>(PlayerStateStatus.PlayerState.Floating)
             .Do<PlayerSetMoveDirectionToVelocityDirectionCommand>()
-            .GotoState<FloatingStateContext>();
+            .GotoState<PlayerFloatingContext>();
 
         On<PlayerRespawnAtCheckpointEvent>()
             .Do<AbortIfPlayerStateStatusStateIsStateCommand>(PlayerStateStatus.PlayerState.RespawnAtCheckpoint)
             .Do<SetPlayerPositionToCheckpointPositionCommand>()
-            .GotoState<RespawnAtCheckpointContext>();
+            .GotoState<PlayerRespawnAtCheckpointContext>();
 
         On<PlayerRespawnAtStartEvent>()
             .Do<AbortIfPlayerStateStatusStateIsStateCommand>(PlayerStateStatus.PlayerState.RespawnAtStart)
-            .GotoState<RespawnAtStartContext>();
+            .GotoState<PlayerRespawnAtStartContext>();
 
-        OnChild<RespawnAtStartContext, PlayerRespawnAtStartCompletedEvent>()
+        OnChild<PlayerRespawnAtStartContext, PlayerRespawnAtStartCompletedEvent>()
             .Do<AbortIfPlayerStateStatusStateIsStateCommand>(PlayerStateStatus.PlayerState.Floating)
-            .GotoState<FloatingStateContext>();
+            .GotoState<PlayerFloatingContext>();
 
-        OnChild<RespawnAtCheckpointContext, ReleaseInDirectionInputEvent>()
+        OnChild<PlayerRespawnAtCheckpointContext, ReleaseInDirectionInputEvent>()
             .Do<AbortIfPlayerStateStatusStateIsStateCommand>(PlayerStateStatus.PlayerState.Floating)
-            .GotoState<FloatingStateContext>();
+            .GotoState<PlayerFloatingContext>();
 
-        OnChild<GrapplingStateContext, JumpInputEvent>()
+        OnChild<PlayerGrapplingContext, JumpInputEvent>()
             .Do<AbortIfPlayerStateStatusStateIsStateCommand>(PlayerStateStatus.PlayerState.Floating)
-            .GotoState<FloatingStateContext>();
+            .GotoState<PlayerFloatingContext>();
 
-        OnChild<GrapplingStateContext, PlayerIsStuckEvent>()
+        OnChild<PlayerGrapplingContext, PlayerIsStuckEvent>()
             .Do<AbortIfPlayerStateStatusStateIsStateCommand>(PlayerStateStatus.PlayerState.Sliding)
-            .GotoState<SlidingStateContext>();
+            .GotoState<PlayerSlidingContext>();
     }
 }

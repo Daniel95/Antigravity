@@ -3,14 +3,14 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class GrapplingStateView : View, IGrapplingState, ITriggerer {
+public class PlayerGrapplingView : View, IPlayerGrappling, ITriggerer {
 
     public Action ActivateTrigger { get; set; }
     public Action StopTrigger { get; set; }
 
-    [Inject] private Ref<IGrapplingState> grapplingStateRef;
+    [Inject] private Ref<IPlayerGrappling> grapplingStateRef;
 
-    [Inject] private UpdateGrapplingStateEvent updateGrapplingStateEvent;
+    [Inject] private UpdatePlayerGrapplingEvent updateGrapplingStateEvent;
 
     private Coroutine updateGrapplingStateCoroutine;
     private Vector2 lastVelocity;

@@ -1,18 +1,18 @@
 ﻿using IoCPlus;
 
-public class FloatingStateContext : Context {
+public class PlayerSlidingContext : Context {
 
     protected override void SetBindings() {
         base.SetBindings();
 
         On<EnterContextSignal>()
-            .Do<SetPlayerStateStatusCommand>(PlayerStateStatus.PlayerState.Floating)
+            .Do<SetPlayerStateStatusCommand>(PlayerStateStatus.PlayerState.Sliding)
             .Do<PlayerEnableDirectionalMovementCommand>(true);
 
         On<HookProjectileMoveTowardsOwnerCompletedEvent>()
-            .Do<PlayerPointToVelocityDirectionCommand>();
+            .Do<PlayerPointToSavedDirectionCommand>();
 
         On<CancelDragInputEvent>()
-            .Do<PlayerPointToVelocityDirectionCommand>();
+            .Do<PlayerPointToSavedDirectionCommand>();
     }
 }

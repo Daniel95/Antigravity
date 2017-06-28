@@ -1,8 +1,8 @@
 ﻿using IoCPlus;
 
-public class StartUpdateGrapplingStateCommand : Command {
+public class StartUpdatePlayerGrapplingCommand : Command {
 
-    [Inject] private Ref<IGrapplingState> grapplingState;
+    [Inject] private Ref<IPlayerGrappling> grapplingState;
 
     protected override void Execute() {
         grapplingState.Get().StartUpdateGrapplingState();

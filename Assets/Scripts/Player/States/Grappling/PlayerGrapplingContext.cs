@@ -1,6 +1,6 @@
 ﻿using IoCPlus;
 
-public class GrapplingStateContext : Context {
+public class PlayerGrapplingContext : Context {
 
     protected override void SetBindings() {
         base.SetBindings();
@@ -8,20 +8,20 @@ public class GrapplingStateContext : Context {
         On<EnterContextSignal>()
             .Do<SetPlayerStateStatusCommand>(PlayerStateStatus.PlayerState.Grappling)
             .Do<PlayerEnableDirectionalMovementCommand>(false)
-            .Do<StartUpdateGrapplingStateCommand>();
+            .Do<StartUpdatePlayerGrapplingCommand>();
 
         On<LeaveContextSignal>()
-            .Do<StopUpdateGrapplingStateCommand>()
+            .Do<StopUpdatePlayerGrapplingCommand>()
             .Dispatch<CancelHookEvent>();
 
         On<JumpInputEvent>()
             .Do<PlayerSetMoveDirectionToVelocityDirectionCommand>()
             .Do<PlayerTemporarySpeedIncreaseCommand>();
 
-        On<UpdateGrapplingStateEvent>()
+        On<UpdatePlayerGrapplingEvent>()
             .Do<PlayerSetVelocityToVelocityDirectionSpeedCommand>();
 
-        On<UpdateGrapplingStateEvent>()
+        On<UpdatePlayerGrapplingEvent>()
             .Do<AbortIfPlayerIsNotStuckCommand>()
             .Do<DispatchPlayerTurnToNextDirectionEventCommand>()
             .Dispatch<PlayerIsStuckEvent>();
