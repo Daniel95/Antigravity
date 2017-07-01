@@ -8,6 +8,7 @@ public class DebugInputView : View {
     [Inject] private SceneStatus sceneStatus;
 
     [Inject] private GoToCurrentSceneEvent goToCurrentSceneEvent;
+    [Inject] private GoToSceneEvent goToSceneEvent;
 
     float distanceDown = 0f;
     float distanceToOpen = -100f;
@@ -24,6 +25,10 @@ public class DebugInputView : View {
         } else {
             distanceDown = 0f;
         }
+    }
+
+    public void GoToScene(Scenes scene) {
+        goToSceneEvent.Dispatch(scene);
     }
 
     public void CompleteAllLevels() {
