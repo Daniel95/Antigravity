@@ -1,43 +1,35 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class ScreenShake : MonoBehaviour {
 
-    [Serializable]
-    public struct ShakeData {
-        public float duration;
-        public float randomDurationOffset;
-        public float targetStrength;
-        public float randomTargetStrengthOffset;
-    }
-
-    [SerializeField] private ShakeData shakeInData;
-    [SerializeField] private ShakeData shakeOutData;
+    [SerializeField] private List<ShakeNode> shakeNodes;
 
     private Coroutine moveShakeStrengthCoroutine;
     private Coroutine shakeCoroutine;
 
     private float shakeStrength;
 
-    public void ShakeInOut() {
-        ShakeIn(ShakeOut);
+    public void ShakeInOut(ShakeType shakeType) {
+        ShakeNode shakeNode = GetShakeNode(shakeType);
+
+        ShakeIn(shakeNode.ShakeInData, () => ShakeOut(shakeNode.ShakeOutData));
     }
 
-    public void ShakeInOut(ShakeData inData, ShakeData outData) {
-        ShakeIn(inData, () => ShakeOut(outData));
-    }
-
-    public void ShakeIn() {
+    public void ShakeIn(ShakeType shakeType, Action onShakeInCompleted = null) {
         StopShake();
 
-        moveShakeStrengthCoroutine = StartCoroutine(MoveShakeStrength(shakeInData));
+        ShakeNode shakeNode = GetShakeNode(shakeType);
+
+        moveShakeStrengthCoroutine = StartCoroutine(MoveShakeStrength(shakeNode.ShakeInData, onShakeInCompleted));
         if (shakeCoroutine == null) {
             shakeCoroutine = StartCoroutine(Shake());
         }
     }
 
-    public void ShakeIn(Action onShakeInCompleted) {
+    public void ShakeIn(ShakeData shakeInData, Action onShakeInCompleted = null) {
         StopShake();
 
         moveShakeStrengthCoroutine = StartCoroutine(MoveShakeStrength(shakeInData, onShakeInCompleted));
@@ -46,25 +38,19 @@ public class ScreenShake : MonoBehaviour {
         }
     }
 
-    public void ShakeIn(ShakeData data, Action onShakeInCompleted = null) {
+
+    public void ShakeOut(ShakeType shakeType, Action onShakeOutCompleted = null) {
         StopShake();
 
-        moveShakeStrengthCoroutine = StartCoroutine(MoveShakeStrength(data, onShakeInCompleted));
+        ShakeNode shakeNode = GetShakeNode(shakeType);
+
+        moveShakeStrengthCoroutine = StartCoroutine(MoveShakeStrength(shakeNode.ShakeOutData, onShakeOutCompleted));
         if (shakeCoroutine == null) {
             shakeCoroutine = StartCoroutine(Shake());
         }
     }
 
-    public void ShakeOut() {
-        StopShake();
-
-        moveShakeStrengthCoroutine = StartCoroutine(MoveShakeStrength(shakeOutData));
-        if (shakeCoroutine == null) {
-            shakeCoroutine = StartCoroutine(Shake());
-        }
-    }
-
-    public void ShakeOut(Action onShakeOutCompleted = null) {
+    public void ShakeOut(ShakeData shakeOutData, Action onShakeOutCompleted = null) {
         StopShake();
 
         moveShakeStrengthCoroutine = StartCoroutine(MoveShakeStrength(shakeOutData, onShakeOutCompleted));
@@ -73,28 +59,16 @@ public class ScreenShake : MonoBehaviour {
         }
     }
 
-    public void ShakeOut(ShakeData data, Action onShakeOutCompleted = null) {
-        StopShake();
-
-        moveShakeStrengthCoroutine = StartCoroutine(MoveShakeStrength(data, onShakeOutCompleted));
-        if (shakeCoroutine == null) {
-            shakeCoroutine = StartCoroutine(Shake());
-        }
-    }
-
     private IEnumerator Shake() {
-        yield return new WaitForEndOfFrame();
-        while (shakeStrength > 0) {
-            Vector3 randomOffset = Vector3.zero;
-            randomOffset.x = UnityEngine.Random.Range(-shakeStrength, shakeStrength);
-            randomOffset.y = UnityEngine.Random.Range(-shakeStrength, shakeStrength);
-            randomOffset.z = UnityEngine.Random.Range(-shakeStrength, shakeStrength);
+        Vector2 startPosition = transform.position;
 
-            transform.localPosition = new Vector3(randomOffset.x, randomOffset.y, randomOffset.z);
+        while (shakeStrength > 0) {
+            Vector2 randomizedOffset = MathHelper.GetRandomizedVector2(-shakeStrength, shakeStrength);
+            transform.position = startPosition + randomizedOffset;
             yield return new WaitForEndOfFrame();
         }
 
-        transform.localPosition = Vector3.zero;
+        transform.position = startPosition;
 
         shakeCoroutine = null;
     }
@@ -112,7 +86,11 @@ public class ScreenShake : MonoBehaviour {
         while (time < duration) {
             float absoluteValue = time / duration;
             float easedAbsoluteValue = EasingHelper.EaseInSine(absoluteValue);
-            shakeStrength = startStrength + (targetStrength - startStrength) * easedAbsoluteValue;
+
+            float strengthProgess = targetStrength - startStrength;
+            float easedStrengthProgess = strengthProgess * easedAbsoluteValue;
+
+            shakeStrength = startStrength + easedStrengthProgess;
 
             time += Time.deltaTime;
             yield return new WaitForEndOfFrame();
@@ -131,4 +109,9 @@ public class ScreenShake : MonoBehaviour {
             moveShakeStrengthCoroutine = null;
         }
     }
+
+    private ShakeNode GetShakeNode(ShakeType shakeType) {
+        return shakeNodes.Find(x => x.ShakeType == shakeType);
+    }
+
 }

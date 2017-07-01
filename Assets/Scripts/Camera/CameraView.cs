@@ -1,6 +1,7 @@
 ﻿using IoCPlus;
 using UnityEngine;
 
+[RequireComponent(typeof(Camera))]
 public class CameraView : View, ICamera {
 
     public Vector2 Position { get { return transform.position; } set { transform.position = value; } }

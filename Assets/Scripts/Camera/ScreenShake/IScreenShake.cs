@@ -1,4 +1,4 @@
 ﻿public interface IScreenShake {
 
-    void StartScreenShake();
+    void ShakeInOut(ShakeType shakeType);
 }

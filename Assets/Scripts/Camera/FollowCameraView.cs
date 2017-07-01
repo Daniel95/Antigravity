@@ -2,7 +2,6 @@
 using System.Collections;
 using UnityEngine;
 
-[RequireComponent(typeof(Camera))]
 public class FollowCameraView : View, IFollowCamera {
 
     [SerializeField] private float smoothness = 0.375f;

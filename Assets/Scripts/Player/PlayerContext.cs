@@ -56,7 +56,7 @@ public class PlayerContext : Context {
             .Do<PlayerSetMoveDirectionCommand>();
 
         On<PlayerDiedEvent>()
-            //.Do<StartScreenShakeCommand>()
+            .Do<ShakeInOutCommand>(ShakeType.PlayerDied)
             .Do<InstantiatePrefabOnPlayerPositionCommand>("Effects/DieEffect");
 
         On<PlayerDiedEvent>()
