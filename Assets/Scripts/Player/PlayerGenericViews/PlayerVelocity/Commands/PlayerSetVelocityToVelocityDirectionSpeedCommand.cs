@@ -8,6 +8,6 @@ public class PlayerSetVelocityToVelocityDirectionSpeedCommand : Command {
 
     protected override void Execute() {
         Vector2 velocityDirectionSpeed = playerVelocityRef.Get().GetVelocityDirection() * playerVelocityRef.Get().CurrentSpeed;
-        playerVelocityRef.Get().Velocity = velocityDirectionSpeed;
+        playerVelocityRef.Get().SetVelocity(velocityDirectionSpeed);
     }
 }

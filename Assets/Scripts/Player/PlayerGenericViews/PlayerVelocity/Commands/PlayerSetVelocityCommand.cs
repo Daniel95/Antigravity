@@ -8,6 +8,6 @@ public class PlayerSetVelocityCommand : Command {
     [InjectParameter] private Vector2 velocity;
 
     protected override void Execute() {
-        playerVelocityRef.Get().Velocity = velocity;
+        playerVelocityRef.Get().SetVelocity(velocity);
     }
 }

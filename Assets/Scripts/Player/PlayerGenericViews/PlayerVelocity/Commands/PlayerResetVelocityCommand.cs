@@ -6,6 +6,6 @@ public class PlayerResetVelocityCommand : Command {
     [Inject(Label.Player)] private Ref<ICharacterVelocity> playerVelocityRef;
 
     protected override void Execute() {
-        playerVelocityRef.Get().Velocity = Vector2.zero;
+        playerVelocityRef.Get().SetVelocity(Vector2.zero);
     }
 }

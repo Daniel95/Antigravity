@@ -5,7 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class CharacterVelocityView : View, ICharacterVelocity {
 
-    public Vector2 Velocity { get { return rigidbodyComponent.velocity; } set { rigidbodyComponent.velocity = value; } }
+    public Vector2 Velocity { get { return rigidbodyComponent.velocity; } }
     public Vector2 PreviousVelocity { get { return previousVelocity; } }
     public Vector2 MoveDirection { get { return moveDirection; } }
     public Vector2 StartDirection { get { return startDirection; } }
@@ -35,15 +35,23 @@ public class CharacterVelocityView : View, ICharacterVelocity {
     public void SetMoveDirection(Vector2 moveDirection) {
         this.moveDirection = moveDirection;
         if (updateDirectionalMovementCoroutine != null) {
+            previousVelocity = rigidbodyComponent.velocity;
             rigidbodyComponent.velocity = this.moveDirection * currentSpeed;
         }
     }
 
     public void AddVelocity(Vector2 velocity) {
+        previousVelocity = rigidbodyComponent.velocity;
         rigidbodyComponent.velocity += velocity;
     }
 
+    public void SetVelocity(Vector2 velocity) {
+        previousVelocity = rigidbodyComponent.velocity;
+        rigidbodyComponent.velocity = velocity;
+    }
+
     public void SwitchVelocity() {
+        previousVelocity = rigidbodyComponent.velocity;
         rigidbodyComponent.velocity *= -1;
     }
 
@@ -99,8 +107,8 @@ public class CharacterVelocityView : View, ICharacterVelocity {
 
     private IEnumerator UpdateDirectionalMovement() {
         while (true) {
-            rigidbodyComponent.velocity = moveDirection * currentSpeed;
             previousVelocity = rigidbodyComponent.velocity;
+            rigidbodyComponent.velocity = moveDirection * currentSpeed;
             yield return new WaitForFixedUpdate();
         }
     }

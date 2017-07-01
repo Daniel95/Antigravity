@@ -2,7 +2,7 @@
 
 public interface ICharacterVelocity {
 
-    Vector2 Velocity { get; set; }
+    Vector2 Velocity { get; }
     Vector2 PreviousVelocity { get; }
     Vector2 MoveDirection { get; }
     Vector2 StartDirection { get; }
@@ -20,6 +20,7 @@ public interface ICharacterVelocity {
     void StartReturnSpeedToOriginal(float returnSpeed);
     void SetMoveDirection(Vector2 moveDirection);
     void AddVelocity(Vector2 velocity);
+    void SetVelocity(Vector2 velocity);
     void SetSpeed(float newSpeed);
     void SwitchVelocity();
     void SwitchMoveDirection();

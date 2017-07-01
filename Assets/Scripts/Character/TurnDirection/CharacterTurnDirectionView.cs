@@ -29,22 +29,6 @@ public class CharacterTurnDirectionView : View, ICharacterTurnDirection {
         }
     }
 
-    void Start() {
-        if (savedDirection.x == 0) {
-            savedDirection.x = 1;
-        }
-        if (savedDirection.y == 0) {
-            savedDirection.y = 1;
-        }
-
-        //wait one frame so all scripts are loaded, then send out a delegate with the direction, used by FutureDirectionIndicator
-        GetComponent<Frames>().ExecuteAfterDelay(1, () => {
-            if (FinishedDirectionLogic != null) {
-                FinishedDirectionLogic(savedDirection);
-            }
-        });
-    }
-
     /// <summary>
     /// the logic we use to control the players direction using collision directions and raycasts collisions, after we have collision with another object
     /// </summary>
@@ -103,4 +87,21 @@ public class CharacterTurnDirectionView : View, ICharacterTurnDirection {
 
         return newDirection;
     }
+
+    private void Awake() {
+        if (savedDirection.x == 0) {
+            savedDirection.x = 1;
+        }
+        if (savedDirection.y == 0) {
+            savedDirection.y = 1;
+        }
+
+        //wait one frame so all scripts are loaded, then send out a delegate with the direction, used by FutureDirectionIndicator
+        GetComponent<Frames>().ExecuteAfterDelay(1, () => {
+            if (FinishedDirectionLogic != null) {
+                FinishedDirectionLogic(savedDirection);
+            }
+        });
+    }
+
 }
