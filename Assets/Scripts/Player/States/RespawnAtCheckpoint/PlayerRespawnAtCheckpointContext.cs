@@ -24,6 +24,7 @@ public class PlayerRespawnAtCheckpointContext : Context {
             .Do<PlayerPointToDirectionCommand>();
 
         On<ReleaseInDirectionInputEvent>()
+            .Do<PlayerPointToDirectionCommand>()
             .Do<EnableWeaponCommand>(true)
             .Do<EnablePlayerJumpCommand>(true)
             .Do<PlayerStopAimLineCommand>()
