@@ -6,6 +6,8 @@ public class CharacterAimLineView : View, ICharacterAimLine {
 
     public bool AimLineActive { get { return aimLineIsActive; } }
 
+    private const string AIM_LINE_PREFAB_PATH = "Characters/Components/AimLine";
+
     [SerializeField] private GameObject aimLinePrefab;
 
     private LineRenderer lineRenderer;
@@ -39,8 +41,7 @@ public class CharacterAimLineView : View, ICharacterAimLine {
     }
 
     IEnumerator UpdateLineRendererPositions() {
-        while (true)
-        {
+        while (true) {
             lineRenderer.SetPosition(0, transform.position);
             lineRenderer.SetPosition(1, lineDestination);
             yield return null;
@@ -48,7 +49,8 @@ public class CharacterAimLineView : View, ICharacterAimLine {
     }
 
     private void Awake() {
-        lineRenderer = Instantiate(aimLinePrefab, transform).GetComponent<LineRenderer>();
+        GameObject lineRendererGameObject = Resources.Load<GameObject>(AIM_LINE_PREFAB_PATH);
+        lineRenderer = Instantiate(lineRendererGameObject, transform).GetComponent<LineRenderer>();
         lineRenderer.enabled = false;
     }
 }
