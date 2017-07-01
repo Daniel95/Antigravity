@@ -13,6 +13,14 @@ public partial class SROptions {
 
     DebugInputView debugInputView;
 
+    [Category("Go To Scene :")]
+    public void TestLevel() {
+        if (HasDebugView) {
+            debugInputView.GoToScene(Scenes.TestLvl);
+            SRDebug.Instance.HideDebugPanel();
+        }
+    }
+
     [Category("Unlock :")]
     public void CompleteAllLevels() {
         if (HasDebugView) {
