@@ -111,6 +111,10 @@ public class ScreenShake : MonoBehaviour {
     }
 
     private ShakeNode GetShakeNode(ShakeType shakeType) {
+        ShakeNode shakeNode = shakeNodes.Find(x => x.ShakeType == shakeType);
+        if(shakeNode == null) {
+            Debug.Log("No shake node exists with ShakeType " + shakeType.ToString() + " exists.");
+        }
         return shakeNodes.Find(x => x.ShakeType == shakeType);
     }
 
