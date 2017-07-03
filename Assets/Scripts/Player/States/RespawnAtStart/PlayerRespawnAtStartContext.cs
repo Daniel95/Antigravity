@@ -9,7 +9,7 @@ public class PlayerRespawnAtStartContext : Context {
             .Do<SetPlayerStateStatusCommand>(PlayerStateStatus.PlayerState.RespawnAtStart)
             .Do<PlayerEnableTrailCommand>(false)
             .Do<PlayerSetPositionToStartPositionCommand>()
-            .Do<PlayerEnableDirectionalMovementCommand>(false)
+            .Do<PlayerSetDirectionalMovementCommand>(false)
             .Do<PlayerResetVelocityCommand>()
             .Do<WaitFramesCommand>(1)
             .Do<PlayerSetPositionToStartPositionCommand>()
@@ -20,7 +20,7 @@ public class PlayerRespawnAtStartContext : Context {
             .Do<PlayerSetMoveDirectionToStartDirectionCommand>()
             .Do<PlayerPointToMoveDirectionCommand>()
             .Do<WaitForSecondsCommand>(1f)
-            .Do<PlayerEnableDirectionalMovementCommand>(true)
+            .Do<PlayerSetDirectionalMovementCommand>(true)
             .Dispatch<PlayerRespawnAtStartCompletedEvent>();
 
     }

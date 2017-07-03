@@ -16,7 +16,7 @@ public class PlayerContext : Context {
             .Do<EnablePlayerJumpCommand>(true)
             .Do<PlayerSetSavedDirectionToStartDirectionCommand>()
             .Do<PlayerSetMoveDirectionToStartDirectionCommand>()
-            .Do<PlayerEnableDirectionalMovementCommand>(true);
+            .Do<PlayerSetDirectionalMovementCommand>(true);
 
         On<PlayerTriggerEnter2DEvent>()
             .Do<AbortIfTriggerTagIsNotTheSameCommand>(Tags.Finish)

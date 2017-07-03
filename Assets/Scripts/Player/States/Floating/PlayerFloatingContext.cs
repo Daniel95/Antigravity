@@ -7,7 +7,7 @@ public class PlayerFloatingContext : Context {
 
         On<EnterContextSignal>()
             .Do<SetPlayerStateStatusCommand>(PlayerStateStatus.PlayerState.Floating)
-            .Do<PlayerEnableDirectionalMovementCommand>(true);
+            .Do<PlayerSetDirectionalMovementCommand>(true);
 
         On<HookProjectileMoveTowardsOwnerCompletedEvent>()
             .Do<PlayerPointToVelocityDirectionCommand>();

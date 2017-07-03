@@ -7,7 +7,7 @@ public class PlayerGrapplingContext : Context {
 
         On<EnterContextSignal>()
             .Do<SetPlayerStateStatusCommand>(PlayerStateStatus.PlayerState.Grappling)
-            .Do<PlayerEnableDirectionalMovementCommand>(false)
+            .Do<PlayerSetDirectionalMovementCommand>(false)
             .Do<StartUpdatePlayerGrapplingCommand>();
 
         On<LeaveContextSignal>()

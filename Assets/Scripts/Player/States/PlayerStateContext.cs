@@ -49,6 +49,8 @@ public class PlayerStateContext : Context {
         On<PlayerRespawnAtCheckpointEvent>()
             .Do<AbortIfPlayerStateStatusStateIsStateCommand>(PlayerStateStatus.PlayerState.RespawnAtCheckpoint)
             .Do<SetPlayerPositionToCheckpointPositionCommand>()
+            .Do<PlayerSetSavedDirectionToStartDirectionCommand>()
+            .Do<PlayerPointToSavedDirectionCommand>()
             .GotoState<PlayerRespawnAtCheckpointContext>();
 
         On<PlayerRespawnAtStartEvent>()
