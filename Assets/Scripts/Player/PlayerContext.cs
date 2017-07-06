@@ -18,6 +18,14 @@ public class PlayerContext : Context {
             .Do<PlayerSetMoveDirectionToStartDirectionCommand>()
             .Do<PlayerSetDirectionalMovementCommand>(true);
 
+        On<EnterContextSignal>()
+            .Do<AbortIfReachedCheckPointIsNullCommand>()
+            .Dispatch<PlayerRespawnAtCheckpointEvent>();
+
+        On<EnterContextSignal>()
+            .Do<AbortIfReachedCheckPointIsNotNullCommand>()
+            .Dispatch<PlayerRespawnAtStartEvent>();
+
         On<PlayerTriggerEnter2DEvent>()
             .Do<AbortIfTriggerTagIsNotTheSameCommand>(Tags.Finish)
             .Do<AddCurrentSceneToCompletedLevelsCommand>()
@@ -56,16 +64,14 @@ public class PlayerContext : Context {
             .Do<PlayerSetMoveDirectionCommand>();
 
         On<PlayerDiedEvent>()
+            .Dispatch<CancelDragInputEvent>()
             .Do<ShakeInOutCommand>(ShakeType.PlayerDied)
             .Do<InstantiatePrefabOnPlayerPositionCommand>("Effects/DieEffect");
 
         On<PlayerDiedEvent>()
-            .Do<AbortIfReachedCheckPointIsNullCommand>()
-            .Dispatch<PlayerRespawnAtCheckpointEvent>();
-
-        On<PlayerDiedEvent>()
-            .Do<AbortIfReachedCheckPointIsNotNullCommand>()
-            .Dispatch<PlayerRespawnAtStartEvent>();
+            .Do<PlayerResetCollisionDirectionCommand>()
+            .Do<DestroyPlayerCommand>()
+            .Dispatch<PlayerRespawnEvent>();
 
         On<PlayerCollisionEnter2DEvent>()
             .Do<PlayerUpdateCollisionDirectionCommand>();

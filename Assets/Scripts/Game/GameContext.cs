@@ -15,6 +15,7 @@ public class GameContext : Context {
         Bind<PlayerTemporarySpeedChangeEvent>();
         Bind<PlayerRemoveCollisionDirectionEvent>();
         Bind<PlayerBounceEvent>();
+        Bind<PlayerRespawnEvent>();
         Bind<PlayerRespawnAtCheckpointEvent>();
         Bind<PlayerRespawnAtStartEvent>();
         Bind<PlayerRespawnAtStartCompletedEvent>();

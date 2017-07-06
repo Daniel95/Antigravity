@@ -7,7 +7,6 @@ public class PlayerRespawnAtCheckpointContext : Context {
 
         On<EnterContextSignal>()
             .Do<SetPlayerStateStatusCommand>(PlayerStateStatus.PlayerState.RespawnAtCheckpoint)
-            .Dispatch<CancelDragInputEvent>()
             .Do<PlayerResetVelocityCommand>()
             .Do<PlayerSetDirectionalMovementCommand>(false)
             .Do<EnableInputCommand>(false)

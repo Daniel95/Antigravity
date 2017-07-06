@@ -11,12 +11,17 @@ public class LevelContext : Context {
         On<EnterContextSignal>()
             .Do<SetCheckpointToNullCommand>()
             .AddContext<LevelUIContext>()
-            .AddContext<PlayerContext>()
+            .GotoState<PlayerContext>()
             .Do<SetCameraTargetCommand>()
             .Do<SetCameraBoundsCommand>()
             .Do<EnableDragCameraCommand>(false)
             .Do<EnableFollowCameraCommand>(true);
 
+        OnChild<PlayerContext, PlayerRespawnEvent>()
+            .Do<WaitFramesCommand>(1)
+            .GotoState<PlayerContext>()
+            .Do<SetCameraTargetCommand>()
+            .Do<EnableFollowCameraCommand>(true);
     }
 
 }

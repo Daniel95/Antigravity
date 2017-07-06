@@ -77,10 +77,12 @@ public class HookView : View, IHook, ITriggerer {
     public void DeactivateHook() {
         if(hookUpdateCoroutine != null) {
             StopCoroutine(hookUpdateCoroutine);
+            hookUpdateCoroutine = null;
         }
-        hookUpdateCoroutine = null;
-        lineRenderer.positionCount = 0;
-        lineRenderer.enabled = false;
+        if(lineRenderer != null) {
+            lineRenderer.positionCount = 0;
+            lineRenderer.enabled = false;
+        }
     }
 
     private Transform CreateAnchor(Vector2 position, Transform parent) {

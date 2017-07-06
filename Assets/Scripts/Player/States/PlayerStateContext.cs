@@ -31,6 +31,7 @@ public class PlayerStateContext : Context {
             .Do<AbortIfPlayerStateStatusStateIsStateCommand>(PlayerStateStatus.PlayerState.RespawnAtCheckpoint)
             .Do<AbortIfTriggerTagIsNotTheSameCommand>(Tags.CheckPoint)
             .Do<UpdateCheckpointStatusCommand>()
+            .Dispatch<CancelDragInputEvent>()
             .GotoState<PlayerRespawnAtCheckpointContext>();
 
         On<EnterGrapplingHookContextEvent>()
