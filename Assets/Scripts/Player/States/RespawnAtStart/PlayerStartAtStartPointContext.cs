@@ -1,19 +1,19 @@
 ﻿using IoCPlus;
 
-public class PlayerRespawnAtStartContext : Context {
+public class PlayerStartAtStartPointContext : Context {
 
     protected override void SetBindings() {
         base.SetBindings();
 
         On<EnterContextSignal>()
             .Do<SetPlayerStateStatusCommand>(PlayerStateStatus.PlayerState.RespawnAtStart)
-            .Do<PlayerSetPositionToStartPositionCommand>()
+            .Do<PlayerSetPositionToStartPointPositionCommand>()
             .Do<PlayerSetSavedDirectionToStartDirectionCommand>()
             .Do<PlayerSetMoveDirectionToStartDirectionCommand>()
             .Do<PlayerPointToMoveDirectionCommand>()
             .Do<WaitForSecondsCommand>(1f)
             .Do<PlayerSetDirectionalMovementCommand>(true)
-            .Dispatch<PlayerRespawnAtStartCompletedEvent>();
+            .Dispatch<PlayerStartAtStartPointCompletedEvent>();
 
     }
 }

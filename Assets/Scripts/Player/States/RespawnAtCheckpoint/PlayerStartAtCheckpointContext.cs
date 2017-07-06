@@ -1,6 +1,6 @@
 ﻿using IoCPlus;
 
-public class PlayerRespawnAtCheckpointContext : Context {
+public class PlayerStartAtCheckpointContext : Context {
 
     protected override void SetBindings() {
         base.SetBindings();

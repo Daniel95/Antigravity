@@ -32,7 +32,7 @@ public class PlayerStateContext : Context {
             .Do<AbortIfTriggerTagIsNotTheSameCommand>(Tags.CheckPoint)
             .Do<UpdateCheckpointStatusCommand>()
             .Dispatch<CancelDragInputEvent>()
-            .GotoState<PlayerRespawnAtCheckpointContext>();
+            .GotoState<PlayerStartAtCheckpointContext>();
 
         On<EnterGrapplingHookContextEvent>()
             .Do<AbortIfPlayerStateStatusStateIsStateCommand>(PlayerStateStatus.PlayerState.Grappling)
@@ -47,22 +47,22 @@ public class PlayerStateContext : Context {
             .Do<PlayerSetMoveDirectionToVelocityDirectionCommand>()
             .GotoState<PlayerFloatingContext>();
 
-        On<PlayerRespawnAtCheckpointEvent>()
+        On<PlayerStartAtCheckpointEvent>()
             .Do<AbortIfPlayerStateStatusStateIsStateCommand>(PlayerStateStatus.PlayerState.RespawnAtCheckpoint)
             .Do<SetPlayerPositionToCheckpointPositionCommand>()
             .Do<PlayerSetSavedDirectionToStartDirectionCommand>()
             .Do<PlayerPointToSavedDirectionCommand>()
-            .GotoState<PlayerRespawnAtCheckpointContext>();
+            .GotoState<PlayerStartAtCheckpointContext>();
 
-        On<PlayerRespawnAtStartEvent>()
+        On<PlayerStartAtStartPointEvent>()
             .Do<AbortIfPlayerStateStatusStateIsStateCommand>(PlayerStateStatus.PlayerState.RespawnAtStart)
-            .GotoState<PlayerRespawnAtStartContext>();
+            .GotoState<PlayerStartAtStartPointContext>();
 
-        OnChild<PlayerRespawnAtStartContext, PlayerRespawnAtStartCompletedEvent>()
+        OnChild<PlayerStartAtStartPointContext, PlayerStartAtStartPointCompletedEvent>()
             .Do<AbortIfPlayerStateStatusStateIsStateCommand>(PlayerStateStatus.PlayerState.Floating)
             .GotoState<PlayerFloatingContext>();
 
-        OnChild<PlayerRespawnAtCheckpointContext, ReleaseInDirectionInputEvent>()
+        OnChild<PlayerStartAtCheckpointContext, ReleaseInDirectionInputEvent>()
             .Do<AbortIfPlayerStateStatusStateIsStateCommand>(PlayerStateStatus.PlayerState.Floating)
             .GotoState<PlayerFloatingContext>();
 

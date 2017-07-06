@@ -7,7 +7,7 @@ public class PlayerContext : Context {
 
         On<EnterContextSignal>()
             .Do<InstantiatePlayerCommand>()
-            .Do<PlayerSetPositionToStartPositionCommand>()
+            .Do<PlayerSetPositionToStartPointPositionCommand>()
             .AddContext<InputContext>()
             .AddContext<WeaponContext>()
             .AddContext<PlayerStateContext>()
@@ -20,11 +20,11 @@ public class PlayerContext : Context {
 
         On<EnterContextSignal>()
             .Do<AbortIfReachedCheckPointIsNullCommand>()
-            .Dispatch<PlayerRespawnAtCheckpointEvent>();
+            .Dispatch<PlayerStartAtCheckpointEvent>();
 
         On<EnterContextSignal>()
             .Do<AbortIfReachedCheckPointIsNotNullCommand>()
-            .Dispatch<PlayerRespawnAtStartEvent>();
+            .Dispatch<PlayerStartAtStartPointEvent>();
 
         On<PlayerTriggerEnter2DEvent>()
             .Do<AbortIfTriggerTagIsNotTheSameCommand>(Tags.Finish)
