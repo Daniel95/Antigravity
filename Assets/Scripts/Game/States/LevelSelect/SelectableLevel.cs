@@ -29,7 +29,7 @@ public class SelectableLevel : MonoBehaviour, ISelectableLevel {
     }
 
     public void ApplyLevelProgressState() {
-        if (!LevelHelper.CheckLevelNumberExistence(levelNumber)) {
+        if (!LevelHelper.CheckIfLevelExistsWithNumber(levelNumber)) {
             levelProgressState = LevelProgressState.Unset;
         }
 
@@ -42,9 +42,9 @@ public class SelectableLevel : MonoBehaviour, ISelectableLevel {
 
     public void Clicked() {
         if (levelProgressState >= LevelProgressState.Unlocked) {
-            Scenes sceneLevel = LevelHelper.GetLevelScene(levelNumber);
+            Scenes levelScene = LevelHelper.GetSceneOfLevelWithNumber(levelNumber);
             if(OnGoToScene != null) {
-                OnGoToScene(sceneLevel);
+                OnGoToScene(levelScene);
             }
         }
     }

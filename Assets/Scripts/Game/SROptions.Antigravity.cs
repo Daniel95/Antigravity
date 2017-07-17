@@ -11,30 +11,22 @@ using Random = UnityEngine.Random;
 
 public partial class SROptions {
 
-    DebugInputView debugInputView;
-
     [Category("Go To Scene :")]
     public void TestLevel() {
-        if (HasDebugView) {
-            debugInputView.GoToScene(Scenes.TestLvl);
-            SRDebug.Instance.HideDebugPanel();
-        }
+        debugInputView.GoToScene(Scenes.TestLvl);
+        SRDebug.Instance.HideDebugPanel();
     }
 
     [Category("Unlock :")]
     public void CompleteAllLevels() {
-        if (HasDebugView) {
-            debugInputView.CompleteAllLevels();
-            SRDebug.Instance.HideDebugPanel();
-        }
+        debugInputView.CompleteAllLevels();
+        SRDebug.Instance.HideDebugPanel();
     }
 
     [Category("Delete :")]
     public void DeleteCompletedLevelsSave() {
-        if (HasDebugView) {
-            debugInputView.DeleteCompletedLevelsSave();
-            SRDebug.Instance.HideDebugPanel();
-        }
+        debugInputView.DeleteCompletedLevelsSave();
+        SRDebug.Instance.HideDebugPanel();
     }
 
     [Category("Delete on startup :")]
@@ -47,12 +39,13 @@ public partial class SROptions {
         }
     }
 
-    private bool HasDebugView {
+    private DebugInputView debugInputView {
         get {
-            if (debugInputView == null) {
-                debugInputView = GameObject.FindObjectOfType<DebugInputView>();
+            if(DebugInputView.Instance == null) {
+                Debug.Log("DebugInputView does not exist.");
+                return null;
             }
-            return debugInputView != null;
+            return DebugInputView.Instance;
         }
     }
 }
