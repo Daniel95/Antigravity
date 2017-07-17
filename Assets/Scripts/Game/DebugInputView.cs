@@ -32,7 +32,9 @@ public class DebugInputView : View {
     float distanceToOpen = -100f;
 
     public override void Initialize() {
-        StartCoroutine(WaitFrame(GoToStartLevel));
+        if(GoToLevelOnStart) {
+            StartCoroutine(WaitFrame(GoToStartLevel));
+        }
     }
 
     public void GoToScene(Scenes scene) {
