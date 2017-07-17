@@ -88,6 +88,10 @@ public class PlayerContext : Context {
             .Do<AbortIfPlayerHittingTriggerTagsDoesNotContainPlayerKillerTagsCommand>()
             .Dispatch<PlayerDiedEvent>();
 
+        On<PlayerTriggerEnter2DEvent>()
+            .Do<AbortIfTriggerTagIsNotTheSameCommand>(Tags.JumpTrigger)
+            .Do<PlayerJumpCommand>();
+
         On<CollisionEnter2DEvent>()
             .Do<AbortIfGameObjectIsNotPlayerCommand>()
             .Do<DispatchPlayerCollisionEnter2DEvent>();

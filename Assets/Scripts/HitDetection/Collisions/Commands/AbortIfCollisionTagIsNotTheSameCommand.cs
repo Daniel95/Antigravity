@@ -1,7 +1,7 @@
 ﻿using IoCPlus;
 using UnityEngine;
 
-public class AbortIfCollisionTagIsNotTheSame : Command<string> {
+public class AbortIfCollisionTagIsNotTheSameCommand : Command<string> {
 
     [InjectParameter] private Collision2D collision;
 
