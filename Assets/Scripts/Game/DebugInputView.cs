@@ -13,8 +13,14 @@ public class DebugInputView : View {
 
     public static Scenes SceneOfStartLevel {
         get {
+            Scenes startScene;
             string levelName = PlayerPrefs.GetString("AutoOpenScene");
-            Scenes startScene = LevelHelper.GetSceneOfLevelWithName(levelName);
+            string testLevelName = Scenes.TestLvl.ToString();
+            if (levelName == testLevelName) {
+                startScene = Scenes.TestLvl;
+            } else {
+                startScene = LevelHelper.GetSceneOfLevelWithName(levelName);
+            }
             return startScene;
         }
     }
