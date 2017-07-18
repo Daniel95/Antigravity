@@ -10,6 +10,11 @@ public class PlayerFloatingContext : Context {
             .Do<PlayerSetDirectionalMovementCommand>(true);
 
         On<HookProjectileMoveTowardsOwnerCompletedEvent>()
+            .Do<AbortIfLastHookStateIsNotHookState>(HookState.Shooting)
+            .Do<PlayerPointToSavedDirectionCommand>();
+
+        On<HookProjectileMoveTowardsOwnerCompletedEvent>()
+            .Do<AbortIfLastHookStateIsHookState>(HookState.Shooting)
             .Do<PlayerPointToVelocityDirectionCommand>();
 
         On<CancelDragInputEvent>()
