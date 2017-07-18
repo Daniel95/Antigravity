@@ -28,13 +28,7 @@ public class CharacterRaycastDirectionView : View, ICharacterRaycastDirection {
             GetRayCornerBottomRightAxis() +
             GetRayCornerBottomLeftAxis();
 
-        Debug.Log("GetRayCornerTopRightAxis " + GetRayCornerTopRightAxis());
-        Debug.Log("GetRayCornerTopLeftAxis " + GetRayCornerTopLeftAxis());
-        Debug.Log("GetRayCornerBottomRightAxis " + GetRayCornerBottomRightAxis());
-        Debug.Log("GetRayCornerBottomLeftAxis " + GetRayCornerBottomLeftAxis());
-
         Vector2 cornerDirection = new Vector2(Mathf.Clamp(combinedCornerAxises.x, -1, 1), Mathf.Clamp(combinedCornerAxises.y, -1, 1));
-        Debug.Log("cornerDirection " + cornerDirection);
         return cornerDirection;
     }
 
