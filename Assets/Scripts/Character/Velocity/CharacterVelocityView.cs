@@ -1,15 +1,22 @@
 ﻿using IoCPlus;
+using System;
 using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class CharacterVelocityView : View, ICharacterVelocity {
 
-    public Vector2 Velocity { get { return rigidbodyComponent.velocity; } }
+    public Vector2 Velocity {
+        get {
+            float doubleDecimalX = (float)Math.Round(rigidbodyComponent.velocity.x, 2);
+            float doubleDecimalY = (float)Math.Round(rigidbodyComponent.velocity.y, 2);
+            return new Vector2(doubleDecimalX, doubleDecimalY);
+        }
+    }
     public Vector2 PreviousVelocity { get { return previousVelocity; } }
     public Vector2 MoveDirection { get { return moveDirection; } }
     public Vector2 StartDirection { get { return startDirection; } }
-    public float OriginalSpeed { get { return originalSpeed; }  }
+    public float OriginalSpeed { get { return originalSpeed; } }
     public float CurrentSpeed { get { return currentSpeed; } }
 
     [SerializeField] private Vector2 startDirection = new Vector2(1, -1);
@@ -35,23 +42,23 @@ public class CharacterVelocityView : View, ICharacterVelocity {
     public void SetMoveDirection(Vector2 moveDirection) {
         this.moveDirection = moveDirection;
         if (updateDirectionalMovementCoroutine != null) {
-            previousVelocity = rigidbodyComponent.velocity;
+            previousVelocity = Velocity;
             rigidbodyComponent.velocity = this.moveDirection * currentSpeed;
         }
     }
 
     public void AddVelocity(Vector2 velocity) {
-        previousVelocity = rigidbodyComponent.velocity;
+        previousVelocity = velocity;
         rigidbodyComponent.velocity += velocity;
     }
 
     public void SetVelocity(Vector2 velocity) {
-        previousVelocity = rigidbodyComponent.velocity;
+        previousVelocity = velocity;
         rigidbodyComponent.velocity = velocity;
     }
 
     public void SwitchVelocity() {
-        previousVelocity = rigidbodyComponent.velocity;
+        previousVelocity = Velocity;
         rigidbodyComponent.velocity *= -1;
     }
 
@@ -60,11 +67,11 @@ public class CharacterVelocityView : View, ICharacterVelocity {
     }
 
     public Vector2 GetVelocityDirection() {
-        return rigidbodyComponent.velocity.normalized;
+        return Velocity.normalized;
     }
 
     public Vector2 GetCeilVelocityDirection() {
-        return GetCeilDirection(rigidbodyComponent.velocity);
+        return GetCeilDirection(Velocity);
     }
 
     public Vector2 GetCeilPreviousVelocityDirection() {
@@ -90,7 +97,8 @@ public class CharacterVelocityView : View, ICharacterVelocity {
 
     public Vector2 GetCeilDirection(Vector2 velocity) {
         Vector2 velocityNormalized = velocity.normalized;
-        return new Vector2(Rounding.InvertOnNegativeCeil(velocityNormalized.x), Rounding.InvertOnNegativeCeil(velocityNormalized.y));
+        Vector2 ceilDirection = new Vector2(Rounding.InvertOnNegativeCeil(velocityNormalized.x), Rounding.InvertOnNegativeCeil(velocityNormalized.y));
+        return ceilDirection;
     }
 
     public void EnableDirectionalMovement() {
@@ -107,7 +115,7 @@ public class CharacterVelocityView : View, ICharacterVelocity {
 
     private IEnumerator UpdateDirectionalMovement() {
         while (true) {
-            previousVelocity = rigidbodyComponent.velocity;
+            previousVelocity = Velocity;
             rigidbodyComponent.velocity = moveDirection * currentSpeed;
             yield return new WaitForFixedUpdate();
         }

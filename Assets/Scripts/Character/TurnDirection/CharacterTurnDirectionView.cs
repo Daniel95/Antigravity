@@ -31,30 +31,25 @@ public class CharacterTurnDirectionView : View, ICharacterTurnDirection {
         bool isInCorner = DirectionIsNotLinear(surroundingsDirection);
 
         if (!isInCorner) {
-            if (surroundingsDirection.x == 0 || surroundingsDirection.y == 0) {
+            if (moveDirection.x != 0) {
+                savedDirection.x = Rounding.InvertOnNegativeCeil(moveDirection.x);
+            }
+            if (moveDirection.y != 0) {
+                savedDirection.y = Rounding.InvertOnNegativeCeil(moveDirection.y);
+            }
 
-                if (moveDirection.x != 0) {
-                    savedDirection.x = Rounding.InvertOnNegativeCeil(moveDirection.x);
-                }
-                if (moveDirection.y != 0) {
-                    savedDirection.y = Rounding.InvertOnNegativeCeil(moveDirection.y);
-                }
+            float speedChange = Vector2.Angle(moveDirection, surroundingsDirection) / 90;
 
-                float speedChange = Vector2.Angle(moveDirection, surroundingsDirection) / 90;
+            if (speedChange > maxSpeedChange) {
+                speedChange = maxSpeedChange;
+            }
 
-                if (speedChange > maxSpeedChange) {
-                    speedChange = maxSpeedChange;
-                }
+            characterTemporarySpeedChangeEvent.Dispatch(new PlayerTemporarySpeedChangeEvent.Parameter(speedChange, directionSpeedNeutralValue));
 
-                characterTemporarySpeedChangeEvent.Dispatch(new PlayerTemporarySpeedChangeEvent.Parameter(speedChange, directionSpeedNeutralValue));
-
-                if(surroundingsDirection.x != 0) {
-                    newDirection = new Vector2(0, savedDirection.y);
-                } else {
-                    newDirection = new Vector2(savedDirection.x, 0);
-                }
+            if(surroundingsDirection.x != 0) {
+                newDirection = new Vector2(0, savedDirection.y);
             } else {
-                newDirection = savedDirection = moveDirection * -1;
+                newDirection = new Vector2(savedDirection.x, 0);
             }
         } else {
             characterTemporarySpeedDecreaseEvent.Dispatch();
