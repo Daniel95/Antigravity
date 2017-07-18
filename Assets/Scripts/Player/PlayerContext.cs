@@ -90,7 +90,7 @@ public class PlayerContext : Context {
 
         On<PlayerTriggerEnter2DEvent>()
             .Do<AbortIfTriggerTagIsNotTheSameCommand>(Tags.JumpTrigger)
-            .Do<PlayerJumpCommand>();
+            .Dispatch<JumpInputEvent>();
 
         On<CollisionEnter2DEvent>()
             .Do<AbortIfGameObjectIsNotPlayerCommand>()

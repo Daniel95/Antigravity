@@ -13,24 +13,29 @@ public class CharacterRaycastDirectionView : View, ICharacterRaycastDirection {
     [SerializeField] private float cornerRayLength = 0.15f;
     [SerializeField] private float middleRayLength = 0.4f;
 
-    public int GetVerticalCornersDirection() {
-        if (CheckRayCornersUp()) {
-            return 1;
-        } else if (CheckRayCornersDown()) {
-            return -1;
-        } else {
-            return 0;
-        }
+    private Vector2 rightUpDirection = new Vector2(1, 1);
+    private Vector2 leftUpDirection = new Vector2(-1, 1);
+    private Vector2 rightDownDirection = new Vector2(1, -1);
+    private Vector2 leftDownDirection = new Vector2(-1, -1);
+
+    public Vector2 GetCenterDirection() {
+        return new Vector2(GetHorizontalMiddleDirection(), GetVerticalMiddleDirection());
     }
 
-    public int GetHorizontalCornersDirection() {
-        if (CheckRayCornerRight()) {
-            return 1;
-        } else if (CheckRayCornerLeft()) {
-            return -1;
-        } else {
-            return 0;
-        }
+    public Vector2 GetCornersDirection() {
+        Vector2 combinedCornerAxises = GetRayCornerTopRightAxis() +
+            GetRayCornerTopLeftAxis() +
+            GetRayCornerBottomRightAxis() +
+            GetRayCornerBottomLeftAxis();
+
+        Debug.Log("GetRayCornerTopRightAxis " + GetRayCornerTopRightAxis());
+        Debug.Log("GetRayCornerTopLeftAxis " + GetRayCornerTopLeftAxis());
+        Debug.Log("GetRayCornerBottomRightAxis " + GetRayCornerBottomRightAxis());
+        Debug.Log("GetRayCornerBottomLeftAxis " + GetRayCornerBottomLeftAxis());
+
+        Vector2 cornerDirection = new Vector2(Mathf.Clamp(combinedCornerAxises.x, -1, 1), Mathf.Clamp(combinedCornerAxises.y, -1, 1));
+        Debug.Log("cornerDirection " + cornerDirection);
+        return cornerDirection;
     }
 
     public int GetVerticalMiddleDirection() {
@@ -53,42 +58,59 @@ public class CharacterRaycastDirectionView : View, ICharacterRaycastDirection {
         }
     }
 
-    public Vector2 CenterRaycastDirection() {
-        return new Vector2(GetHorizontalMiddleDirection(), GetVerticalMiddleDirection());
+    private Vector2 GetRayCornerTopRightAxis() {
+        Vector2 topRightCornerAxis = GetDominantCornerAxis(topRightCornerPoint.position, rightDownDirection, leftUpDirection, cornerRayLength);
+        return topRightCornerAxis;
     }
 
-    public Vector2 GetCornersDirection() {
-        return new Vector2(GetHorizontalCornersDirection(), GetVerticalCornersDirection());
+    private Vector2 GetRayCornerTopLeftAxis() {
+        Vector2 cornerAxis = GetDominantCornerAxis(topLeftCornerPoint.position, leftDownDirection, rightUpDirection, cornerRayLength);
+        Vector2 topLeftCornerAxis = new Vector2(cornerAxis.x * -1, cornerAxis.y);
+        return topLeftCornerAxis;
     }
 
-    void Start() {
-        if (showDebugRays) {
-            StartCoroutine(DebugRays());
+    private Vector2 GetRayCornerBottomRightAxis() {
+        Vector2 cornerAxis = GetDominantCornerAxis(bottomRightCornerPoint.position, rightUpDirection, leftDownDirection, cornerRayLength);
+        Vector2 bottomRightCornerAxis = new Vector2(cornerAxis.x, cornerAxis.y * -1);
+        return bottomRightCornerAxis;
+    }
+
+    private Vector2 GetRayCornerBottomLeftAxis() {
+        Vector2 cornerAxis = GetDominantCornerAxis(bottomLeftCornerPoint.position, leftUpDirection, rightDownDirection, cornerRayLength);
+        Vector2 bottomLeftCornerAxis = new Vector2(cornerAxis.x * -1, cornerAxis.y * -1);
+        return bottomLeftCornerAxis;
+    }
+
+    private Vector2 GetDominantCornerAxis(Vector2 rayOrigin, Vector2 rayXDirection, Vector2 rayYDirection, float rayLength) {
+        float rayXOverlapFraction = GetRayOverlapFraction(rayOrigin, rayXDirection, rayLength);
+        float rayYOverlapFraction = GetRayOverlapFraction(rayOrigin, rayYDirection, rayLength);
+
+        if(rayXOverlapFraction == 0 && rayYOverlapFraction == 0) {
+            return Vector2.zero;
+        }
+
+        bool rayXIsDominant = rayXOverlapFraction > rayYOverlapFraction;
+
+        if(rayXIsDominant) {
+            return Vector2.right;
+        } else {
+            return Vector2.up;
         }
     }
 
-    private bool CheckRayCornersUp() {
-        return CheckIntersectionRaycast(topLeftCornerPoint.position, Quaternion.Euler(0, 0, -45) * transform.up, topRightCornerPoint.position, Quaternion.Euler(0, 0, 45) * transform.up, cornerRayLength);
-    }
+    private float GetRayOverlapFraction(Vector2 rayOrigin, Vector2 direction, float rayDistance) {
+        RaycastHit2D raycastHit;
 
-    private bool CheckRayCornersDown() {
-        return CheckIntersectionRaycast(bottomLeftCornerPoint.position, Quaternion.Euler(0, 0, 45) * -transform.up, bottomRightCornerPoint.position, Quaternion.Euler(0, 0, -45) * -transform.up, cornerRayLength);
-    }
+        Vector2 inversedRayOrigin = rayOrigin + (direction * rayDistance);
+        bool rayHit = CheckRaycastOther(inversedRayOrigin, -direction, rayDistance, layers, out raycastHit);
+        float inversedRayHitDistance = raycastHit.distance;
 
-    private bool CheckRayCornerLeft() {
-        return CheckIntersectionRaycast(topLeftCornerPoint.position, Quaternion.Euler(0, 0, 45) * -transform.right, bottomLeftCornerPoint.position, Quaternion.Euler(0, 0, -45) * -transform.right, cornerRayLength);
-    }
-
-    private bool CheckRayCornerRight() {
-        return CheckIntersectionRaycast(topRightCornerPoint.position, Quaternion.Euler(0, 0, -45) * transform.right, bottomRightCornerPoint.position, Quaternion.Euler(0, 0, 45) * transform.right, cornerRayLength);
-    }
-
-    private bool CheckDoubleRaycast(Vector2 rayOrigin1, Vector2 rayOrigin2, Vector2 direction, float rayLength) {
-        return CheckRaycastOther(rayOrigin1, direction, rayLength, layers) || CheckRaycastOther(rayOrigin2, direction, rayLength, layers);
-    }
-
-    private bool CheckIntersectionRaycast(Vector2 rayOrigin1, Vector2 direction1, Vector2 rayOrigin2, Vector2 direction2, float rayLength) {
-        return CheckRaycastOther(rayOrigin1, direction1, rayLength, layers) || CheckRaycastOther(rayOrigin2, direction2, rayLength, layers);
+        if(rayHit) {
+            float overlapFraction = rayDistance - inversedRayHitDistance;
+            return overlapFraction;
+        } else {
+            return 0;
+        }
     }
 
     /// <summary>
@@ -111,30 +133,50 @@ public class CharacterRaycastDirectionView : View, ICharacterRaycastDirection {
         return false;
     }
 
+    private bool CheckRaycastOther(Vector2 startPostion, Vector2 direction, float length, LayerMask layers, out RaycastHit2D raycastHit2D) {
+        RaycastHit2D[] hits = Physics2D.RaycastAll(startPostion, direction, length, layers);
+
+        for (int i = 0; i < hits.Length; i++) {
+            if (hits[i].collider.gameObject != gameObject) {
+                raycastHit2D = hits[i];
+                return true;
+            }
+        }
+
+        raycastHit2D = new RaycastHit2D();
+        return false;
+    }
+
+    private void Start() {
+        if (showDebugRays) {
+            StartCoroutine(DebugRays());
+        }
+    }
+
     IEnumerator DebugRays() {
         while (true) {
-            //up
-            Debug.DrawRay(topLeftCornerPoint.position, (Quaternion.Euler(0, 0, -45) * transform.up) * cornerRayLength);
-            Debug.DrawRay(topRightCornerPoint.position, (Quaternion.Euler(0, 0, 45) * transform.up) * cornerRayLength);
+            //topright
+            Debug.DrawRay(topRightCornerPoint.position, rightDownDirection * cornerRayLength);
+            Debug.DrawRay(topRightCornerPoint.position, leftUpDirection * cornerRayLength);
 
-            //down
-            Debug.DrawRay(bottomLeftCornerPoint.position, (Quaternion.Euler(0, 0, 45) * -transform.up) * cornerRayLength);
-            Debug.DrawRay(bottomRightCornerPoint.position, (Quaternion.Euler(0, 0, -45) * -transform.up) * cornerRayLength);
+            //topleft
+            Debug.DrawRay(topLeftCornerPoint.position, leftDownDirection * cornerRayLength);
+            Debug.DrawRay(topLeftCornerPoint.position, rightUpDirection * cornerRayLength);
 
-            //left
-            Debug.DrawRay(topLeftCornerPoint.position, (Quaternion.Euler(0, 0, 45) * -transform.right) * cornerRayLength);
-            Debug.DrawRay(bottomLeftCornerPoint.position, (Quaternion.Euler(0, 0, -45) * -transform.right) * cornerRayLength);
+            //bottomright
+            Debug.DrawRay(bottomRightCornerPoint.position, rightUpDirection * cornerRayLength);
+            Debug.DrawRay(bottomRightCornerPoint.position, leftDownDirection * cornerRayLength);
 
-            //right
-            Debug.DrawRay(topRightCornerPoint.position, (Quaternion.Euler(0, 0, -45) * transform.right) * cornerRayLength);
-            Debug.DrawRay(bottomRightCornerPoint.position, (Quaternion.Euler(0, 0, 45) * transform.right) * cornerRayLength);
+            //bottomleft
+            Debug.DrawRay(bottomLeftCornerPoint.position, leftUpDirection * cornerRayLength);
+            Debug.DrawRay(bottomLeftCornerPoint.position, rightDownDirection * cornerRayLength);
 
             //middle
             Debug.DrawRay(transform.position, new Vector2(1, 0) * middleRayLength);
             Debug.DrawRay(transform.position, new Vector2(-1, 0) * middleRayLength);
             Debug.DrawRay(transform.position, new Vector2(0, 1) * middleRayLength);
             Debug.DrawRay(transform.position, new Vector2(0, -1) * middleRayLength);
-            yield return new WaitForFixedUpdate();
+            yield return null;
         }
     }
 }

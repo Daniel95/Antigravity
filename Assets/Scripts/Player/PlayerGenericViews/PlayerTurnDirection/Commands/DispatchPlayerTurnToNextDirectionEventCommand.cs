@@ -11,15 +11,11 @@ public class DispatchPlayerTurnToNextDirectionEventCommand : Command {
 
     protected override void Execute() {
         Vector2 ceilPreviousVelocityDirection = playerVelocityRef.Get().GetCeilPreviousVelocityDirection();
-
-        Vector2 collisionDirection = playerCollisionDirectionRef.Get().GetCurrentCollisionDirection();
-        Vector2 cornerRaycastDirection = playerRaycastDirectionRef.Get().GetCornersDirection();
-        Vector2 surroundingsDirection = SurroundingDirectionHelper.GetSurroundingsDirection(collisionDirection, cornerRaycastDirection);
+        Vector2 surroundingsDirection = SurroundingDirectionHelper.GetSurroundingsDirection(playerCollisionDirectionRef.Get(), playerRaycastDirectionRef.Get());
 
         playerTurnToNextDirectionEvent.Dispatch(new PlayerTurnToNextDirectionEvent.Parameter(
             ceilPreviousVelocityDirection,
-            surroundingsDirection,
-            cornerRaycastDirection
+            surroundingsDirection
         ));
     }
 }

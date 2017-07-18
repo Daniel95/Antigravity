@@ -1,12 +1,9 @@
 ﻿using IoCPlus;
-using System;
 using UnityEngine;
 
 public class CharacterTurnDirectionView : View, ICharacterTurnDirection {
 
     public Vector2 SavedDirection { get { return savedDirection; } set { savedDirection = value; } }
-
-    public Action<Vector2> FinishedDirectionLogic;
 
     [Inject] private PlayerSetMoveDirectionEvent characterSetMoveDirectionEvent;
     [Inject] private PlayerTemporarySpeedChangeEvent characterTemporarySpeedChangeEvent;
@@ -18,15 +15,8 @@ public class CharacterTurnDirectionView : View, ICharacterTurnDirection {
     private Vector2 savedDirection;
 
     public void TurnToNextDirection(PlayerTurnToNextDirectionEvent.Parameter characterTurnToNextDirectionParameter) {
-        Vector2 nextDirection = CalculateDirection(characterTurnToNextDirectionParameter);
-
-        Vector2 nextLookDirection = savedDirection;
-
+        Vector2 nextDirection = CalculateDirection(characterTurnToNextDirectionParameter.MoveDirection, characterTurnToNextDirectionParameter.SurroundingsDirection);
         characterSetMoveDirectionEvent.Dispatch(nextDirection);
-
-        if (FinishedDirectionLogic != null) {
-            FinishedDirectionLogic(nextLookDirection);
-        }
     }
 
     /// <summary>
@@ -35,18 +25,14 @@ public class CharacterTurnDirectionView : View, ICharacterTurnDirection {
     /// <param name="currentDirection"></param>
     /// <param name="collisionDirection"></param>
     /// <returns></returns>
-    private Vector2 CalculateDirection(PlayerTurnToNextDirectionEvent.Parameter characterTurnToNextDirectionParameter) {     
+    protected Vector2 CalculateDirection(Vector2 moveDirection, Vector2 surroundingsDirection) {     
         Vector2 newDirection;
 
-        Vector2 cornerDirection = characterTurnToNextDirectionParameter.CornerDirection;
-        Vector2 collisionDirection = characterTurnToNextDirectionParameter.CollisionDirection;
-        Vector2 moveDirection = characterTurnToNextDirectionParameter.MoveDirection;
+        bool isInCorner = DirectionIsNotLinear(surroundingsDirection);
 
-        //if we are not hitting a wall on both axis or are not moving in an angle
-        if (cornerDirection == Vector2.zero) {
-            if (collisionDirection.x == 0 || collisionDirection.y == 0) {
+        if (!isInCorner) {
+            if (surroundingsDirection.x == 0 || surroundingsDirection.y == 0) {
 
-                //save our direction the axis is not zero
                 if (moveDirection.x != 0) {
                     savedDirection.x = Rounding.InvertOnNegativeCeil(moveDirection.x);
                 }
@@ -54,8 +40,7 @@ public class CharacterTurnDirectionView : View, ICharacterTurnDirection {
                     savedDirection.y = Rounding.InvertOnNegativeCeil(moveDirection.y);
                 }
 
-                //change speed by calculating the angle
-                float speedChange = Vector2.Angle(moveDirection, collisionDirection) / 90;
+                float speedChange = Vector2.Angle(moveDirection, surroundingsDirection) / 90;
 
                 if (speedChange > maxSpeedChange) {
                     speedChange = maxSpeedChange;
@@ -63,24 +48,24 @@ public class CharacterTurnDirectionView : View, ICharacterTurnDirection {
 
                 characterTemporarySpeedChangeEvent.Dispatch(new PlayerTemporarySpeedChangeEvent.Parameter(speedChange, directionSpeedNeutralValue));
 
-                //replace the dir on the axis that we dont have a collision with
-                //example: if we hit something under us, move to the left or right, depeding on our lastDir
-                newDirection = collisionDirection.x != 0 ? new Vector2(0, savedDirection.y) : new Vector2(savedDirection.x, 0);
+                if(surroundingsDirection.x != 0) {
+                    newDirection = new Vector2(0, savedDirection.y);
+                } else {
+                    newDirection = new Vector2(savedDirection.x, 0);
+                }
             } else {
                 newDirection = savedDirection = moveDirection * -1;
             }
-
         } else {
             characterTemporarySpeedDecreaseEvent.Dispatch();
 
-            if (moveDirection.x == cornerDirection.x) {
-                savedDirection.y = cornerDirection.y * -1;
-                savedDirection.x = cornerDirection.x;
+            if (moveDirection.x == surroundingsDirection.x) {
+                savedDirection.y = surroundingsDirection.y * -1;
+                savedDirection.x = surroundingsDirection.x;
                 newDirection = new Vector2(0, savedDirection.y);
-            }
-            else {
-                savedDirection.x = cornerDirection.x * -1;
-                savedDirection.y = cornerDirection.y;
+            } else {
+                savedDirection.x = surroundingsDirection.x * -1;
+                savedDirection.y = surroundingsDirection.y;
                 newDirection = new Vector2(savedDirection.x, 0);
             }
         }
@@ -88,20 +73,8 @@ public class CharacterTurnDirectionView : View, ICharacterTurnDirection {
         return newDirection;
     }
 
-    private void Awake() {
-        if (savedDirection.x == 0) {
-            savedDirection.x = 1;
-        }
-        if (savedDirection.y == 0) {
-            savedDirection.y = 1;
-        }
-
-        //wait one frame so all scripts are loaded, then send out a delegate with the direction, used by FutureDirectionIndicator
-        GetComponent<Frames>().ExecuteAfterDelay(1, () => {
-            if (FinishedDirectionLogic != null) {
-                FinishedDirectionLogic(savedDirection);
-            }
-        });
+    private static bool DirectionIsNotLinear(Vector2 direction) {
+        return direction.x != 0 && direction.y != 0;
     }
 
 }
