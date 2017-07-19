@@ -1,22 +1,24 @@
 ﻿using IoCPlus;
+using System;
 using UnityEngine;
 
 public class CharacterTurnDirectionView : View, ICharacterTurnDirection {
 
     public Vector2 SavedDirection { get { return savedDirection; } set { savedDirection = value; } }
 
-    [Inject] private PlayerSetMoveDirectionEvent characterSetMoveDirectionEvent;
-    [Inject] private PlayerTemporarySpeedChangeEvent characterTemporarySpeedChangeEvent;
-    [Inject] private PlayerTemporarySpeedDecreaseEvent characterTemporarySpeedDecreaseEvent;
+    public Action<Vector2, Vector2> OnSurfaceTurn;
+    public Action<Vector2, Vector2> OnCornerTurn;
 
-    [SerializeField] private float directionSpeedNeutralValue = 0.4f;
-    [SerializeField] private float maxSpeedChange = 0.7f;
+    [Inject] private CharacterSetMoveDirectionEvent characterSetMoveDirectionEvent;
+
+    [SerializeField] protected float DirectionSpeedNeutralValue = 0.4f;
+    [SerializeField] protected float MaxSpeedChange = 0.7f;
 
     private Vector2 savedDirection;
 
-    public void TurnToNextDirection(PlayerTurnToNextDirectionEvent.Parameter characterTurnToNextDirectionParameter) {
-        Vector2 nextDirection = CalculateDirection(characterTurnToNextDirectionParameter.MoveDirection, characterTurnToNextDirectionParameter.SurroundingsDirection);
-        characterSetMoveDirectionEvent.Dispatch(nextDirection);
+    public void TurnToNextDirection(Vector2 moveDirection, Vector2 surroundingsDirection) {
+        Vector2 nextDirection = CalculateDirection(moveDirection, surroundingsDirection);
+        characterSetMoveDirectionEvent.Dispatch(gameObject, nextDirection);
     }
 
     /// <summary>
@@ -38,22 +40,16 @@ public class CharacterTurnDirectionView : View, ICharacterTurnDirection {
                 savedDirection.y = Rounding.InvertOnNegativeCeil(moveDirection.y);
             }
 
-            float speedChange = Vector2.Angle(moveDirection, surroundingsDirection) / 90;
-
-            if (speedChange > maxSpeedChange) {
-                speedChange = maxSpeedChange;
-            }
-
-            characterTemporarySpeedChangeEvent.Dispatch(new PlayerTemporarySpeedChangeEvent.Parameter(speedChange, directionSpeedNeutralValue));
-
             if(surroundingsDirection.x != 0) {
                 newDirection = new Vector2(0, savedDirection.y);
             } else {
                 newDirection = new Vector2(savedDirection.x, 0);
             }
-        } else {
-            characterTemporarySpeedDecreaseEvent.Dispatch();
 
+            if(OnSurfaceTurn != null) {
+                OnSurfaceTurn(moveDirection, surroundingsDirection);
+            }
+        } else {
             if (moveDirection.x == surroundingsDirection.x) {
                 savedDirection.y = surroundingsDirection.y * -1;
                 savedDirection.x = surroundingsDirection.x;
@@ -62,6 +58,10 @@ public class CharacterTurnDirectionView : View, ICharacterTurnDirection {
                 savedDirection.x = surroundingsDirection.x * -1;
                 savedDirection.y = surroundingsDirection.y;
                 newDirection = new Vector2(savedDirection.x, 0);
+            }
+
+            if (OnCornerTurn != null) {
+                OnCornerTurn(moveDirection, surroundingsDirection);
             }
         }
 

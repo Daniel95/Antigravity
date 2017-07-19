@@ -33,11 +33,14 @@ public class PlayerContext : Context {
             .Dispatch<GoToNextSceneEvent>();
 
         On<JumpInputEvent>()
+            .Dispatch<PlayerTryJumpEvent>();
+
+        On<PlayerTryJumpEvent>()
             .Do<AbortIfPlayerSurroundingDirectionIsZeroCommand>()
             .Do<PlayerJumpCommand>()
             .Do<PlayerPointToVelocityDirectionCommand>();
 
-        On<JumpInputEvent>()
+        On<PlayerTryJumpEvent>()
             .Do<AbortIfPlayerSurroundingDirectionIsZeroCommand>()
             .Do<WaitForPlayerRetryJumpTimeCommand>()
             .Do<AbortIfPlayerSurroundingDirectionIsZeroCommand>()
@@ -59,6 +62,10 @@ public class PlayerContext : Context {
         On<PlayerTurnToNextDirectionEvent>()
             .Do<PlayerTurnToNextDirectionCommand>()
             .Do<PlayerPointToSavedDirectionCommand>();
+
+        On<CharacterSetMoveDirectionEvent>()
+            .Do<AbortIfGameObjectIsNotPlayerCommand>()
+            .Do<DispatchPlayerSetMoveDirectionEventCommand>();
 
         On<PlayerSetMoveDirectionEvent>()
             .Do<PlayerSetMoveDirectionCommand>();
@@ -90,7 +97,7 @@ public class PlayerContext : Context {
 
         On<PlayerTriggerEnter2DEvent>()
             .Do<AbortIfTriggerTagIsNotTheSameCommand>(Tags.JumpTrigger)
-            .Dispatch<JumpInputEvent>();
+            .Dispatch<PlayerTryJumpEvent>();
 
         On<CollisionEnter2DEvent>()
             .Do<AbortIfGameObjectIsNotPlayerCommand>()

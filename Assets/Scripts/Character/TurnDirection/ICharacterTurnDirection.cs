@@ -3,5 +3,6 @@
 public interface ICharacterTurnDirection {
 
     Vector2 SavedDirection { get; set; }
-    void TurnToNextDirection(PlayerTurnToNextDirectionEvent.Parameter characterTurnToNextDirectionParameter);
+    void TurnToNextDirection(Vector2 moveDirection, Vector2 surroundingsDirection);
+
 }

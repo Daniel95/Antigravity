@@ -1,4 +1,5 @@
 ﻿using IoCPlus;
+using UnityEngine;
 
 public class PlayerTurnToNextDirectionCommand : Command {
 
@@ -7,6 +8,9 @@ public class PlayerTurnToNextDirectionCommand : Command {
     [InjectParameter] private PlayerTurnToNextDirectionEvent.Parameter playerTurnToNextDirectionParameter;
 
     protected override void Execute() {
-        playerMoveDirectionRef.Get().TurnToNextDirection(playerTurnToNextDirectionParameter);
+        Vector2 moveDirection = playerTurnToNextDirectionParameter.MoveDirection;
+        Vector2 surroundingsDirection = playerTurnToNextDirectionParameter.SurroundingsDirection;
+
+        playerMoveDirectionRef.Get().TurnToNextDirection(moveDirection, surroundingsDirection);
     }
 }

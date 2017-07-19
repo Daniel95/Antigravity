@@ -14,7 +14,7 @@ public class PlayerGrapplingContext : Context {
             .Do<StopUpdatePlayerGrapplingCommand>()
             .Dispatch<CancelHookEvent>();
 
-        On<JumpInputEvent>()
+        On<PlayerTryJumpEvent>()
             .Do<PlayerSetMoveDirectionToVelocityDirectionCommand>()
             .Do<PlayerTemporarySpeedIncreaseCommand>();
 

@@ -8,12 +8,13 @@ public class GameContext : Context {
         base.SetBindings();
 
         Bind<PlayerTurnToNextDirectionEvent>();
-        Bind<PlayerSetMoveDirectionEvent>();
+        Bind<CharacterSetMoveDirectionEvent>();
         Bind<PlayerBoostSpeedEvent>();
         Bind<PlayerTemporarySpeedChangeEvent>();
         Bind<PlayerTemporarySpeedDecreaseEvent>();
         Bind<PlayerTemporarySpeedChangeEvent>();
         Bind<PlayerRemoveCollisionDirectionEvent>();
+        Bind<PlayerTryJumpEvent>();
         Bind<PlayerBounceEvent>();
         Bind<PlayerRespawnEvent>();
         Bind<PlayerStartAtCheckpointEvent>();

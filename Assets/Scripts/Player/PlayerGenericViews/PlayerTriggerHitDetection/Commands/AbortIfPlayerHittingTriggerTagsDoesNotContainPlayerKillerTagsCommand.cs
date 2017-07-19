@@ -1,5 +1,6 @@
 ﻿using IoCPlus;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class AbortIfPlayerHittingTriggerTagsDoesNotContainPlayerKillerTagsCommand : Command {
 
@@ -10,15 +11,9 @@ public class AbortIfPlayerHittingTriggerTagsDoesNotContainPlayerKillerTagsComman
         List<string> hittingTriggerTags = playerTriggerHitDetectionRef.Get().HittingTriggerTags;
         List<string> deadlyTags = playerDieRef.Get().DeadlyTags;
 
-        bool hittingTagsContainsDeadlyTags = false;
+        bool hitDeadlyTag = hittingTriggerTags.Find(x => deadlyTags.Contains(x)) != null;
 
-        foreach (string hittingTag in hittingTriggerTags) {
-            if(deadlyTags.Contains(hittingTag)) {
-                hittingTagsContainsDeadlyTags = true;
-            }
-        }
-
-        if(!hittingTagsContainsDeadlyTags) {
+        if(!hitDeadlyTag) {
             Abort();
         }
     }

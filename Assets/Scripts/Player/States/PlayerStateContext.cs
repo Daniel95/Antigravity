@@ -66,7 +66,7 @@ public class PlayerStateContext : Context {
             .Do<AbortIfPlayerStateStatusStateIsStateCommand>(PlayerStateStatus.PlayerState.Floating)
             .GotoState<PlayerFloatingContext>();
 
-        OnChild<PlayerGrapplingContext, JumpInputEvent>()
+        OnChild<PlayerGrapplingContext, PlayerTryJumpEvent>()
             .Do<AbortIfPlayerStateStatusStateIsStateCommand>(PlayerStateStatus.PlayerState.Floating)
             .GotoState<PlayerFloatingContext>();
 
