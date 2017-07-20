@@ -8,13 +8,13 @@ public class CharacterCollisionDirectionView : View, ICharacterCollisionDirectio
 
     private Dictionary<Collider2D, Vector2> savedCollisions = new Dictionary<Collider2D, Vector2>();
 
-    public Vector2 GetUpdatedCollisionDirection(Collision2D collision) {
+    public Vector2 UpdateCollisionDirection(Collision2D collision) {
         SaveNewCollision(collision);
 
-        return GetCurrentCollisionDirection();
+        return GetCollisionDirection();
     }
 
-    public Vector2 GetCurrentCollisionDirection() {
+    public Vector2 GetCollisionDirection() {
         Vector2 combinedRoundedCollDir = new Vector2();
 
         //check each saved collision for a direction

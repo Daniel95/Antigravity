@@ -4,13 +4,16 @@ using UnityEngine;
 public class PlayerTurnToNextDirectionCommand : Command {
 
     [Inject(Label.Player)] private Ref<ICharacterTurnDirection> playerMoveDirectionRef;
-
-    [InjectParameter] private PlayerTurnToNextDirectionEvent.Parameter playerTurnToNextDirectionParameter;
+    [Inject(Label.Player)] private Ref<ICharacterVelocity> playerVelocityRef;
+    [Inject(Label.Player)] private Ref<ICharacterRaycastDirection> playerRaycastDirectionRef;
+    [Inject(Label.Player)] private Ref<ICharacterCollisionDirection> playerCollisionDirectionRef;
 
     protected override void Execute() {
-        Vector2 moveDirection = playerTurnToNextDirectionParameter.MoveDirection;
-        Vector2 surroundingsDirection = playerTurnToNextDirectionParameter.SurroundingsDirection;
+        Vector2 ceilPreviousVelocityDirection = playerVelocityRef.Get().GetCeilPreviousVelocityDirection();
+        Vector2 collisionDirection = playerCollisionDirectionRef.Get().GetCollisionDirection();
+        RaycastData cominedRaycastData = playerRaycastDirectionRef.Get().GetCombinedDirectionAndCenterDistances();
+        Vector2 surroundingsDirection = SurroundingDirectionHelper.GetSurroundingsDirection(collisionDirection, cominedRaycastData.Direction);
 
-        playerMoveDirectionRef.Get().TurnToNextDirection(moveDirection, surroundingsDirection);
+        playerMoveDirectionRef.Get().TurnToNextDirection(ceilPreviousVelocityDirection, surroundingsDirection, collisionDirection, cominedRaycastData.Distance);
     }
 }

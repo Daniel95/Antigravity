@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using IoCPlus;
+using System.Collections.Generic;
 
 public class CharacterRaycastDirectionView : View, ICharacterRaycastDirection {
 
@@ -18,78 +19,185 @@ public class CharacterRaycastDirectionView : View, ICharacterRaycastDirection {
     private Vector2 rightDownDirection = new Vector2(1, -1);
     private Vector2 leftDownDirection = new Vector2(-1, -1);
 
+    public RaycastData GetCombinedDirectionAndCenterDistances() {
+        RaycastData centerRaycastData = GetCenterRaycastData();
+        Vector2 cornersDirection = GetCornersDirection();
+
+        Vector2 combinedDirection = centerRaycastData.Direction + cornersDirection;
+
+        Vector2 raycastDataDirection = new Vector2(Mathf.Clamp(combinedDirection.x, -1, 1), Mathf.Clamp(combinedDirection.y, -1, 1));
+
+        return new RaycastData() {
+            Direction = raycastDataDirection,
+            Distance = centerRaycastData.Distance
+        };
+    }
+
     public Vector2 GetCenterDirection() {
-        return new Vector2(GetHorizontalMiddleDirection(), GetVerticalMiddleDirection());
+        Vector2 centerDirection = new Vector2();
+
+        Vector2 horizontalDirection = GetHorizontalMiddleRaycastData().Direction;
+        Vector2 verticalDirection = GetVerticalMiddleRaycastData().Direction;
+        centerDirection = horizontalDirection + verticalDirection;
+
+        return centerDirection;
+    }
+
+    public RaycastData GetCenterRaycastData() {
+        Vector2 horizontalDirection = GetHorizontalMiddleRaycastData().Direction;
+        Vector2 verticalDirection = GetVerticalMiddleRaycastData().Direction;
+        Vector2 horizontalDistance = GetHorizontalMiddleRaycastData().Distance;
+        Vector2 verticalDistance = GetVerticalMiddleRaycastData().Distance;
+
+        return new RaycastData() {
+            Direction = horizontalDirection + verticalDirection,
+            Distance = horizontalDistance + verticalDistance
+        };
     }
 
     public Vector2 GetCornersDirection() {
-        Vector2 combinedCornerAxises = GetRayCornerTopRightAxis() +
-            GetRayCornerTopLeftAxis() +
-            GetRayCornerBottomRightAxis() +
-            GetRayCornerBottomLeftAxis();
+        Vector2 combinedCornerDirection = GetCornerTopRightRaycastData().Direction +
+            GetCornerTopLeftRaycastData().Direction +
+            GetCornerBottomRightRaycastData().Direction +
+            GetCornerBottomLeftRaycastData().Direction;
 
-        Vector2 cornerDirection = new Vector2(Mathf.Clamp(combinedCornerAxises.x, -1, 1), Mathf.Clamp(combinedCornerAxises.y, -1, 1));
+        Vector2 cornerDirection = new Vector2(Mathf.Clamp(combinedCornerDirection.x, -1, 1), Mathf.Clamp(combinedCornerDirection.y, -1, 1));
         return cornerDirection;
     }
 
-    public int GetVerticalMiddleDirection() {
-        if (CheckRaycastOther(transform.position, new Vector2(0, 1), middleRayLength, layers)) {
-            return 1;
-        } else if (CheckRaycastOther(transform.position, new Vector2(0, -1), middleRayLength, layers)) {
-            return -1;
-        } else {
-            return 0;
+    public RaycastData GetCornersRaycastData() {
+        RaycastData topRightRaycastData = GetCornerTopRightRaycastData();
+        RaycastData topLeftRaycastData = GetCornerTopLeftRaycastData();
+        RaycastData bottomRightRaycastData = GetCornerBottomRightRaycastData();
+        RaycastData bottomLeftRaycastData = GetCornerBottomLeftRaycastData();
+
+        Vector2 combinedCornerDirection = topRightRaycastData.Direction +
+            topLeftRaycastData.Direction +
+            bottomRightRaycastData.Direction +
+            bottomLeftRaycastData.Direction;
+
+        Vector2 raycastDataDirection = new Vector2(Mathf.Clamp(combinedCornerDirection.x, -1, 1), Mathf.Clamp(combinedCornerDirection.y, -1, 1));
+
+        List<Vector2> distances = new List<Vector2>() {
+            topRightRaycastData.Distance,
+            topLeftRaycastData.Distance,
+            bottomRightRaycastData.Distance,
+            bottomLeftRaycastData.Distance,
+        };
+
+        Vector2 raycastDataDistance = new Vector2();
+
+        foreach (Vector2 distance in distances) {
+            if(distance.x != 0) {
+                raycastDataDistance = new Vector2(distance.x, raycastDataDistance.y);
+            } else if(distance.y != 0) {
+                raycastDataDistance = new Vector2(raycastDataDistance.x, distance.y);
+            }
         }
+
+        return new RaycastData() {
+            Direction = raycastDataDirection,
+            Distance = raycastDataDistance
+        };
     }
 
-    public int GetHorizontalMiddleDirection() {
-        if (CheckRaycastOther(transform.position, new Vector2(1, 0), middleRayLength, layers)) {
-            return 1;
-        } else if (CheckRaycastOther(transform.position, new Vector2(-1, 0), middleRayLength, layers)) {
-            return -1;
+    public RaycastData GetHorizontalMiddleRaycastData() {
+        Vector2 direction = new Vector2();
+        float distance = 0;
+
+        if (CheckRaycastOther(transform.position, Vector2.right, middleRayLength, layers, out distance)) {
+            direction = Vector2.right;
+        } else if (CheckRaycastOther(transform.position, Vector2.left, middleRayLength, layers, out distance)) {
+            direction = Vector2.left;
         } else {
-            return 0;
+            direction = Vector2.zero;
         }
+
+        return new RaycastData() {
+            Direction = direction,
+            Distance = new Vector2(distance, 0)
+        };
     }
 
-    private Vector2 GetRayCornerTopRightAxis() {
-        Vector2 topRightCornerAxis = GetDominantCornerAxis(topRightCornerPoint.position, rightDownDirection, leftUpDirection, cornerRayLength);
-        return topRightCornerAxis;
+    public RaycastData GetVerticalMiddleRaycastData() {
+        Vector2 direction = new Vector2();
+        float distance = 0;
+
+        if (CheckRaycastOther(transform.position, Vector2.up, middleRayLength, layers, out distance)) {
+            direction = Vector2.up;
+        } else if (CheckRaycastOther(transform.position, Vector2.down, middleRayLength, layers, out distance)) {
+            direction = Vector2.down;
+        } else {
+            direction = Vector2.zero;
+        }
+
+        return new RaycastData() {
+            Direction = direction,
+            Distance = new Vector2(0, distance)
+        };
     }
 
-    private Vector2 GetRayCornerTopLeftAxis() {
-        Vector2 cornerAxis = GetDominantCornerAxis(topLeftCornerPoint.position, leftDownDirection, rightUpDirection, cornerRayLength);
-        Vector2 topLeftCornerAxis = new Vector2(cornerAxis.x * -1, cornerAxis.y);
-        return topLeftCornerAxis;
+    private RaycastData GetCornerTopRightRaycastData() {
+        RaycastData topRightCornerRaycastData = GetDominantCornerAxis(topRightCornerPoint.position, rightDownDirection, leftUpDirection, cornerRayLength);
+        return topRightCornerRaycastData;
     }
 
-    private Vector2 GetRayCornerBottomRightAxis() {
-        Vector2 cornerAxis = GetDominantCornerAxis(bottomRightCornerPoint.position, rightUpDirection, leftDownDirection, cornerRayLength);
-        Vector2 bottomRightCornerAxis = new Vector2(cornerAxis.x, cornerAxis.y * -1);
-        return bottomRightCornerAxis;
+    private RaycastData GetCornerTopLeftRaycastData() {
+        RaycastData topLeftCornerRaycastData = GetDominantCornerAxis(topLeftCornerPoint.position, leftDownDirection, rightUpDirection, cornerRayLength);
+
+        Vector2 topLeftCornerDirection = new Vector2(topLeftCornerRaycastData.Direction.x * -1, topLeftCornerRaycastData.Direction.y);
+
+        return new RaycastData() {
+            Direction = topLeftCornerDirection,
+            Distance = topLeftCornerRaycastData.Distance
+        };
     }
 
-    private Vector2 GetRayCornerBottomLeftAxis() {
-        Vector2 cornerAxis = GetDominantCornerAxis(bottomLeftCornerPoint.position, leftUpDirection, rightDownDirection, cornerRayLength);
-        Vector2 bottomLeftCornerAxis = new Vector2(cornerAxis.x * -1, cornerAxis.y * -1);
-        return bottomLeftCornerAxis;
+    private RaycastData GetCornerBottomRightRaycastData() {
+        RaycastData bottomRightCornerRaycastData = GetDominantCornerAxis(bottomRightCornerPoint.position, rightUpDirection, leftDownDirection, cornerRayLength);
+
+        Vector2 bottomRightCornerDirection = new Vector2(bottomRightCornerRaycastData.Direction.x, bottomRightCornerRaycastData.Direction.y * -1);
+
+        return new RaycastData() {
+            Direction = bottomRightCornerDirection,
+            Distance = bottomRightCornerRaycastData.Distance
+        };
     }
 
-    private Vector2 GetDominantCornerAxis(Vector2 rayOrigin, Vector2 rayXDirection, Vector2 rayYDirection, float rayLength) {
+    private RaycastData GetCornerBottomLeftRaycastData() {
+        RaycastData bottomLeftCornerRaycastData = GetDominantCornerAxis(bottomLeftCornerPoint.position, leftUpDirection, rightDownDirection, cornerRayLength);
+
+        Vector2 bottomLeftCornerDirection = new Vector2(bottomLeftCornerRaycastData.Direction.x * -1, bottomLeftCornerRaycastData.Direction.y * -1);
+
+        return new RaycastData() {
+            Direction = bottomLeftCornerDirection,
+            Distance = bottomLeftCornerRaycastData.Distance
+        };
+    }
+
+    private RaycastData GetDominantCornerAxis(Vector2 rayOrigin, Vector2 rayXDirection, Vector2 rayYDirection, float rayLength) {
         float rayXOverlapFraction = GetRayOverlapFraction(rayOrigin, rayXDirection, rayLength);
         float rayYOverlapFraction = GetRayOverlapFraction(rayOrigin, rayYDirection, rayLength);
 
         if(rayXOverlapFraction == 0 && rayYOverlapFraction == 0) {
-            return Vector2.zero;
+            return new RaycastData();
         }
 
+        RaycastData raycastData = new RaycastData();
+        float distance = 0;
         bool rayXIsDominant = rayXOverlapFraction > rayYOverlapFraction;
 
         if(rayXIsDominant) {
-            return Vector2.right;
+            CheckRaycastOther(rayOrigin, rayXDirection, rayLength, layers, out distance);
+            raycastData.Distance = new Vector2(distance, 0);
+            raycastData.Direction = Vector2.right;
         } else {
-            return Vector2.up;
+            CheckRaycastOther(rayOrigin, rayXDirection, rayLength, layers, out distance);
+            raycastData.Distance = new Vector2(0, distance);
+            raycastData.Direction = Vector2.up;
         }
+
+        return raycastData;
     }
 
     private float GetRayOverlapFraction(Vector2 rayOrigin, Vector2 direction, float rayDistance) {
@@ -115,15 +223,17 @@ public class CharacterRaycastDirectionView : View, ICharacterRaycastDirection {
     /// <param name="length"></param>
     /// <param name="layers"></param>
     /// <returns></returns>
-    private bool CheckRaycastOther(Vector2 startPostion, Vector2 direction, float length, LayerMask layers) {
+    private bool CheckRaycastOther(Vector2 startPostion, Vector2 direction, float length, LayerMask layers, out float distance) {
         RaycastHit2D[] hits = Physics2D.RaycastAll(startPostion, direction, length, layers);
 
         for (int i = 0; i < hits.Length; i++) {
             if(hits[i].collider.gameObject != gameObject) {
+                distance = hits[i].distance;
                 return true;
             }
         }
 
+        distance = 0;
         return false;
     }
 
@@ -173,4 +283,5 @@ public class CharacterRaycastDirectionView : View, ICharacterRaycastDirection {
             yield return null;
         }
     }
+
 }

@@ -16,28 +16,22 @@ public class CharacterTurnDirectionView : View, ICharacterTurnDirection {
 
     private Vector2 savedDirection;
 
-    public void TurnToNextDirection(Vector2 moveDirection, Vector2 surroundingsDirection) {
-        Vector2 nextDirection = CalculateDirection(moveDirection, surroundingsDirection);
+    public void TurnToNextDirection(Vector2 moveDirection, Vector2 surroundingsDirection, Vector2 collisionDirection, Vector2 raycastHitDistance) {
+        Vector2 nextDirection = CalculateDirection(moveDirection, surroundingsDirection, collisionDirection, raycastHitDistance);
         characterSetMoveDirectionEvent.Dispatch(gameObject, nextDirection);
     }
 
-    /// <summary>
-    /// the logic we use to control the players direction using collision directions and raycasts collisions, after we have collision with another object
-    /// </summary>
-    /// <param name="currentDirection"></param>
-    /// <param name="collisionDirection"></param>
-    /// <returns></returns>
-    protected Vector2 CalculateDirection(Vector2 moveDirection, Vector2 surroundingsDirection) {     
+    protected Vector2 CalculateDirection(Vector2 moveDirection, Vector2 surroundingsDirection, Vector2 collisionDirection, Vector2 raycastHitDistance) {     
         Vector2 newDirection;
 
         bool isInCorner = DirectionIsNotLinear(surroundingsDirection);
 
         if (!isInCorner) {
             if (moveDirection.x != 0) {
-                savedDirection.x = Rounding.InvertOnNegativeCeil(moveDirection.x);
+                savedDirection.x = moveDirection.x;
             }
             if (moveDirection.y != 0) {
-                savedDirection.y = Rounding.InvertOnNegativeCeil(moveDirection.y);
+                savedDirection.y = moveDirection.y;
             }
 
             if(surroundingsDirection.x != 0) {
@@ -58,6 +52,14 @@ public class CharacterTurnDirectionView : View, ICharacterTurnDirection {
                 savedDirection.x = surroundingsDirection.x * -1;
                 savedDirection.y = surroundingsDirection.y;
                 newDirection = new Vector2(savedDirection.x, 0);
+            }
+
+            if (surroundingsDirection.x != collisionDirection.x && surroundingsDirection.x == moveDirection.x) {
+                float playerToCornerDistanceX = raycastHitDistance.x - (transform.localScale.x / 2);
+                transform.position += new Vector3(surroundingsDirection.x * playerToCornerDistanceX, 0);
+            } else if (surroundingsDirection.y != collisionDirection.x && surroundingsDirection.y == moveDirection.y) {
+                float playerToCornerDistanceY = raycastHitDistance.y - (transform.localScale.y / 2);
+                transform.position += new Vector3(0, surroundingsDirection.y * playerToCornerDistanceY);
             }
 
             if (OnCornerTurn != null) {

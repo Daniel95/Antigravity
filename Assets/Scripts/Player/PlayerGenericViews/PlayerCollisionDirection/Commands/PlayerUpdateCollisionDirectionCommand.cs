@@ -8,6 +8,6 @@ public class PlayerUpdateCollisionDirectionCommand : Command {
     [InjectParameter] private Collision2D collision;
 
     protected override void Execute() {
-        playerCollisionDirectionRef.Get().GetUpdatedCollisionDirection(collision);
+        playerCollisionDirectionRef.Get().UpdateCollisionDirection(collision);
     }
 }

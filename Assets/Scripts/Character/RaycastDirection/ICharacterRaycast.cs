@@ -2,8 +2,15 @@
 
 public interface ICharacterRaycastDirection {
 
-    int GetVerticalMiddleDirection();
-    int GetHorizontalMiddleDirection();
+    RaycastData GetVerticalMiddleRaycastData();
+    RaycastData GetHorizontalMiddleRaycastData();
+        
     Vector2 GetCenterDirection();
+    RaycastData GetCenterRaycastData();
+
     Vector2 GetCornersDirection();
+    RaycastData GetCornersRaycastData();
+
+    RaycastData GetCombinedDirectionAndCenterDistances();
+
 }
