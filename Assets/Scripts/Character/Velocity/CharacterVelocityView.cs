@@ -117,7 +117,7 @@ public class CharacterVelocityView : View, ICharacterVelocity {
         while (true) {
             previousVelocity = Velocity;
             rigidbodyComponent.velocity = moveDirection * currentSpeed;
-            yield return new WaitForFixedUpdate();
+            yield return new WaitForEndOfFrame();
         }
     }
 
@@ -136,4 +136,3 @@ public class CharacterVelocityView : View, ICharacterVelocity {
     }
 
 }
-

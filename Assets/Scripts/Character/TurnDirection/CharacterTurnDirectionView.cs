@@ -22,7 +22,7 @@ public class CharacterTurnDirectionView : View, ICharacterTurnDirection {
     }
 
     protected Vector2 CalculateDirection(Vector2 moveDirection, Vector2 surroundingsDirection, Vector2 collisionDirection, Vector2 raycastHitDistance) {     
-        Vector2 newDirection;
+        Vector2 newDirection = moveDirection;
 
         bool isInCorner = DirectionIsNotLinear(surroundingsDirection);
 
@@ -48,7 +48,7 @@ public class CharacterTurnDirectionView : View, ICharacterTurnDirection {
                 savedDirection.y = surroundingsDirection.y * -1;
                 savedDirection.x = surroundingsDirection.x;
                 newDirection = new Vector2(0, savedDirection.y);
-            } else {
+            } else if (moveDirection.y == surroundingsDirection.y) {
                 savedDirection.x = surroundingsDirection.x * -1;
                 savedDirection.y = surroundingsDirection.y;
                 newDirection = new Vector2(savedDirection.x, 0);
