@@ -1,6 +1,6 @@
 ﻿using IoCPlus;
 
-public class HookProjectileAbortIfDistanceToOwnerIsHigherThenMinimalDistance : Command {
+public class AbortIfHookProjectileDistanceToOwnerIsHigherThenMinimalDistance : Command {
 
     [Inject] private Ref<IHook> hookRef;
     [Inject] private Ref<IHookProjectile> hookProjectileRef;

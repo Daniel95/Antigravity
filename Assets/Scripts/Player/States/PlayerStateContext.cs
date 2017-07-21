@@ -1,4 +1,5 @@
 ﻿using IoCPlus;
+using System.Collections.Generic;
 
 public class PlayerStateContext : Context {
 
@@ -15,16 +16,21 @@ public class PlayerStateContext : Context {
             .Do<PlayerUpdateCollisionDirectionCommand>()
             .Do<DispatchPlayerTurnToNextDirectionEventCommand>()
             .Do<AbortIfSavedCollisionCountIsHigherThenOneCommand>()
-            .Do<AbortIfPlayerStateStatusStateIsStateCommand>(PlayerStateStatus.PlayerState.Sliding)
-            .Do<AbortIfPlayerStateStatusStateIsStateCommand>(PlayerStateStatus.PlayerState.RespawnAtStart)
-            .Do<AbortIfPlayerStateStatusStateIsStateCommand>(PlayerStateStatus.PlayerState.RespawnAtCheckpoint)
+            .Do<AbortIfPlayerStateStatusStateIsStatesCommand>(new List<PlayerStateStatus.PlayerState> {
+                PlayerStateStatus.PlayerState.Sliding,
+                PlayerStateStatus.PlayerState.RespawnAtStart,
+                PlayerStateStatus.PlayerState.RespawnAtCheckpoint,
+            })
             .GotoState<PlayerSlidingContext>();
 
         On<PlayerCollisionExit2DEvent>()
             .Do<AbortIfPlayerCollisionDirectionIsNotZeroCommand>()
-            .Do<AbortIfPlayerStateStatusStateIsStateCommand>(PlayerStateStatus.PlayerState.Floating)
-            .Do<AbortIfPlayerStateStatusStateIsStateCommand>(PlayerStateStatus.PlayerState.RespawnAtStart)
-            .Do<AbortIfPlayerStateStatusStateIsStateCommand>(PlayerStateStatus.PlayerState.RespawnAtCheckpoint)
+            .Do<AbortIfPlayerStateStatusStateIsStatesCommand>(new List<PlayerStateStatus.PlayerState> {
+                PlayerStateStatus.PlayerState.Floating,
+                PlayerStateStatus.PlayerState.Grappling,
+                PlayerStateStatus.PlayerState.RespawnAtStart,
+                PlayerStateStatus.PlayerState.RespawnAtCheckpoint,
+            })
             .GotoState<PlayerFloatingContext>();
 
         On<PlayerTriggerEnter2DEvent>()
