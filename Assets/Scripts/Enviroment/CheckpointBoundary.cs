@@ -1,40 +1,23 @@
 ﻿using UnityEngine;
 
 public class CheckpointBoundary : MonoBehaviour {
-
-    [SerializeField] private LayerMask layers;
-    [SerializeField] private float maxDistance = 30;
+    
     [SerializeField] private float xScale = 0.5f;
 
-    [SerializeField] private GameObject topBoundary;
-    [SerializeField] private GameObject bottomBoundary;
+    public void UpdateBoundary(Transform checkPointTransform, RaycastHit2D raycastHitUp, RaycastHit2D raycastHitDown) {
+        float boundaryTopLength = raycastHitUp.distance;
+        float boundaryBottomLength = raycastHitDown.distance;
 
-    [ContextMenu("Generate Boundary")]
-    private void GenerateBoundary() {
-        if (topBoundary != null) {
-            UpdateTopBoundary();
-        }
-        if (bottomBoundary != null) {
-            UpdateBottomBoundary();
-        }
-    }
+        float boundaryLocalLength = boundaryTopLength + boundaryBottomLength;
+        float boundaryWorldLength = boundaryLocalLength / checkPointTransform.localScale.y;
 
-    private void UpdateTopBoundary() {
-        RaycastHit2D topRaycastHit = Physics2D.Raycast(transform.position, transform.up, maxDistance, layers);
-        float localTopBoundaryLength = topRaycastHit.distance;
-        float worldTopBoundaryLength = localTopBoundaryLength / transform.localScale.y;
+        transform.localScale = new Vector2(xScale, boundaryWorldLength + xScale * 2);
 
-        topBoundary.transform.localScale = new Vector2(xScale, worldTopBoundaryLength);
-        topBoundary.transform.localPosition = new Vector2(0, topBoundary.transform.localScale.y / 2);
-    }
+        Vector2 topPosition = raycastHitUp.point;
+        Vector2 bottomPosition = raycastHitDown.point;
+        Vector2 boundaryPosition = (bottomPosition + topPosition) / 2;
 
-    private void UpdateBottomBoundary() {
-        RaycastHit2D bottomRaycastHit = Physics2D.Raycast(transform.position, -transform.up, maxDistance, layers);
-        float localBottomBoundaryLength = bottomRaycastHit.distance;
-        float worldBottomBoundaryLength = localBottomBoundaryLength / transform.localScale.y;
-
-        bottomBoundary.transform.localScale = new Vector2(xScale, worldBottomBoundaryLength);
-        bottomBoundary.transform.localPosition = new Vector2(0, -bottomBoundary.transform.localScale.y / 2);
+        transform.position = boundaryPosition;
     }
 
 }
