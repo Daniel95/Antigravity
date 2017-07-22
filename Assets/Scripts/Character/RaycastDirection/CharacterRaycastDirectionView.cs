@@ -207,12 +207,10 @@ public class CharacterRaycastDirectionView : View, ICharacterRaycastDirection {
         bool rayHit = CheckRaycastOther(inversedRayOrigin, -direction, rayDistance, layers, out raycastHit);
         float inversedRayHitDistance = raycastHit.distance;
 
-        if(rayHit) {
-            float overlapFraction = rayDistance - inversedRayHitDistance;
-            return overlapFraction;
-        } else {
-            return 0;
-        }
+        if (!rayHit) { return 0; }
+
+        float overlapFraction = rayDistance - inversedRayHitDistance;
+        return overlapFraction;
     }
 
     /// <summary>
