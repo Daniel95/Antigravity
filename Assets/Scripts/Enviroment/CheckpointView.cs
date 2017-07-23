@@ -59,16 +59,16 @@ public class CheckpointView : View, ICheckpoint {
         GameObject foundCheckPointBoundaryGameObject = ObjectId.Find(checkPointBoundaryId);
         if(foundCheckPointBoundaryGameObject == null) { return null; }
 
-        CheckpointBoundary foundCheckpointBoundary = foundCheckPointBoundaryGameObject.GetComponent<CheckpointBoundary>();
-        return foundCheckpointBoundary;
+        checkpointBoundary = foundCheckPointBoundaryGameObject.GetComponent<CheckpointBoundary>();
+        return checkpointBoundary;
     }
 
     private CheckpointBoundary GenerateCheckpointBoundary() {
         CheckpointBoundary checkPointBoundaryPrefab = Resources.Load<CheckpointBoundary>(CHECKPOINT_BOUNDARY_PREFAB_PATH);
-        CheckpointBoundary checkPointBoundary = Instantiate(checkPointBoundaryPrefab);
-        ObjectId checkpointBoundaryObjectId = checkPointBoundary.gameObject.GetComponent<ObjectId>();
+        checkpointBoundary = Instantiate(checkPointBoundaryPrefab);
+        ObjectId checkpointBoundaryObjectId = checkpointBoundary.gameObject.GetComponent<ObjectId>();
         checkpointBoundaryObjectId.GenerateId();
-        return checkPointBoundary;
+        return checkpointBoundary;
     }
 
     private RaycastHit2D GetRaycastHitUp() {
@@ -81,9 +81,11 @@ public class CheckpointView : View, ICheckpoint {
         return raycastHitDown;
     }
 
-    private void Start() {
-        if(ObjectId.Find(checkPointBoundaryId) == null) {
-            Debug.LogWarning("No reference to checkpoint boundary", this);
+    private void Awake() {
+        CheckpointBoundary foundCheckpointBoundary = FindObjectIdCheckpointBoundary();
+
+        if (foundCheckpointBoundary == null) {
+            Debug.LogWarning(name + " Found no reference to checkpoint boundary", this);
         }
     }
 
