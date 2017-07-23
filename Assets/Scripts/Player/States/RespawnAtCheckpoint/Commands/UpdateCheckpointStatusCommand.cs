@@ -5,9 +5,18 @@ public class UpdateCheckpointStatusCommand : Command {
 
     [Inject] private CheckpointStatus checkpointStatus;
 
+    [Inject] private Refs<ICheckpoint> checkpointRefs;
+
     [InjectParameter] private Collider2D collider;
 
     protected override void Execute() {
-        checkpointStatus.ReachedCheckpoint = collider.gameObject;
+        GameObject colliderGameObject = collider.gameObject;
+
+        ICheckpoint checkpoint = checkpointRefs.Find(x => {
+            bool collidedWithThisCheckpoint = colliderGameObject == x.CheckpointGameObject || colliderGameObject == x.CheckpointBoundaryGameObject;
+            return collidedWithThisCheckpoint;
+        });
+
+        checkpointStatus.ReachedCheckpoint = checkpoint.CheckpointGameObject;
     }
 }

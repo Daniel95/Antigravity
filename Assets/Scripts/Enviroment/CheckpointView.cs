@@ -1,24 +1,46 @@
 ﻿using UnityEngine;
 using System.Collections;
+using IoCPlus;
 
-public class CheckpointView : MonoBehaviour {
+public class CheckpointView : View, ICheckpoint {
+
+    public GameObject CheckpointGameObject { get { return gameObject; } }
+    public GameObject CheckpointBoundaryGameObject { get { return checkpointBoundary.gameObject; } }
 
     [SerializeField] private LayerMask raycastLayers;
     [SerializeField] private float maxRaycastDistance = 30;
+    [SerializeField] private string checkPointBoundaryId;
+
+    [Inject] private Refs<ICheckpoint> checkpointRefs;
 
     private const string CHECKPOINT_BOUNDARY_PREFAB_PATH = "Enviroment/CheckpointBoundary";
 
-    [SerializeField] private string checkPointBoundaryId;
-
+    private CheckpointBoundary checkpointBoundary;
     private Coroutine drawDebugBoundaryCoroutine;
 
-    [ContextMenu("GenerateBoundary")]
-    private void GenerateBoundary() {
-        CheckpointBoundary checkpointBoundary = GetCheckpointBoundary();
-        checkpointBoundary.UpdateBoundary(transform, GetRaycastHitUp(), GetRaycastHitDown());
-        Debug.Log(name + " generates a boundary at " + checkpointBoundary.transform.position);
+    public override void Initialize() {
+        checkpointRefs.Add(this);
     }
 
+    public override void Dispose() {
+        checkpointRefs.Remove(this);
+    }
+
+    protected override void OnDestroy() {
+        CheckpointBoundary checkpointBoundary = FindObjectIdCheckpointBoundary();
+        if(checkpointBoundary == null) { return; }
+        if (Application.isPlaying) {
+            Destroy(checkpointBoundary.gameObject);
+        } else {
+            DestroyImmediate(checkpointBoundary.gameObject);
+        }
+    }
+
+    [ContextMenu("Generate Boundary")]
+    private void GenerateBoundary() {
+        checkpointBoundary = GetCheckpointBoundary();
+        checkpointBoundary.UpdateBoundary(transform, GetRaycastHitUp(), GetRaycastHitDown());
+    }
 
     private CheckpointBoundary GetCheckpointBoundary() {
         if(!string.IsNullOrEmpty(checkPointBoundaryId)) {
@@ -67,29 +89,16 @@ public class CheckpointView : MonoBehaviour {
     }
 
     private void Awake() {
+        DestroyAllBoundaries();
         GenerateBoundary();
     }
 
     private void OnValidate() {
-        UnityEditor.EditorApplication.delayCall += () => {
-            GenerateBoundary();
-            StartDrawDebugBoundaries();
-        };
-    }
-
-    private void Reset() {
-        GenerateBoundary();
         StartDrawDebugBoundaries();
     }
 
-    private void OnDestroy() {
-        CheckpointBoundary checkpointBoundary = FindObjectIdCheckpointBoundary();
-        if(checkpointBoundary == null) { return; }
-        if (Application.isPlaying) {
-            Destroy(checkpointBoundary.gameObject);
-        } else {
-            DestroyImmediate(checkpointBoundary.gameObject);
-        }
+    private void Reset() {
+        StartDrawDebugBoundaries();
     }
 
     private void StartDrawDebugBoundaries() {

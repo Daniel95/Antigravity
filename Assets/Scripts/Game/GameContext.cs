@@ -80,6 +80,8 @@ public class GameContext : Context {
         Bind<Ref<ISlowTime>>();
         Bind<Ref<IPlayerGrappling>>();
 
+        Bind<Refs<ICheckpoint>>();
+
         BindLabeled<Ref<ICharacterDirectionPointer>>(Label.Player);
         BindLabeled<Ref<ICharacterCollisionDirection>>(Label.Player);
         BindLabeled<Ref<ICharacterVelocity>>(Label.Player);
