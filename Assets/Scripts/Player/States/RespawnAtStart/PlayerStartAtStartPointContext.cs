@@ -6,7 +6,7 @@ public class PlayerStartAtStartPointContext : Context {
         base.SetBindings();
 
         On<EnterContextSignal>()
-            .Do<SetPlayerStateStatusCommand>(PlayerStateStatus.PlayerState.RespawnAtStart)
+            .Do<SetPlayerStateStatusCommand>(PlayerState.RespawnAtStart)
             .Do<PlayerSetPositionToStartPointPositionCommand>()
             .Do<PlayerSetSavedDirectionToStartDirectionCommand>()
             .Do<PlayerSetMoveDirectionToStartDirectionCommand>()

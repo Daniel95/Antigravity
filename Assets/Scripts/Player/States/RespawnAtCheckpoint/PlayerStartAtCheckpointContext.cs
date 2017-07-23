@@ -6,7 +6,7 @@ public class PlayerStartAtCheckpointContext : Context {
         base.SetBindings();
 
         On<EnterContextSignal>()
-            .Do<SetPlayerStateStatusCommand>(PlayerStateStatus.PlayerState.RespawnAtCheckpoint)
+            .Do<SetPlayerStateStatusCommand>(PlayerState.RespawnAtCheckpoint)
             .Do<PlayerResetVelocityCommand>()
             .Do<PlayerSetDirectionalMovementCommand>(false)
             .Do<EnableInputCommand>(false)

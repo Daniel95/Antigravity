@@ -6,7 +6,7 @@ public class PlayerGrapplingContext : Context {
         base.SetBindings();
 
         On<EnterContextSignal>()
-            .Do<SetPlayerStateStatusCommand>(PlayerStateStatus.PlayerState.Grappling)
+            .Do<SetPlayerStateStatusCommand>(PlayerState.Grappling)
             .Do<PlayerSetDirectionalMovementCommand>(false)
             .Do<StartUpdatePlayerGrapplingCommand>();
 

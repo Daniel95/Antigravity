@@ -6,7 +6,7 @@ public class PlayerSlidingContext : Context {
         base.SetBindings();
 
         On<EnterContextSignal>()
-            .Do<SetPlayerStateStatusCommand>(PlayerStateStatus.PlayerState.Sliding)
+            .Do<SetPlayerStateStatusCommand>(PlayerState.Sliding)
             .Do<PlayerSetDirectionalMovementCommand>(true);
 
         On<HookProjectileMoveTowardsOwnerCompletedEvent>()

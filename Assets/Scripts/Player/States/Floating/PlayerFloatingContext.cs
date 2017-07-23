@@ -6,7 +6,7 @@ public class PlayerFloatingContext : Context {
         base.SetBindings();
 
         On<EnterContextSignal>()
-            .Do<SetPlayerStateStatusCommand>(PlayerStateStatus.PlayerState.Floating)
+            .Do<SetPlayerStateStatusCommand>(PlayerState.Floating)
             .Do<PlayerSetDirectionalMovementCommand>(true);
 
         On<HookProjectileMoveTowardsOwnerCompletedEvent>()
