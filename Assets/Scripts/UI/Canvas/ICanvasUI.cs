@@ -4,8 +4,8 @@ using UnityEngine;
 public interface ICanvasUI {
 
     Transform GetCanvasLayerTransform(CanvasLayer canvasLayer);
-    void AddChildToCanvasLayer(GameObject child, CanvasLayer layer);
-    void DestroyCanvasLayerChild(GameObject child, string id, CanvasLayer canvasLayer, Action onDestroyCompleted = null);
-    GameObject GetCanvasLayerChild(string id, CanvasLayer canvasLayer);
+    void AddChildToCanvasLayer(GameObject child, CanvasLayer layer, string key);
+    void DestroyCanvasLayerChild(GameObject child, CanvasLayer canvasLayer, string key, Action onDestroyCompleted = null);
+    GameObject GetCanvasLayerChild(CanvasLayer canvasLayer, string key);
 
 }

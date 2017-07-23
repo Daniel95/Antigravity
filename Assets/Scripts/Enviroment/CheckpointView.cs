@@ -9,7 +9,7 @@ public class CheckpointView : View, ICheckpoint {
 
     [SerializeField] private LayerMask raycastLayers;
     [SerializeField] private float maxRaycastDistance = 30;
-    [SerializeField] private string checkPointBoundaryId;
+    [SerializeField] [ObjectIdRef] private string checkPointBoundaryId;
 
     [Inject] private Refs<ICheckpoint> checkpointRefs;
 
@@ -36,7 +36,7 @@ public class CheckpointView : View, ICheckpoint {
         }
     }
 
-    [ContextMenu("Generate Boundary")]
+    [ContextMenu("Spawn Checkpoint Boundary")]
     private void GenerateBoundary() {
         checkpointBoundary = GetCheckpointBoundary();
         checkpointBoundary.UpdateBoundary(transform, GetRaycastHitUp(), GetRaycastHitDown());
@@ -56,17 +56,11 @@ public class CheckpointView : View, ICheckpoint {
     }
 
     private CheckpointBoundary FindObjectIdCheckpointBoundary() {
-        ObjectId[] objectIds = FindObjectsOfType<ObjectId>();
+        GameObject foundCheckPointBoundaryGameObject = ObjectId.Find(checkPointBoundaryId);
+        if(foundCheckPointBoundaryGameObject == null) { return null; }
 
-        foreach (ObjectId objectId in objectIds) {
-            if (objectId.Id == checkPointBoundaryId) {
-                GameObject objectIdGameObject = objectId.gameObject;
-                CheckpointBoundary foundCheckPointBoundary = objectIdGameObject.GetComponent<CheckpointBoundary>();
-                return foundCheckPointBoundary;
-            }
-        }
-
-        return null;
+        CheckpointBoundary foundCheckpointBoundary = foundCheckPointBoundaryGameObject.GetComponent<CheckpointBoundary>();
+        return foundCheckpointBoundary;
     }
 
     private CheckpointBoundary GenerateCheckpointBoundary() {
@@ -74,7 +68,6 @@ public class CheckpointView : View, ICheckpoint {
         CheckpointBoundary checkPointBoundary = Instantiate(checkPointBoundaryPrefab);
         ObjectId checkpointBoundaryObjectId = checkPointBoundary.gameObject.GetComponent<ObjectId>();
         checkpointBoundaryObjectId.GenerateId();
-        checkPointBoundaryId = checkpointBoundaryObjectId.Id;
         return checkPointBoundary;
     }
 
@@ -88,9 +81,10 @@ public class CheckpointView : View, ICheckpoint {
         return raycastHitDown;
     }
 
-    private void Awake() {
-        DestroyAllBoundaries();
-        GenerateBoundary();
+    private void Start() {
+        if(ObjectId.Find(checkPointBoundaryId) == null) {
+            Debug.LogWarning("No reference to checkpoint boundary", this);
+        }
     }
 
     private void OnValidate() {
@@ -98,6 +92,7 @@ public class CheckpointView : View, ICheckpoint {
     }
 
     private void Reset() {
+        GenerateBoundary();
         StartDrawDebugBoundaries();
     }
 

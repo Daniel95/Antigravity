@@ -10,18 +10,12 @@ public class DestroyChildInCanvasLayerCommand : Command<string, CanvasLayer> {
     protected override void Execute(string prefabPath, CanvasLayer canvasLayer) {
         GameObject prefab = Resources.Load<GameObject>(prefabPath);
         if (prefab == null) {
-            Debug.LogWarning("Can't instantiate view prefab as no prefab is found at given path '" + prefabPath + "'.");
+            Debug.LogWarning("Can't instantiate view prefab as no prefab is found at given path '" + prefabPath + "'.", prefab);
             return;
         }
 
-        ObjectId objectId = prefab.GetComponent<ObjectId>();
-        if(objectId == null) {
-            Debug.LogWarning("Cant find ObjectId in gameobject of given path '" + prefabPath + "'.");
-            return;
-        }
-
-        GameObject child = canvasUIRef.Get().GetCanvasLayerChild(objectId.Id, canvasLayer);
-        canvasUIRef.Get().DestroyCanvasLayerChild(child, objectId.Id, canvasLayer);
+        GameObject child = canvasUIRef.Get().GetCanvasLayerChild(canvasLayer, prefabPath);
+        canvasUIRef.Get().DestroyCanvasLayerChild(child, canvasLayer, prefabPath);
     }
 }
 

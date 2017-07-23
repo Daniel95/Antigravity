@@ -14,6 +14,6 @@ public class InstantiateViewInCanvasLayerCommand : Command<string, CanvasLayer> 
             return;
         }
         View view = context.InstantiateView(prefab);
-        canvasUIRef.Get().AddChildToCanvasLayer(view.gameObject, canvasLayer);
+        canvasUIRef.Get().AddChildToCanvasLayer(view.gameObject, canvasLayer, prefabPath);
     }
 }
