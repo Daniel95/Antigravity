@@ -8,16 +8,16 @@ public class CheckpointBoundary : MonoBehaviour {
         float boundaryTopLength = raycastHitUp.distance;
         float boundaryBottomLength = raycastHitDown.distance;
 
-        float boundaryLocalLength = boundaryTopLength + boundaryBottomLength;
-        float boundaryWorldLength = boundaryLocalLength / checkPointTransform.localScale.y;
+        float boundaryLength = boundaryTopLength + boundaryBottomLength;
 
-        transform.localScale = new Vector2(xScale, boundaryWorldLength + xScale * 2);
+        transform.localScale = new Vector2(xScale, boundaryLength);
 
         Vector2 topPosition = raycastHitUp.point;
         Vector2 bottomPosition = raycastHitDown.point;
         Vector2 boundaryPosition = (bottomPosition + topPosition) / 2;
 
         transform.position = boundaryPosition;
+        transform.rotation = checkPointTransform.rotation;
     }
 
 }
