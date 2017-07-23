@@ -12,10 +12,10 @@ public class LoadingContext : Context {
         On<EnterContextSignal>()
             .Do<AbortIfCurrentSceneIsSceneCommand>(Scenes.Main)
             .Do<UnloadCurrentSceneOverTimeCommand>()
-            .Dispatch<LoadNextSceneEvent>()
+            .Dispatch<UnloadedCurrentSceneEvent>()
             .OnAbort<DispatchLoadNextSceneEventCommand>();
 
-        On<LoadNextSceneEvent>()
+        On<UnloadedCurrentSceneEvent>()
             .Do<LoadNextSceneOverTimeCommand>()
             .Do<DispatchGoToSceneCompletedEventCommand>();
     }

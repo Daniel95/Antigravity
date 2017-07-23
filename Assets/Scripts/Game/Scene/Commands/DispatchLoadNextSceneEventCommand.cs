@@ -2,7 +2,7 @@
 
 public class DispatchLoadNextSceneEventCommand : Command {
 
-    [Inject] private LoadNextSceneEvent loadNextSceneEvent;
+    [Inject] private UnloadedCurrentSceneEvent loadNextSceneEvent;
 
     protected override void Execute() {
         loadNextSceneEvent.Dispatch();

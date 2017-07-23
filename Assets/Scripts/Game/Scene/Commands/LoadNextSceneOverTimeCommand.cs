@@ -29,4 +29,5 @@ public class LoadNextSceneOverTimeCommand : Command {
 
         Release();
     }
+
 }
