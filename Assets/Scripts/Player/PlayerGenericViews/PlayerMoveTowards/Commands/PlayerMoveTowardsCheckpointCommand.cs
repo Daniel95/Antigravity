@@ -12,6 +12,7 @@ public class PlayerMoveTowardsCheckpointCommand : Command {
     protected override void Execute() {
         playerMoveTowardsRef.Get().StartMovingToTarget(
             checkPointStatus.ReachedCheckpoint.transform.position, 
+            EasingType.EaseOutSine,
             playerMoveTowardsCheckpointCompletedEvent
         );
     }

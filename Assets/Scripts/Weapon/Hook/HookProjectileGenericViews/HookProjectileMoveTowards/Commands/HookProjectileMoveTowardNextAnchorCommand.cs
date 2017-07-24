@@ -13,4 +13,5 @@ public class HookProjectileMoveTowardsNextAnchorCommand : Command {
         Vector2 nextPoint = hookRef.Get().Anchors[hookRef.Get().Anchors.Count - 2].position;
         hookProjectileMoveTowardsRef.Get().StartMovingToTarget(nextPoint, hookProjectileMoveTowardsNextAnchorCompletedEvent);
     }
+
 }

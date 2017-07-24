@@ -17,13 +17,18 @@ public class MoveTowardsView : View, IMoveTowards {
         moveToDirectionCoroutine = StartCoroutine(MoveToDirection(direction));
     }
 
-    public void StartMovingToTarget(Vector2 targetDestination, Signal onMoveTowardsCompletedEvent = null) {
-        StartMovingToTarget(targetDestination, () => onMoveTowardsCompletedEvent.Dispatch());
+    public void StartMovingToTarget(Vector2 targetPosition, Signal onMoveTowardsCompletedEvent = null) {
+        StartMovingToTarget(targetPosition, EasingType.EaseLinear, () => onMoveTowardsCompletedEvent.Dispatch());
     }
 
-    public void StartMovingToTarget(Vector2 targetDestination, Action onMoveTowardsCompleted = null) {
+    public void StartMovingToTarget(Vector2 targetPosition, EasingType easingType = EasingType.EaseLinear, Signal onMoveTowardsCompletedEvent = null) {
+        StartMovingToTarget(targetPosition, easingType, () => onMoveTowardsCompletedEvent.Dispatch());
+    }
+
+    public void StartMovingToTarget(Vector2 targetDestination, EasingType easingType = EasingType.EaseLinear, Action onMoveTowardsCompleted = null) {
         StopMoving();
-        moveToPositionCoroutine = StartCoroutine(MoveToPosition(targetDestination, onMoveTowardsCompleted));
+        Vector2 startPosition = transform.position;
+        moveToPositionCoroutine = StartCoroutine(EasedLerpPosition(startPosition, targetDestination, easingType, onMoveTowardsCompleted));
     }
 
     public void StartMovingToTarget(Transform target, Signal onMoveTowardsCompletedEvent = null) {
@@ -35,19 +40,46 @@ public class MoveTowardsView : View, IMoveTowards {
         moveToTransformCoroutine = StartCoroutine(MoveToTransform(target, onMoveTowardsCompleted));
     }
 
-    private IEnumerator MoveToPosition(Vector2 destination, Action onMoveTowardsCompleted = null) {
+    private IEnumerator EasedLerpPosition(Vector2 start, Vector2 destination, EasingType easingType = EasingType.EaseLinear, Action onFinishMoveAlongPath = null) {
+        float time = 0.0f;
+
+        float fromToOnPathDistance = Vector3.Distance(start, destination);
+
+        float duration = fromToOnPathDistance / speed;
+
+        while (time < duration) {
+            float progress = time / duration;
+            float easedProgress = EasingHelper.Ease(easingType, progress);
+
+            time += Time.deltaTime;
+
+            transform.position = Vector2.Lerp(start, destination, easedProgress);
+
+            yield return new WaitForEndOfFrame();
+        }
+
+        yield return new WaitForEndOfFrame();
+
+        if (onFinishMoveAlongPath != null) {
+            onFinishMoveAlongPath();
+        }
+    }
+
+    /*
+    private IEnumerator MoveToPosition(Vector2 destination, EasingType easingType = EasingType.EaseLinear, Action onMoveTowardsCompleted = null) {
         while (Vector2.Distance(transform.position, destination) > minReachedDistance) {
             transform.position = Vector2.MoveTowards(transform.position, destination, speed * Time.deltaTime);
             yield return null;
         }
 
-        gameObject.transform.position = destination;
+        transform.position = destination;
 
         if (onMoveTowardsCompleted != null) {
             onMoveTowardsCompleted();
         }
         moveToPositionCoroutine = null;
     }
+    */
 
     private IEnumerator MoveToTransform(Transform target, Action onMoveTowardsCompleted = null) {
         while (Vector2.Distance(transform.position, target.position) > minReachedDistance) {
@@ -55,7 +87,7 @@ public class MoveTowardsView : View, IMoveTowards {
             yield return null;
         }
 
-        gameObject.transform.position = target.position;
+        transform.position = target.position;
 
         if (onMoveTowardsCompleted != null) {
             onMoveTowardsCompleted();

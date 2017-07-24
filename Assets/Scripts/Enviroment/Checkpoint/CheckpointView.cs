@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using IoCPlus;
+using UnityEditor;
 
 public class CheckpointView : View, ICheckpoint {
 
@@ -36,7 +37,7 @@ public class CheckpointView : View, ICheckpoint {
         }
     }
 
-    [ContextMenu("Spawn Checkpoint Boundary")]
+    [ContextMenu("Update Checkpoint Boundary")]
     private void GenerateBoundary() {
         checkpointBoundary = GetCheckpointBoundary();
         checkpointBoundary.UpdateBoundary(transform, GetRaycastHitUp(), GetRaycastHitDown());
@@ -68,6 +69,7 @@ public class CheckpointView : View, ICheckpoint {
         checkpointBoundary = Instantiate(checkPointBoundaryPrefab);
         ObjectId checkpointBoundaryObjectId = checkpointBoundary.gameObject.GetComponent<ObjectId>();
         checkpointBoundaryObjectId.GenerateId();
+        EditorGUIUtility.systemCopyBuffer = checkpointBoundaryObjectId.Id;
         return checkpointBoundary;
     }
 
