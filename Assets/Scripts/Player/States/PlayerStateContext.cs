@@ -8,9 +8,6 @@ public class PlayerStateContext : Context {
 
         Bind<PlayerStateStatus>();
 
-        On<EnterContextSignal>()
-            .GotoState<PlayerFloatingContext>();
-
         On<PlayerCollisionEnter2DEvent>()
             .Do<AbortIfPlayerCollidingOrInTriggerWithTagCommand>(Tags.Bouncy)
             .Do<PlayerUpdateCollisionDirectionCommand>()

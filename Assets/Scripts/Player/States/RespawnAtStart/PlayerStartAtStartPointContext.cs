@@ -16,4 +16,5 @@ public class PlayerStartAtStartPointContext : Context {
             .Dispatch<PlayerStartAtStartPointCompletedEvent>();
 
     }
+
 }
