@@ -17,6 +17,11 @@ public class UpdateCheckpointStatusCommand : Command {
             return collidedWithThisCheckpoint;
         });
 
+        if(!checkpoint.Unlocked) {
+            checkpoint.CheckpointUnlockedEffect();
+            checkpoint.Unlocked = true;
+        }
+
         checkpointStatus.ReachedCheckpoint = checkpoint.CheckpointGameObject;
     }
 }

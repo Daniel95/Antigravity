@@ -3,8 +3,10 @@ using System.Collections;
 using IoCPlus;
 using UnityEditor;
 
+[RequireComponent(typeof(AnimatedBody))]
 public class CheckpointView : View, ICheckpoint {
 
+    public bool Unlocked { get { return unlocked; } set { unlocked = value; } }
     public GameObject CheckpointGameObject { get { return gameObject; } }
     public GameObject CheckpointBoundaryGameObject { get { return checkpointBoundary.gameObject; } }
 
@@ -18,6 +20,13 @@ public class CheckpointView : View, ICheckpoint {
 
     private CheckpointBoundary checkpointBoundary;
     private Coroutine drawDebugBoundaryCoroutine;
+    private AnimatedBody animatedBody;
+
+    private bool unlocked;
+
+    public void CheckpointUnlockedEffect() {
+        animatedBody.PopIn();
+    }
 
     public override void Initialize() {
         checkpointRefs.Add(this);
@@ -89,6 +98,10 @@ public class CheckpointView : View, ICheckpoint {
         if (foundCheckpointBoundary == null) {
             Debug.LogWarning(name + " Found no reference to checkpoint boundary", this);
         }
+
+        animatedBody = GetComponent<AnimatedBody>();
+        animatedBody.OriginalScale = transform.localScale;
+        transform.localScale = Vector2.zero;
     }
 
     private void OnValidate() {
