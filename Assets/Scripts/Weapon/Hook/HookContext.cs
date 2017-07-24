@@ -10,11 +10,15 @@ public class HookContext : Context {
             .Do<InstantiateViewPrefabCommand>("Characters/Projectiles/HookProjectile");
 
         On<LeaveContextSignal>()
-            .Do<DeactivateHookCommand>()
             .Do<DestroyHookAnchorsCommand>()
             .Do<DeactivateHookProjectileCommand>()
             .Do<StopUpdatePlayerGrapplingCommand>()
             .Do<HookProjectileDestroyCommand>();
+
+        On<LeaveContextSignal>()
+            .Do<AbortIfPlayerIsNullCommand>()
+            .Do<DeactivateHookCommand>();
+            
 
         On<CancelHookEvent>()
             .Do<StopSlowTimeCommand>()

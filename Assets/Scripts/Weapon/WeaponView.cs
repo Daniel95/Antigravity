@@ -30,4 +30,5 @@ public class WeaponView : View, IWeapon {
 
         return targetPos;
     }
+
 }
