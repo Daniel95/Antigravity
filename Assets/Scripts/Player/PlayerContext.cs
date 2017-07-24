@@ -74,6 +74,7 @@ public class PlayerContext : Context {
 
         On<PlayerDiedEvent>()
             .Dispatch<CancelDragInputEvent>()
+            .Do<HookProjectileStopMoveTowardsCommand>()
             .Do<ShakeInOutCommand>(ShakeType.PlayerDied)
             .Do<InstantiatePrefabOnPlayerPositionCommand>("Effects/DieEffect");
 
