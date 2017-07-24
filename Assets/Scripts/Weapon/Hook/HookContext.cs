@@ -18,7 +18,6 @@ public class HookContext : Context {
         On<LeaveContextSignal>()
             .Do<AbortIfPlayerIsNullCommand>()
             .Do<DeactivateHookCommand>();
-            
 
         On<CancelHookEvent>()
             .Do<StopSlowTimeCommand>()

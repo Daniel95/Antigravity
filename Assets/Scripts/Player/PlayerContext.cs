@@ -15,7 +15,8 @@ public class PlayerContext : Context {
             .Do<EnableWeaponCommand>(true)
             .Do<EnablePlayerJumpCommand>(true)
             .Do<PlayerSetSavedDirectionToStartDirectionCommand>()
-            .Do<PlayerSetMoveDirectionToStartDirectionCommand>();
+            .Do<PlayerSetMoveDirectionToStartDirectionCommand>()
+            .Do<PlayerPointToMoveDirectionCommand>();
 
         On<EnterContextSignal>()
             .Do<AbortIfPlayerSessionStatsStatusLevelDeathsIsZeroCommand>()
