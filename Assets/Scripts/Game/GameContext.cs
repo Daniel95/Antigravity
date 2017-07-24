@@ -109,6 +109,7 @@ public class GameContext : Context {
         Bind<InputStatus>();
         Bind<WeaponStatus>();
         Bind<PlayerJumpStatus>();
+        Bind<PlayerSessionStatsStatus>();
 
         On<EnterContextSignal>()
             .InstantiateView<ApplicationView>()

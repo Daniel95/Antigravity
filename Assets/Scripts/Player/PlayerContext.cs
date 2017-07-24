@@ -18,10 +18,12 @@ public class PlayerContext : Context {
             .Do<PlayerSetMoveDirectionToStartDirectionCommand>();
 
         On<EnterContextSignal>()
+            .Do<AbortIfPlayerSessionStatsStatusLevelDeathsIsZeroCommand>()
             .Do<AbortIfReachedCheckPointIsNullCommand>()
             .Dispatch<PlayerStartAtCheckpointEvent>();
 
         On<EnterContextSignal>()
+            .Do<AbortIfPlayerSessionStatsStatusLevelDeathsIsZeroCommand>()
             .Do<AbortIfReachedCheckPointIsNotNullCommand>()
             .Dispatch<PlayerStartAtStartPointEvent>();
 

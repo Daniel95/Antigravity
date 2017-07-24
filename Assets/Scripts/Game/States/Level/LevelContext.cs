@@ -9,6 +9,7 @@ public class LevelContext : Context {
         Bind<CheckpointStatus>();
 
         On<EnterContextSignal>()
+            .Do<ResetPlayerSessionStatsStatusLevelDeaths>()
             .Do<SetCheckpointToNullCommand>()
             .AddContext<LevelUIContext>()
             .GotoState<PlayerContext>()
@@ -19,6 +20,7 @@ public class LevelContext : Context {
 
         OnChild<PlayerContext, PlayerRespawnEvent>()
             .Do<WaitFramesCommand>(1)
+            .Do<IncreasePlayerSessionStatsStatusLevelDeathsCommand>()
             .GotoState<PlayerContext>()
             .Do<SetCameraTargetCommand>()
             .Do<EnableFollowCameraCommand>(true);
