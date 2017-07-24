@@ -65,22 +65,6 @@ public class MoveTowardsView : View, IMoveTowards {
         }
     }
 
-    /*
-    private IEnumerator MoveToPosition(Vector2 destination, EasingType easingType = EasingType.EaseLinear, Action onMoveTowardsCompleted = null) {
-        while (Vector2.Distance(transform.position, destination) > minReachedDistance) {
-            transform.position = Vector2.MoveTowards(transform.position, destination, speed * Time.deltaTime);
-            yield return null;
-        }
-
-        transform.position = destination;
-
-        if (onMoveTowardsCompleted != null) {
-            onMoveTowardsCompleted();
-        }
-        moveToPositionCoroutine = null;
-    }
-    */
-
     private IEnumerator MoveToTransform(Transform target, Action onMoveTowardsCompleted = null) {
         while (Vector2.Distance(transform.position, target.position) > minReachedDistance) {
             transform.position = Vector2.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
