@@ -1,58 +1,72 @@
-﻿// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+﻿Shader "Custom/OverlapAbleUnlitAlpha" {
 
-Shader "Custom/OverlapAble"
-{
-	Properties
-	{
-		_StandardColor("StandardColor", Color) = (0, 0, 1, 1)
+	Properties {
+		_Color ("Tint", Color) = (1,1,1,1)
+		_MainTex ("Base (RGB) Trans (A)", 2D) = "white" {}
 	}
-		
-	SubShader
-	{
-		Tags{ "Queue" = "Transparent" "IgnoreProjector" = "True" "RenderType" = "Transparent" }
-		Blend SrcAlpha OneMinusSrcAlpha
+
+	SubShader {
+		Tags {"Queue"="Transparent" "IgnoreProjector"="True" "RenderType"="Transparent"}
 		LOD 100
 
-		Pass
-		{
-			Stencil{
-				Ref 0
-				Comp Equal
-				Pass IncrSat
-				Fail IncrSat
-			}
+		ZWrite Off
+		Blend SrcAlpha OneMinusSrcAlpha
 
+		Stencil{
+			Ref 0
+			Comp Always
+			Pass IncrSat
+			Fail IncrSat
+		}
+
+		Pass {
 			CGPROGRAM
 			#pragma vertex vert
 			#pragma fragment frag
+			#pragma target 2.0
+			#pragma multi_compile_fog
 
 			#include "UnityCG.cginc"
 
-			struct appdata
-			{
+			struct appdata_t {
 				float4 vertex : POSITION;
+				float2 texcoord : TEXCOORD0;
+				UNITY_VERTEX_INPUT_INSTANCE_ID
 			};
 
-			struct v2f
-			{
+			struct v2f {
 				float4 vertex : SV_POSITION;
+				float2 texcoord : TEXCOORD0;
+				UNITY_FOG_COORDS(1)
+				UNITY_VERTEX_OUTPUT_STEREO
 			};
 
-			v2f vert(appdata v)
+			sampler2D _MainTex;
+			float4 _MainTex_ST;
+
+			v2f vert (appdata_t v)
 			{
 				v2f o;
+				UNITY_SETUP_INSTANCE_ID(v);
+				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
 				o.vertex = UnityObjectToClipPos(v.vertex);
+				o.texcoord = TRANSFORM_TEX(v.texcoord, _MainTex);
+				UNITY_TRANSFER_FOG(o,o.vertex);
 				return o;
 			}
 
-			fixed4 _StandardColor;
+			float4 _Color;
 
-			fixed4 frag(v2f i) : SV_Target
+			fixed4 frag (v2f i) : SV_Target
 			{
-				fixed4 col = _StandardColor;
-				return col;
+				fixed4 col = tex2D(_MainTex, i.texcoord);
+				UNITY_APPLY_FOG(i.fogCoord, col);
+				return col * _Color;
 			}
 			ENDCG
 		}
 	}
+
+	Fallback "Legacy Shaders/Transparent/VertexLit"
+
 }
