@@ -126,7 +126,7 @@ public class GameContext : Context {
             .GotoState<MainMenuUIContext>();
 
         OnChild<LoadingContext, GoToSceneCompletedEvent>()
-            .Do<AbortIfSceneIsScenesCommand>(new List<Scenes>() { Scenes.MainMenu, Scenes.LevelSelect })
+            .Do<AbortIfSceneIsNotALevelCommand>()
             .GotoState<LevelContext>();
 
         OnChild<LoadingContext, GoToSceneCompletedEvent>()
