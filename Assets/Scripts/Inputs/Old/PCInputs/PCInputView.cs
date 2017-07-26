@@ -14,7 +14,7 @@ public class PCInputView : View, IPCInput {
     [Inject] private RawCancelDragInputEvent rawCancelDragInputEvent;
     [Inject] private RawDraggingInputEvent rawDraggingInputEvent;
     [Inject] private RawHoldingInputEvent rawHoldingInputEvent;
-    [Inject] private RawJumpInputEvent rawJumpInputEvent;
+    [Inject] private RawTapInputEvent rawTapInputEvent;
     [Inject] private RawReleaseInDirectionInputEvent rawReleaseInDirectionInputEvent;
     [Inject] private RawReleaseInputEvent rawReleaseInputEvent;
     [Inject] private RawTappedExpiredInputEvent rawTappedExpiredInputEvent;
@@ -45,7 +45,7 @@ public class PCInputView : View, IPCInput {
     private IEnumerator InputUpdate() {
         while (true) {
             if (Input.GetKeyDown(jumpInput)) {
-                rawJumpInputEvent.Dispatch();
+                rawTapInputEvent.Dispatch();
             }
 
             if (Input.GetKeyDown(aimInput) && !InputHelper.CheckUICollision(Input.mousePosition)) {

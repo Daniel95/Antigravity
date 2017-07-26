@@ -20,7 +20,7 @@ public class InputContext : Context {
             .Do<EnableMobileInputCommand>(false)
             .Do<EnablePCInputCommand>(true);
 
-        On<RawJumpInputEvent>()
+        On<RawTapInputEvent>()
             .Do<AbortIfInputIsNotEnabledCommand>()
             .Dispatch<JumpInputEvent>();
 

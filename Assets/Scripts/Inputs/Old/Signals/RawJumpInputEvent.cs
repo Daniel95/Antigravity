@@ -1,3 +1,3 @@
 using IoCPlus;
 
-public class RawJumpInputEvent : Signal { }
+public class RawTapInputEvent : Signal { }

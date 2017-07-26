@@ -37,7 +37,7 @@ public class GameContext : Context {
         Bind<RawCancelDragInputEvent>();
         Bind<RawDraggingInputEvent>();
         Bind<RawHoldingInputEvent>();
-        Bind<RawJumpInputEvent>();
+        Bind<RawTapInputEvent>();
         Bind<RawReleaseInDirectionInputEvent>();
         Bind<RawReleaseInputEvent>();
         Bind<RawTappedExpiredInputEvent>();
@@ -52,6 +52,32 @@ public class GameContext : Context {
         Bind<EnterGrapplingHookContextEvent>();
         Bind<UpdateGrapplingHookRopeEvent>();
         Bind<EnterPullingHookContextSignal>();
+
+        Bind<TapEvent>();
+        Bind<TwistEvent>();
+        Bind<DragStartedEvent>();
+        Bind<DragMovedEvent>();
+        Bind<DragStoppedEvent>();
+        Bind<SwipedLeftEvent>();
+        Bind<SwipedRightEvent>();
+        Bind<SwipeMovedEvent>();
+        Bind<SwipeEndEvent>();
+        Bind<TouchDownEvent>();
+        Bind<TouchStartEvent>();
+        Bind<TouchUpEvent>();
+        Bind<UITouchUpEvent>();
+        Bind<SingleTouchDownEvent>();
+        Bind<SingleTouchStartEvent>();
+        Bind<SingleTouchUpEvent>();
+        Bind<SingleTouchCancelEvent>();
+        Bind<MultiTouchStartEvent>();
+        Bind<MultiTouchDownEvent>();
+        Bind<MultiTouchUpEvent>();
+        Bind<PinchStartedEvent>();
+        Bind<PinchMovedEvent>();
+        Bind<PinchStoppedEvent>();
+        Bind<EmptyTapEvent>();
+        Bind<OutsideUITapEvent>();
 
         Bind<CollisionEnter2DEvent>();
         Bind<CollisionStay2DEvent>();
@@ -79,6 +105,7 @@ public class GameContext : Context {
         Bind<Ref<IGrapplingHook>>();
         Bind<Ref<ISlowTime>>();
         Bind<Ref<IPlayerGrappling>>();
+        Bind<Ref<ITileSpawner>>();
 
         Bind<Refs<ICheckpoint>>();
 
@@ -115,6 +142,7 @@ public class GameContext : Context {
             .InstantiateView<ApplicationView>()
             .InstantiateView<DebugInputView>()
             .Do<LoadGameStateCommand>()
+            .Do<InstantiateViewPrefabCommand>("Components/TouchInput")
             .Do<InstantiateViewPrefabCommand>("UI/Canvas/CanvasUI")
             .Do<InstantiateViewInCanvasLayerCommand>("UI/FPSCounterUI", CanvasLayer.UI)
             .Do<AddCameraContainerViewCommand>()

@@ -74,8 +74,10 @@ public class TouchInputView : View {
 
     private void OnDrag(Gesture gesture) {
         if (isPinching) { return; }
-        dragMovedEvent.Dispatch(new DragMovedEvent.DeltaPosition(gesture.deltaPosition),
-                                new DragMovedEvent.MovePosition(gesture.position));
+        dragMovedEvent.Dispatch(new DragMovedEvent.Parameter() {
+            DeltaPosition = gesture.deltaPosition,
+            Position = gesture.position
+        });
     }
 
     private void OnDragEnd(Gesture gesture) {
@@ -99,8 +101,10 @@ public class TouchInputView : View {
 
     private void OnSwipe(Gesture gesture) {
         if (isPinching) { return; }
-        swipeMovedEvent.Dispatch(new SwipeMovedEvent.DeltaPosition(gesture.deltaPosition),
-                                 new SwipeMovedEvent.MovePosition(gesture.position));
+        swipeMovedEvent.Dispatch(new SwipeMovedEvent.Parameter() {
+            DeltaPosition = gesture.deltaPosition,
+            Position = gesture.position
+        });
     }
 
     private void OnSwipeEnd(Gesture gesture) {

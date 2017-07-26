@@ -13,7 +13,7 @@ public class MobileInputView : View, IMobileInput {
     [Inject] private RawCancelDragInputEvent rawCancelDragInputEvent;
     [Inject] private RawDraggingInputEvent rawDraggingInputEvent;
     [Inject] private RawHoldingInputEvent rawHoldingInputEvent;
-    [Inject] private RawJumpInputEvent rawJumpInputEvent;
+    [Inject] private RawTapInputEvent rawJumpInputEvent;
     [Inject] private RawReleaseInDirectionInputEvent rawReleaseInDirectionInputEvent;
     [Inject] private RawReleaseInputEvent rawReleaseInputEvent;
     [Inject] private RawTappedExpiredInputEvent rawTappedExpiredInputEvent;
