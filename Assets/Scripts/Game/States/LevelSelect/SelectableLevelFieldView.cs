@@ -34,6 +34,16 @@ public class SelectableLevelFieldView : View, ISelectableLevelField {
         selectableLevelFieldRef.Set(this);
     }
 
+    [ContextMenu(("Build Level Select Fields"))]
+    public void BuildLevelSelectFields() {
+        if(Application.isPlaying) {
+            DestroySelectableLevelFields();
+        } else {
+            DestroyImmediateSelectableLevelFields();
+        }
+        GenerateSelectableLevelFields();
+    }
+
     public ISelectableLevel GetSelectableLevelByLevelNumber(int levelNumber) {
         foreach (ISelectableLevel selectableLevel in selectableLevelFieldRef.Get().SelectableLevels.Values) {
             if (selectableLevel.LevelNumber == levelNumber) {
