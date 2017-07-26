@@ -1,4 +1,3 @@
-using System;
 using HedgehogTeam.EasyTouch;
 using IoCPlus;
 using UnityEngine;
@@ -68,6 +67,7 @@ public class TouchInputView : View {
         EasyTouch.On_TouchUp2Fingers -= On_TouchUp2Fingers;
         EasyTouch.On_Twist -= On_Twist;
     }
+
     private void OnDragStart(Gesture gesture) {
         dragStartedEvent.Dispatch(gesture.position);
     }
@@ -171,7 +171,6 @@ public class TouchInputView : View {
 
     private void On_TouchUp2Fingers(Gesture gesture) {
         multiTouchUpEvent.Dispatch(gesture.position);
-
     }
 
 }
