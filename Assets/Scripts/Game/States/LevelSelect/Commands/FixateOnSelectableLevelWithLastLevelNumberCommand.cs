@@ -10,6 +10,6 @@ public class FixateOnSelectableLevelWithLastLevelNumberCommand : Command {
 
     protected override void Execute() {
         ISelectableLevel selectableLevel = selectableLevelFieldRef.Get().GetSelectableLevelByLevelNumber(levelStatus.LastLevelNumber);
-        cameraRef.Get().Position = selectableLevel.WorldPosition;
+        cameraRef.Get().WorldPosition = selectableLevel.WorldPosition;
     }
 }

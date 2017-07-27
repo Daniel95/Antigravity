@@ -1,4 +1,5 @@
 ﻿using IoCPlus;
+using UnityEngine;
 
 public class AbortIfSceneIsNotALevelCommand : Command {
 
@@ -6,6 +7,7 @@ public class AbortIfSceneIsNotALevelCommand : Command {
 
     protected override void Execute() {
         bool currentSceneIsALevel = LevelHelper.CheckIfLevelExistsWithScene(scene);
+
         if (!currentSceneIsALevel) {
             Abort();
         }

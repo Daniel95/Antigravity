@@ -12,8 +12,6 @@ public class SetCameraBoundsCommand : Command {
             Debug.Log("CameraDounds doesn't exist.");
         }
 
-        Debug.Log(cameraRef.Get());
-
         cameraRef.Get().SetCameraBounds(cameraBounds);
     }
 }

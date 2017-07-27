@@ -29,13 +29,14 @@ public class FollowCameraView : View, IFollowCamera {
 
     public void SetTarget(Transform target) {
         this.target = target;
-        Vector2 localTargetPosition = transform.InverseTransformPoint(target.position);
+        Vector2 localTargetPosition = transform.InverseTransformVector(target.position);
+
         transform.position = localTargetPosition;
     }
 
     private IEnumerator FollowUpdate() {
         while (target != null && cameraRef.Get().CameraBounds != null) {
-            Vector2 localTargetPosition = transform.InverseTransformPoint(target.position);
+            Vector2 localTargetPosition = transform.InverseTransformVector(target.position);
             Vector2 delta = localTargetPosition - (Vector2)transform.localPosition;
             Vector2 destination = (Vector2)transform.localPosition + delta;
             Vector2 clampedBoundsDestination = cameraRef.Get().CameraBounds.GetClampedBoundsPosition(destination);
@@ -47,4 +48,5 @@ public class FollowCameraView : View, IFollowCamera {
 
         followUpdateCoroutine = null;
     }
+
 }
