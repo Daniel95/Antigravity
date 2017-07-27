@@ -60,15 +60,15 @@ public class ScreenShake : MonoBehaviour {
     }
 
     private IEnumerator Shake() {
-        Vector2 startPosition = transform.position;
+        Vector2 startPosition = transform.localPosition;
 
         while (shakeStrength > 0) {
             Vector2 randomizedOffset = MathHelper.GetRandomizedVector2(-shakeStrength, shakeStrength);
-            transform.position = startPosition + randomizedOffset;
+            transform.localPosition = startPosition + randomizedOffset;
             yield return new WaitForEndOfFrame();
         }
 
-        transform.position = startPosition;
+        transform.localPosition = startPosition;
 
         shakeCoroutine = null;
     }
