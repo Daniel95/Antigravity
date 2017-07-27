@@ -6,7 +6,6 @@ using UnityEngine;
 public class CameraView : View, ICamera {
 
     public Vector2 Position { get { return transform.position; } set { transform.position = value; } }
-    public Vector3 StartPosition { get { return startPosition; } }
     public CameraBounds CameraBounds { get { return cameraBounds; } }
 
     [SerializeField] private float pcCameraSize = 10;
@@ -14,30 +13,33 @@ public class CameraView : View, ICamera {
 
     [Inject] private Ref<ICamera> cameraRef;
 
-    private new Camera camera;
-    private Vector3 startPosition;
+    private Camera cameraComponent;
     private CameraBounds cameraBounds;
 
     public override void Initialize() {
         cameraRef.Set(this);
-        print("init");
     }
 
     public void SetCameraBounds(CameraBounds cameraBounds) {
         this.cameraBounds = cameraBounds;
 
-        cameraBounds.CameraHeightOffset = camera.orthographicSize;
-        cameraBounds.CameraWidthOffset = cameraBounds.CameraHeightOffset * camera.aspect;
+        cameraBounds.CameraHeightOffset = cameraComponent.orthographicSize;
+        cameraBounds.CameraWidthOffset = cameraBounds.CameraHeightOffset * cameraComponent.aspect;
+        Vector2 clampedBoundsPosition = cameraBounds.GetClampedBoundsPosition(transform.position);
+        Vector2 localClampedBoundsPosition = transform.InverseTransformPoint(clampedBoundsPosition);
+
+        Debug.Log("setbounds");
+        transform.localPosition = localClampedBoundsPosition;
     }
 
     private void Awake() {
-        camera = GetComponent<Camera>();
-        startPosition = transform.position;
+        cameraComponent = GetComponent<Camera>();
 
         if (PlatformHelper.PlatformIsMobile) {
-            camera.orthographicSize = mobileCameraSize;
+            cameraComponent.orthographicSize = mobileCameraSize;
         } else {
-            camera.orthographicSize = pcCameraSize;
+            cameraComponent.orthographicSize = pcCameraSize;
         }
     }
+
 }

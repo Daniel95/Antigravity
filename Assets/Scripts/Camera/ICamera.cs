@@ -2,7 +2,6 @@
 
 public interface ICamera {
 
-    Vector3 StartPosition { get; }
     Vector2 Position { get; set; }
     CameraBounds CameraBounds { get; }
 

@@ -29,15 +29,18 @@ public class FollowCameraView : View, IFollowCamera {
 
     public void SetTarget(Transform target) {
         this.target = target;
-        transform.position = new Vector3(target.position.x, target.position.y, cameraRef.Get().StartPosition.z);
+        Vector2 localTargetPosition = transform.InverseTransformPoint(target.position);
+        transform.position = localTargetPosition;
     }
 
     private IEnumerator FollowUpdate() {
         while (target != null && cameraRef.Get().CameraBounds != null) {
-            Vector2 delta = target.position - transform.position;
-            Vector2 destination = (Vector2)transform.position + delta;
-            Vector2 nextPos = Vector2.SmoothDamp(transform.position, cameraRef.Get().CameraBounds.GetClampedBoundsPosition(destination), ref velocity, smoothness, Mathf.Infinity, Time.deltaTime);
-            transform.position = new Vector3(nextPos.x, nextPos.y, cameraRef.Get().StartPosition.z);
+            Vector2 localTargetPosition = transform.InverseTransformPoint(target.position);
+            Vector2 delta = localTargetPosition - (Vector2)transform.localPosition;
+            Vector2 destination = (Vector2)transform.localPosition + delta;
+            Vector2 clampedBoundsDestination = cameraRef.Get().CameraBounds.GetClampedBoundsPosition(destination);
+            Vector2 nextPos = Vector2.SmoothDamp(transform.localPosition, clampedBoundsDestination, ref velocity, smoothness, Mathf.Infinity, Time.deltaTime);
+            transform.localPosition = nextPos;
 
             yield return null;
         }
