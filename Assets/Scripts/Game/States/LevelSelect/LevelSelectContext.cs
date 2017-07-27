@@ -14,12 +14,14 @@ public class LevelSelectContext : Context {
             .Do<UnlockNeighboursOfFinishedSelectableLevelsCommand>()
             .Do<ApplySelectableLevelValuesCommand>()
             .Do<SetCameraBoundsCommand>()
-            .Do<EnableFollowCameraCommand>(false)
-            .Do<EnableDragCameraCommand>(true);
+            .Do<EnableCameraMoveInputCommand>(true);
 
         On<EnterContextSignal>()
             .Do<AbortIfLastLevelIsZeroCommand>()
             .Do<FixateOnSelectableLevelWithLastLevelNumberCommand>();
+
+        On<LeaveContextSignal>()
+            .Do<EnableCameraMoveInputCommand>(false);
     }
 
 }

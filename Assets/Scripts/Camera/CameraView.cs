@@ -1,4 +1,5 @@
 ﻿using IoCPlus;
+using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(Camera))]
@@ -19,6 +20,7 @@ public class CameraView : View, ICamera {
 
     public override void Initialize() {
         cameraRef.Set(this);
+        print("init");
     }
 
     public void SetCameraBounds(CameraBounds cameraBounds) {

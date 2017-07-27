@@ -101,6 +101,7 @@ public class TouchInputView : View {
 
     private void OnSwipe(Gesture gesture) {
         if (isPinching) { return; }
+
         swipeMovedEvent.Dispatch(new SwipeMovedEvent.Parameter() {
             DeltaPosition = gesture.deltaPosition,
             Position = gesture.position

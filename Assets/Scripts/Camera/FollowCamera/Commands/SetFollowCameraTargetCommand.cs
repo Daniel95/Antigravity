@@ -1,7 +1,7 @@
 ﻿using IoCPlus;
 using UnityEngine;
 
-public class SetCameraTargetCommand : Command {
+public class SetFollowCameraTargetCommand : Command {
 
     [Inject] private PlayerStatus playerStatus;
     [Inject] private Ref<IFollowCamera> followCameraRef;

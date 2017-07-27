@@ -95,7 +95,7 @@ public class GameContext : Context {
         Bind<Ref<ISelectableLevelField>>();
         Bind<Ref<ICamera>>();
         Bind<Ref<IFollowCamera>>();
-        Bind<Ref<IDragCamera>>();
+        Bind<Ref<ICameraVelocity>>();
         Bind<Ref<IScreenShake>>();
         Bind<Ref<IWeapon>>();
         Bind<Ref<IHook>>();
@@ -130,6 +130,7 @@ public class GameContext : Context {
 
         Bind<Ref<GameStateModel>>();
 
+        Bind<CameraStatus>();
         Bind<LevelStatus>();
         Bind<SceneStatus>();
         Bind<ViewContainerStatus>();
@@ -145,7 +146,7 @@ public class GameContext : Context {
             .Do<InstantiateViewPrefabCommand>("Components/TouchInput")
             .Do<InstantiateViewPrefabCommand>("UI/Canvas/CanvasUI")
             .Do<InstantiateViewInCanvasLayerCommand>("UI/FPSCounterUI", CanvasLayer.UI)
-            .Do<AddCameraContainerViewCommand>()
+            .AddContext<CameraContext>()
             .Do<SetNextSceneToIndicatedSceneCommand>(Scenes.MainMenu)
             .GotoState<LoadingContext>();
 

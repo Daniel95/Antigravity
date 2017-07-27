@@ -17,4 +17,5 @@ public class CameraBounds : View {
     public Vector2 GetClampedBoundsPosition(Vector2 position) {
         return new Vector2(Mathf.Clamp(position.x, leftbound.position.x + cameraWidthOffset, rightBound.position.x - cameraWidthOffset), Mathf.Clamp(position.y, downBound.position.y + cameraHeightOffset, upBound.position.y - cameraHeightOffset));
     }
+
 }

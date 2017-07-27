@@ -13,16 +13,18 @@ public class LevelContext : Context {
             .Do<SetCheckpointToNullCommand>()
             .AddContext<LevelUIContext>()
             .GotoState<PlayerContext>()
-            .Do<SetCameraTargetCommand>()
+            .Do<SetFollowCameraTargetCommand>()
             .Do<SetCameraBoundsCommand>()
-            .Do<EnableDragCameraCommand>(false)
             .Do<EnableFollowCameraCommand>(true);
+
+        On<LeaveContextSignal>()
+            .Do<EnableFollowCameraCommand>(false);
 
         OnChild<PlayerContext, PlayerRespawnEvent>()
             .Do<WaitFramesCommand>(1)
             .Do<IncreasePlayerSessionStatsStatusLevelDeathsCommand>()
             .GotoState<PlayerContext>()
-            .Do<SetCameraTargetCommand>()
+            .Do<SetFollowCameraTargetCommand>()
             .Do<EnableFollowCameraCommand>(true);
     }
 
