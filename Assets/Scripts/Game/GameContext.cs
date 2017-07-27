@@ -163,6 +163,10 @@ public class GameContext : Context {
             .GotoState<LevelEditorContext>();
 
         OnChild<LoadingContext, GoToSceneCompletedEvent>()
+            .Do<AbortIfSceneIsNotSceneCommand>(Scenes.TestLvl)
+            .GotoState<LevelContext>();
+
+        OnChild<LoadingContext, GoToSceneCompletedEvent>()
             .Do<AbortIfSceneIsNotALevelCommand>()
             .GotoState<LevelContext>();
 
