@@ -1,10 +1,9 @@
 ﻿using IoCPlus;
-using System.Collections;
 using UnityEngine;
 
 public class CameraView : View, ICamera {
 
-    public Vector2 WorldPosition { get { return transform.position; } set { transform.position = value; } }
+    public Vector2 WorldPosition { get { return transform.position; } set { transform.position = new Vector3(value.x, value.y, transform.position.z); } }
     public CameraBounds CameraBounds { get { return cameraBounds; } }
 
     [SerializeField] private float pcCameraSize = 10;
