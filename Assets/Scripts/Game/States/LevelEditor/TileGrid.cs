@@ -1,14 +1,31 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class LevelEditorGrid {
+public static class TileGrid {
+
+    public static float NodeSize { get { return tileSize; } }
 
     public static Dictionary<Vector2, TileType> Grid { get { return grid; } set { grid = value; } }
 
     private static Dictionary<Vector2, TileType> grid = new Dictionary<Vector2, TileType>();
 
-    public static Vector2 GetGridPosition(Vector2 position) {
-        return new Vector2(Mathf.RoundToInt(position.x), Mathf.RoundToInt(position.y));
+    private static float tileSize;
+
+    public static Vector2 WorldToGridPosition(Vector2 worldPosition) {
+        Vector2 unroundedGridPosition = worldPosition / tileSize;
+        Vector2 gridPosition = new Vector2(Mathf.Round(unroundedGridPosition.x), Mathf.Round(unroundedGridPosition.y));
+        return gridPosition;
+    }
+
+    public static Vector2 GridToTilePosition(Vector2 gridPosition) {
+        Vector2 tilePosition = gridPosition * tileSize;
+        return tilePosition;
+    }
+
+    public static Vector2 WorldToTilePosition(Vector2 worldPosition) {
+        Vector2 gridPosition = WorldToGridPosition(worldPosition);
+        Vector2 tilePosition = GridToTilePosition(gridPosition);
+        return tilePosition;
     }
 
     public static Dictionary<Vector2, TileType> GetGridPositionNeighbours(Vector2 gridPosition) {
@@ -25,5 +42,9 @@ public class LevelEditorGrid {
         }
 
         return neighbours;
+    }
+
+    public static void SetTileSize(float tileSize) {
+        TileGrid.tileSize = tileSize;
     }
 }

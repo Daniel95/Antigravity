@@ -20,12 +20,16 @@ public class TileSpawnerView : View, ITileSpawner {
     }
 
     public void SpawnTileAtWorldPosition(Vector2 worldPosition) {
-        Vector2 gridPosition = LevelEditorGrid.GetGridPosition(worldPosition);
+        Vector2 tilePosition = TileGrid.WorldToTilePosition(worldPosition);
         Tile tile = tiles[selectedTileIndex];
 
-        LevelEditorGrid.Grid[gridPosition] = tile.Type;
+        TileGrid.Grid[tilePosition] = tile.Type;
         GameObject prefab = tile.Prefab;
-        Instantiate(prefab, gridPosition, new Quaternion());
+        Instantiate(prefab, tilePosition, new Quaternion());
+    }
+
+    private void Awake() {
+        TileGrid.SetTileSize(tiles[0].Prefab.transform.localScale.x);    
     }
 
 }
