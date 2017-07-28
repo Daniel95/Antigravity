@@ -6,8 +6,6 @@ public class TileSpawnerView : View, ITileSpawner {
 
     [Inject] private Ref<ITileSpawner> tileSpawnerRef;
 
-    [SerializeField] private List<Tile> tiles = new List<Tile>();
-
     private int selectedTileIndex = 0;
 
     public override void Initialize() {
@@ -20,16 +18,51 @@ public class TileSpawnerView : View, ITileSpawner {
     }
 
     public void SpawnTileAtWorldPosition(Vector2 worldPosition) {
-        Vector2 tilePosition = TileGrid.WorldToTilePosition(worldPosition);
-        Tile tile = tiles[selectedTileIndex];
+        Vector2 gridPosition = TileGrid.WorldToGridPosition(worldPosition);
+        Vector2 tilePosition = TileGrid.GridToTilePosition(gridPosition);
 
-        TileGrid.Grid[tilePosition] = tile.Type;
-        GameObject prefab = tile.Prefab;
-        Instantiate(prefab, tilePosition, new Quaternion());
+        Tile tile = MakeWallTile(gridPosition);
+
+        TileGrid.Grid[gridPosition] = tile;
+    }
+
+    private Tile MakeWallTile(Vector2 gridPosition) {
+        Tile wallTile = GetTile(TileType.Wall, gridPosition, Vector2.zero);
+        return wallTile;
+    }
+
+    private Tile MakeConvexCorner(Vector2 gridPosition, Vector2 direction) {
+        Tile wallTile = GetTile(TileType.ConvexCorner, gridPosition, direction);
+        return wallTile;
+    }
+
+    private Tile MakeConcaveCorner(Vector2 gridPosition, Vector2 direction) {
+        Tile wallTile = GetTile(TileType.ConcaveCorner, gridPosition, direction);
+        return wallTile;
+    }
+
+    private Tile MakeEnding(Vector2 gridPosition, Vector2 direction) {
+        Tile wallTile = GetTile(TileType.Ending, gridPosition, direction);
+        return wallTile;
+    }
+
+    private Tile GetTile(TileType tileType, Vector2 gridPosition, Vector2 direction) {
+        GameObject prefab = TilePrefabTypeContainer.Instance.GetPrefabByTileType(tileType);
+        Vector2 tilePosition = TileGrid.GridToTilePosition(gridPosition);
+
+        GameObject tileGameObject = Instantiate(prefab, tilePosition, new Quaternion());
+        tileGameObject.transform.forward = direction;
+
+        Tile tile = new Tile() {
+            Type = tileType,
+            GameObject = tileGameObject
+        };
+        return tile;
     }
 
     private void Awake() {
-        TileGrid.SetTileSize(tiles[0].Prefab.transform.localScale.x);    
+        float tileWidth = TilePrefabTypeContainer.Instance.GetPrefabByTileType(TileType.Wall).transform.localScale.x;
+        TileGrid.SetTileSize(tileWidth);    
     }
 
 }
