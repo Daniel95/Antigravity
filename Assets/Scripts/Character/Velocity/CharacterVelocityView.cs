@@ -97,7 +97,7 @@ public class CharacterVelocityView : View, ICharacterVelocity {
 
     public Vector2 GetCeilDirection(Vector2 velocity) {
         Vector2 velocityNormalized = velocity.normalized;
-        Vector2 ceilDirection = new Vector2(Rounding.InvertOnNegativeCeil(velocityNormalized.x), Rounding.InvertOnNegativeCeil(velocityNormalized.y));
+        Vector2 ceilDirection = new Vector2(RoundingHelper.InvertOnNegativeCeil(velocityNormalized.x), RoundingHelper.InvertOnNegativeCeil(velocityNormalized.y));
         return ceilDirection;
     }
 

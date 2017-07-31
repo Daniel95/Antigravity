@@ -13,11 +13,11 @@ public class LevelEditorContext : Context {
             .Do<EnableCameraMoveInputCommand>(false)
             .Do<EnableCameraZoomInputCommand>(false);
 
-        On<TapEvent>()
-            .Do<SpawnTileAtTapPositionCommand>();
+        On<OutsideUITouchStartEvent>()
+            .Do<StartSelectionFieldAtPositionCommand>();
 
         On<SwipeMovedEvent>()
-            .Do<SpawnTileAtSwipePositionCommand>();
+            .Do<UpdateSelectionFieldToSwipePositionCommand>();
 
     }
 

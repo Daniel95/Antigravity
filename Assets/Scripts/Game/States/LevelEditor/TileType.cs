@@ -1,6 +1,7 @@
 ﻿public enum TileType {
 
-    Wall,
+    Default,
+    Solo,
     ConvexCorner,
     ConcaveCorner,
     Ending,

@@ -64,6 +64,7 @@ public class GameContext : Context {
         Bind<SwipeEndEvent>();
         Bind<TouchDownEvent>();
         Bind<TouchStartEvent>();
+        Bind<OutsideUITouchStartEvent>();
         Bind<TouchUpEvent>();
         Bind<UITouchUpEvent>();
         Bind<SingleTouchDownEvent>();
@@ -77,7 +78,6 @@ public class GameContext : Context {
         Bind<PinchMovedEvent>();
         Bind<PinchStoppedEvent>();
         Bind<EmptyTapEvent>();
-        Bind<OutsideUITapEvent>();
 
         Bind<CollisionEnter2DEvent>();
         Bind<CollisionStay2DEvent>();

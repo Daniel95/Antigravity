@@ -48,10 +48,10 @@ public class CharacterCollisionDirectionView : View, ICharacterCollisionDirectio
 
         //the collision will be repesented by its highest axis (x or y)
         if (Mathf.Abs(offset.x) > Mathf.Abs(offset.y)) {
-            roundedCollDir.x = Rounding.InvertOnNegativeCeil(offset.x);
+            roundedCollDir.x = RoundingHelper.InvertOnNegativeCeil(offset.x);
         }
         else {
-            roundedCollDir.y = Rounding.InvertOnNegativeCeil(offset.y);
+            roundedCollDir.y = RoundingHelper.InvertOnNegativeCeil(offset.y);
         }
 
         if (!savedCollisions.ContainsKey(collision.collider)) {

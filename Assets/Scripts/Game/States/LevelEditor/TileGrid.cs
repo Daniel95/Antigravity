@@ -28,12 +28,37 @@ public static class TileGrid {
         return tilePosition;
     }
 
-    public static List<Vector2> GetGridPositionNeighbourPositions(Vector2 gridPosition) {
+    public static List<Vector2> GetSelection(Vector2 selectionStartGridPosition, Vector2 selectionEndGridPosition) {
+        Vector2 offset = selectionEndGridPosition - selectionStartGridPosition;
+        Vector2 direction = offset.normalized;
+        Vector2 straightDirection = new Vector2(RoundingHelper.InvertOnNegativeCeil(direction.x), RoundingHelper.InvertOnNegativeCeil(direction.y));
+        Vector2 selectionSize = new Vector2(Mathf.Abs(offset.x), Mathf.Abs(offset.y));
+
+        List<Vector2> selection = new List<Vector2>();
+
+        for (int xCounter = 0; xCounter <= selectionSize.x; xCounter++) {
+            float xOffset = xCounter * straightDirection.x;
+            float x = selectionStartGridPosition.x + xOffset;
+            for (int yCounter = 0; yCounter <= selectionSize.y; yCounter++) {
+                float yOffset = yCounter * straightDirection.y;
+                float y = selectionStartGridPosition.y + yOffset;
+
+                selection.Add(new Vector2(x, y));
+            }
+        }
+
+        return selection;
+    }
+
+    public static List<Vector2> GetGridPositionNeighbourPositions(Vector2 gridPosition, bool existing = false) {
         List<Vector2> neighbourPositions = new List<Vector2>();
 
-        for (int x = (int)gridPosition.x - 1; x <= gridPosition.x + 1; x += 2) {
-            for (int y = (int)gridPosition.y - 1; y <= gridPosition.y + 1; y += 2) {
+        for (int x = (int)gridPosition.x - 1; x <= gridPosition.x + 1; x++) {
+            for (int y = (int)gridPosition.y - 1; y <= gridPosition.y + 1; y++) {
                 Vector2 neighbourPosition = new Vector2(x, y);
+                if(neighbourPosition == gridPosition) { continue; }
+                if(existing && !grid.ContainsKey(neighbourPosition)) { continue; }
+
                 neighbourPositions.Add(neighbourPosition);
             }
         }
@@ -41,20 +66,43 @@ public static class TileGrid {
         return neighbourPositions;
     }
 
-    public static List<Vector2> GetGridPositionDirectNeighbourPositions(Vector2 gridPosition) {
+    public static List<Vector2> GetGridPositionDirectNeighbourPositions(Vector2 gridPosition, bool existing = false) {
         List<Vector2> directNeighbourPositions = new List<Vector2>();
 
         for (int x = (int)gridPosition.x - 1; x <= gridPosition.x + 1; x += 2) {
             Vector2 neighbourPosition = new Vector2(x, gridPosition.y);
+            if (existing && !grid.ContainsKey(neighbourPosition)) { continue; }
+
             directNeighbourPositions.Add(neighbourPosition);
         }
 
         for (int y = (int)gridPosition.y - 1; y <= gridPosition.y + 1; y += 2) {
             Vector2 neighbourPosition = new Vector2(gridPosition.x, y);
+            if (existing && !grid.ContainsKey(neighbourPosition)) { continue; }
+
             directNeighbourPositions.Add(neighbourPosition);
         }
 
         return directNeighbourPositions;
+    }
+
+    public static List<Vector2> GetGridPositionDirectNeighbourPositions(Vector2 gridPosition, List<Vector2> neighourPositions) {
+        List<Vector2> neighbourPositions = neighourPositions.FindAll(x => gridPosition.x == x.x || gridPosition.y == x.y);
+
+        return neighbourPositions;
+    }
+
+    public static List<Vector2> GetGridPositionIndirectNeighbourPositions(Vector2 gridPosition) {
+        List<Vector2> neighbourPositions = GetGridPositionDirectNeighbourPositions(gridPosition);
+        List<Vector2> indirectNeighbourPositions = neighbourPositions.FindAll(x => gridPosition.x != x.x && gridPosition.y != x.y);
+
+        return indirectNeighbourPositions;
+    }
+
+    public static List<Vector2> GetGridPositionIndirectNeighbourPositions(Vector2 gridPosition, List<Vector2> neighourPositions) {
+        List<Vector2> indirectNeighbourPositions = neighourPositions.FindAll(x => gridPosition.x != x.x && gridPosition.y != x.y);
+
+        return indirectNeighbourPositions;
     }
 
     public static Dictionary<Vector2, Tile> GetGridPositionNeighbours(Vector2 gridPosition) {
@@ -85,4 +133,5 @@ public static class TileGrid {
     public static void SetTileSize(float tileSize) {
         TileGrid.tileSize = tileSize;
     }
+
 }

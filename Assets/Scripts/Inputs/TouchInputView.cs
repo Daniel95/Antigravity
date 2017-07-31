@@ -9,13 +9,13 @@ public class TouchInputView : View {
     [Inject] private DragMovedEvent dragMovedEvent;
     [Inject] private DragStoppedEvent dragStoppedEvent;
     [Inject] private EmptyTapEvent emptyTapEvent;
-    [Inject] private OutsideUITapEvent outsideUITapEvent;
     [Inject] private SwipeMovedEvent swipeMovedEvent;
     [Inject] private SwipedLeftEvent swipedLeftEvent;
     [Inject] private SwipedRightEvent swipedRightEvent;
     [Inject] private SwipeEndEvent swipeEndEvent;
     [Inject] private TouchDownEvent touchDownEvent;
     [Inject] private TouchStartEvent touchStartEvent;
+    [Inject] private OutsideUITouchStartEvent outsideUITouchStartEvent;
     [Inject] private TouchUpEvent touchUpEvent;
     [Inject] private UITouchUpEvent uiTouchUpEvent;
     [Inject] private SingleTouchDownEvent singleTouchDownEvent;
@@ -31,6 +31,8 @@ public class TouchInputView : View {
     [Inject] private TwistEvent twistEvent;
 
     private bool isPinching;
+
+    private int uiLayer;
 
     public override void Initialize() {
         EasyTouch.On_DragStart += OnDragStart;
@@ -93,9 +95,6 @@ public class TouchInputView : View {
         tapEvent.Dispatch(gesture);
         if (gesture.pickedObject == null) {
             emptyTapEvent.Dispatch(gesture.position);
-            outsideUITapEvent.Dispatch(gesture.position);
-        } else if (gesture.pickedObject.GetComponentInParent<Canvas>() == null) {
-            outsideUITapEvent.Dispatch(gesture.position);
         }
     }
 
@@ -131,6 +130,9 @@ public class TouchInputView : View {
         }
         if (gesture.touchCount >= 2) {
             singleTouchCancelEvent.Dispatch();
+        }
+        if (gesture.pickedObject == null || gesture.pickedObject.layer != uiLayer) {
+            outsideUITouchStartEvent.Dispatch(gesture.position);
         }
     }
 
@@ -178,4 +180,7 @@ public class TouchInputView : View {
         multiTouchUpEvent.Dispatch(gesture.position);
     }
 
+    private void Awake() {
+        uiLayer = LayerMask.NameToLayer("UI");
+    }
 }
