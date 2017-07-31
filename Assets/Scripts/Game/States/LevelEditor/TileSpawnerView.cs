@@ -31,17 +31,22 @@ public class TileSpawnerView : View, ITileSpawner {
         selectionFieldPositions.ForEach(x => DestroyTileAtGridPosition(x));
 
         selectionFieldPositions = TileGrid.GetSelection(selectionFieldStartGridPosition, selectionFieldEndGridPosition);
-
-        selectionFieldPositions.ForEach(x => SpawnTileAtGridPosition(x));
+        SpawnTileAtGridPositions(selectionFieldPositions);
     }
 
-    public void FinishSelectionField() {
 
+    public void FinishSelectionField() {
+        selectionFieldPositions.Clear();
     }
 
     public void SpawnTileAtWorldPosition(Vector2 worldPosition) {
         Vector2 gridPosition = TileGrid.WorldToGridPosition(worldPosition);
         SpawnTileAtGridPosition(gridPosition);
+    }
+
+    private void SpawnTileAtGridPositions(List<Vector2> tileGridPositions) {
+        tileGridPositions.ForEach(x => TileGrid.Grid.Add(x, new Tile()));
+        tileGridPositions.ForEach(x => SpawnTileAtGridPosition(x));
     }
 
     private void SpawnTileAtGridPosition(Vector2 gridPosition) {
