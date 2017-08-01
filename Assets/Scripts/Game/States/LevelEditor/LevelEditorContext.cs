@@ -19,6 +19,12 @@ public class LevelEditorContext : Context {
         On<SwipeMovedEvent>()
             .Do<UpdateSelectionFieldToSwipePositionCommand>();
 
+        On<TouchUpEvent>()
+            .Do<FinishSelectionFieldCommand>();
+
+        On<SwipeEndEvent>()
+            .Do<FinishSelectionFieldCommand>();
+
     }
 
 }

@@ -10,7 +10,7 @@ public class Tile {
     public GameObject GameObject;
 
     public void Destroy() {
-        GameObject.DestroyImmediate(GameObject);
+        GameObject.Destroy(GameObject);
     }
 
 }

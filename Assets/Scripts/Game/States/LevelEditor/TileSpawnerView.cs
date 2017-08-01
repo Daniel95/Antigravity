@@ -6,7 +6,7 @@ public class TileSpawnerView : View, ITileSpawner {
 
     [Inject] private Ref<ITileSpawner> tileSpawnerRef;
 
-    private List<Vector2> selectionFieldPositions = new List<Vector2>();
+    private List<Vector2> selectionFieldGridPositions = new List<Vector2>();
     private Vector2 selectionFieldStartGridPosition;
 
     public override void Initialize() {
@@ -28,15 +28,14 @@ public class TileSpawnerView : View, ITileSpawner {
         Vector2 selectionFieldEndWorldScreenPosition = Camera.main.ScreenToWorldPoint(selectionFieldEndScreenPosition);
         Vector2 selectionFieldEndGridPosition = TileGrid.WorldToGridPosition(selectionFieldEndWorldScreenPosition);
 
-        selectionFieldPositions.ForEach(x => DestroyTileAtGridPosition(x));
+        selectionFieldGridPositions.ForEach(x => DestroyTileAtGridPosition(x));
 
-        selectionFieldPositions = TileGrid.GetSelection(selectionFieldStartGridPosition, selectionFieldEndGridPosition);
-        SpawnTileAtGridPositions(selectionFieldPositions);
+        selectionFieldGridPositions = TileGrid.GetSelection(selectionFieldStartGridPosition, selectionFieldEndGridPosition);
+        SpawnTileAtGridPositions(selectionFieldGridPositions);
     }
 
-
     public void FinishSelectionField() {
-        selectionFieldPositions.Clear();
+        selectionFieldGridPositions.Clear();
     }
 
     public void SpawnTileAtWorldPosition(Vector2 worldPosition) {
@@ -45,43 +44,57 @@ public class TileSpawnerView : View, ITileSpawner {
     }
 
     private void SpawnTileAtGridPositions(List<Vector2> tileGridPositions) {
-        tileGridPositions.ForEach(x => TileGrid.Grid.Add(x, new Tile()));
+        tileGridPositions.ForEach(x => TileGrid.SetTile(x, new Tile()));
         tileGridPositions.ForEach(x => SpawnTileAtGridPosition(x));
     }
 
     private void SpawnTileAtGridPosition(Vector2 gridPosition) {
         Tile tile = GenerateTile(gridPosition);
 
-        if (TileGrid.Grid.ContainsKey(gridPosition)) {
-            TileGrid.Grid[gridPosition] = tile;
-        } else {
-            TileGrid.Grid.Add(gridPosition, tile);
-        }
+        TileGrid.SetTile(gridPosition, tile);
 
-        //UpdateNeighbourTiles(gridPosition);
+        CheckForObsoleteConcaveCorners();
+
+        List<Vector2> neighbourPositions = TileGrid.GetGridPositionNeighbourPositions(gridPosition);
+        UpdateGridPositions(neighbourPositions, selectionFieldGridPositions);
     }
 
     private void DestroyTileAtGridPosition(Vector2 gridPosition) {
-        if (!TileGrid.Grid.ContainsKey(gridPosition)) { return; }
-
-        TileGrid.Grid[gridPosition].Destroy();
-        TileGrid.Grid.Remove(gridPosition);
+        if (!TileGrid.ContainsPosition(gridPosition)) { return; }
+        TileGrid.RemoveTile(gridPosition);
     }
 
-    private void UpdateNeighbourTiles(Vector2 gridPosition) {
-        List<Vector2> neighbourPositions = TileGrid.GetGridPositionNeighbourPositions(gridPosition);
+    private void UpdateGridPositions(List<Vector2> gridPositions, List<Vector2> excludedGridPositions = null) {
+        foreach (Vector2 gridPosition in gridPositions) {
+            bool gridPositionIsExcluded = excludedGridPositions != null && excludedGridPositions.Contains(gridPosition);
+            if (gridPositionIsExcluded) { continue; }
 
-        foreach (Vector2 neighbourPosition in neighbourPositions) {
-            if(TileGrid.Grid.ContainsKey(neighbourPosition)) { continue; }
-            Vector2 cornerDirection;
-            if(CheckForCorner(neighbourPosition, out cornerDirection)) {
-                TileGrid.Grid.Add(neighbourPosition, MakeConvexCorner(neighbourPosition, -cornerDirection));
+            if(TileGrid.ContainsPosition(gridPosition)) {
+                Tile tile = GenerateTile(gridPosition);
+                TileGrid.UpdateTile(gridPosition, tile);
+            } else {
+                Vector2 cornerDirection;
+                if(CheckForCorner(gridPosition, out cornerDirection)) {
+                    Tile tile = MakeConvexCorner(gridPosition, -cornerDirection);
+                    TileGrid.AddTile(gridPosition, tile);
+                }
             }
         }
     }
 
+    private void CheckForObsoleteConcaveCorners() {
+        List<Vector2> concavePositions = TileGrid.GetGridPositionsByTileType(TileType.ConcaveCorner);
+        foreach (Vector2 concavePosition in concavePositions) {
+            Vector2 cornerDirection;
+            if (!CheckForCorner(concavePosition, out cornerDirection)) {
+                TileGrid.RemoveTile(concavePosition);
+            }
+        }
+    }
+
+    //tiles are not being spawned on empty grid spaces since we are not checking it.
     private Tile GenerateTile(Vector2 gridPosition) {
-        List<Vector2> neighourPositions = TileGrid.GetGridPositionNeighbourPositions(gridPosition, true);
+        List<Vector2> neighourPositions = TileGrid.GetGridPositionNeighbourPositions(gridPosition, 1, true);
         List<Vector2> directNeighbourPositions = TileGrid.GetGridPositionDirectNeighbourPositions(gridPosition, neighourPositions);
 
         if (neighourPositions.Count <= 0 || directNeighbourPositions.Count <= 0) { return MakeSoloTile(gridPosition); }
@@ -109,9 +122,9 @@ public class TileSpawnerView : View, ITileSpawner {
     private bool CheckForCorner(Vector2 gridPosition, out Vector2 cornerDirection) {
         cornerDirection = Vector2.zero;
 
-        if (TileGrid.Grid.ContainsKey(gridPosition)) { return false; }
+        if (TileGrid.ContainsPosition(gridPosition)) { return false; }
 
-        List<Vector2> neighourPositions = TileGrid.GetGridPositionNeighbourPositions(gridPosition, true);
+        List<Vector2> neighourPositions = TileGrid.GetGridPositionNeighbourPositions(gridPosition, 1, true);
         List<Vector2> directNeighbourPositions = TileGrid.GetGridPositionDirectNeighbourPositions(gridPosition, neighourPositions);
 
         List<Vector2> horizontalNeighbourPositions = directNeighbourPositions.FindAll(x => gridPosition.x == x.x);

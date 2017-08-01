@@ -5,11 +5,59 @@ public static class TileGrid {
 
     public static float NodeSize { get { return tileSize; } }
 
-    public static Dictionary<Vector2, Tile> Grid { get { return grid; } set { grid = value; } }
-
     private static Dictionary<Vector2, Tile> grid = new Dictionary<Vector2, Tile>();
 
     private static float tileSize;
+
+    public static List<Vector2> GetGridPositions() {
+        return new List<Vector2>(grid.Keys);
+    }
+
+    public static Tile GetTile(Vector2 gridPosition) {
+        return grid[gridPosition];
+    }
+
+    public static List<Vector2> GetGridPositionsByTileType(TileType tileType) {
+        List<Vector2> gridPositions = GetGridPositions();
+        List<Vector2> gridPositionsWithType = gridPositions.FindAll(x => grid[x].Type == tileType);
+
+        return gridPositionsWithType;
+    }
+
+    public static void SetTile(Vector2 gridPosition, Tile tile) {
+        if(grid.ContainsKey(gridPosition)) {
+            RemoveTile(gridPosition);
+            grid.Add(gridPosition, tile);
+        } else {
+            grid[gridPosition] = tile;
+        }
+    }
+
+    public static void UpdateTile(Vector2 gridPosition, Tile tile) {
+        Tile oldTile = grid[gridPosition];
+        oldTile.Destroy();
+        grid[gridPosition] = tile;
+    }
+
+    public static void AddTile(Vector2 gridPosition, Tile tile) {
+        grid.Add(gridPosition, tile);
+    }
+
+    public static void Clear() {
+        foreach (Vector2 gridPosition in grid.Keys) {
+            grid[gridPosition].Destroy();
+        }
+        grid.Clear();
+    }
+
+    public static void RemoveTile(Vector2 gridPosition) {
+        grid[gridPosition].Destroy();
+        grid.Remove(gridPosition);
+    }
+
+    public static bool ContainsPosition(Vector2 gridPosition) {
+        return grid.ContainsKey(gridPosition);
+    }
 
     public static Vector2 WorldToGridPosition(Vector2 worldPosition) {
         Vector2 unroundedGridPosition = worldPosition / tileSize;
@@ -50,11 +98,11 @@ public static class TileGrid {
         return selection;
     }
 
-    public static List<Vector2> GetGridPositionNeighbourPositions(Vector2 gridPosition, bool existing = false) {
+    public static List<Vector2> GetGridPositionNeighbourPositions(Vector2 gridPosition, int maxNeighbourOffset = 1, bool existing = false) {
         List<Vector2> neighbourPositions = new List<Vector2>();
 
-        for (int x = (int)gridPosition.x - 1; x <= gridPosition.x + 1; x++) {
-            for (int y = (int)gridPosition.y - 1; y <= gridPosition.y + 1; y++) {
+        for (int x = (int)gridPosition.x - maxNeighbourOffset; x <= gridPosition.x + maxNeighbourOffset; x++) {
+            for (int y = (int)gridPosition.y - maxNeighbourOffset; y <= gridPosition.y + maxNeighbourOffset; y++) {
                 Vector2 neighbourPosition = new Vector2(x, y);
                 if(neighbourPosition == gridPosition) { continue; }
                 if(existing && !grid.ContainsKey(neighbourPosition)) { continue; }
@@ -66,18 +114,20 @@ public static class TileGrid {
         return neighbourPositions;
     }
 
-    public static List<Vector2> GetGridPositionDirectNeighbourPositions(Vector2 gridPosition, bool existing = false) {
+    public static List<Vector2> GetGridPositionDirectNeighbourPositions(Vector2 gridPosition, int maxNeighbourOffset = 1, bool existing = false) {
         List<Vector2> directNeighbourPositions = new List<Vector2>();
 
-        for (int x = (int)gridPosition.x - 1; x <= gridPosition.x + 1; x += 2) {
+        for (int x = (int)gridPosition.x - maxNeighbourOffset; x <= gridPosition.x + maxNeighbourOffset; x++) {
             Vector2 neighbourPosition = new Vector2(x, gridPosition.y);
+            if (neighbourPosition == gridPosition) { continue; }
             if (existing && !grid.ContainsKey(neighbourPosition)) { continue; }
 
             directNeighbourPositions.Add(neighbourPosition);
         }
 
-        for (int y = (int)gridPosition.y - 1; y <= gridPosition.y + 1; y += 2) {
+        for (int y = (int)gridPosition.y - maxNeighbourOffset; y <= gridPosition.y + maxNeighbourOffset; y++) {
             Vector2 neighbourPosition = new Vector2(gridPosition.x, y);
+            if (neighbourPosition == gridPosition) { continue; }
             if (existing && !grid.ContainsKey(neighbourPosition)) { continue; }
 
             directNeighbourPositions.Add(neighbourPosition);
