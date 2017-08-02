@@ -3,22 +3,42 @@ using UnityEngine;
 
 public class NeighbourAmountTileCondition : AmountTileCondition {
 
-    private const string AMOUNT_TYPE_NAME = "Neighbour";
+    [SerializeField] private bool solid = true;
 
-    public override bool Check(Vector2 gridPosition, GeneratePhase generatePhase) {
+    private const string AMOUNT_TYPE_NAME = "Neighbour";
+    private const string SOLID_NAME = "Solid";
+
+    public override bool Check(Vector2 gridPosition) {
         List<Vector2> neighbourPositions = TileGrid.GetNeighbourPositions(gridPosition, true);
 
-        bool condition = CheckAmount(neighbourPositions.Count);
+        int neighbourCount;
+
+        if(solid) {
+            List<Vector2> solidNeighbourPositions = neighbourPositions.FindAll(x => TileGrid.GetTile(x).IsSolid);
+            neighbourCount = solidNeighbourPositions.Count;
+        } else {
+            neighbourCount = neighbourPositions.Count;
+        }
+
+        bool condition = CheckAmount(neighbourCount);
 
         return condition;
     }
 
     private void OnValidate() {
-        UpdateName(AMOUNT_TYPE_NAME);
+        if(solid) {
+            UpdateName(SOLID_NAME + " " + AMOUNT_TYPE_NAME);
+        } else {
+            UpdateName(AMOUNT_TYPE_NAME);
+        }
     }
 
     private void Reset() {
-        UpdateName(AMOUNT_TYPE_NAME);
+        if (solid) {
+            UpdateName(SOLID_NAME + " " + AMOUNT_TYPE_NAME);
+        } else {
+            UpdateName(AMOUNT_TYPE_NAME);
+        }
     }
 
 }

@@ -7,7 +7,7 @@ public class TileGeneratorNode {
 
     public GameObject Prefab;
     public TileType TileType;
-    public GeneratePhase GeneratePhase;
+    public bool IsSolid = true;
     public List<TileCondition> TileConditions;
 
 }

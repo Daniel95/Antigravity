@@ -3,22 +3,43 @@ using UnityEngine;
 
 public class VerticalNeighbourAmountTileCondition : AmountTileCondition {
 
-    private const string AMOUNT_TYPE_NAME = "Vertical neighbour";
+    [SerializeField] private bool solid = true;
 
-    public override bool Check(Vector2 gridPosition, GeneratePhase generatePhase) {
+    private const string AMOUNT_TYPE_NAME = "Vertical neighbour";
+    private const string SOLID_NAME = "Solid";
+
+    public override bool Check(Vector2 gridPosition) {
         List<Vector2> directNeighbourPositions = TileGrid.GetNeighbourPositions(gridPosition, true, NeighbourType.Direct);
         List<Vector2> verticalNeighbourPositions = directNeighbourPositions.FindAll(x => gridPosition.y == x.y);
 
-        bool condition = CheckAmount(verticalNeighbourPositions.Count);
+        int verticalNeighbourCount;
+
+        if (solid) {
+            List<Vector2> solidVerticalNeighbourPositions = verticalNeighbourPositions.FindAll(x => TileGrid.GetTile(x).IsSolid);
+            verticalNeighbourCount = solidVerticalNeighbourPositions.Count;
+        } else {
+            verticalNeighbourCount = verticalNeighbourPositions.Count;
+        }
+
+        bool condition = CheckAmount(verticalNeighbourCount);
+
         return condition;
     }
 
     private void OnValidate() {
-        UpdateName(AMOUNT_TYPE_NAME);
+        if (solid) {
+            UpdateName(SOLID_NAME + " " + AMOUNT_TYPE_NAME);
+        } else {
+            UpdateName(AMOUNT_TYPE_NAME);
+        }
     }
 
     private void Reset() {
-        UpdateName(AMOUNT_TYPE_NAME);
+        if (solid) {
+            UpdateName(SOLID_NAME + " " + AMOUNT_TYPE_NAME);
+        } else {
+            UpdateName(AMOUNT_TYPE_NAME);
+        }
     }
 
 }

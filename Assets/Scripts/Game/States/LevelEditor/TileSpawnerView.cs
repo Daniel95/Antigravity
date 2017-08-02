@@ -40,16 +40,19 @@ public class TileSpawnerView : View, ITileSpawner {
 
     public void SpawnTileAtWorldPosition(Vector2 worldPosition) {
         Vector2 gridPosition = TileGrid.WorldToGridPosition(worldPosition);
-        TileGrid.SetTile(gridPosition, new Tile());
+        TileGrid.SetTile(gridPosition, new Tile() { IsSolid = true });
         SpawnTileAtGridPosition(gridPosition);
     }
 
     private void SpawnTileAtGridPositions(List<Vector2> tileGridPositions) {
-        tileGridPositions.ForEach(x => TileGrid.SetTile(x, new Tile()));
+        tileGridPositions.ForEach(x => TileGrid.SetTile(x, new Tile() { IsSolid = true }));
         tileGridPositions.ForEach(x => SpawnTileAtGridPosition(x));
     }
 
     private void SpawnTileAtGridPosition(Vector2 gridPosition) {
+        List<Vector2> neighbourPositions = TileGrid.GetNeighbourPositions(gridPosition, false);
+        UpdateTileGridPositions(neighbourPositions, selectionFieldGridPositions);
+
         Tile tile = TileGenerator.Instance.GenerateTile(gridPosition);
         if(tile.TileType == TileType.Empty) { return; }
 
@@ -58,9 +61,6 @@ public class TileSpawnerView : View, ITileSpawner {
         /*
         CheckForObsoleteConcaveCorners();
         */
-
-        List<Vector2> neighbourPositions = TileGrid.GetNeighbourPositions(gridPosition, false);
-        UpdateTileGridPositions(neighbourPositions, selectionFieldGridPositions);
     }
 
     private void DestroyTileAtGridPosition(Vector2 gridPosition) {

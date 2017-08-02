@@ -1,7 +1,7 @@
 ﻿public enum GeneratePhase {
 
-    PreGenerate = 0,
-    Generate = 1,
-    PostGenerate = 2
+    Setup = 0,
+    Build = 1,
+    PostBuild = 2
 
 }

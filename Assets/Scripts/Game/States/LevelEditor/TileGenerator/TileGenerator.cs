@@ -9,30 +9,42 @@ public class TileGenerator : MonoBehaviour {
     public static TileGenerator Instance { get { return GetInstance(); } }
     public List<TileGeneratorNode> Tiles { get { return tileGeneratorNodes; } }
 
-    [SerializeField] [Reorderable] private List<TileGeneratorNode> tileGeneratorNodes = new List<TileGeneratorNode>();
-
     private static TileGenerator instance;
+
+    [SerializeField] [Reorderable] private List<TileGeneratorNode> tileGeneratorNodes = new List<TileGeneratorNode>();
+    [SerializeField] private bool debugMode = false;
+
+    private List<TileType> solidTileTypes = new List<TileType>();
 
     public Tile GenerateTile(Vector2 gridPosition) {
         TileGeneratorNode matchingTileGeneratorNode = null;
 
-        //Debug.Log("_____  gridPos : " + gridPosition);
+        if(debugMode) {
+            Debug.Log("_____");
+            Debug.Log("gridPos : " + gridPosition);
+        }
         for (int i = tileGeneratorNodes.Count - 1; i >= 0; i--) {
             TileGeneratorNode tileGeneratorNode = tileGeneratorNodes[i];
-            TileCondition falseCondition = tileGeneratorNode.TileConditions.Find(x => !x.Check(gridPosition, tileGeneratorNode.GeneratePhase));
+            TileCondition falseCondition = tileGeneratorNode.TileConditions.Find(x => !x.Check(gridPosition));
 
             if (falseCondition == null) {
                 matchingTileGeneratorNode = tileGeneratorNode;
                 break;
-            } //else {
-                //Debug.Log(" false condition for " + tileGeneratorNode.TileType.ToString() + " : " + falseCondition.name);
-            //}
+            } else if (debugMode) {
+                Debug.Log("false condition for " + tileGeneratorNode.TileType.ToString() + " : " + falseCondition.name);
+            }
+        }
+        if (debugMode) {
+            Debug.Log("TileType : " + matchingTileGeneratorNode.TileType);
         }
 
-        //Debug.Log("TileType : " + matchingTileGeneratorNode.TileType);
-
-        Tile tile = GetTile(matchingTileGeneratorNode.Prefab, matchingTileGeneratorNode.TileType, gridPosition, Vector2.zero);
+       Tile tile = GetTile(matchingTileGeneratorNode.Prefab, matchingTileGeneratorNode.TileType, gridPosition, Vector2.zero);
         return tile;
+    }
+
+    public bool CheckSolidTileType(TileType tileType) {
+        bool isSolid = solidTileTypes.Contains(tileType);
+        return isSolid;
     }
 
     private Tile GetTile(GameObject prefab, TileType tileType, Vector2 gridPosition, Vector2 direction) {
@@ -41,13 +53,21 @@ public class TileGenerator : MonoBehaviour {
         Vector2 tilePosition = TileGrid.GridToTilePosition(gridPosition);
 
         GameObject tileGameObject = Instantiate(prefab, tilePosition, new Quaternion());
-        tileGameObject.name = tileType.ToString() + " " + gridPosition.ToString();
+        bool isSolid = CheckSolidTileType(tileType);
+        if(isSolid) {
+            tileGameObject.name = "Solid " + tileType.ToString() + " " + gridPosition.ToString();
+        } else {
+            tileGameObject.name = tileType.ToString() + " " + gridPosition.ToString();
+        }
+
         //tileGameObject.transform.forward = direction;
 
         Tile tile = new Tile() {
             TileType = tileType,
-            GameObject = tileGameObject
+            GameObject = tileGameObject,
+            IsSolid = isSolid,
         };
+
         return tile;
     }
 
@@ -91,5 +111,10 @@ public class TileGenerator : MonoBehaviour {
     private void Awake() {
         float tileWidth = tileGeneratorNodes.Find(x => x.TileType == TileType.Standard).Prefab.transform.localScale.x;
         TileGrid.SetTileSize(tileWidth);
+
+        foreach (TileGeneratorNode tileGeneratorNode in tileGeneratorNodes) {
+            if(!tileGeneratorNode.IsSolid) { continue; }
+            solidTileTypes.Add(tileGeneratorNode.TileType);
+        }
     }
 }

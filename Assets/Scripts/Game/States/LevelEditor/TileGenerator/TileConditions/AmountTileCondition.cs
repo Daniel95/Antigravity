@@ -6,7 +6,7 @@ public class AmountTileCondition : TileCondition {
     [SerializeField] protected int requiredAmount;
     [SerializeField] protected AmountType amountType;
 
-    public override bool Check(Vector2 gridPosition, GeneratePhase generatePhase) {
+    public override bool Check(Vector2 gridPosition) {
         throw new NotImplementedException();
     }
 
@@ -28,8 +28,8 @@ public class AmountTileCondition : TileCondition {
         return hasRequiredAmount;
     }
 
-    protected void UpdateName(string amountTypeName) {
-        string conditionName = amountTypeName;
+    protected void UpdateName(string startName) {
+        string conditionName = startName;
 
         switch (amountType) {
             case AmountType.IsHigher:

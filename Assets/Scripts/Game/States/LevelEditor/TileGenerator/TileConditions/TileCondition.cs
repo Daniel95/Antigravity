@@ -4,6 +4,6 @@ using UnityEngine;
 [Serializable]
 public abstract class TileCondition : MonoBehaviour {
 
-    public abstract bool Check(Vector2 gridPosition, GeneratePhase generatePhase);
+    public abstract bool Check(Vector2 gridPosition);
 
 }

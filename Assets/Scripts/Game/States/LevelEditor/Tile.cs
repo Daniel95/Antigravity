@@ -8,6 +8,7 @@ public class Tile {
 
     public TileType TileType;
     public GameObject GameObject;
+    public bool IsSolid;
 
     public void Destroy() {
         GameObject.Destroy(GameObject);
