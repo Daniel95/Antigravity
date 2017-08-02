@@ -1,7 +1,4 @@
-﻿using UnityEngine;
-using System.Collections;
-
-public enum NeighbourType {
+﻿public enum NeighbourType {
 
     All,
     Direct,

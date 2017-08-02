@@ -38,13 +38,14 @@ public class TileGenerator : MonoBehaviour {
             Debug.Log("TileType : " + matchingTileGeneratorNode.TileType);
         }
 
-       Tile tile = GetTile(matchingTileGeneratorNode.Prefab, matchingTileGeneratorNode.TileType, gridPosition, Vector2.zero);
+        Tile tile = GetTile(matchingTileGeneratorNode.Prefab, matchingTileGeneratorNode.TileType, gridPosition, Vector2.zero);
         return tile;
     }
 
-    public bool CheckSolidTileType(TileType tileType) {
-        bool isSolid = solidTileTypes.Contains(tileType);
-        return isSolid;
+    public bool CheckUserGeneratedTileType(TileType tileType) {
+        TileGeneratorNode tileGeneratorNode = tileGeneratorNodes.Find(x =>  x.TileType == tileType);
+        bool userGenerated = tileGeneratorNode.UserGenerated;
+        return userGenerated;
     }
 
     private Tile GetTile(GameObject prefab, TileType tileType, Vector2 gridPosition, Vector2 direction) {
@@ -53,19 +54,21 @@ public class TileGenerator : MonoBehaviour {
         Vector2 tilePosition = TileGrid.GridToTilePosition(gridPosition);
 
         GameObject tileGameObject = Instantiate(prefab, tilePosition, new Quaternion());
-        bool isSolid = CheckSolidTileType(tileType);
-        if(isSolid) {
-            tileGameObject.name = "Solid " + tileType.ToString() + " " + gridPosition.ToString();
-        } else {
-            tileGameObject.name = tileType.ToString() + " " + gridPosition.ToString();
+        bool userGenerated = CheckUserGeneratedTileType(tileType);
+        string tileName = "";
+
+        if(!userGenerated) {
+            tileName += "Auto Generated ";
         }
+
+        tileName += tileType.ToString() + " " + gridPosition.ToString();
 
         //tileGameObject.transform.forward = direction;
 
         Tile tile = new Tile() {
             TileType = tileType,
             GameObject = tileGameObject,
-            IsSolid = isSolid,
+            UserGenerated = userGenerated,
         };
 
         return tile;
@@ -113,7 +116,7 @@ public class TileGenerator : MonoBehaviour {
         TileGrid.SetTileSize(tileWidth);
 
         foreach (TileGeneratorNode tileGeneratorNode in tileGeneratorNodes) {
-            if(!tileGeneratorNode.IsSolid) { continue; }
+            if(!tileGeneratorNode.UserGenerated) { continue; }
             solidTileTypes.Add(tileGeneratorNode.TileType);
         }
     }

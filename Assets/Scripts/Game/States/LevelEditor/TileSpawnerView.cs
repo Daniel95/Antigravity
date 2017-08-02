@@ -40,12 +40,12 @@ public class TileSpawnerView : View, ITileSpawner {
 
     public void SpawnTileAtWorldPosition(Vector2 worldPosition) {
         Vector2 gridPosition = TileGrid.WorldToGridPosition(worldPosition);
-        TileGrid.SetTile(gridPosition, new Tile() { IsSolid = true });
+        TileGrid.SetTile(gridPosition, new Tile() { UserGenerated = true });
         SpawnTileAtGridPosition(gridPosition);
     }
 
     private void SpawnTileAtGridPositions(List<Vector2> tileGridPositions) {
-        tileGridPositions.ForEach(x => TileGrid.SetTile(x, new Tile() { IsSolid = true }));
+        tileGridPositions.ForEach(x => TileGrid.SetTile(x, new Tile() { UserGenerated = true }));
         tileGridPositions.ForEach(x => SpawnTileAtGridPosition(x));
     }
 

@@ -28,7 +28,7 @@ public class AmountTileCondition : TileCondition {
         return hasRequiredAmount;
     }
 
-    protected void UpdateName(string startName) {
+    protected virtual void UpdateName(string startName) {
         string conditionName = startName;
 
         switch (amountType) {

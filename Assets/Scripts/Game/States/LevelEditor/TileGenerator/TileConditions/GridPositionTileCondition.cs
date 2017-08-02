@@ -2,21 +2,21 @@
 
 public class GridPositionTileCondition : TileCondition {
 
-    [SerializeField] private GridPositionTileConditionType gridPositionTileConditionType;
+    [SerializeField] private GridPositionType gridPositionType;
 
     public override bool Check(Vector2 gridPosition) {
         bool exists = TileGrid.ContainsPosition(gridPosition);
         bool condition = false;
 
-        switch (gridPositionTileConditionType) {
-            case GridPositionTileConditionType.Empty:
+        switch (gridPositionType) {
+            case GridPositionType.Empty:
                 condition = !exists;
                 break;
-            case GridPositionTileConditionType.Occupied:
+            case GridPositionType.Occupied:
                 condition = exists;
                 break;
-            case GridPositionTileConditionType.Solid:
-                bool isSolid = exists && TileGrid.GetTile(gridPosition).IsSolid;
+            case GridPositionType.UserGenerated:
+                bool isSolid = exists && TileGrid.GetTile(gridPosition).UserGenerated;
                 condition = isSolid;
                 break;
         }
@@ -25,19 +25,7 @@ public class GridPositionTileCondition : TileCondition {
     }
 
     private void UpdateName() {
-        string conditionName = "";
-
-        switch (gridPositionTileConditionType) {
-            case GridPositionTileConditionType.Empty:
-                conditionName = "Grid position is empty";
-                break;
-            case GridPositionTileConditionType.Occupied:
-                conditionName = "Grid position is occupied";
-                break;
-            case GridPositionTileConditionType.Solid:
-                conditionName = "Grid position is solid";
-                break;
-        }
+        string conditionName = "Grid position is " + gridPositionType.ToString();
 
         if (name != conditionName) {
             name = conditionName;
