@@ -19,7 +19,7 @@ public static class TileGrid {
 
     public static List<Vector2> GetGridPositionsByTileType(TileType tileType) {
         List<Vector2> gridPositions = GetGridPositions();
-        List<Vector2> gridPositionsWithType = gridPositions.FindAll(x => grid[x].Type == tileType);
+        List<Vector2> gridPositionsWithType = gridPositions.FindAll(x => grid[x].TileType == tileType);
 
         return gridPositionsWithType;
     }
@@ -98,7 +98,58 @@ public static class TileGrid {
         return selection;
     }
 
-    public static List<Vector2> GetGridPositionNeighbourPositions(Vector2 gridPosition, int maxNeighbourOffset = 1, bool existing = false) {
+    public static List<Vector2> GetNeighbourPositions(Vector2 gridPosition, bool existing, NeighbourType neighbourType = NeighbourType.All, int maxNeighbourOffset = 1) {
+        List<Vector2> neighbourPositions = new List<Vector2>();
+
+        switch (neighbourType) {
+            case NeighbourType.All:
+                neighbourPositions = GetAllNeighbourPositions(gridPosition, existing, maxNeighbourOffset);
+                break;
+            case NeighbourType.Direct:
+                neighbourPositions = GetDirectNeighbourPositions(gridPosition, existing, maxNeighbourOffset);
+                break;
+            case NeighbourType.Indirect:
+                neighbourPositions = GetIndirectNeighbourPositions(gridPosition, existing, maxNeighbourOffset);
+                break;
+        }
+
+        return neighbourPositions;
+    }
+
+    public static Dictionary<Vector2, Tile> GetNeighbours(Vector2 gridPosition, NeighbourType neighbourType, bool existing, int maxNeighbourOffset = 1) {
+        List<Vector2> neighbourPositions = new List<Vector2>();
+
+        switch (neighbourType) {
+            case NeighbourType.All:
+                neighbourPositions = GetAllNeighbourPositions(gridPosition, existing, maxNeighbourOffset);
+                break;
+            case NeighbourType.Direct:
+                neighbourPositions = GetDirectNeighbourPositions(gridPosition, existing, maxNeighbourOffset);
+                break;
+            case NeighbourType.Indirect:
+                neighbourPositions = GetIndirectNeighbourPositions(gridPosition, existing, maxNeighbourOffset);
+                break;
+        }
+
+        Dictionary<Vector2, Tile> neighbours = new Dictionary<Vector2, Tile>();
+        neighbourPositions.ForEach(x => neighbours.Add(x, grid[x]));
+
+        return neighbours;
+    }
+
+    public static List<Vector2> FindDirectNeighbourPositions(Vector2 gridPosition, List<Vector2> neighourPositions) {
+        List<Vector2> neighbourPositions = neighourPositions.FindAll(x => gridPosition.x == x.x || gridPosition.y == x.y);
+
+        return neighbourPositions;
+    }
+
+    public static List<Vector2> FindIndirectNeighbourPositions(Vector2 gridPosition, List<Vector2> neighourPositions) {
+        List<Vector2> indirectNeighbourPositions = neighourPositions.FindAll(x => gridPosition.x != x.x && gridPosition.y != x.y);
+
+        return indirectNeighbourPositions;
+    }
+
+    private static List<Vector2> GetAllNeighbourPositions(Vector2 gridPosition, bool existing, int maxNeighbourOffset = 1) {
         List<Vector2> neighbourPositions = new List<Vector2>();
 
         for (int x = (int)gridPosition.x - maxNeighbourOffset; x <= gridPosition.x + maxNeighbourOffset; x++) {
@@ -114,7 +165,7 @@ public static class TileGrid {
         return neighbourPositions;
     }
 
-    public static List<Vector2> GetGridPositionDirectNeighbourPositions(Vector2 gridPosition, int maxNeighbourOffset = 1, bool existing = false) {
+    private static List<Vector2> GetDirectNeighbourPositions(Vector2 gridPosition, bool existing, int maxNeighbourOffset = 1) {
         List<Vector2> directNeighbourPositions = new List<Vector2>();
 
         for (int x = (int)gridPosition.x - maxNeighbourOffset; x <= gridPosition.x + maxNeighbourOffset; x++) {
@@ -136,48 +187,11 @@ public static class TileGrid {
         return directNeighbourPositions;
     }
 
-    public static List<Vector2> GetGridPositionDirectNeighbourPositions(Vector2 gridPosition, List<Vector2> neighourPositions) {
-        List<Vector2> neighbourPositions = neighourPositions.FindAll(x => gridPosition.x == x.x || gridPosition.y == x.y);
-
-        return neighbourPositions;
-    }
-
-    public static List<Vector2> GetGridPositionIndirectNeighbourPositions(Vector2 gridPosition) {
-        List<Vector2> neighbourPositions = GetGridPositionDirectNeighbourPositions(gridPosition);
+    private static List<Vector2> GetIndirectNeighbourPositions(Vector2 gridPosition, bool existing, int maxNeighbourOffset = 1) {
+        List<Vector2> neighbourPositions = GetAllNeighbourPositions(gridPosition, existing, maxNeighbourOffset);
         List<Vector2> indirectNeighbourPositions = neighbourPositions.FindAll(x => gridPosition.x != x.x && gridPosition.y != x.y);
 
         return indirectNeighbourPositions;
-    }
-
-    public static List<Vector2> GetGridPositionIndirectNeighbourPositions(Vector2 gridPosition, List<Vector2> neighourPositions) {
-        List<Vector2> indirectNeighbourPositions = neighourPositions.FindAll(x => gridPosition.x != x.x && gridPosition.y != x.y);
-
-        return indirectNeighbourPositions;
-    }
-
-    public static Dictionary<Vector2, Tile> GetGridPositionNeighbours(Vector2 gridPosition) {
-        List<Vector2> neighbourPositions = GetGridPositionNeighbourPositions(gridPosition);
-        Dictionary<Vector2, Tile> neighbours = GetExistingTilesInGridPositions(neighbourPositions);
-
-        return neighbours;
-    }
-
-    public static Dictionary<Vector2, Tile> GetGridPositionDirectNeighbours(Vector2 gridPosition) {
-        List<Vector2> directNeighbourPositions = GetGridPositionDirectNeighbourPositions(gridPosition);
-        Dictionary<Vector2, Tile> directNeighbours = GetExistingTilesInGridPositions(directNeighbourPositions);
-
-        return directNeighbours;
-    }
-
-    private static Dictionary<Vector2, Tile> GetExistingTilesInGridPositions(List<Vector2> gridPositions) {
-        Dictionary<Vector2, Tile> existingTiles = new Dictionary<Vector2, Tile>();
-
-        foreach (Vector2 neighbourPosition in gridPositions) {
-            if (!grid.ContainsKey(neighbourPosition)) { continue; }
-            existingTiles.Add(neighbourPosition, grid[neighbourPosition]);
-        }
-
-        return existingTiles;
     }
 
     public static void SetTileSize(float tileSize) {
