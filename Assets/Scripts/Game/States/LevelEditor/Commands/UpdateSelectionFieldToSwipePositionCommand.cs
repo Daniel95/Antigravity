@@ -2,12 +2,12 @@
 
 public class UpdateSelectionFieldToSwipePositionCommand : Command {
 
-    [Inject] private Ref<ITileSpawner> tileSpawnerRef;
+    [Inject] private Ref<ILevelEditorInput> levelEditorInputRef;
 
     [InjectParameter] private SwipeMovedEvent.Parameter swipeMoveEventParameter;
 
     protected override void Execute() {
-        tileSpawnerRef.Get().UpdateSelectionField(swipeMoveEventParameter.Position);
+        levelEditorInputRef.Get().UpdateSelectionField(swipeMoveEventParameter.Position);
     }
 
 }

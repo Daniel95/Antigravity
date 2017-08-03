@@ -105,7 +105,7 @@ public class GameContext : Context {
         Bind<Ref<IGrapplingHook>>();
         Bind<Ref<ISlowTime>>();
         Bind<Ref<IPlayerGrappling>>();
-        Bind<Ref<ITileSpawner>>();
+        Bind<Ref<ILevelEditorInput>>();
 
         Bind<Refs<ICheckpoint>>();
 

@@ -3,12 +3,12 @@ using UnityEngine;
 
 public class StartSelectionFieldAtPositionCommand : Command {
 
-    [Inject] private Ref<ITileSpawner> tileSpawnerRef;
+    [Inject] private Ref<ILevelEditorInput> levelEditorInputRef;
 
     [InjectParameter] private Vector2 position;
 
     protected override void Execute() {
-        tileSpawnerRef.Get().StartSelectionField(position);
+        levelEditorInputRef.Get().StartSelectionField(position);
     }
 
 }

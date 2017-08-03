@@ -3,12 +3,12 @@ using IoCPlus;
 
 public class SpawnTileAtTapPositionCommand : Command {
 
-    [Inject] private Ref<ITileSpawner> tileSpawnerRef;
+    [Inject] private Ref<ILevelEditorInput> levelEditorInputRef;
 
     [InjectParameter] private Gesture gesture;
 
     protected override void Execute() {
-        tileSpawnerRef.Get().SpawnTileAtScreenPosition(gesture.position);
+        levelEditorInputRef.Get().SpawnTileAtScreenPosition(gesture.position);
     }
 
 }

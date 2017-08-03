@@ -2,10 +2,10 @@
 
 public class FinishSelectionFieldCommand : Command {
 
-    [Inject] private Ref<ITileSpawner> tileSpawnerRef;
+    [Inject] private Ref<ILevelEditorInput> levelEditorInputRef;
 
     protected override void Execute() {
-        tileSpawnerRef.Get().FinishSelectionField();
+        levelEditorInputRef.Get().FinishSelectionField();
     }
 
 }
