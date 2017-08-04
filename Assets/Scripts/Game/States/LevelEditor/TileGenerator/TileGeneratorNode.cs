@@ -9,5 +9,6 @@ public class TileGeneratorNode {
     public TileType TileType;
     public bool UserGenerated = true;
     public List<TileCondition> TileConditions;
+    public List<TileAction> TileActions;
 
 }

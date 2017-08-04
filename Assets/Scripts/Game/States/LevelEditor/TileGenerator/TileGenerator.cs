@@ -40,6 +40,10 @@ public class TileGenerator : MonoBehaviour {
         if (tile.TileType == TileType.Empty) { return; }
 
         TileGrid.SetTile(gridPosition, tile);
+
+        foreach(TileAction tileAction in matchingTileGeneratorNode.TileActions) {
+            tileAction.Do(gridPosition);
+        }
     }
 
     public void GenerateTiles(List<Vector2> gridPositions) {
@@ -83,7 +87,6 @@ public class TileGenerator : MonoBehaviour {
 
         tileName += tileType.ToString() + " " + gridPosition.ToString();
         tileGameObject.name = tileName;
-        //tileGameObject.transform.forward = direction;
 
         Tile tile = new Tile() {
             TileType = tileType,
@@ -135,4 +138,5 @@ public class TileGenerator : MonoBehaviour {
         float tileWidth = tileGeneratorNodes.Find(x => x.TileType == TileType.Standard).Prefab.transform.localScale.x;
         TileGrid.SetTileSize(tileWidth);
     }
+
 }

@@ -98,6 +98,26 @@ public static class TileGrid {
         return selection;
     }
 
+    public static Vector2 GetDirectionToAllDirectNeighbours(Vector2 gridPosition) {
+        List<Vector2> allDirectNeighbourPositions = GetNeighbourPositions(gridPosition, true, NeighbourType.Direct);
+
+        Vector2 allDirectNeighboursDirection = GetDirectionToGridPositions(gridPosition, allDirectNeighbourPositions);
+        return allDirectNeighboursDirection;
+    }
+
+    public static Vector2 GetDirectionToGridPositions(Vector2 gridPosition, List<Vector2> gridPositions) {
+        Vector2 combinedOffsets = new Vector2();
+
+        foreach (Vector2 directNeighbourPosition in gridPositions) {
+            Vector2 offsetToNeighbour = directNeighbourPosition - gridPosition;
+            combinedOffsets += offsetToNeighbour;
+        }
+
+        Vector2 neighbourDirection = RoundingHelper.InvertOnNegativeCeilMax(combinedOffsets, 1);
+
+        return neighbourDirection;
+    }
+
     public static List<Vector2> GetNeighbourPositions(Vector2 gridPosition, bool existing, NeighbourType neighbourType = NeighbourType.All, int maxNeighbourOffset = 1) {
         List<Vector2> neighbourPositions = new List<Vector2>();
 
