@@ -52,12 +52,14 @@ public class CameraVelocityView : View, ICameraVelocity {
     private IEnumerator MoveUpdate() {
         ICamera camera = cameraRef.Get();
 
-        while (camera.CameraBounds != null && velocity != Vector2.zero) {
+        while (velocity != Vector2.zero) {
             velocity /= mass;
             Vector2 nextPosition = (Vector2)transform.localPosition + velocity;
-            Vector2 nextClampedBoundsPosition = camera.CameraBounds.GetClampedBoundsPosition(nextPosition);
+            if(camera.CameraBounds != null) {
+                nextPosition = camera.CameraBounds.GetClampedBoundsPosition(nextPosition);
+            }
 
-            transform.localPosition = new Vector2(nextClampedBoundsPosition.x, nextClampedBoundsPosition.y);
+            transform.localPosition = new Vector2(nextPosition.x, nextPosition.y);
 
             yield return null;
         }

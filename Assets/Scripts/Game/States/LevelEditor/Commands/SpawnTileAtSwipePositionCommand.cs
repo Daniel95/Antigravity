@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class SpawnTileAtSwipePositionCommand : Command {
 
-    [Inject] private Ref<ILevelEditorInput> levelEditorInputRef;
+    [Inject] private Ref<ILevelEditorBuildingInput> levelEditorInputRef;
 
     [InjectParameter] private SwipeMovedEvent.Parameter swipeMoveEventParameter;
 

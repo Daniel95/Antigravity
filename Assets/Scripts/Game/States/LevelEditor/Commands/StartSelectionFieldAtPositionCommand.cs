@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class StartSelectionFieldAtPositionCommand : Command {
 
-    [Inject] private Ref<ILevelEditorInput> levelEditorInputRef;
+    [Inject] private Ref<ILevelEditorBuildingInput> levelEditorInputRef;
 
     [InjectParameter] private Vector2 position;
 

@@ -2,7 +2,7 @@
 
 public class UpdateSelectionFieldToSwipePositionCommand : Command {
 
-    [Inject] private Ref<ILevelEditorInput> levelEditorInputRef;
+    [Inject] private Ref<ILevelEditorBuildingInput> levelEditorInputRef;
 
     [InjectParameter] private SwipeMovedEvent.Parameter swipeMoveEventParameter;
 

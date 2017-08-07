@@ -1,7 +1,7 @@
 ﻿using IoCPlus;
 using UnityEngine;
 
-public class WaitForRemoveDestroyChildInCanvasLayerCommand : Command<string, CanvasLayer> {
+public class WaitForDestroyChildInCanvasLayerCommand : Command<string, CanvasLayer> {
 
     [Inject] private IContext context;
 

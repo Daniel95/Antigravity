@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public interface ILevelEditorInput {
+public interface ILevelEditorBuildingInput {
 
     void StartSelectionField(Vector2 selectionFieldStartWorldPosition);
     void UpdateSelectionField(Vector2 selectionFieldEndWorldPosition);

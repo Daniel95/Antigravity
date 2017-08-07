@@ -3,7 +3,7 @@ using IoCPlus;
 
 public class SpawnTileAtTapPositionCommand : Command {
 
-    [Inject] private Ref<ILevelEditorInput> levelEditorInputRef;
+    [Inject] private Ref<ILevelEditorBuildingInput> levelEditorInputRef;
 
     [InjectParameter] private Gesture gesture;
 

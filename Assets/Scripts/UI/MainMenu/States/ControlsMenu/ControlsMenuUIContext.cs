@@ -16,7 +16,6 @@ public class ControlsMenuUIContext : Context {
             .Do<AbortIfPlatformIsNotMobileCommand>()
             .Do<InstantiateViewInCanvasLayerCommand>("UI/MainMenu/ControlsMenu/ControlsTextMobileUI", CanvasLayer.UI);
 
-
         On<LeaveContextSignal>()
             .Do<DestroyChildInCanvasLayerCommand>("UI/MainMenu/GoToStartMenuButtonUI", CanvasLayer.UI);
 

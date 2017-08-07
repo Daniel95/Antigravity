@@ -5,25 +5,18 @@ public class LevelEditorContext : Context {
     protected override void SetBindings() {
         base.SetBindings();
 
-        On<EnterContextSignal>()
-            .Do<EnableCameraMoveInputCommand>(true)
-            .Do<EnableCameraZoomInputCommand>(true);
+        Bind<GoToLevelEditorStateEvent>();
 
         On<EnterContextSignal>()
-            .Do<EnableCameraMoveInputCommand>(false)
-            .Do<EnableCameraZoomInputCommand>(false);
+            .GotoState<LevelEditorNavigatingContext>();
 
-        On<OutsideUITouchStartEvent>()
-            .Do<StartSelectionFieldAtPositionCommand>();
+        OnChild<LevelEditorNavigatingContext, GoToLevelEditorStateEvent>()
+            .Do<AbortIfLevelEditorStateIsNotLevelEditorStateCommand>(LevelEditorState.Building)
+            .GotoState<LevelEditorBuildingContext>();
 
-        On<SwipeMovedEvent>()
-            .Do<UpdateSelectionFieldToSwipePositionCommand>();
-
-        On<TouchUpEvent>()
-            .Do<FinishSelectionFieldCommand>();
-
-        On<SwipeEndEvent>()
-            .Do<FinishSelectionFieldCommand>();
+        OnChild<LevelEditorBuildingContext, GoToLevelEditorStateEvent>()
+            .Do<AbortIfLevelEditorStateIsNotLevelEditorStateCommand>(LevelEditorState.Navigating)
+            .GotoState<LevelEditorNavigatingContext>();
 
     }
 

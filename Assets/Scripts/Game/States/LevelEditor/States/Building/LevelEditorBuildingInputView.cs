@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class LevelEditorInputView : View, ILevelEditorInput {
+public class LevelEditorBuildingInputView : View, ILevelEditorBuildingInput {
 
-    [Inject] private Ref<ILevelEditorInput> levelEditorInputRef;
+    [Inject] private Ref<ILevelEditorBuildingInput> levelEditorBuildingInputRef;
 
     private List<Vector2> selectionFieldGridPositions = new List<Vector2>();
     private Vector2 selectionFieldStartGridPosition;
 
     public override void Initialize() {
-        levelEditorInputRef.Set(this);
+        levelEditorBuildingInputRef.Set(this);
     }
 
     public void StartSelectionField(Vector2 selectionFieldStartScreenPosition) {
