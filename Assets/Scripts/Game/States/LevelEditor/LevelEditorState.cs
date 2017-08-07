@@ -1,6 +1,6 @@
 ﻿public enum LevelEditorState {
 
     Navigating,
-    Building,
+    Creating,
 
 }

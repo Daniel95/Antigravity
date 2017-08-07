@@ -1,6 +1,6 @@
 ﻿using IoCPlus;
 
-public class LevelEditorBuildingContext : Context {
+public class LevelEditorCreatingContext : Context {
 
     protected override void SetBindings() {
         base.SetBindings();

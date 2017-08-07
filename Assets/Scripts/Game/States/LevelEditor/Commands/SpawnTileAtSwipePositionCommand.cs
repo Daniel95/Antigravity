@@ -3,12 +3,12 @@ using UnityEngine;
 
 public class SpawnTileAtSwipePositionCommand : Command {
 
-    [Inject] private Ref<ILevelEditorBuildingInput> levelEditorInputRef;
+    [Inject] private Ref<ILevelEditorCreatingInput> levelEditorCreatingInputRef;
 
     [InjectParameter] private SwipeMovedEvent.Parameter swipeMoveEventParameter;
 
     protected override void Execute() {
-        levelEditorInputRef.Get().SpawnTileAtScreenPosition(swipeMoveEventParameter.Position);
+        levelEditorCreatingInputRef.Get().SpawnTileAtScreenPosition(swipeMoveEventParameter.Position);
     }
 
 }

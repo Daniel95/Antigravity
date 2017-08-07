@@ -2,10 +2,10 @@
 
 public class FinishSelectionFieldCommand : Command {
 
-    [Inject] private Ref<ILevelEditorBuildingInput> levelEditorInputRef;
+    [Inject] private Ref<ILevelEditorCreatingInput> levelEditorCreatingInputRef;
 
     protected override void Execute() {
-        levelEditorInputRef.Get().FinishSelectionField();
+        levelEditorCreatingInputRef.Get().FinishSelectionField();
     }
 
 }

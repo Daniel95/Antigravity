@@ -11,10 +11,10 @@ public class LevelEditorContext : Context {
             .GotoState<LevelEditorNavigatingContext>();
 
         OnChild<LevelEditorNavigatingContext, GoToLevelEditorStateEvent>()
-            .Do<AbortIfLevelEditorStateIsNotLevelEditorStateCommand>(LevelEditorState.Building)
-            .GotoState<LevelEditorBuildingContext>();
+            .Do<AbortIfLevelEditorStateIsNotLevelEditorStateCommand>(LevelEditorState.Creating)
+            .GotoState<LevelEditorCreatingContext>();
 
-        OnChild<LevelEditorBuildingContext, GoToLevelEditorStateEvent>()
+        OnChild<LevelEditorCreatingContext, GoToLevelEditorStateEvent>()
             .Do<AbortIfLevelEditorStateIsNotLevelEditorStateCommand>(LevelEditorState.Navigating)
             .GotoState<LevelEditorNavigatingContext>();
 
