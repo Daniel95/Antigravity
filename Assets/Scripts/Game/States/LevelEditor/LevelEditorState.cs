@@ -2,5 +2,7 @@
 
     Navigating,
     Creating,
+    Building,
+    Erasing,
 
 }

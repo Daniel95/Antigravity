@@ -1,11 +1,11 @@
 ﻿using IoCPlus;
 
-public class FinishSelectionFieldCommand : Command {
+public class ReplaceNewTilesInSelectionFieldCommand : Command {
 
     [Inject] private Ref<ILevelEditorCreatingInput> levelEditorCreatingInputRef;
 
     protected override void Execute() {
-        levelEditorCreatingInputRef.Get().FinishSelectionField();
+        levelEditorCreatingInputRef.Get().ReplaceNewTilesInSelectionField();
     }
 
 }
