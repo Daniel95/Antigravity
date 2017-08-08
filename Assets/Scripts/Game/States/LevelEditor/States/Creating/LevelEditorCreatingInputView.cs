@@ -61,33 +61,37 @@ public class LevelEditorCreatingInputView : View, ILevelEditorCreatingInput {
     private void RemoveTile(Vector2 gridPosition, bool regenerateNeighbours, List<Vector2> neighboursIgnoringRegenerate = null) {
         TileGrid.RemoveTile(gridPosition);
 
-        if(regenerateNeighbours) {
-            List<Vector2> allNeighbourPositionsToRegenrate = TileGrid.GetNeighbourPositions(gridPosition, false, NeighbourType.All, 1);
-            if(neighboursIgnoringRegenerate != null) {
-                allNeighbourPositionsToRegenrate = allNeighbourPositionsToRegenrate.Except(neighboursIgnoringRegenerate).ToList();
-            }
-            TileGenerator.Instance.GenerateTiles(allNeighbourPositionsToRegenrate);
+        if (!regenerateNeighbours) { return; }
+
+        List<Vector2> allNeighbourPositionsToRegenrate = TileGrid.GetNeighbourPositions(gridPosition, false, NeighbourType.All, 1);
+        if(neighboursIgnoringRegenerate != null) {
+            allNeighbourPositionsToRegenrate = allNeighbourPositionsToRegenrate.Except(neighboursIgnoringRegenerate).ToList();
         }
+        TileGenerator.Instance.GenerateTiles(allNeighbourPositionsToRegenrate);
     }
 
     private void RemoveTiles(List<Vector2> gridPositions, bool regenerateNeighbours, List<Vector2> neighboursIgnoringRegenerate) {
         gridPositions.ForEach(x => TileGrid.RemoveTile(x));
-        if(regenerateNeighbours) {
-            foreach (Vector2 gridPosition in gridPositions) {
-                List<Vector2> allNeighbourPositionsToRegenrate = TileGrid.GetNeighbourPositions(gridPosition, false, NeighbourType.All, 1);
-                allNeighbourPositionsToRegenrate = allNeighbourPositionsToRegenrate.Except(neighboursIgnoringRegenerate).ToList();
-                TileGenerator.Instance.GenerateTiles(allNeighbourPositionsToRegenrate);
-            }
+
+        if (!regenerateNeighbours) { return; }
+
+        foreach (Vector2 gridPosition in gridPositions) {
+            List<Vector2> allGridPositionsToRegenrate = TileGrid.GetNeighbourPositions(gridPosition, false, NeighbourType.All, 1);
+            allGridPositionsToRegenrate.Add(gridPosition);
+            allGridPositionsToRegenrate = allGridPositionsToRegenrate.Except(neighboursIgnoringRegenerate).ToList();
+            TileGenerator.Instance.GenerateTiles(allGridPositionsToRegenrate);
         }
     }
 
     private void RemoveTiles(List<Vector2> gridPositions, bool regenerateNeighbours) {
         gridPositions.ForEach(x => TileGrid.RemoveTile(x));
-        if (regenerateNeighbours) {
-            foreach (Vector2 gridPosition in gridPositions) {
-                List<Vector2> allNeighbourPositionsToRegenrate = TileGrid.GetNeighbourPositions(gridPosition, false, NeighbourType.All, 1);
-                TileGenerator.Instance.GenerateTiles(allNeighbourPositionsToRegenrate);
-            }
+
+        if (!regenerateNeighbours) { return; }
+
+        foreach (Vector2 gridPosition in gridPositions) {
+            List<Vector2> allGridPositionsToRegenrate = TileGrid.GetNeighbourPositions(gridPosition, false, NeighbourType.All, 1);
+            allGridPositionsToRegenrate.Add(gridPosition);
+            TileGenerator.Instance.GenerateTiles(allGridPositionsToRegenrate);
         }
     }
 
