@@ -42,7 +42,7 @@ public class LevelEditorCreatingInputView : View, ILevelEditorCreatingInput {
 
     public void ReplaceNewTilesInSelectionField() {
         List<Vector2> gridPositionsToRemove = newTiles;
-        RemoveTiles(gridPositionsToRemove, true, currentSelectionFieldGridPositions);
+        RemoveTiles(gridPositionsToRemove, true, newTiles);
 
         newTiles = currentSelectionFieldGridPositions.FindAll(x => !TileGrid.ContainsPosition(x));
         SpawnTiles(newTiles);
