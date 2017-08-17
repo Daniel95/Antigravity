@@ -6,12 +6,11 @@ using UnityEngine;
 public class LevelEditorCreatingInputView : View, ILevelEditorCreatingInput {
 
     public List<Vector2> CurrentSelectionFieldGridPositions { get { return currentSelectionFieldGridPositions; } }
-    public List<Vector2> PreviousSelectionFieldGridPositions { get { return previousSelectionFieldGridPositions; } }
 
     [Inject] private Ref<ILevelEditorCreatingInput> levelEditorCreatingInputRef;
 
     private List<Vector2> currentSelectionFieldGridPositions = new List<Vector2>();
-    private List<Vector2> previousSelectionFieldGridPositions = new List<Vector2>();
+    private List<Vector2> newTiles = new List<Vector2>();
     private Vector2 selectionFieldStartGridPosition;
 
     public override void Initialize() {
@@ -28,11 +27,11 @@ public class LevelEditorCreatingInputView : View, ILevelEditorCreatingInput {
         Vector2 selectionFieldEndWorldScreenPosition = Camera.main.ScreenToWorldPoint(selectionFieldEndScreenPosition);
         Vector2 selectionFieldEndGridPosition = TileGrid.WorldToGridPosition(selectionFieldEndWorldScreenPosition);
 
-        previousSelectionFieldGridPositions = currentSelectionFieldGridPositions;
         currentSelectionFieldGridPositions = TileGrid.GetSelection(selectionFieldStartGridPosition, selectionFieldEndGridPosition);
     }
 
     public void ClearSelectionField() {
+        newTiles.Clear();
         currentSelectionFieldGridPositions.Clear();
     }
 
@@ -42,8 +41,11 @@ public class LevelEditorCreatingInputView : View, ILevelEditorCreatingInput {
     }
 
     public void ReplaceNewTilesInSelectionField() {
-        RemoveTiles(previousSelectionFieldGridPositions, true, currentSelectionFieldGridPositions);
-        SpawnTiles(currentSelectionFieldGridPositions);
+        List<Vector2> gridPositionsToRemove = newTiles;
+        RemoveTiles(gridPositionsToRemove, true, currentSelectionFieldGridPositions);
+
+        newTiles = currentSelectionFieldGridPositions.FindAll(x => !TileGrid.ContainsPosition(x));
+        SpawnTiles(newTiles);
     }
 
     public void SpawnTileAtScreenPosition(Vector2 screenPosition) {
