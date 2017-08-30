@@ -5,11 +5,12 @@ using UnityEngine;
 
 public class LevelEditorCreatingInputView : View, ILevelEditorCreatingInput {
 
-    public List<Vector2> CurrentSelectionFieldGridPositions { get { return currentSelectionFieldGridPositions; } }
+    public List<Vector2> SelectionFieldGridPositions { get { return selectionFieldGridPositions; } }
 
     [Inject] private Ref<ILevelEditorCreatingInput> levelEditorCreatingInputRef;
 
-    private List<Vector2> currentSelectionFieldGridPositions = new List<Vector2>();
+    private List<Vector2> selectionFieldGridPositions = new List<Vector2>();
+
     private List<Vector2> newTiles = new List<Vector2>();
     private Vector2 selectionFieldStartGridPosition;
 
@@ -27,24 +28,25 @@ public class LevelEditorCreatingInputView : View, ILevelEditorCreatingInput {
         Vector2 selectionFieldEndWorldScreenPosition = Camera.main.ScreenToWorldPoint(selectionFieldEndScreenPosition);
         Vector2 selectionFieldEndGridPosition = TileGrid.WorldToGridPosition(selectionFieldEndWorldScreenPosition);
 
-        currentSelectionFieldGridPositions = TileGrid.GetSelection(selectionFieldStartGridPosition, selectionFieldEndGridPosition);
+        selectionFieldGridPositions = TileGrid.GetSelection(selectionFieldStartGridPosition, selectionFieldEndGridPosition);
     }
 
     public void ClearSelectionField() {
         newTiles.Clear();
-        currentSelectionFieldGridPositions.Clear();
+        selectionFieldGridPositions.Clear();
     }
 
     public void RemoveTilesInSelectionField() {
-        List<Vector2> gridPositionsToRemove = currentSelectionFieldGridPositions.FindAll(x => TileGrid.ContainsPosition(x));
+        List<Vector2> gridPositionsToRemove = selectionFieldGridPositions.FindAll(x => TileGrid.ContainsPosition(x));
         RemoveTiles(gridPositionsToRemove, true);
     }
 
     public void ReplaceNewTilesInSelectionField() {
         List<Vector2> gridPositionsToRemove = newTiles;
-        RemoveTiles(gridPositionsToRemove, true, newTiles);
 
-        newTiles = currentSelectionFieldGridPositions.FindAll(x => !TileGrid.ContainsPosition(x));
+        RemoveTiles(gridPositionsToRemove, true);
+
+        newTiles = selectionFieldGridPositions.FindAll(x => !TileGrid.ContainsPosition(x) || !TileGrid.GetTile(x).UserGenerated);
         SpawnTiles(newTiles);
     }
 
@@ -65,11 +67,11 @@ public class LevelEditorCreatingInputView : View, ILevelEditorCreatingInput {
 
         if (!regenerateNeighbours) { return; }
 
-        List<Vector2> allNeighbourPositionsToRegenrate = TileGrid.GetNeighbourPositions(gridPosition, false, NeighbourType.All, 1);
+        List<Vector2> allNeighbourPositionsToRegenerate = TileGrid.GetNeighbourPositions(gridPosition, false, NeighbourType.All, 1);
         if(neighboursIgnoringRegenerate != null) {
-            allNeighbourPositionsToRegenrate = allNeighbourPositionsToRegenrate.Except(neighboursIgnoringRegenerate).ToList();
+            allNeighbourPositionsToRegenerate = allNeighbourPositionsToRegenerate.Except(neighboursIgnoringRegenerate).ToList();
         }
-        TileGenerator.Instance.GenerateTiles(allNeighbourPositionsToRegenrate);
+        TileGenerator.Instance.GenerateTiles(allNeighbourPositionsToRegenerate);
     }
 
     private void RemoveTiles(List<Vector2> gridPositions, bool regenerateNeighbours, List<Vector2> neighboursIgnoringRegenerate) {
@@ -78,10 +80,10 @@ public class LevelEditorCreatingInputView : View, ILevelEditorCreatingInput {
         if (!regenerateNeighbours) { return; }
 
         foreach (Vector2 gridPosition in gridPositions) {
-            List<Vector2> allGridPositionsToRegenrate = TileGrid.GetNeighbourPositions(gridPosition, false, NeighbourType.All, 1);
-            allGridPositionsToRegenrate.Add(gridPosition);
-            allGridPositionsToRegenrate = allGridPositionsToRegenrate.Except(neighboursIgnoringRegenerate).ToList();
-            TileGenerator.Instance.GenerateTiles(allGridPositionsToRegenrate);
+            List<Vector2> allGridPositionsToRegenerate = TileGrid.GetNeighbourPositions(gridPosition, false, NeighbourType.All, 1);
+            allGridPositionsToRegenerate.Add(gridPosition);
+            allGridPositionsToRegenerate = allGridPositionsToRegenerate.Except(neighboursIgnoringRegenerate).ToList();
+            TileGenerator.Instance.GenerateTiles(allGridPositionsToRegenerate);
         }
     }
 
@@ -91,9 +93,9 @@ public class LevelEditorCreatingInputView : View, ILevelEditorCreatingInput {
         if (!regenerateNeighbours) { return; }
 
         foreach (Vector2 gridPosition in gridPositions) {
-            List<Vector2> allGridPositionsToRegenrate = TileGrid.GetNeighbourPositions(gridPosition, false, NeighbourType.All, 1);
-            allGridPositionsToRegenrate.Add(gridPosition);
-            TileGenerator.Instance.GenerateTiles(allGridPositionsToRegenrate);
+            List<Vector2> allGridPositionsToRegenerate = TileGrid.GetNeighbourPositions(gridPosition, false, NeighbourType.All, 1);
+            allGridPositionsToRegenerate.Add(gridPosition);
+            TileGenerator.Instance.GenerateTiles(allGridPositionsToRegenerate);
         }
     }
 

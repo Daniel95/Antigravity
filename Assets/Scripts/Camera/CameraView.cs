@@ -5,9 +5,15 @@ public class CameraView : View, ICamera {
 
     public Vector2 WorldPosition { get { return transform.position; } set { transform.position = new Vector3(value.x, value.y, transform.position.z); } }
     public CameraBounds CameraBounds { get { return cameraBounds; } }
+    public float OrthographicSize { get { return cameraComponent.orthographicSize; } set { cameraComponent.orthographicSize = value; } }
+    public float OrthographicSizeRatio { get { return GetOrthographicSizeRatio(); } }
+    public float MaxOrthographicSize { get { return maxOrthographicSize; } }
+    public float MinOrthographicSize { get { return minOrthographicSize; } }
 
-    [SerializeField] private float pcCameraSize = 10;
-    [SerializeField] private float mobileCameraSize = 15;
+    [SerializeField] private float pcDefaultOrthographicSize = 10;
+    [SerializeField] private float mobileOrthographicSize = 15;
+    [SerializeField] private float maxOrthographicSize = 35;
+    [SerializeField] private float minOrthographicSize = 2;
     [SerializeField] private Camera cameraComponent;
 
     [Inject] private Ref<ICamera> cameraRef;
@@ -21,7 +27,7 @@ public class CameraView : View, ICamera {
     public void SetCameraBounds(CameraBounds cameraBounds) {
         this.cameraBounds = cameraBounds;
 
-        cameraBounds.CameraHeightOffset = cameraComponent.orthographicSize;
+        cameraBounds.CameraHeightOffset = OrthographicSize;
         cameraBounds.CameraWidthOffset = cameraBounds.CameraHeightOffset * cameraComponent.aspect;
         Vector2 clampedBoundsWorldPosition = cameraBounds.GetClampedBoundsPosition(transform.position);
         Vector2 clampedBoundsLocalPosition = transform.InverseTransformVector(clampedBoundsWorldPosition);
@@ -29,11 +35,17 @@ public class CameraView : View, ICamera {
         transform.localPosition = clampedBoundsLocalPosition;
     }
 
+    private float GetOrthographicSizeRatio() {
+        float orthographicSizeMinMaxOffset = Mathf.Abs(maxOrthographicSize - minOrthographicSize);
+        float orthographicSizeRatio = (OrthographicSize - minOrthographicSize) / orthographicSizeMinMaxOffset;
+        return orthographicSizeRatio;
+    }
+
     private void Awake() {
         if (PlatformHelper.PlatformIsMobile) {
-            cameraComponent.orthographicSize = mobileCameraSize;
+            OrthographicSize = mobileOrthographicSize;
         } else {
-            cameraComponent.orthographicSize = pcCameraSize;
+            OrthographicSize = pcDefaultOrthographicSize;
         }
     }
 

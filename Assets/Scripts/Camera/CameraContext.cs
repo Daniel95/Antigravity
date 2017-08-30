@@ -13,8 +13,14 @@ public class CameraContext : Context {
             .Do<UpdateCameraVelocityPreviousTouchScreenPositionCommand>();
 
         On<SwipeMovedEvent>()
+            //.Do<DebugLogMessageCommand>("swipemoved")
             .Do<AbortIfCameraMoveInputIsFalseCommand>()
             .Do<SwipeCameraCommand>();
+
+        On<PinchMovedEvent>()
+            .Do<AbortIfCameraZoomInputIsFalseCommand>()
+            .Do<ZoomCameraCommand>();
+
     }
 
 }

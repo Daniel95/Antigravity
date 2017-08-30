@@ -45,6 +45,7 @@ public class TouchInputView : View {
         EasyTouch.On_TouchStart += OnTouchStart;
         EasyTouch.On_TouchUp += OnTouchUp;
         EasyTouch.On_Pinch += OnPinch;
+        EasyTouch.On_PinchEnd += OnPinchEnd;
         EasyTouch.On_UIElementTouchUp += EasyTouch_On_UIElementTouchUp;
         EasyTouch.On_TouchStart2Fingers += On_TouchStart2Fingers;
         EasyTouch.On_TouchDown2Fingers += On_TouchDown2Fingers;
@@ -63,6 +64,7 @@ public class TouchInputView : View {
         EasyTouch.On_TouchStart -= OnTouchStart;
         EasyTouch.On_TouchUp -= OnTouchUp;
         EasyTouch.On_Pinch -= OnPinch;
+        EasyTouch.On_PinchEnd -= OnPinchEnd;
         EasyTouch.On_UIElementTouchUp -= EasyTouch_On_UIElementTouchUp;
         EasyTouch.On_TouchStart2Fingers -= On_TouchStart2Fingers;
         EasyTouch.On_TouchDown2Fingers -= On_TouchDown2Fingers;
@@ -157,6 +159,11 @@ public class TouchInputView : View {
             pinchStartedEvent.Dispatch(gesture.position);
         }
         pinchMovedEvent.Dispatch(gesture.position, gesture.deltaPinch);
+    }
+
+    private void OnPinchEnd(Gesture gesture) {
+        isPinching = false;
+        pinchStoppedEvent.Dispatch(gesture.position);
     }
 
     private void EasyTouch_On_UIElementTouchUp(Gesture gesture) {
