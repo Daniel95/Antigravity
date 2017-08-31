@@ -77,7 +77,8 @@ public class TileGenerator : MonoBehaviour {
 
         Vector2 tilePosition = TileGrid.GridToTilePosition(gridPosition);
 
-        GameObject tileGameObject = Instantiate(prefab, tilePosition, new Quaternion());
+        GameObject tileGameObject = ObjectPool.Instance.GetObjectForType(prefab.name, false);
+        tileGameObject.transform.position = tilePosition;
         bool userGenerated = CheckTileTypeUserGenerated(tileType);
         string tileName = "";
 

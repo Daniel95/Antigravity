@@ -20,7 +20,9 @@ public class Tile {
     }
 
     public void Destroy() {
-        GameObject.Destroy(GameObject);
+        if(GameObject != null) {
+            ObjectPool.Instance.PoolObject(GameObject);
+        }
     }
 
 }
