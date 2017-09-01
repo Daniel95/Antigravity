@@ -9,18 +9,15 @@ public class TileGenerator : MonoBehaviour {
     public static TileGenerator Instance { get { return GetInstance(); } }
     public List<TileGeneratorNode> TileGeneratorNodes { get { return tileGeneratorNodes; } }
 
+    public Vector2 TileSize { get { return GetTileSize(); } }
+
     private static TileGenerator instance;
 
     [SerializeField] [Reorderable] private List<TileGeneratorNode> tileGeneratorNodes = new List<TileGeneratorNode>();
-    [SerializeField] private bool debugMode = false;
 
     public void GenerateTile(Vector2 gridPosition) {
         TileGeneratorNode matchingTileGeneratorNode = null;
 
-        if(debugMode) {
-            Debug.Log("_____");
-            Debug.Log("gridPos : " + gridPosition);
-        }
         for (int i = tileGeneratorNodes.Count - 1; i >= 0; i--) {
             TileGeneratorNode tileGeneratorNode = tileGeneratorNodes[i];
             TileCondition falseCondition = tileGeneratorNode.TileConditions.Find(x => !x.Check(gridPosition));
@@ -28,12 +25,7 @@ public class TileGenerator : MonoBehaviour {
             if (falseCondition == null) {
                 matchingTileGeneratorNode = tileGeneratorNode;
                 break;
-            } else if (debugMode) {
-                Debug.Log("false condition for " + tileGeneratorNode.TileType.ToString() + " : " + falseCondition.name);
             }
-        }
-        if (debugMode) {
-            Debug.Log("TileType : " + matchingTileGeneratorNode.TileType);
         }
 
         Tile tile = GetTile(matchingTileGeneratorNode.Prefab, matchingTileGeneratorNode.TileType, gridPosition, Vector2.zero);
@@ -134,10 +126,15 @@ public class TileGenerator : MonoBehaviour {
         SetTilesBasedOnTileValue();
     }
 
-
     private void Awake() {
+        TileGrid.SetTileSize(TileSize.x);
+    }
+
+    private Vector2 GetTileSize() {
         float tileWidth = tileGeneratorNodes.Find(x => x.TileType == TileType.Standard).Prefab.transform.localScale.x;
-        TileGrid.SetTileSize(tileWidth);
+        float tileHeight = tileWidth;
+        Vector2 tileSize = new Vector2(tileWidth, tileHeight);
+        return tileSize;
     }
 
 }
