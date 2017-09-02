@@ -1,11 +1,11 @@
 ﻿using IoCPlus;
 using UnityEngine;
 
-public class SetGridOverlayStartToTileSizeCommand : Command {
+public class SetGridOverlayOriginToHalfTileSizeCommand : Command {
 
     protected override void Execute() {
         Vector2 tileSize = TileGenerator.Instance.TileSize;
-        GridOverlay.Instance.Start = tileSize;
+        GridOverlay.Instance.Origin = tileSize / 2;
     }
 
 }

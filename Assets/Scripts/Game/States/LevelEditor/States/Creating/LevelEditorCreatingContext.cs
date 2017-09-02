@@ -9,7 +9,14 @@ public class LevelEditorCreatingContext : Context {
 
         On<EnterContextSignal>()
             .Do<InstantiateViewInCanvasLayerCommand>("UI/LevelEditor/Creating/GoToNavigatingStateButtonUI", CanvasLayer.UI)
+            .Do<ShowGridOverlayCommand>(true)
+            .Do<SetGridOverlaySizeToScreenWorldSizeCommand>()
+            .Do<SetGridOverlayOriginToHalfTileSizeCommand>()
+            .Do<SetGridOverlayStepToTileSizeCommand>()
             .GotoState<LevelEditorBuildingContext>();
+
+        On<LeaveContextSignal>()
+            .Do<ShowGridOverlayCommand>(false);
 
         On<LeaveContextSignal>()
             .Do<DestroyChildInCanvasLayerCommand>("UI/LevelEditor/Creating/GoToNavigatingStateButtonUI", CanvasLayer.UI);

@@ -7,7 +7,7 @@ public class ZoomCameraCommand : Command {
     [InjectParameter] private float delta;
 
     protected override void Execute() {
-        cameraVelocityRef.Get().Zoom(delta);
+        cameraVelocityRef.Get().Zoom(-delta);
     }
 
 }

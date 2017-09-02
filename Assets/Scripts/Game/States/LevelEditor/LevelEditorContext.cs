@@ -8,14 +8,7 @@ public class LevelEditorContext : Context {
         Bind<GoToLevelEditorStateEvent>();
 
         On<EnterContextSignal>()
-            .GotoState<LevelEditorNavigatingContext>()
-            .Do<ShowGridOverlayCommand>(true)
-            .Do<SetGridOverlaySizeToScreenWorldSizeCommand>()
-            .Do<SetGridOverlayStartToTileSizeCommand>()
-            .Do<SetGridOverlayStepToTileSizeCommand>();
-
-        On<LeaveContextSignal>()
-            .Do<ShowGridOverlayCommand>(false);
+            .GotoState<LevelEditorCreatingContext>();
 
         OnChild<LevelEditorNavigatingContext, GoToLevelEditorStateEvent>()
             .Do<AbortIfLevelEditorStateIsNotLevelEditorStateCommand>(LevelEditorState.Creating)

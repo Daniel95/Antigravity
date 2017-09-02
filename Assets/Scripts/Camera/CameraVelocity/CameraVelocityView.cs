@@ -13,6 +13,8 @@ public class CameraVelocityView : View, ICameraVelocity {
     [Inject] private Ref<ICamera> cameraRef;
     [Inject] private Ref<ICameraVelocity> cameraVelocityRef;
 
+    [Inject] private CameraZoomedEvent cameraZoomedEvent;
+
     private Vector2 moveVelocity;
     private Coroutine moveUpdateCoroutine;
 
@@ -89,6 +91,8 @@ public class CameraVelocityView : View, ICameraVelocity {
             float orthographicSize = Camera.main.orthographicSize + zoomVelocity;
             float clampedOrthographicSize = Mathf.Clamp(orthographicSize, camera.MinOrthographicSize, camera.MaxOrthographicSize);
             camera.OrthographicSize = clampedOrthographicSize;
+
+            cameraZoomedEvent.Dispatch();
 
             yield return null;
         }

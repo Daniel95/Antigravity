@@ -52,6 +52,7 @@ public class GameContext : Context {
         Bind<EnterGrapplingHookContextEvent>();
         Bind<UpdateGrapplingHookRopeEvent>();
         Bind<EnterPullingHookContextSignal>();
+        Bind<CameraZoomedEvent>();
 
         Bind<TapEvent>();
         Bind<TwistEvent>();
