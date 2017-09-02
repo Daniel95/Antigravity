@@ -31,10 +31,12 @@ public class LevelEditorCreatingContext : Context {
 
         On<OutsideUITouchStartEvent>()
             .Do<StartSelectionFieldAtPositionCommand>()
+            .Do<AbortIfSelectionFieldIsSameAsPreviousSelectionFieldCommand>()
             .Dispatch<OnSelectionFieldUpdatedEvent>();
 
         On<SwipeMovedEvent>()
             .Do<UpdateSelectionFieldToSwipePositionCommand>()
+            .Do<AbortIfSelectionFieldIsSameAsPreviousSelectionFieldCommand>()
             .Dispatch<OnSelectionFieldUpdatedEvent>();
 
         On<TouchUpEvent>()

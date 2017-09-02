@@ -1,6 +1,10 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public interface ILevelEditorCreatingInput {
+
+    List<Vector2> SelectionFieldGridPositions { get; }
+    List<Vector2> PreviousSelectionFieldGridPositions { get; }
 
     void StartSelectionField(Vector2 selectionFieldStartWorldPosition);
     void UpdateSelectionField(Vector2 selectionFieldEndWorldPosition);

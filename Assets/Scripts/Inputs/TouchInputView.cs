@@ -34,6 +34,8 @@ public class TouchInputView : View {
 
     private int uiLayer;
 
+    private Vector2 lastSwipePosition;
+
     public override void Initialize() {
         EasyTouch.On_DragStart += OnDragStart;
         EasyTouch.On_Drag += OnDrag;
@@ -102,11 +104,14 @@ public class TouchInputView : View {
 
     private void OnSwipe(Gesture gesture) {
         if (isPinching) { return; }
+        if (gesture.position == lastSwipePosition) { return; }
 
         swipeMovedEvent.Dispatch(new SwipeMovedEvent.Parameter() {
             DeltaPosition = gesture.deltaPosition,
             Position = gesture.position
         });
+
+        lastSwipePosition = gesture.position;
     }
 
     private void OnSwipeEnd(Gesture gesture) {
