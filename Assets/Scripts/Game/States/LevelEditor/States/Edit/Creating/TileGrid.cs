@@ -3,6 +3,8 @@ using UnityEngine;
 
 public static class TileGrid {
 
+    public static Dictionary<Vector2, Tile> Grid { get { return grid; } }
+
     public static float NodeSize { get { return tileSize; } }
 
     private static Dictionary<Vector2, Tile> grid = new Dictionary<Vector2, Tile>();
