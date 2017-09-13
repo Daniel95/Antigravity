@@ -31,6 +31,6 @@ public class OneWayDetection : MonoBehaviour {
     {
         Vector3 targetDir = position - (Vector2)transform.position;
 
-        return VectorMath.AngleDir(transform.forward, targetDir, transform.up) > 0;
+        return VectorHelper.AngleDir(transform.forward, targetDir, transform.up) > 0;
     }
 }

@@ -4,39 +4,58 @@ using UnityEngine;
 
 public class CombineTilesToPrefabAndSaveCommand : Command {
 
-    private const string LEVEL_PREFAB_PATH = "LevelEditor/LevelPrefab";
+    private const string LEVEL_COLLIDER_PATH = "LevelEditor/LevelCollider";
+    private const string LEVEL_VISUAL_PATH = "LevelEditor/LevelVisual";
 
     protected override void Execute() {
-        GameObject levelPrefab = Resources.Load<GameObject>(LEVEL_PREFAB_PATH);
-        GameObject levelGameObject = Object.Instantiate(levelPrefab);
+        GameObject levelColliderPrefab = Resources.Load<GameObject>(LEVEL_COLLIDER_PATH);
+        GameObject levelVisualPrefab = Resources.Load<GameObject>(LEVEL_VISUAL_PATH);
 
-        Material material = levelGameObject.GetComponent<Material>();
-        SpriteRenderer spriteRenderer = levelGameObject.GetComponent<SpriteRenderer>();
-        CompositeCollider2D compositeCollider = levelGameObject.GetComponent<CompositeCollider2D>();
+        GameObject levelColliderGameObject = Object.Instantiate(levelColliderPrefab);
 
         Dictionary<Vector2, Tile> grid = TileGrid.Grid;
 
-        List<GameObject> gameObjectsToCombine = new List<GameObject>();
+        List<GameObject> gameObjectCollidersToCombine = new List<GameObject>();
+        List<GameObject> gameObjectSpriteRenderersToCombine = new List<GameObject>();
         foreach (Tile tile in grid.Values) {
             GameObject originalTileGameObject = tile.GameObject;
             GameObject duplicateTileGameObject = Object.Instantiate(originalTileGameObject);
-            Object.Destroy(originalTileGameObject);
-            gameObjectsToCombine.Add(duplicateTileGameObject);
+
+            gameObjectCollidersToCombine.Add(duplicateTileGameObject);
+            if (tile.TileType != TileType.Standard) { continue; }
+            gameObjectSpriteRenderersToCombine.Add(duplicateTileGameObject);
         }
 
         List<SpriteRenderer> spriteRenderersToCombine = new List<SpriteRenderer>();
         List<BoxCollider2D> boxCollidersToCombine = new List<BoxCollider2D>();
 
-        foreach (GameObject gameObjectToCombine in gameObjectsToCombine) {
-            spriteRenderersToCombine.Add(gameObjectToCombine.GetComponent<SpriteRenderer>());
-            boxCollidersToCombine.Add(gameObjectToCombine.GetComponent<BoxCollider2D>());
+        foreach (GameObject gameObjectColliderToCombine in gameObjectCollidersToCombine) {
+            BoxCollider2D boxColliderToCombine = gameObjectColliderToCombine.GetComponent<BoxCollider2D>();
+            boxCollidersToCombine.Add(boxColliderToCombine);
         }
+
+        foreach (GameObject gameObjectSpriteRendererToCombine in gameObjectSpriteRenderersToCombine) {
+            SpriteRenderer spriteRendererToCombine = gameObjectSpriteRendererToCombine.GetComponent<SpriteRenderer>();
+            spriteRenderersToCombine.Add(spriteRendererToCombine);
+        }
+
+        GameObject levelVisualGameObject = Object.Instantiate(levelVisualPrefab, levelColliderGameObject.transform);
+        Material material = levelVisualGameObject.GetComponent<Material>();
+        SpriteRenderer spriteRenderer = levelVisualGameObject.GetComponent<SpriteRenderer>();
 
         SpriteHelper.CombineSpritesOfGameObjects(spriteRenderersToCombine, material, spriteRenderer);
+
+        CompositeCollider2D compositeCollider = levelColliderGameObject.GetComponent<CompositeCollider2D>();
         ColliderHelper.CombineBoxCollidersInCompositeCollider(boxCollidersToCombine, compositeCollider);
 
-        foreach (GameObject gameObjectToCombine in gameObjectsToCombine) {
-            Object.Destroy(gameObjectToCombine);
+        foreach (GameObject gameObjectSpriteRenderer in gameObjectSpriteRenderersToCombine) {
+            Object.Destroy(gameObjectSpriteRenderer);
         }
+
+        //SceneObject sceneObject = SaveLoadUtility.Instance.PackGameObject(levelColliderGameObject, new ObjectIdentifier());
+
+        //SaveLoad.SaveGameObject(sceneObject, Application.persistentDataPath + "Levels/", "Level1");
+
+        //SerializeHelper.Serialize(Application.persistentDataPath, levelColliderPrefab);
     }
 }

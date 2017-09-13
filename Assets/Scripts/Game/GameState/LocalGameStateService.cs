@@ -21,20 +21,11 @@ public class LocalGameStateService : IGameStateService {
     }
 
     public void Save(GameStateModel gameSave) {
-        CreateDirectoryIfNeeded();
         SerializeHelper.Serialize(GetFullPath(), gameSave);
     }
 
     private string GetFullPath() {
         return Application.persistentDataPath + SAVE_GAME_PATH;
-    }
-
-    private void CreateDirectoryIfNeeded() {
-        string fullPath = GetFullPath();
-        int index = fullPath.LastIndexOf('/');
-        if (index == 0) { return; }
-        string directory = fullPath.Substring(0, index);
-        Directory.CreateDirectory(directory);
     }
 
 }
