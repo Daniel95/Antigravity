@@ -8,7 +8,7 @@ public class LevelEditorCreatingContext : Context {
         Bind<OnSelectionFieldUpdatedEvent>();
 
         On<EnterContextSignal>()
-            .Do<InstantiateViewInCanvasLayerCommand>("UI/LevelEditor/Edit/Creating/GoToNavigatingStateButtonUI", CanvasLayer.UI)
+            .Do<InstantiateViewInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/GoToNavigatingStateButtonUI", CanvasLayer.UI)
             .Do<ShowGridOverlayCommand>(true)
             .Do<SetGridOverlaySizeToScreenWorldSizeCommand>()
             .Do<SetGridOverlayOriginToHalfTileSizeCommand>()
@@ -19,7 +19,7 @@ public class LevelEditorCreatingContext : Context {
             .Do<ShowGridOverlayCommand>(false);
 
         On<LeaveContextSignal>()
-            .Do<DestroyChildInCanvasLayerCommand>("UI/LevelEditor/Edit/Creating/GoToNavigatingStateButtonUI", CanvasLayer.UI);
+            .Do<DestroyChildInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/GoToNavigatingStateButtonUI", CanvasLayer.UI);
 
         OnChild<LevelEditorErasingContext, GoToLevelEditorStateEvent>()
             .Do<AbortIfLevelEditorStateIsNotLevelEditorStateCommand>(LevelEditorState.Building)

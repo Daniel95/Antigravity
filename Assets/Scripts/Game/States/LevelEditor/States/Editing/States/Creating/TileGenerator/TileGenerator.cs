@@ -28,7 +28,7 @@ public class TileGenerator : MonoBehaviour {
             }
         }
 
-        Tile tile = GetTile(matchingTileGeneratorNode.Prefab, matchingTileGeneratorNode.TileType, gridPosition, Vector2.zero);
+        Tile tile = GetTile(matchingTileGeneratorNode.Prefab, matchingTileGeneratorNode.TileType, gridPosition);
         if (tile.TileType == TileType.Empty) { return; }
 
         TileGrid.SetTile(gridPosition, tile);
@@ -64,7 +64,7 @@ public class TileGenerator : MonoBehaviour {
         return tileGeneratorNode.UserGenerated;
     }
 
-    private Tile GetTile(GameObject prefab, TileType tileType, Vector2 gridPosition, Vector2 direction) {
+    private Tile GetTile(GameObject prefab, TileType tileType, Vector2 gridPosition) {
         if(tileType == TileType.Empty) { return new Tile() { TileType = TileType.Empty }; }
 
         Vector2 tilePosition = TileGrid.GridToTilePosition(gridPosition);

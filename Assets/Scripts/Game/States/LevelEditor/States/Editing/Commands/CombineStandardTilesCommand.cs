@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CombineTilesToPrefabAndSaveCommand : Command {
+public class CombineStandardTilesCommand : Command {
 
     private const string LEVEL_COLLIDER_PATH = "LevelEditor/LevelCollider";
     private const string LEVEL_VISUAL_PATH = "LevelEditor/LevelVisual";
@@ -51,11 +51,5 @@ public class CombineTilesToPrefabAndSaveCommand : Command {
         foreach (GameObject gameObjectSpriteRenderer in gameObjectSpriteRenderersToCombine) {
             Object.Destroy(gameObjectSpriteRenderer);
         }
-
-        //SceneObject sceneObject = SaveLoadUtility.Instance.PackGameObject(levelColliderGameObject, new ObjectIdentifier());
-
-        //SaveLoad.SaveGameObject(sceneObject, Application.persistentDataPath + "Levels/", "Level1");
-
-        //SerializeHelper.Serialize(Application.persistentDataPath, levelColliderPrefab);
     }
 }

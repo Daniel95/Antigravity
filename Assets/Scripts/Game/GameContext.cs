@@ -53,6 +53,8 @@ public class GameContext : Context {
         Bind<UpdateGrapplingHookRopeEvent>();
         Bind<EnterPullingHookContextSignal>();
         Bind<CameraZoomedEvent>();
+        Bind<LevelEditorSavingLevelNameInputFieldValueChangedEvent>();
+        Bind<LevelEditorSavingSaveButtonClickedEvent>();
 
         Bind<TapEvent>();
         Bind<TwistEvent>();
@@ -107,6 +109,8 @@ public class GameContext : Context {
         Bind<Ref<ISlowTime>>();
         Bind<Ref<IPlayerGrappling>>();
         Bind<Ref<ILevelEditorCreatingInput>>();
+        Bind<Ref<ILevelEditorSavingSaveButton>>();
+        Bind<Ref<ILevelEditorSavingLevelNameInputField>>();
 
         Bind<Refs<ICheckpoint>>();
 
@@ -161,7 +165,7 @@ public class GameContext : Context {
 
         OnChild<LoadingContext, GoToSceneCompletedEvent>()
             .Do<AbortIfSceneIsNotSceneCommand>(Scenes.LevelEditor)
-            .GotoState<LevelEditorEditContext>();
+            .GotoState<LevelEditorContext>();
 
         OnChild<LoadingContext, GoToSceneCompletedEvent>()
             .Do<AbortIfSceneIsNotSceneCommand>(Scenes.TestLvl)

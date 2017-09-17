@@ -2,6 +2,7 @@
 
     Navigating,
     Creating,
+    Saving,
     Building,
     Erasing,
 

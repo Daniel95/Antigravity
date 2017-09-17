@@ -6,10 +6,10 @@ public class LevelEditorErasingContext : Context {
         base.SetBindings();
 
         On<EnterContextSignal>()
-            .Do<InstantiateViewInCanvasLayerCommand>("UI/LevelEditor/Edit/Creating/Erasing/GoToBuildingStateButtonUI", CanvasLayer.UI);
+            .Do<InstantiateViewInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/Erasing/GoToBuildingStateButtonUI", CanvasLayer.UI);
 
         On<LeaveContextSignal>()
-            .Do<DestroyChildInCanvasLayerCommand>("UI/LevelEditor/Edit/Creating/Erasing/GoToBuildingStateButtonUI", CanvasLayer.UI);
+            .Do<DestroyChildInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/Erasing/GoToBuildingStateButtonUI", CanvasLayer.UI);
 
         On<OnSelectionFieldUpdatedEvent>()
             .Do<RemoveTilesInSelectionFieldCommand>();

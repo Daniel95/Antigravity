@@ -8,12 +8,6 @@ public class DestroyChildInCanvasLayerCommand : Command<string, CanvasLayer> {
     [Inject] private Ref<ICanvasUI> canvasUIRef;
 
     protected override void Execute(string prefabPath, CanvasLayer canvasLayer) {
-        GameObject prefab = Resources.Load<GameObject>(prefabPath);
-        if (prefab == null) {
-            Debug.LogWarning("Can't instantiate view prefab as no prefab is found at given path '" + prefabPath + "'.", prefab);
-            return;
-        }
-
         GameObject child = canvasUIRef.Get().GetCanvasLayerChild(canvasLayer, prefabPath);
         canvasUIRef.Get().DestroyCanvasLayerChild(child, canvasLayer, prefabPath);
     }
