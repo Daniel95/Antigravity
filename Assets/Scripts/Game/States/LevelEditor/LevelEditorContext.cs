@@ -10,6 +10,18 @@ public class LevelEditorContext : Context {
         Bind<LevelNameStatus>();
 
         On<EnterContextSignal>()
+            .GotoState<LevelEditorMainMenuContext>();
+
+        On<GoToLevelEditorStateEvent>()
+            .Do<AbortIfLevelEditorStateIsNotLevelEditorStateCommand>(LevelEditorState.MainMenu)
+            .GotoState<LevelEditorMainMenuContext>();
+
+        On<GoToLevelEditorStateEvent>()
+            .Do<AbortIfLevelEditorStateIsNotLevelEditorStateCommand>(LevelEditorState.Editing)
+            .GotoState<LevelEditorEditingContext>();
+
+        On<GoToLevelEditorStateEvent>()
+            .Do<AbortIfLevelEditorStateIsNotLevelEditorStateCommand>(LevelEditorState.SelectingLevel)
             .GotoState<LevelEditorEditingContext>();
 
     }

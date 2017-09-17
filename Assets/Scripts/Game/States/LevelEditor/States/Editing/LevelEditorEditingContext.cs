@@ -9,11 +9,13 @@ public class LevelEditorEditingContext : Context {
             .Do<SetCameraOrthographicSizeCommand>(5)
             .GotoState<LevelEditorCreatingContext>()
             .Do<LoadGridPositionsCommand>()
-            .Do<InstantiateViewInCanvasLayerCommand>("UI/LevelEditor/Editing/GoToSavingStateButtonUI", CanvasLayer.UI);
+            .Do<InstantiateViewInCanvasLayerCommand>("UI/LevelEditor/Editing/GoToSavingStateButtonUI", CanvasLayer.UI)
+            .Do<InstantiateViewInCanvasLayerCommand>("UI/LevelEditor/Editing/GoToMainMenuStateButtonUI", CanvasLayer.UI);
 
         On<LeaveContextSignal>()
             .Do<SetCameraOrthographicSizeCommand>(10)
-            .Do<DestroyChildInCanvasLayerCommand>("UI/LevelEditor/Editing/GoToSavingStateButtonUI", CanvasLayer.UI);
+            .Do<DestroyChildInCanvasLayerCommand>("UI/LevelEditor/Editing/GoToSavingStateButtonUI", CanvasLayer.UI)
+            .Do<DestroyChildInCanvasLayerCommand>("UI/LevelEditor/Editing/GoToMainMenuStateButtonUI", CanvasLayer.UI);
 
         On<GoToLevelEditorStateEvent>()
             .Do<AbortIfLevelEditorStateIsNotLevelEditorStateCommand>(LevelEditorState.Creating)
