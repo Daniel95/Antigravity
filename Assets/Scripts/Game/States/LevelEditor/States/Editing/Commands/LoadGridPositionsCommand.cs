@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class LoadGridPositionsCommand : Command {
 
+    [Inject] private LevelNameStatus levelNameStatus;
+
     protected override void Execute() {
-        List<Vector2> gridPositions = SerializeHelper.Deserialize<List<Vector2>>(Application.persistentDataPath + "/Data/Levels/level1.xml");
+        List<Vector2> gridPositions = SerializeHelper.Deserialize<List<Vector2>>(LevelEditorLevelDataPath.Path + levelNameStatus + ".xml");
         gridPositions.ForEach(x => TileGrid.SetTile(x, new Tile() { UserGenerated = true }));
         TileGenerator.Instance.GenerateTiles(gridPositions);
     }

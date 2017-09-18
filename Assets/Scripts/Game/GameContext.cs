@@ -111,6 +111,7 @@ public class GameContext : Context {
         Bind<Ref<ILevelEditorCreatingInput>>();
         Bind<Ref<ILevelEditorSavingSaveButton>>();
         Bind<Ref<ILevelEditorSavingLevelNameInputField>>();
+        Bind<Ref<ILevelEditorLevelSelectGridLayoutGroup>>();
 
         Bind<Refs<ICheckpoint>>();
 

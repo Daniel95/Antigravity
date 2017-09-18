@@ -1,5 +1,5 @@
 ﻿public class LevelNameStatus {
 
-    public string LoadedLevelName;
+    public string Name;
 
 }

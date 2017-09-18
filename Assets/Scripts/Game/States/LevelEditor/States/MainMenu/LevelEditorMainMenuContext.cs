@@ -6,12 +6,12 @@ public class LevelEditorMainMenuContext : Context {
         base.SetBindings();
 
         On<EnterContextSignal>()
-            .Do<InstantiateViewInCanvasLayerCommand>("UI/LevelEditor/MainMenu/GoToEditingButtonUI", CanvasLayer.UI)
-            .Do<InstantiateViewInCanvasLayerCommand>("UI/LevelEditor/MainMenu/GoToSelectingLevelButtonUI", CanvasLayer.UI);
+            .Do<InstantiateViewInCanvasLayerCommand>("UI/LevelEditor/MainMenu/GoToEditingStateButtonUI", CanvasLayer.UI)
+            .Do<InstantiateViewInCanvasLayerCommand>("UI/LevelEditor/MainMenu/GoToLevelSelectStateButtonUI", CanvasLayer.UI);
 
         On<LeaveContextSignal>()
-            .Do<DestroyChildInCanvasLayerCommand>("UI/LevelEditor/MainMenu/GoToEditingButtonUI", CanvasLayer.UI)
-            .Do<DestroyChildInCanvasLayerCommand>("UI/LevelEditor/MainMenu/GoToSelectingLevelButtonUI", CanvasLayer.UI);
+            .Do<DestroyChildInCanvasLayerCommand>("UI/LevelEditor/MainMenu/GoToEditingStateButtonUI", CanvasLayer.UI)
+            .Do<DestroyChildInCanvasLayerCommand>("UI/LevelEditor/MainMenu/GoToLevelSelectStateButtonUI", CanvasLayer.UI);
 
     }
 

@@ -10,21 +10,22 @@ public class SaveGridPositionsCommand : Command {
 
     [Inject] private LevelNameStatus levelNameStatus;
 
-    private const string LEVEL_DATA_PATH =  "/Data/Levels/";
-
     protected override void Execute() {
         Dictionary<Vector2, Tile> grid = TileGrid.Grid;
         List<Vector2> gridPositions = grid.Keys.ToList();
 
         string levelName = levelEditorSavingLevelNameInputFieldRef.Get().Text;
 
-        if(levelName != levelNameStatus.LoadedLevelName) {
-            File.Delete(Application.persistentDataPath + LEVEL_DATA_PATH + levelNameStatus.LoadedLevelName + ".xml");
+        string levelNameInDirectory = StringHelper.ConvertToDirectoyFriendly(levelName);
+        string levelFileName = levelNameInDirectory + ".xml";
+
+        if (levelName != levelNameStatus.Name) {
+            File.Delete(LevelEditorLevelDataPath.Path + levelFileName);
         }
 
-        SerializeHelper.Serialize(Application.persistentDataPath + LEVEL_DATA_PATH + levelName + ".xml", gridPositions);
+        SerializeHelper.Serialize(LevelEditorLevelDataPath.Path + levelName + ".xml", gridPositions);
 
-        levelNameStatus.LoadedLevelName = levelName;
+        levelNameStatus.Name = levelName;
     }
 
 }

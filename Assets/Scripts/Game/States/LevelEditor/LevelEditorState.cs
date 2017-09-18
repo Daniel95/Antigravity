@@ -2,7 +2,7 @@
 
     MainMenu,
     Editing,
-    SelectingLevel,
+    LevelSelect,
     Navigating,
     Creating,
     Saving,

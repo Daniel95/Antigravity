@@ -18,11 +18,16 @@ public class LevelEditorSavingContext : Context {
             .Do<InstantiateViewInCanvasLayerCommand>("UI/LevelEditor/Editing/GoToMainMenuStateButtonUI", CanvasLayer.UI);
 
         On<LevelEditorSavingLevelNameInputFieldValueChangedEvent>()
+            .Do<AbortIfLevelNameAlreadyExistsCommand>()
             .Do<AbortIfCharacterCountIsLowerThenIntCommand>(3)
             .Do<LevelEditorSavingEnableSaveButtonCommand>(true);
 
         On<LevelEditorSavingLevelNameInputFieldValueChangedEvent>()
             .Do<AbortIfCharacterCountIsHigherThenIntCommand>(2)
+            .Do<LevelEditorSavingEnableSaveButtonCommand>(false);
+
+        On<LevelEditorSavingLevelNameInputFieldValueChangedEvent>()
+            .Do<AbortIfLevelNameDoesNotAlreadyExistsCommand>()
             .Do<LevelEditorSavingEnableSaveButtonCommand>(false);
 
         On<LevelEditorSavingSaveButtonClickedEvent>()

@@ -2,7 +2,7 @@
 
 namespace IoCPlus {
 
-    public class InstantiateViewToViewContainerCommand : Command<string> {
+    public class InstantiateViewInViewContainerCommand : Command<string> {
 
         [Inject] IContext context;
 

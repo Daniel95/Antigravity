@@ -21,8 +21,8 @@ public class LevelEditorContext : Context {
             .GotoState<LevelEditorEditingContext>();
 
         On<GoToLevelEditorStateEvent>()
-            .Do<AbortIfLevelEditorStateIsNotLevelEditorStateCommand>(LevelEditorState.SelectingLevel)
-            .GotoState<LevelEditorEditingContext>();
+            .Do<AbortIfLevelEditorStateIsNotLevelEditorStateCommand>(LevelEditorState.LevelSelect)
+            .GotoState<LevelEditorLevelSelectContext>();
 
     }
 

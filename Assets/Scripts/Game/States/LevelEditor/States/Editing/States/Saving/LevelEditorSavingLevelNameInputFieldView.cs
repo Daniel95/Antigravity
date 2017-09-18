@@ -18,8 +18,7 @@ public class LevelEditorSavingLevelNameInputFieldView : View, ILevelEditorSaving
     public override void Initialize() {
         levelEditorSavingLevelNameInputFieldRef.Set(this);
         inputField.onValueChanged.AddListener(OnValueChanged);
-        FrameHelper.WaitForFrames(1, () => inputField.text = levelNameStatus.LoadedLevelName);
-        ;
+        FrameHelper.WaitForFrames(1, () => inputField.text = levelNameStatus.Name);
     }
 
     public override void Dispose() {
