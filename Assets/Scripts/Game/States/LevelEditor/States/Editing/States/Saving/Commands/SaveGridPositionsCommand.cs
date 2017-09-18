@@ -8,24 +8,30 @@ public class SaveGridPositionsCommand : Command {
 
     [Inject] private Ref<ILevelEditorSavingLevelNameInputField> levelEditorSavingLevelNameInputFieldRef;
 
-    [Inject] private LevelNameStatus levelNameStatus;
+    [Inject] private SavedLevelNameStatus savedLevelNameStatus;
 
     protected override void Execute() {
         Dictionary<Vector2, Tile> grid = TileGrid.Grid;
         List<Vector2> gridPositions = grid.Keys.ToList();
 
         string levelName = levelEditorSavingLevelNameInputFieldRef.Get().Text;
+        string previousLevelName = savedLevelNameStatus.Name;
 
-        string levelNameInDirectory = StringHelper.ConvertToDirectoyFriendly(levelName);
-        string levelFileName = levelNameInDirectory + ".xml";
+        if (!string.IsNullOrEmpty(previousLevelName) && levelName != previousLevelName) {
+            string oldLevelNameInDirectory = StringHelper.ConvertToDirectoyCompatible(previousLevelName);
+            string oldLevelFileName = oldLevelNameInDirectory + ".xml";
 
-        if (levelName != levelNameStatus.Name) {
-            File.Delete(LevelEditorLevelDataPath.Path + levelFileName);
+            if (File.Exists(LevelEditorLevelDataPath.Path + oldLevelFileName)) {
+                File.Delete(LevelEditorLevelDataPath.Path + oldLevelFileName);
+            }
         }
 
-        SerializeHelper.Serialize(LevelEditorLevelDataPath.Path + levelName + ".xml", gridPositions);
+        string levelNameInDirectory = StringHelper.ConvertToDirectoyCompatible(levelName);
+        string levelFileName = levelNameInDirectory + ".xml";
 
-        levelNameStatus.Name = levelName;
+        SerializeHelper.Serialize(LevelEditorLevelDataPath.Path + levelFileName, gridPositions);
+
+        savedLevelNameStatus.Name = levelName;
     }
 
 }

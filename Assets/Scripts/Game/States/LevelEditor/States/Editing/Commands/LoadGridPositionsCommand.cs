@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class LoadGridPositionsCommand : Command {
 
-    [Inject] private LevelNameStatus levelNameStatus;
+    [Inject] private SavedLevelNameStatus levelNameStatus;
 
     protected override void Execute() {
         List<Vector2> gridPositions = SerializeHelper.Deserialize<List<Vector2>>(LevelEditorLevelDataPath.Path + levelNameStatus + ".xml");

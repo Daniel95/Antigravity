@@ -11,7 +11,7 @@ public class LevelEditorSavingLevelNameInputFieldView : View, ILevelEditorSaving
 
     [Inject] private LevelEditorSavingLevelNameInputFieldValueChangedEvent levelEditorSavingLevelNameInputFieldValueChangedEvent;
 
-    [Inject] private LevelNameStatus levelNameStatus;
+    [Inject] private SavedLevelNameStatus levelNameStatus;
 
     private InputField inputField;
 
