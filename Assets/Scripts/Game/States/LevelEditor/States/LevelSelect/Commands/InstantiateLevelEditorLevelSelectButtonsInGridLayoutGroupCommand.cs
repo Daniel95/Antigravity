@@ -26,7 +26,7 @@ public class InstantiateLevelEditorLevelSelectButtonsInGridLayoutGroupCommand : 
             LevelEditorLevelSelectButtonView levelEditorLevelSelectButtonView = context.InstantiateView(prefab);
             levelEditorLevelSelectButtonView.transform.SetParent(levelEditorLevelSelectGridLayoutGroup.Transform);
 
-            string levelName = StringHelper.RevertDirectoryCompatible(fileInfo.Name); 
+            string levelName = StringHelper.RevertXMLCompatible(fileInfo.Name); 
             levelEditorLevelSelectButtonView.SetButtonName(levelName);
         }
     }

@@ -11,6 +11,9 @@ public class LevelEditorSavingContext : Context {
             .Do<InstantiateViewInCanvasLayerCommand>("UI/LevelEditor/Editing/Saving/SaveButtonUI", CanvasLayer.UI)
             .Do<DestroyChildInCanvasLayerCommand>("UI/LevelEditor/Editing/GoToMainMenuStateButtonUI", CanvasLayer.UI);
 
+        On<EnterContextSignal>()
+            .Do<LevelEditorSavingEnableSaveButtonCommand>(false);
+
         On<LeaveContextSignal>()
             .Do<DestroyChildInCanvasLayerCommand>("UI/LevelEditor/Editing/Saving/LevelNameInputField", CanvasLayer.UI)
             .Do<DestroyChildInCanvasLayerCommand>("UI/LevelEditor/Editing/Saving/GoToNavigatingButtonUI", CanvasLayer.UI)
@@ -24,7 +27,11 @@ public class LevelEditorSavingContext : Context {
             .OnAbort<LevelEditorSavingEnableSaveButtonFalseCommand>();
 
         On<LevelEditorSavingSaveButtonClickedEvent>()
-            .Do<SaveGridPositionsCommand>();
+            .Do<DispatchLevelEditorSaveLevelEventCommand>();
+
+        On<LevelEditorSaveLevelEvent>()
+            .Do<LevelEditorSaveGridPositionsCommand>()
+            .Do<LevelEditorUpdateLevelNameStatusCommand>();
 
     }
 

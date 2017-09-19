@@ -14,6 +14,10 @@ public class LevelEditorLevelSelectContext : Context {
             .Do<DestroyChildInCanvasLayerCommand>("UI/LevelEditor/LevelSelect/GoToMainMenuStateButtonUI", CanvasLayer.UI)
             .Do<DestroyChildInCanvasLayerCommand>("UI/LevelEditor/LevelSelect/LevelEditorLevelSelectGridLayoutGroup", CanvasLayer.UI);
 
+        On<LevelEditorLevelSelectButtonClickedEvent>()
+            .Do<LevelEditorUpdateLevelNameStatusCommand>()
+            .Do<DispatchGoToLevelEditorStateEventCommand>(LevelEditorState.Editing);
+
     }
 
 }

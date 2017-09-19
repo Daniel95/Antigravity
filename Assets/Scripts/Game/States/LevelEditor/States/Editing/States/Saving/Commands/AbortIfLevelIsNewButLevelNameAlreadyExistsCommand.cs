@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class AbortIfLevelIsNewButLevelNameAlreadyExistsCommand : Command {
 
-    [Inject] private SavedLevelNameStatus levelNameStatus;
+    [Inject] private LevelNameStatus levelNameStatus;
 
     [InjectParameter] private string levelName;
 
@@ -16,8 +16,7 @@ public class AbortIfLevelIsNewButLevelNameAlreadyExistsCommand : Command {
         DirectoryInfo info = new DirectoryInfo(LevelEditorLevelDataPath.Path);
         List<FileInfo> filesInfo = info.GetFiles().ToList();
 
-        string levelNameInDirectory = StringHelper.ConvertToDirectoyCompatible(levelName);
-        string levelFileName = levelNameInDirectory + ".xml";
+        string levelFileName = StringHelper.ConvertToXMLCompatible(levelName);
         FileInfo fileInfoWithLevelName = filesInfo.Find(x => x.Name == levelFileName);
 
         if (fileInfoWithLevelName != null) {

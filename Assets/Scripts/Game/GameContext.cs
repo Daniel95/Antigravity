@@ -55,6 +55,8 @@ public class GameContext : Context {
         Bind<CameraZoomedEvent>();
         Bind<LevelEditorSavingLevelNameInputFieldValueChangedEvent>();
         Bind<LevelEditorSavingSaveButtonClickedEvent>();
+        Bind<LevelEditorLevelSelectButtonClickedEvent>();
+        Bind<LevelEditorSaveLevelEvent>();
 
         Bind<TapEvent>();
         Bind<TwistEvent>();
