@@ -1,12 +1,10 @@
 ﻿using IoCPlus;
 
-public class SetNextSceneToSceneCommand : Command {
+public class SetNextSceneToSceneCommand : Command<Scenes> {
 
     [Inject] private SceneStatus sceneStatus;
 
-    [InjectParameter] private Scenes scene;
-
-    protected override void Execute() {
+    protected override void Execute(Scenes scene) {
         sceneStatus.sceneToLoad = scene;
     }
 }

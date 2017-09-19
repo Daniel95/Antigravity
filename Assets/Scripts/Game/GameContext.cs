@@ -155,7 +155,7 @@ public class GameContext : Context {
             .Do<InstantiateViewPrefabCommand>("UI/Canvas/CanvasUI")
             .Do<InstantiateViewInCanvasLayerCommand>("UI/FPSCounterUI", CanvasLayer.UI)
             .AddContext<CameraContext>()
-            .Do<SetNextSceneToIndicatedSceneCommand>(Scenes.MainMenu)
+            .Do<SetNextSceneToSceneCommand>(Scenes.MainMenu)
             .GotoState<LoadingContext>();
 
         OnChild<LoadingContext, GoToSceneCompletedEvent>()
@@ -187,7 +187,7 @@ public class GameContext : Context {
             .GotoState<LoadingContext>();
 
         On<GoToSceneEvent>()
-            .Do<SetNextSceneToSceneCommand>()
+            .Do<SetNextSceneCommand>()
             .GotoState<LoadingContext>();
 
         On<ApplicationPauseEvent>()
