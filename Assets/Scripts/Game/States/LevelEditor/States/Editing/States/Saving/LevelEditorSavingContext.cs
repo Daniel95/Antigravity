@@ -21,7 +21,7 @@ public class LevelEditorSavingContext : Context {
             .Do<InstantiateViewInCanvasLayerCommand>("UI/LevelEditor/Editing/GoToMainMenuStateButtonUI", CanvasLayer.UI);
 
         On<LevelEditorSavingLevelNameInputFieldValueChangedEvent>()
-            .Do<AbortIfCharacterCountIsLowerThenIntCommand>(3)
+            .Do<AbortIfCharacterCountIsLowerThenIntCommand>(2)
             .Do<AbortIfLevelIsNewButLevelNameAlreadyExistsCommand>()
             .Do<LevelEditorSavingEnableSaveButtonCommand>(true)
             .OnAbort<LevelEditorSavingEnableSaveButtonFalseCommand>();

@@ -25,16 +25,20 @@ public class TileGenerator : MonoBehaviour {
             if (falseCondition == null) {
                 matchingTileGeneratorNode = tileGeneratorNode;
                 break;
-            }
+            } 
         }
 
         Tile tile = GetTile(matchingTileGeneratorNode.Prefab, matchingTileGeneratorNode.TileType, gridPosition);
-        if (tile.TileType == TileType.Empty) { return; }
+        if (tile.TileType == TileType.Empty) {
+            if(TileGrid.ContainsPosition(gridPosition)) {
+                TileGrid.RemoveTile(gridPosition);
+            }
+        } else {
+            TileGrid.SetTile(gridPosition, tile);
 
-        TileGrid.SetTile(gridPosition, tile);
-
-        foreach(TileAction tileAction in matchingTileGeneratorNode.TileActions) {
-            tileAction.Do(gridPosition);
+            foreach (TileAction tileAction in matchingTileGeneratorNode.TileActions) {
+                tileAction.Do(gridPosition);
+            }
         }
     }
 

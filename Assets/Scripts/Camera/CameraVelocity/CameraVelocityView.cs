@@ -27,6 +27,10 @@ public class CameraVelocityView : View, ICameraVelocity {
         cameraVelocityRef.Set(this);
     }
 
+    public void ResetPosition() {
+        transform.localPosition = Vector2.zero;
+    }
+
     public void UpdatePreviousTouchScreenPosition(Vector2 touchScreenPosition) {
         previousTouchViewportPosition = Camera.main.ScreenToViewportPoint(touchScreenPosition);
     }

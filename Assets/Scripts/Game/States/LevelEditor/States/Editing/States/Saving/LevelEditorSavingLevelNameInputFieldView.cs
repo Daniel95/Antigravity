@@ -18,11 +18,14 @@ public class LevelEditorSavingLevelNameInputFieldView : View, ILevelEditorSaving
     public override void Initialize() {
         levelEditorSavingLevelNameInputFieldRef.Set(this);
         inputField.onValueChanged.AddListener(OnValueChanged);
+        inputField.onEndEdit.AddListener(OnValueChanged);
+        inputField.onEndEdit.AddListener(OnValueChanged);
         FrameHelper.WaitForFrames(1, () => inputField.text = levelNameStatus.Name);
     }
 
     public override void Dispose() {
         inputField.onValueChanged.RemoveListener(OnValueChanged);
+        inputField.onEndEdit.RemoveListener(OnValueChanged);
     }
 
     private void OnValueChanged(string text) {

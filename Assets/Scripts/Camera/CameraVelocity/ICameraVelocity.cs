@@ -2,6 +2,7 @@
 
 public interface ICameraVelocity {
 
+    void ResetPosition();
     void Swipe(Vector2 touchScreenPosition);
     void Zoom(float delta);
     void UpdatePreviousTouchScreenPosition(Vector2 screenPosition);

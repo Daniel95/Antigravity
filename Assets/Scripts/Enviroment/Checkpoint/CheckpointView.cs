@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 using IoCPlus;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 
 [RequireComponent(typeof(AnimatedBody))]
 public class CheckpointView : View, ICheckpoint {
@@ -78,7 +80,9 @@ public class CheckpointView : View, ICheckpoint {
         checkpointBoundary = Instantiate(checkPointBoundaryPrefab);
         ObjectId checkpointBoundaryObjectId = checkpointBoundary.gameObject.GetComponent<ObjectId>();
         checkpointBoundaryObjectId.GenerateId();
+#if UNITY_EDITOR
         EditorGUIUtility.systemCopyBuffer = checkpointBoundaryObjectId.Id;
+#endif
         return checkpointBoundary;
     }
 

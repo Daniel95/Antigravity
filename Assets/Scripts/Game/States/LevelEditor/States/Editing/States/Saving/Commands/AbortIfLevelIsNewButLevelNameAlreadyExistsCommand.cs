@@ -11,6 +11,7 @@ public class AbortIfLevelIsNewButLevelNameAlreadyExistsCommand : Command {
     [InjectParameter] private string levelName;
 
     protected override void Execute() {
+        if(!File.Exists(LevelEditorLevelDataPath.Path)) { return; }
         if(levelName == levelNameStatus.Name) { return; }
 
         DirectoryInfo info = new DirectoryInfo(LevelEditorLevelDataPath.Path);

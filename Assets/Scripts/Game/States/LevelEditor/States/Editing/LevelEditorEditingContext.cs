@@ -18,6 +18,7 @@ public class LevelEditorEditingContext : Context {
         On<LeaveContextSignal>()
             .Do<LevelEditorClearGridCommand>()
             .Do<LevelEditorClearLevelNameStatusCommand>()
+            .Do<ResetCamerPositionCommand>()
             .Do<SetCameraOrthographicSizeCommand>(10)
             .Do<DestroyChildInCanvasLayerCommand>("UI/LevelEditor/Editing/GoToSavingStateButtonUI", CanvasLayer.UI)
             .Do<DestroyChildInCanvasLayerCommand>("UI/LevelEditor/Editing/GoToMainMenuStateButtonUI", CanvasLayer.UI);
@@ -34,8 +35,8 @@ public class LevelEditorEditingContext : Context {
             .Do<AbortIfLevelEditorStateIsNotLevelEditorStateCommand>(LevelEditorState.Saving)
             .GotoState<LevelEditorSavingContext>();
 
-        OnChild<LevelEditorSavingContext, LevelEditorSavingSaveButtonClickedEvent>()
-            .GotoState<LevelEditorNavigatingContext>();
+        OnChild<LevelEditorSavingContext, LevelEditorSaveLevelEvent>()
+            .GotoState<LevelEditorCreatingContext>();
 
     }
 
