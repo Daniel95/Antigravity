@@ -107,6 +107,7 @@ public class LevelEditorCreatingInputView : View, ILevelEditorCreatingInput {
 
         foreach (Vector2 gridPosition in gridPositions) {
             List<Vector2> allGridPositionsToRegenerate = TileGrid.GetNeighbourPositions(gridPosition, false);
+            allGridPositionsToRegenerate = allGridPositionsToRegenerate.Except(gridPositions).ToList();
             allGridPositionsToRegenerate.Add(gridPosition);
             allGridPositionsToRegenerate = allGridPositionsToRegenerate.Except(neighboursIgnoringRegenerate).ToList();
 
@@ -124,6 +125,7 @@ public class LevelEditorCreatingInputView : View, ILevelEditorCreatingInput {
 
         foreach (Vector2 gridPosition in gridPositions) {
             List<Vector2> allGridPositionsToRegenerate = TileGrid.GetNeighbourPositions(gridPosition, false);
+            allGridPositionsToRegenerate = allGridPositionsToRegenerate.Except(gridPositions).ToList();
             allGridPositionsToRegenerate.Add(gridPosition);
 
             List<Vector2> nonUserGeneratedTilesToRegenerate = allGridPositionsToRegenerate.FindAll(x => TileGrid.ContainsPosition(x) && !TileGrid.GetTile(x).UserGenerated);
