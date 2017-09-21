@@ -40,15 +40,28 @@ public class LevelEditorCreatingInputView : View, ILevelEditorCreatingInput {
     }
 
     public void RemoveTilesInSelectionField() {
-        List<Vector2> gridPositionsToRemove = selectionFieldGridPositions.FindAll(x => TileGrid.ContainsPosition(x));
-        RemoveTiles(gridPositionsToRemove, true);
+        List<Vector2> previousSelectionFieldAvailableGridPositions = selectionFieldAvailableGridPositions;
+        List<Vector2> nextSelectionFieldAvailableGridPositions = new List<Vector2>();
+        foreach (Vector2 selectionFieldGridPosition in selectionFieldGridPositions) {
+            if (!CheckGridPositionEmptyOrNotUserGenerated(selectionFieldGridPosition) || CheckGridPositionPreviouslyOccupiedByLastSelectionField(selectionFieldGridPosition)) {
+                nextSelectionFieldAvailableGridPositions.Add(selectionFieldGridPosition);
+            }
+        }
+
+        List<Vector2> outdatedSelectionFieldAvailableGridPositions = previousSelectionFieldAvailableGridPositions.Except(nextSelectionFieldAvailableGridPositions).ToList();
+        List<Vector2> newSelectionFieldAvailableGridPositions = nextSelectionFieldAvailableGridPositions.Except(previousSelectionFieldAvailableGridPositions).ToList();
+
+        SpawnTiles(outdatedSelectionFieldAvailableGridPositions);
+        RemoveTiles(newSelectionFieldAvailableGridPositions, true);
+
+        selectionFieldAvailableGridPositions = nextSelectionFieldAvailableGridPositions;
     }
 
     public void ReplaceNewTilesInSelectionField() {
         List<Vector2> previousSelectionFieldAvailableGridPositions = selectionFieldAvailableGridPositions;
         List<Vector2> nextSelectionFieldAvailableGridPositions = new List<Vector2>();
         foreach (Vector2 selectionFieldGridPosition in selectionFieldGridPositions) {
-            if (CheckGridPositionAvailability(selectionFieldGridPosition) || CheckGridPositionPreviouslyOccupiedByLastSelectionField(selectionFieldGridPosition)) {
+            if (CheckGridPositionEmptyOrNotUserGenerated(selectionFieldGridPosition) || CheckGridPositionPreviouslyOccupiedByLastSelectionField(selectionFieldGridPosition)) {
                 nextSelectionFieldAvailableGridPositions.Add(selectionFieldGridPosition);
             }
         }
@@ -62,7 +75,7 @@ public class LevelEditorCreatingInputView : View, ILevelEditorCreatingInput {
         selectionFieldAvailableGridPositions = nextSelectionFieldAvailableGridPositions;
     }
 
-    private bool CheckGridPositionAvailability(Vector2 gridPosition) {
+    private bool CheckGridPositionEmptyOrNotUserGenerated(Vector2 gridPosition) {
         bool available = !TileGrid.ContainsPosition(gridPosition) || !TileGrid.GetTile(gridPosition).UserGenerated;
         return available;
     }
