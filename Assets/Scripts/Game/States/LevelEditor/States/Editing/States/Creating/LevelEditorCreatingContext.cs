@@ -40,15 +40,21 @@ public class LevelEditorCreatingContext : Context {
             .Do<DispatchLevelEditorSelectionFieldChangedEventCommand>();
 
         On<LevelEditorSelectionFieldChangedEvent>()
-            .Do<LevelEditorUpdateSelectionFieldVisualCommand>();
+            .Do<AbortIfBoxOverlayIsShownCommand>()
+            .Do<ShowBoxOverlayCommand>(true);
+
+        On<LevelEditorSelectionFieldChangedEvent>()
+            .Do<LevelEditorUpdateBoxOverlayToSelectionFieldCommand>();
 
         On<TouchUpEvent>()
             .Do<LevelEditorClearSelectionFieldCommand>()
-            .Do<LevelEditorClearSelectionFieldAvailableGridPositionsCommand>();
+            .Do<LevelEditorClearSelectionFieldAvailableGridPositionsCommand>()
+            .Do<ShowBoxOverlayCommand>(false);
 
         On<SwipeEndEvent>()
             .Do<LevelEditorClearSelectionFieldCommand>()
-            .Do<LevelEditorClearSelectionFieldAvailableGridPositionsCommand>();
+            .Do<LevelEditorClearSelectionFieldAvailableGridPositionsCommand>()
+            .Do<ShowBoxOverlayCommand>(false);
 
     }
 
