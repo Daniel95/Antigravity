@@ -11,7 +11,7 @@ public class LevelEditorBuildingContext : Context {
         On<LeaveContextSignal>()
             .Do<DestroyChildInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/Building/GoToErasingStateButtonUI", CanvasLayer.UI);
 
-        On<OnSelectionFieldUpdatedEvent>()
+        On<LevelEditorSelectionFieldChangedEvent>()
             .Do<ReplaceNewTilesInSelectionFieldCommand>();
 
     }

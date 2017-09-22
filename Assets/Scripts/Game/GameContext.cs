@@ -110,7 +110,7 @@ public class GameContext : Context {
         Bind<Ref<IGrapplingHook>>();
         Bind<Ref<ISlowTime>>();
         Bind<Ref<IPlayerGrappling>>();
-        Bind<Ref<ILevelEditorCreatingInput>>();
+        Bind<Ref<ILevelEditorCreating>>();
         Bind<Ref<ILevelEditorSavingSaveButton>>();
         Bind<Ref<ILevelEditorSavingLevelNameInputField>>();
         Bind<Ref<ILevelEditorLevelSelectGridLayoutGroup>>();
@@ -146,6 +146,7 @@ public class GameContext : Context {
         Bind<WeaponStatus>();
         Bind<PlayerJumpStatus>();
         Bind<PlayerSessionStatsStatus>();
+        Bind<LevelEditorSelectionFieldStatus>();
 
         On<EnterContextSignal>()
             .InstantiateView<ApplicationView>()

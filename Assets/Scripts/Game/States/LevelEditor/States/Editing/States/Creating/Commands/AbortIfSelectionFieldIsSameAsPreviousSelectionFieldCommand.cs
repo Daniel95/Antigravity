@@ -1,12 +1,13 @@
 ﻿using IoCPlus;
 using ExtraListExtensions;
+using UnityEngine;
 
 public class AbortIfSelectionFieldIsSameAsPreviousSelectionFieldCommand : Command {
 
-    [Inject] private Ref<ILevelEditorCreatingInput> levelEditorCreatingInputRef;
+    [Inject] private LevelEditorSelectionFieldStatus selectionFieldStatus;
 
     protected override void Execute() {
-        if(levelEditorCreatingInputRef.Get().SelectionFieldGridPositions.Matches(levelEditorCreatingInputRef.Get().PreviousSelectionFieldGridPositions)) {
+        if(selectionFieldStatus.SelectionFieldGridPositions.Matches(selectionFieldStatus.PreviousSelectionFieldGridPositions)) {
             Abort();
         }
     }

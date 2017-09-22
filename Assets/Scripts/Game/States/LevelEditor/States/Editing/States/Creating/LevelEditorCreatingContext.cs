@@ -5,7 +5,7 @@ public class LevelEditorCreatingContext : Context {
     protected override void SetBindings() {
         base.SetBindings();
 
-        Bind<OnSelectionFieldUpdatedEvent>();
+        Bind<LevelEditorSelectionFieldChangedEvent>();
 
         On<EnterContextSignal>()
             .Do<InstantiateViewInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/GoToNavigatingStateButtonUI", CanvasLayer.UI)
@@ -30,20 +30,25 @@ public class LevelEditorCreatingContext : Context {
             .GotoState<LevelEditorErasingContext>();
 
         On<OutsideUITouchStartEvent>()
-            .Do<StartSelectionFieldAtPositionCommand>()
+            .Do<LevelEditorStartSelectionFieldAtScreenPositionCommand>()
             .Do<AbortIfSelectionFieldIsSameAsPreviousSelectionFieldCommand>()
-            .Dispatch<OnSelectionFieldUpdatedEvent>();
+            .Do<DispatchLevelEditorSelectionFieldChangedEventCommand>();
 
         On<SwipeMovedEvent>()
-            .Do<UpdateSelectionFieldToSwipePositionCommand>()
+            .Do<LevelEditorUpdateSelectionFieldToSwipePositionCommand>()
             .Do<AbortIfSelectionFieldIsSameAsPreviousSelectionFieldCommand>()
-            .Dispatch<OnSelectionFieldUpdatedEvent>();
+            .Do<DispatchLevelEditorSelectionFieldChangedEventCommand>();
+
+        On<LevelEditorSelectionFieldChangedEvent>()
+            .Do<LevelEditorUpdateSelectionFieldVisualCommand>();
 
         On<TouchUpEvent>()
-            .Do<ClearSelectionFieldCommand>();
+            .Do<LevelEditorClearSelectionFieldCommand>()
+            .Do<LevelEditorClearSelectionFieldAvailableGridPositionsCommand>();
 
         On<SwipeEndEvent>()
-            .Do<ClearSelectionFieldCommand>();
+            .Do<LevelEditorClearSelectionFieldCommand>()
+            .Do<LevelEditorClearSelectionFieldAvailableGridPositionsCommand>();
 
     }
 

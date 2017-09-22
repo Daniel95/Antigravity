@@ -2,10 +2,10 @@
 
 public class ReplaceNewTilesInSelectionFieldCommand : Command {
 
-    [Inject] private Ref<ILevelEditorCreatingInput> levelEditorCreatingInputRef;
+    [Inject] private Ref<ILevelEditorCreating> levelEditorCreatingRef;
 
     protected override void Execute() {
-        levelEditorCreatingInputRef.Get().ReplaceNewTilesInSelectionField();
+        levelEditorCreatingRef.Get().ReplaceNewTilesInSelectionField();
     }
 
 }

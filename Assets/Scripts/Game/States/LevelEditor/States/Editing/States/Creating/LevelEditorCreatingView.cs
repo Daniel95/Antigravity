@@ -3,46 +3,26 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class LevelEditorCreatingInputView : View, ILevelEditorCreatingInput {
+public class LevelEditorCreatingView : View, ILevelEditorCreating {
 
-    public List<Vector2> SelectionFieldGridPositions { get { return selectionFieldGridPositions; } }
-    public List<Vector2> PreviousSelectionFieldGridPositions { get { return previousSelectionFieldGridPositions; } }
+    [Inject] private LevelEditorSelectionFieldStatus selectionFieldStatus;
 
-    [Inject] private Ref<ILevelEditorCreatingInput> levelEditorCreatingInputRef;
+    [Inject] private Ref<ILevelEditorCreating> levelEditorCreatingRef;
 
-    private List<Vector2> selectionFieldGridPositions = new List<Vector2>();
-    private List<Vector2> previousSelectionFieldGridPositions = new List<Vector2>();
     private List<Vector2> selectionFieldAvailableGridPositions = new List<Vector2>();
-    private Vector2 selectionFieldStartGridPosition;
 
     public override void Initialize() {
-        levelEditorCreatingInputRef.Set(this);
+        levelEditorCreatingRef.Set(this);
     }
 
-    public void StartSelectionField(Vector2 selectionFieldStartScreenPosition) {
-        Vector2 selectionFieldStartWorldPosition = Camera.main.ScreenToWorldPoint(selectionFieldStartScreenPosition);
-        selectionFieldStartGridPosition = TileGrid.WorldToGridPosition(selectionFieldStartWorldPosition);
-        UpdateSelectionField(selectionFieldStartScreenPosition);
-    }
-
-    public void UpdateSelectionField(Vector2 selectionFieldEndScreenPosition) {
-        Vector2 selectionFieldEndWorldScreenPosition = Camera.main.ScreenToWorldPoint(selectionFieldEndScreenPosition);
-        Vector2 selectionFieldEndGridPosition = TileGrid.WorldToGridPosition(selectionFieldEndWorldScreenPosition);
-
-        previousSelectionFieldGridPositions = selectionFieldAvailableGridPositions;
-        selectionFieldGridPositions = TileGrid.GetSelection(selectionFieldStartGridPosition, selectionFieldEndGridPosition);
-    }
-
-    public void ClearSelectionField() {
+    public void ClearSelectionFieldAvailableGridPositions() {
         selectionFieldAvailableGridPositions.Clear();
-        previousSelectionFieldGridPositions = selectionFieldAvailableGridPositions;
-        selectionFieldGridPositions.Clear();
     }
 
     public void RemoveTilesInSelectionField() {
         List<Vector2> previousSelectionFieldAvailableGridPositions = selectionFieldAvailableGridPositions;
         List<Vector2> nextSelectionFieldAvailableGridPositions = new List<Vector2>();
-        foreach (Vector2 selectionFieldGridPosition in selectionFieldGridPositions) {
+        foreach (Vector2 selectionFieldGridPosition in selectionFieldStatus.SelectionFieldGridPositions) {
             if (!CheckGridPositionEmptyOrNotUserGenerated(selectionFieldGridPosition) || CheckGridPositionPreviouslyOccupiedByLastSelectionField(selectionFieldGridPosition)) {
                 nextSelectionFieldAvailableGridPositions.Add(selectionFieldGridPosition);
             }
@@ -60,7 +40,7 @@ public class LevelEditorCreatingInputView : View, ILevelEditorCreatingInput {
     public void ReplaceNewTilesInSelectionField() {
         List<Vector2> previousSelectionFieldAvailableGridPositions = selectionFieldAvailableGridPositions;
         List<Vector2> nextSelectionFieldAvailableGridPositions = new List<Vector2>();
-        foreach (Vector2 selectionFieldGridPosition in selectionFieldGridPositions) {
+        foreach (Vector2 selectionFieldGridPosition in selectionFieldStatus.SelectionFieldGridPositions) {
             if (CheckGridPositionEmptyOrNotUserGenerated(selectionFieldGridPosition) || CheckGridPositionPreviouslyOccupiedByLastSelectionField(selectionFieldGridPosition)) {
                 nextSelectionFieldAvailableGridPositions.Add(selectionFieldGridPosition);
             }
