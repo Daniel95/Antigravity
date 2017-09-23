@@ -3,12 +3,12 @@ using UnityEngine;
 
 public class LevelEditorSpawnTileAtScreenPositionCommand : Command {
 
-    [Inject] private Ref<ILevelEditorCreating> levelEditorCreatingRef;
+    [Inject] private Ref<ILevelEditorTiles> levelEditorTilesRef;
 
     [InjectParameter] private Vector2 screenPosition;
 
     protected override void Execute() {
-        levelEditorCreatingRef.Get().SpawnTileAtScreenPosition(screenPosition);
+        levelEditorTilesRef.Get().SpawnTileAtScreenPosition(screenPosition);
     }
 
 }

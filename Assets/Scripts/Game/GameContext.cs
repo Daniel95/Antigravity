@@ -112,7 +112,7 @@ public class GameContext : Context {
         Bind<Ref<IGrapplingHook>>();
         Bind<Ref<ISlowTime>>();
         Bind<Ref<IPlayerGrappling>>();
-        Bind<Ref<ILevelEditorCreating>>();
+        Bind<Ref<ILevelEditorTiles>>();
         Bind<Ref<ILevelEditorSavingSaveButton>>();
         Bind<Ref<ILevelEditorSavingLevelNameInputField>>();
         Bind<Ref<ILevelEditorLevelSelectGridLayoutGroup>>();

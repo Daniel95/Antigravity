@@ -2,10 +2,10 @@
 
 public class RemoveTilesInSelectionFieldCommand : Command {
 
-    [Inject] private Ref<ILevelEditorCreating> levelEditorCreatingRef;
+    [Inject] private Ref<ILevelEditorTiles> levelEditorTilesRef;
 
     protected override void Execute() {
-        levelEditorCreatingRef.Get().RemoveTilesInSelectionField();
+        levelEditorTilesRef.Get().RemoveTilesInSelectionField();
     }
 
 }

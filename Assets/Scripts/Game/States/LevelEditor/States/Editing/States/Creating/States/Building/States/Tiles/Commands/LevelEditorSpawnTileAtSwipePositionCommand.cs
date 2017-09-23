@@ -2,12 +2,12 @@
 
 public class LevelEditorSpawnTileAtSwipePositionCommand : Command {
 
-    [Inject] private Ref<ILevelEditorCreating> levelEditorCreatingRef;
+    [Inject] private Ref<ILevelEditorTiles> levelEditorTilesRef;
 
     [InjectParameter] private SwipeMovedEvent.Parameter swipeMoveEventParameter;
 
     protected override void Execute() {
-        levelEditorCreatingRef.Get().SpawnTileAtScreenPosition(swipeMoveEventParameter.Position);
+        levelEditorTilesRef.Get().SpawnTileAtScreenPosition(swipeMoveEventParameter.Position);
     }
 
 }

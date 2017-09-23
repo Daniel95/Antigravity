@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public interface ILevelEditorCreating {
+public interface ILevelEditorTiles {
 
     int SpawnLimit { get; }
 

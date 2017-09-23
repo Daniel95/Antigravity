@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class LevelEditorSelectionFieldStatus {
 
+    public bool Enabled;
+
     public List<Vector2> SelectionFieldGridPositions = new List<Vector2>();
     public List<Vector2> PreviousSelectionFieldGridPositions = new List<Vector2>();
     public Vector2 SelectionFieldStartGridPosition;

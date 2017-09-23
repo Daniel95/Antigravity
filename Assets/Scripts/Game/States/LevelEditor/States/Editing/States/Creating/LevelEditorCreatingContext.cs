@@ -9,6 +9,7 @@ public class LevelEditorCreatingContext : Context {
 
         On<EnterContextSignal>()
             .Do<InstantiateViewInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/GoToNavigatingStateButtonUI", CanvasLayer.UI)
+            .Do<LevelEditorSetSelectionFieldEnabledCommand>(true)
             .Do<ShowGridOverlayCommand>(true)
             .Do<SetGridOverlaySizeToScreenWorldSizeCommand>()
             .Do<SetGridOverlayOriginToHalfTileSizeCommand>()
@@ -40,12 +41,15 @@ public class LevelEditorCreatingContext : Context {
             .Do<DispatchLevelEditorSelectionFieldChangedEventCommand>();
 
         On<LevelEditorSelectionFieldSpawnLimitReachedEvent>()
+            .Do<AbortIfLevelEditorSelectionFieldIsNotEnabledCommand>()
             .Do<LevelEditorSetSelectionFieldBoxColorTypeCommand>(LevelEditorSelectionFieldBoxColorType.Error);
 
         On<LevelEditorSelectionFieldChangedEvent>()
+            .Do<AbortIfLevelEditorSelectionFieldIsNotEnabledCommand>()
             .Do<LevelEditorSetSelectionFieldBoxColorTypeCommand>(LevelEditorSelectionFieldBoxColorType.Default);
 
         On<LevelEditorSelectionFieldChangedEvent>()
+            .Do<AbortIfLevelEditorSelectionFieldIsNotEnabledCommand>()
             .Do<AbortIfBoxOverlayIsShownCommand>()
             .Do<ShowBoxOverlayCommand>(true);
 
