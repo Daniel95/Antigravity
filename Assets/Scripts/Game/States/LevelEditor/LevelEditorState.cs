@@ -7,6 +7,8 @@
     Creating,
     Saving,
     Building,
+    Tiles,
+    Objects,
     Erasing,
 
 }
