@@ -5,9 +5,15 @@ using UnityEngine;
 
 public class LevelEditorCreatingView : View, ILevelEditorCreating {
 
+    [Inject] private LevelEditorSelectionFieldSpawnLimitReachedEvent levelEditorSelectionFieldSpawnLimitReachedEvent;
+
+    public int SpawnLimit { get { return spawnLimit; } }
+
     [Inject] private LevelEditorSelectionFieldStatus selectionFieldStatus;
 
     [Inject] private Ref<ILevelEditorCreating> levelEditorCreatingRef;
+
+    [SerializeField] private int spawnLimit = 100;
 
     private List<Vector2> selectionFieldAvailableGridPositions = new List<Vector2>();
 
@@ -48,6 +54,11 @@ public class LevelEditorCreatingView : View, ILevelEditorCreating {
 
         List<Vector2> outdatedSelectionFieldAvailableGridPositions = previousSelectionFieldAvailableGridPositions.Except(nextSelectionFieldAvailableGridPositions).ToList();
         List<Vector2> newSelectionFieldAvailableGridPositions = nextSelectionFieldAvailableGridPositions.Except(previousSelectionFieldAvailableGridPositions).ToList();
+
+        if(newSelectionFieldAvailableGridPositions.Count > spawnLimit) {
+            levelEditorSelectionFieldSpawnLimitReachedEvent.Dispatch();
+            return;
+        }
 
         RemoveTiles(outdatedSelectionFieldAvailableGridPositions, true, newSelectionFieldAvailableGridPositions);
         SpawnTiles(newSelectionFieldAvailableGridPositions);

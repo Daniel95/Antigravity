@@ -39,6 +39,12 @@ public class LevelEditorCreatingContext : Context {
             .Do<AbortIfSelectionFieldIsSameAsPreviousSelectionFieldCommand>()
             .Do<DispatchLevelEditorSelectionFieldChangedEventCommand>();
 
+        On<LevelEditorSelectionFieldSpawnLimitReachedEvent>()
+            .Do<LevelEditorSetSelectionFieldBoxColorTypeCommand>(LevelEditorSelectionFieldBoxColorType.Error);
+
+        On<LevelEditorSelectionFieldChangedEvent>()
+            .Do<LevelEditorSetSelectionFieldBoxColorTypeCommand>(LevelEditorSelectionFieldBoxColorType.Default);
+
         On<LevelEditorSelectionFieldChangedEvent>()
             .Do<AbortIfBoxOverlayIsShownCommand>()
             .Do<ShowBoxOverlayCommand>(true);

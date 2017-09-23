@@ -30,6 +30,10 @@ public class BoxOverlay : MonoBehaviour {
         topLeftCorner = new Vector2(topRightCorner.x - xLength, topRightCorner.y);
     }
 
+    public void SetBoxColor(Color color) {
+        this.color = color;
+    }
+
     private void CreateLineMaterial() {
         if (!lineMaterial) {
             Shader shader = Shader.Find("Hidden/Internal-Colored");

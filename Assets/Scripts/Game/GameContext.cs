@@ -57,6 +57,8 @@ public class GameContext : Context {
         Bind<LevelEditorSavingSaveButtonClickedEvent>();
         Bind<LevelEditorLevelSelectButtonClickedEvent>();
         Bind<LevelEditorSaveLevelEvent>();
+        Bind<LevelEditorSelectionFieldChangedEvent>();
+        Bind<LevelEditorSelectionFieldSpawnLimitReachedEvent>();
 
         Bind<TapEvent>();
         Bind<TwistEvent>();

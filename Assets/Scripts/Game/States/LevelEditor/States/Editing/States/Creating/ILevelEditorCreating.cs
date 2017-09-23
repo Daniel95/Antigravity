@@ -2,6 +2,8 @@
 
 public interface ILevelEditorCreating {
 
+    int SpawnLimit { get; }
+
     void ClearSelectionFieldAvailableGridPositions();
     void RemoveTilesInSelectionField();
     void ReplaceNewTilesInSelectionField();
