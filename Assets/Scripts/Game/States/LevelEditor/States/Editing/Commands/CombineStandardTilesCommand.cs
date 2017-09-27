@@ -13,7 +13,7 @@ public class CombineStandardTilesCommand : Command {
 
         GameObject levelColliderGameObject = Object.Instantiate(levelColliderPrefab);
 
-        Dictionary<Vector2, Tile> grid = TileGrid.Grid;
+        Dictionary<Vector2, Tile> grid = TileGrid.Instance.Grid;
 
         List<GameObject> gameObjectCollidersToCombine = new List<GameObject>();
         List<GameObject> gameObjectSpriteRenderersToCombine = new List<GameObject>();

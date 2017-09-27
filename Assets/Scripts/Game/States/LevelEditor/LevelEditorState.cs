@@ -8,7 +8,7 @@
     Saving,
     Building,
     Tiles,
-    Objects,
+    LevelObjects,
     Erasing,
 
 }

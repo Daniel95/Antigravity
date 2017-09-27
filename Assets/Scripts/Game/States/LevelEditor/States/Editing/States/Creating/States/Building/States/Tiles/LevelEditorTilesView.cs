@@ -67,7 +67,7 @@ public class LevelEditorTilesView : View, ILevelEditorTiles {
     }
 
     private bool CheckGridPositionEmptyOrNotUserGenerated(Vector2 gridPosition) {
-        bool available = !TileGrid.ContainsPosition(gridPosition) || !TileGrid.GetTile(gridPosition).UserGenerated;
+        bool available = !TileGrid.Instance.Contains(gridPosition) || !TileGrid.Instance.GetTile(gridPosition).UserGenerated;
         return available;
     }
 
@@ -89,51 +89,51 @@ public class LevelEditorTilesView : View, ILevelEditorTiles {
     }
 
     private void RemoveTile(Vector2 gridPosition, bool regenerateNeighbours, List<Vector2> neighboursIgnoringRegenerate = null) {
-        TileGrid.RemoveTile(gridPosition);
+        TileGrid.Instance.RemoveTile(gridPosition);
 
         if (!regenerateNeighbours) { return; }
 
-        List<Vector2> allNeighbourPositionsToRegenerate = TileGrid.GetNeighbourPositions(gridPosition, false);
+        List<Vector2> allNeighbourPositionsToRegenerate = TileGrid.Instance.GetNeighbourPositions(gridPosition, false);
         if(neighboursIgnoringRegenerate != null) {
             allNeighbourPositionsToRegenerate = allNeighbourPositionsToRegenerate.Except(neighboursIgnoringRegenerate).ToList();
         }
 
-        List<Vector2> nonUserGeneratedTilesToRegenerate = allNeighbourPositionsToRegenerate.FindAll(x => TileGrid.ContainsPosition(x) && !TileGrid.GetTile(x).UserGenerated);
-        nonUserGeneratedTilesToRegenerate.ForEach(x => TileGrid.RemoveTile(x));
+        List<Vector2> nonUserGeneratedTilesToRegenerate = allNeighbourPositionsToRegenerate.FindAll(x => TileGrid.Instance.Contains(x) && !TileGrid.Instance.GetTile(x).UserGenerated);
+        nonUserGeneratedTilesToRegenerate.ForEach(x => TileGrid.Instance.RemoveTile(x));
 
         TileGenerator.Instance.GenerateTiles(allNeighbourPositionsToRegenerate);
     }
 
     private void RemoveTiles(List<Vector2> gridPositions, bool regenerateNeighbours, List<Vector2> neighboursIgnoringRegenerate) {
-        gridPositions.ForEach(x => TileGrid.RemoveTile(x));
+        gridPositions.ForEach(x => TileGrid.Instance.RemoveTile(x));
 
         if (!regenerateNeighbours) { return; }
 
         foreach (Vector2 gridPosition in gridPositions) {
-            List<Vector2> allGridPositionsToRegenerate = TileGrid.GetNeighbourPositions(gridPosition, false);
+            List<Vector2> allGridPositionsToRegenerate = TileGrid.Instance.GetNeighbourPositions(gridPosition, false);
             allGridPositionsToRegenerate = allGridPositionsToRegenerate.Except(gridPositions).ToList();
             allGridPositionsToRegenerate.Add(gridPosition);
             allGridPositionsToRegenerate = allGridPositionsToRegenerate.Except(neighboursIgnoringRegenerate).ToList();
 
-            List<Vector2> nonUserGeneratedTilesToRegenerate = allGridPositionsToRegenerate.FindAll(x => TileGrid.ContainsPosition(x) && !TileGrid.GetTile(x).UserGenerated);
-            nonUserGeneratedTilesToRegenerate.ForEach(x => TileGrid.RemoveTile(x));
+            List<Vector2> nonUserGeneratedTilesToRegenerate = allGridPositionsToRegenerate.FindAll(x => TileGrid.Instance.Contains(x) && !TileGrid.Instance.GetTile(x).UserGenerated);
+            nonUserGeneratedTilesToRegenerate.ForEach(x => TileGrid.Instance.RemoveTile(x));
 
             TileGenerator.Instance.GenerateTiles(allGridPositionsToRegenerate);
         }
     }
 
     private void RemoveTiles(List<Vector2> gridPositions, bool regenerateNeighbours) {
-        gridPositions.ForEach(x => TileGrid.RemoveTile(x));
+        gridPositions.ForEach(x => TileGrid.Instance.RemoveTile(x));
 
         if (!regenerateNeighbours) { return; }
 
         foreach (Vector2 gridPosition in gridPositions) {
-            List<Vector2> allGridPositionsToRegenerate = TileGrid.GetNeighbourPositions(gridPosition, false);
+            List<Vector2> allGridPositionsToRegenerate = TileGrid.Instance.GetNeighbourPositions(gridPosition, false);
             allGridPositionsToRegenerate = allGridPositionsToRegenerate.Except(gridPositions).ToList();
             allGridPositionsToRegenerate.Add(gridPosition);
 
-            List<Vector2> nonUserGeneratedTilesToRegenerate = allGridPositionsToRegenerate.FindAll(x => TileGrid.ContainsPosition(x) && !TileGrid.GetTile(x).UserGenerated);
-            nonUserGeneratedTilesToRegenerate.ForEach(x => TileGrid.RemoveTile(x));
+            List<Vector2> nonUserGeneratedTilesToRegenerate = allGridPositionsToRegenerate.FindAll(x => TileGrid.Instance.Contains(x) && !TileGrid.Instance.GetTile(x).UserGenerated);
+            nonUserGeneratedTilesToRegenerate.ForEach(x => TileGrid.Instance.RemoveTile(x));
 
             TileGenerator.Instance.GenerateTiles(allGridPositionsToRegenerate);
         }
@@ -145,30 +145,30 @@ public class LevelEditorTilesView : View, ILevelEditorTiles {
             gridPosition = ConvertPositionToGridPosition(position, levelEditorInputType);
         }
 
-        TileGrid.SetTile(gridPosition, new Tile() { UserGenerated = true });
+        TileGrid.Instance.SetTile(gridPosition, new Tile() { UserGenerated = true });
 
-        List<Vector2> positionsToGenerate = TileGrid.GetNeighbourPositions(gridPosition, false);
+        List<Vector2> positionsToGenerate = TileGrid.Instance.GetNeighbourPositions(gridPosition, false);
 
         if(neighboursIgnoringRegenerate != null) {
             positionsToGenerate = positionsToGenerate.Except(neighboursIgnoringRegenerate).ToList();
         }
 
-        List<Vector2> nonUserGeneratedTilesToRegenerate = positionsToGenerate.FindAll(x => TileGrid.ContainsPosition(x) && !TileGrid.GetTile(x).UserGenerated);
-        nonUserGeneratedTilesToRegenerate.ForEach(x => TileGrid.RemoveTile(x));
+        List<Vector2> nonUserGeneratedTilesToRegenerate = positionsToGenerate.FindAll(x => TileGrid.Instance.Contains(x) && !TileGrid.Instance.GetTile(x).UserGenerated);
+        nonUserGeneratedTilesToRegenerate.ForEach(x => TileGrid.Instance.RemoveTile(x));
 
         positionsToGenerate.Add(gridPosition);
         TileGenerator.Instance.GenerateTiles(positionsToGenerate);
     }
 
     private void SpawnTiles(List<Vector2> gridPositions) {
-        gridPositions.ForEach(x => TileGrid.SetTile(x, new Tile() { UserGenerated = true }));
+        gridPositions.ForEach(x => TileGrid.Instance.SetTile(x, new Tile() { UserGenerated = true }));
 
         foreach (Vector2 gridPosition in gridPositions) {
-            List<Vector2> allNeighbourPositions = TileGrid.GetNeighbourPositions(gridPosition, false);
+            List<Vector2> allNeighbourPositions = TileGrid.Instance.GetNeighbourPositions(gridPosition, false);
             List<Vector2> positionsToGenerate = allNeighbourPositions.Except(gridPositions).ToList();
 
-            List<Vector2> nonUserGeneratedTilesToRegenerate = positionsToGenerate.FindAll(x => TileGrid.ContainsPosition(x) && !TileGrid.GetTile(x).UserGenerated);
-            nonUserGeneratedTilesToRegenerate.ForEach(x => TileGrid.RemoveTile(x));
+            List<Vector2> nonUserGeneratedTilesToRegenerate = positionsToGenerate.FindAll(x => TileGrid.Instance.Contains(x) && !TileGrid.Instance.GetTile(x).UserGenerated);
+            nonUserGeneratedTilesToRegenerate.ForEach(x => TileGrid.Instance.RemoveTile(x));
 
             positionsToGenerate.Add(gridPosition);
             TileGenerator.Instance.GenerateTiles(positionsToGenerate);
@@ -176,15 +176,16 @@ public class LevelEditorTilesView : View, ILevelEditorTiles {
     }
 
     private Vector2 ConvertPositionToGridPosition(Vector2 position, LevelEditorInputType levelEditorInputType) {
+        float nodeSize = LevelEditorGridNodeSize.Instance.Size;
         Vector2 gridPosition = new Vector2();
 
         switch (levelEditorInputType) {
             case LevelEditorInputType.ScreenSpace:
                 Vector2 worldPosition = Camera.main.ScreenToWorldPoint(position);
-                gridPosition = TileGrid.WorldToGridPosition(worldPosition);
+                gridPosition = GridHelper.WorldToGridPosition(worldPosition, nodeSize);
                 break;
             case LevelEditorInputType.WorldSpace:
-                gridPosition = TileGrid.WorldToGridPosition(position);
+                gridPosition = GridHelper.WorldToGridPosition(position, nodeSize);
                 break;
             case LevelEditorInputType.GridSpace:
                 gridPosition = position;

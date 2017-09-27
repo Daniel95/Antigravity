@@ -9,10 +9,12 @@ public class LevelEditorUpdateSelectionFieldToSwipePositionCommand : Command {
 
     protected override void Execute() {
         Vector2 selectionFieldEndWorldScreenPosition = Camera.main.ScreenToWorldPoint(swipeMoveEventParameter.Position);
-        selectionFieldStatus.SelectionFieldEndGridPosition = TileGrid.WorldToGridPosition(selectionFieldEndWorldScreenPosition);
+
+        float nodeSize = LevelEditorGridNodeSize.Instance.Size;
+        selectionFieldStatus.SelectionFieldEndGridPosition = GridHelper.WorldToGridPosition(selectionFieldEndWorldScreenPosition, nodeSize);
 
         selectionFieldStatus.PreviousSelectionFieldGridPositions = selectionFieldStatus.SelectionFieldGridPositions;
-        selectionFieldStatus.SelectionFieldGridPositions = TileGrid.GetSelection(selectionFieldStatus.SelectionFieldStartGridPosition, selectionFieldStatus.SelectionFieldEndGridPosition);
+        selectionFieldStatus.SelectionFieldGridPositions = GridHelper.GetSelection(selectionFieldStatus.SelectionFieldStartGridPosition, selectionFieldStatus.SelectionFieldEndGridPosition);
     }
 
 }

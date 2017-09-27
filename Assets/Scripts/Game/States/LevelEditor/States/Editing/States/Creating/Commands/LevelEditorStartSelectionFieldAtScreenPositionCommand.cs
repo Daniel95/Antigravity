@@ -9,11 +9,13 @@ public class LevelEditorStartSelectionFieldAtScreenPositionCommand : Command {
 
     protected override void Execute() {
         Vector2 selectionFieldStartWorldPosition = Camera.main.ScreenToWorldPoint(screenPosition);
-        selectionFieldStatus.SelectionFieldStartGridPosition = TileGrid.WorldToGridPosition(selectionFieldStartWorldPosition);
+        float nodeSize = LevelEditorGridNodeSize.Instance.Size;
+
+        selectionFieldStatus.SelectionFieldStartGridPosition = GridHelper.WorldToGridPosition(selectionFieldStartWorldPosition, nodeSize);
         selectionFieldStatus.SelectionFieldEndGridPosition = selectionFieldStatus.SelectionFieldStartGridPosition;
 
         selectionFieldStatus.PreviousSelectionFieldGridPositions = selectionFieldStatus.SelectionFieldGridPositions;
-        selectionFieldStatus.SelectionFieldGridPositions = TileGrid.GetSelection(selectionFieldStatus.SelectionFieldStartGridPosition, selectionFieldStatus.SelectionFieldEndGridPosition);
+        selectionFieldStatus.SelectionFieldGridPositions = GridHelper.GetSelection(selectionFieldStatus.SelectionFieldStartGridPosition, selectionFieldStatus.SelectionFieldEndGridPosition);
     }
 
 }

@@ -16,8 +16,10 @@ public class LevelEditorUpdateBoxOverlayToSelectionFieldCommand : Command {
         Vector2 bottomLeftCornerGridPosition = new Vector2(minX, minY);
         Vector2 topRightCornerGridPosition = new Vector2(maxX, maxY);
 
-        Vector2 bottomLeftCornerWorldPosition = TileGrid.GridToTilePosition(bottomLeftCornerGridPosition) - halfTileSize;
-        Vector2 topRightCornerWorldPosition = TileGrid.GridToTilePosition(topRightCornerGridPosition) + halfTileSize;
+        float nodeSize = LevelEditorGridNodeSize.Instance.Size;
+
+        Vector2 bottomLeftCornerWorldPosition = GridHelper.GridToNodePosition(bottomLeftCornerGridPosition, nodeSize) - halfTileSize;
+        Vector2 topRightCornerWorldPosition = GridHelper.GridToNodePosition(topRightCornerGridPosition, nodeSize) + halfTileSize;
 
         BoxOverlay.Instance.UpdateBox(bottomLeftCornerWorldPosition, topRightCornerWorldPosition);
     }

@@ -5,7 +5,7 @@ public class GridPositionTileCondition : TileCondition {
     [SerializeField] private GridPositionType gridPositionType;
 
     public override bool Check(Vector2 gridPosition) {
-        bool exists = TileGrid.ContainsPosition(gridPosition);
+        bool exists = TileGrid.Instance.Contains(gridPosition);
         bool condition = false;
 
         switch (gridPositionType) {
@@ -16,7 +16,7 @@ public class GridPositionTileCondition : TileCondition {
                 condition = exists;
                 break;
             case GridPositionType.UserGenerated:
-                bool isSolid = exists && TileGrid.GetTile(gridPosition).UserGenerated;
+                bool isSolid = exists && TileGrid.Instance.GetTile(gridPosition).UserGenerated;
                 condition = isSolid;
                 break;
         }
