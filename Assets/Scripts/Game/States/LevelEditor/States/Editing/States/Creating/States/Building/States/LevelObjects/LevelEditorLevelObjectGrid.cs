@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class LevelObjectGrid : LevelEditorGridPositions {
+public class LevelEditorLevelObjectGrid : LevelEditorGridPositions {
 
-    public static LevelObjectGrid Instance { get { return GetInstance(); } }
+    public static LevelEditorLevelObjectGrid Instance { get { return GetInstance(); } }
 
     public Dictionary<Vector2, LevelObject> Grid { get { return grid; } }
 
-    private static LevelObjectGrid instance;
+    private static LevelEditorLevelObjectGrid instance;
 
     private Dictionary<Vector2, LevelObject> grid = new Dictionary<Vector2, LevelObject>();
 
@@ -44,13 +44,14 @@ public class LevelObjectGrid : LevelEditorGridPositions {
     }
 
     public void RemoveLevelObject(Vector2 gridPosition) {
+        Remove(gridPosition);
         grid[gridPosition].Destroy();
         grid.Remove(gridPosition);
     }
 
-    private static LevelObjectGrid GetInstance() {
+    private static LevelEditorLevelObjectGrid GetInstance() {
         if(instance == null) {
-            instance = FindObjectOfType<LevelObjectGrid>();
+            instance = FindObjectOfType<LevelEditorLevelObjectGrid>();
         }
         return instance;
     }

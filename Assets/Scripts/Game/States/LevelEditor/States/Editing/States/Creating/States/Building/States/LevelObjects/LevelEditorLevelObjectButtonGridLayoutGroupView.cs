@@ -1,27 +1,28 @@
 ﻿using IoCPlus;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(GridLayoutGroup))]
 public class LevelEditorLevelObjectButtonGridLayoutGroupView : View {
 
-    private const string LEVEL_OBJECT_PREFAB_PATH = "UI/LevelEditor/Editing/Creating/Building/Objects/LevelObjectEditorNodeButtonUI";
-
-    private GridLayoutGroup gridLayoutGroup;
-
+    private const string LEVEL_OBJECT_PREFAB_PATH = "UI/LevelEditor/Editing/Creating/Building/LevelObjects/LevelObjectButtonUI";
 
     private void Awake() {
-        gridLayoutGroup = GetComponent<GridLayoutGroup>();
         InstantiateLevelObjectButtons();
     }
 
     private void InstantiateLevelObjectButtons() {
         GameObject levelObjectButtonPrefab = Resources.Load<GameObject>(LEVEL_OBJECT_PREFAB_PATH);
-        foreach (LevelObjectEditorNode levelObjectEditorNode in LevelObjectEditorNodesContainer.Instance.LevelObjectEditorNodes) {
+
+        if(levelObjectButtonPrefab == null) {
+            Debug.LogWarning("Can't find levelObjectButtonPrefab at path " + LEVEL_OBJECT_PREFAB_PATH);
+            return;
+        }
+
+        foreach (LevelEditorLevelObjectEditorNode levelObjectEditorNode in LevelEditorLevelObjectEditorNodesContainer.Instance.LevelObjectEditorNodes) {
             GameObject levelObjectButtonGameObject = Instantiate(levelObjectButtonPrefab.transform, transform).gameObject;
-            LevelObjectButton levelObjectButton = levelObjectButtonGameObject.GetComponent<LevelObjectButton>();
-            levelObjectButton.Initiate(levelObjectEditorNode.LevelObjectType);
+            LevelEditorLevelObjectButton levelObjectButton = levelObjectButtonGameObject.GetComponent<LevelEditorLevelObjectButton>();
+            levelObjectButton.SetLevelObject(levelObjectEditorNode.LevelObjectType);
         }
     }
 

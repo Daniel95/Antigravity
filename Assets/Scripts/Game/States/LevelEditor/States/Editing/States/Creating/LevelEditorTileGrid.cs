@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class TileGrid : LevelEditorGridPositions {
+public class LevelEditorTileGrid : LevelEditorGridPositions {
 
-    public static TileGrid Instance { get { return GetInstance(); } }
+    public static LevelEditorTileGrid Instance { get { return GetInstance(); } }
 
     public Dictionary<Vector2, Tile> Grid { get { return grid; } }
 
-    private static TileGrid instance;
+    private static LevelEditorTileGrid instance;
 
     private Dictionary<Vector2, Tile> grid = new Dictionary<Vector2, Tile>();
 
@@ -170,9 +170,9 @@ public class TileGrid : LevelEditorGridPositions {
         return indirectNeighbourPositions;
     }
 
-    private static TileGrid GetInstance() {
+    private static LevelEditorTileGrid GetInstance() {
         if(instance == null) {
-            instance = FindObjectOfType<TileGrid>();
+            instance = FindObjectOfType<LevelEditorTileGrid>();
         }
         return instance;
     }

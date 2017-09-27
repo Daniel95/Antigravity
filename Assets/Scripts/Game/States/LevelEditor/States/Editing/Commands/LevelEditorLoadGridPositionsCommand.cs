@@ -10,7 +10,7 @@ public class LevelEditorLoadGridPositionsCommand : Command {
         string levelFileName = StringHelper.ConvertToXMLCompatible(levelNameStatus.Name);
 
         List<Vector2> gridPositions = SerializeHelper.Deserialize<List<Vector2>>(LevelEditorLevelDataPath.Path + levelFileName);
-        gridPositions.ForEach(x => TileGrid.Instance.SetTile(x, new Tile() { UserGenerated = true }));
+        gridPositions.ForEach(x => LevelEditorTileGrid.Instance.SetTile(x, new Tile() { UserGenerated = true }));
         TileGenerator.Instance.GenerateTiles(gridPositions);
     }
 

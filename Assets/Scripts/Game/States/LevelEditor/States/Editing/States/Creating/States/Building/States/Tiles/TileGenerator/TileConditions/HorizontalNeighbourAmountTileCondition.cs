@@ -6,7 +6,7 @@ public class HorizontalNeighbourAmountTileCondition : GenerateTypeAmountTileCond
     private const string AMOUNT_TYPE_NAME = "Horizontal neighbour";
 
     public override bool Check(Vector2 gridPosition) {
-        List<Vector2> directNeighbourPositions = TileGrid.Instance.GetNeighbourPositions(gridPosition, true, NeighbourType.Direct);
+        List<Vector2> directNeighbourPositions = LevelEditorTileGrid.Instance.GetNeighbourPositions(gridPosition, true, NeighbourType.Direct);
         List<Vector2> horizontalNeighbourPositions = directNeighbourPositions.FindAll(x => gridPosition.x == x.x);
 
         bool condition = CheckGenerateTypeAmount(horizontalNeighbourPositions);

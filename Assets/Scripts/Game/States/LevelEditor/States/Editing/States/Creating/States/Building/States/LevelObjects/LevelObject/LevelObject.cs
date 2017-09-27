@@ -4,8 +4,9 @@ using UnityEngine;
 [Serializable]
 public class LevelObject {
 
+    public Transform Transform { get { return GameObject.transform; } }
+
     public GameObject GameObject;
-    public Transform Transform;
     public LevelObjectType LevelObjectType;
 
     public void Destroy() {

@@ -6,7 +6,7 @@ public class DirectionNeighbourAmountTileCondition : GenerateTypeAmountTileCondi
     private const string AMOUNT_TYPE_NAME = "Direct neighbour";
 
     public override bool Check(Vector2 gridPosition) {
-        List<Vector2> directNeighbourPositions = TileGrid.Instance.GetNeighbourPositions(gridPosition, true, NeighbourType.Direct);
+        List<Vector2> directNeighbourPositions = LevelEditorTileGrid.Instance.GetNeighbourPositions(gridPosition, true, NeighbourType.Direct);
 
         bool condition = CheckGenerateTypeAmount(directNeighbourPositions);
 

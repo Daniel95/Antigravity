@@ -2,11 +2,11 @@
 using UnityEngine;
 
 [RequireComponent(typeof(ObjectPool))]
-public class TilePool : MonoBehaviour {
+public class LevelEditorTilePool : MonoBehaviour {
 
-    public static TilePool Instance { get { return GetInstance(); } }
+    public static LevelEditorTilePool Instance { get { return GetInstance(); } }
 
-    private static TilePool instance;
+    private static LevelEditorTilePool instance;
 
     private List<GameObject> tileGeneratorNodePrefabs = new List<GameObject>();
 
@@ -27,9 +27,9 @@ public class TilePool : MonoBehaviour {
         }
     }
 
-    private static TilePool GetInstance() {
+    private static LevelEditorTilePool GetInstance() {
         if(instance == null) {
-            instance = FindObjectOfType<TilePool>();
+            instance = FindObjectOfType<LevelEditorTilePool>();
         }
         return instance;
     }
