@@ -1,57 +1,58 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class LevelEditorTileGrid : LevelEditorGridPositions {
 
     public static LevelEditorTileGrid Instance { get { return GetInstance(); } }
 
-    public Dictionary<Vector2, Tile> Grid { get { return grid; } }
+    public Dictionary<Vector2, Tile> Grid { get { return tileGrid; } }
 
     private static LevelEditorTileGrid instance;
 
-    private Dictionary<Vector2, Tile> grid = new Dictionary<Vector2, Tile>();
+    private Dictionary<Vector2, Tile> tileGrid = new Dictionary<Vector2, Tile>();
 
     public Tile GetTile(Vector2 gridPosition) {
-        return grid[gridPosition];
+        return tileGrid[gridPosition];
     }
 
     public List<Vector2> GetGridPositionsByTileType(TileType tileType) {
-        List<Vector2> gridPositionsWithType = GridPositions.FindAll(x => grid[x].TileType == tileType);
+        List<Vector2> gridPositionsWithType = tileGrid.Keys.ToList().FindAll(x => tileGrid[x].TileType == tileType);
         return gridPositionsWithType;
     }
 
     public void SetTile(Vector2 gridPosition, Tile tile) {
-        if(grid.ContainsKey(gridPosition)) {
+        if(tileGrid.ContainsKey(gridPosition)) {
             RemoveTile(gridPosition);
             AddTile(gridPosition, tile);
         } else {
-            grid[gridPosition] = tile;
+            tileGrid[gridPosition] = tile;
         }
     }
 
     public void UpdateTile(Vector2 gridPosition, Tile tile) {
-        Tile oldTile = grid[gridPosition];
+        Tile oldTile = tileGrid[gridPosition];
         oldTile.Destroy();
-        grid[gridPosition] = tile;
+        tileGrid[gridPosition] = tile;
     }
 
     public void AddTile(Vector2 gridPosition, Tile tile) {
         Add(gridPosition);
-        grid.Add(gridPosition, tile);
+        tileGrid.Add(gridPosition, tile);
     }
 
     public override void Clear() {
         base.Clear();
-        foreach (Vector2 gridPosition in grid.Keys) {
-            grid[gridPosition].Destroy();
+        foreach (Vector2 gridPosition in tileGrid.Keys) {
+            tileGrid[gridPosition].Destroy();
         }
-        grid.Clear();
+        tileGrid.Clear();
     }
 
     public void RemoveTile(Vector2 gridPosition) {
         Remove(gridPosition);
-        grid[gridPosition].Destroy();
-        grid.Remove(gridPosition);
+        tileGrid[gridPosition].Destroy();
+        tileGrid.Remove(gridPosition);
     }
 
     public Vector2 GetDirectionToAllDirectNeighbours(Vector2 gridPosition) {
@@ -108,7 +109,7 @@ public class LevelEditorTileGrid : LevelEditorGridPositions {
         }
 
         Dictionary<Vector2, Tile> neighbours = new Dictionary<Vector2, Tile>();
-        neighbourPositions.ForEach(x => neighbours.Add(x, grid[x]));
+        neighbourPositions.ForEach(x => neighbours.Add(x, tileGrid[x]));
 
         return neighbours;
     }
@@ -132,7 +133,7 @@ public class LevelEditorTileGrid : LevelEditorGridPositions {
             for (int y = (int)gridPosition.y - maxNeighbourOffset; y <= gridPosition.y + maxNeighbourOffset; y++) {
                 Vector2 neighbourPosition = new Vector2(x, y);
                 if(neighbourPosition == gridPosition) { continue; }
-                if(existing && !grid.ContainsKey(neighbourPosition)) { continue; }
+                if(existing && !tileGrid.ContainsKey(neighbourPosition)) { continue; }
 
                 neighbourPositions.Add(neighbourPosition);
             }
@@ -147,7 +148,7 @@ public class LevelEditorTileGrid : LevelEditorGridPositions {
         for (int x = (int)gridPosition.x - maxNeighbourOffset; x <= gridPosition.x + maxNeighbourOffset; x++) {
             Vector2 neighbourPosition = new Vector2(x, gridPosition.y);
             if (neighbourPosition == gridPosition) { continue; }
-            if (existing && !grid.ContainsKey(neighbourPosition)) { continue; }
+            if (existing && !tileGrid.ContainsKey(neighbourPosition)) { continue; }
 
             directNeighbourPositions.Add(neighbourPosition);
         }
@@ -155,7 +156,7 @@ public class LevelEditorTileGrid : LevelEditorGridPositions {
         for (int y = (int)gridPosition.y - maxNeighbourOffset; y <= gridPosition.y + maxNeighbourOffset; y++) {
             Vector2 neighbourPosition = new Vector2(gridPosition.x, y);
             if (neighbourPosition == gridPosition) { continue; }
-            if (existing && !grid.ContainsKey(neighbourPosition)) { continue; }
+            if (existing && !tileGrid.ContainsKey(neighbourPosition)) { continue; }
 
             directNeighbourPositions.Add(neighbourPosition);
         }

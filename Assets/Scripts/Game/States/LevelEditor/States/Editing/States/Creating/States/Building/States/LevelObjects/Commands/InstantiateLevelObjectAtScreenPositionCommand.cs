@@ -11,17 +11,16 @@ public class InstantiateSelectedLevelObjectAtScreenPositionCommand : Command {
         LevelObjectType levelObjectType = selectedLevelObjectStatus.levelObjectType;
         LevelEditorLevelObjectEditorNode levelEditorLevelObjectEditorNode = LevelEditorLevelObjectEditorNodesContainer.Instance.GetNode(levelObjectType);
 
-        Vector2 worldPostion = Camera.main.ScreenToWorldPoint(screenPosition);
-        float gridNodeSize = LevelEditorGridNodeSize.Instance.Size;
-        Vector2 gridPosition = GridHelper.WorldToGridPosition(worldPostion, gridNodeSize);
+        float gridNodeSize = LevelEditorGridNodeSize.Instance.NodeSize;
+        Vector2 nodePosition = GridHelper.ScreenToNodePosition(screenPosition, gridNodeSize);
 
-        GameObject levelObjectGameObject = Object.Instantiate(levelEditorLevelObjectEditorNode.Prefab, gridPosition, new Quaternion());
+        GameObject levelObjectGameObject = Object.Instantiate(levelEditorLevelObjectEditorNode.Prefab, nodePosition, new Quaternion());
         LevelObject levelObject = new LevelObject {
             GameObject = levelObjectGameObject,
             LevelObjectType = levelObjectType,
         };
 
-        LevelEditorLevelObjectGrid.Instance.AddLevelObject(gridPosition, levelObject);
+        LevelEditorLevelObjectGrid.Instance.AddLevelObject(nodePosition, levelObject);
     }
 
 }

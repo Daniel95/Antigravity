@@ -71,7 +71,7 @@ public class TileGenerator : MonoBehaviour {
     private Tile GetTile(GameObject prefab, TileType tileType, Vector2 gridPosition) {
         if(tileType == TileType.Empty) { return new Tile() { TileType = TileType.Empty }; }
 
-        float nodeSize = LevelEditorGridNodeSize.Instance.Size;
+        float nodeSize = LevelEditorGridNodeSize.Instance.NodeSize;
         Vector2 tilePosition = GridHelper.GridToNodePosition(gridPosition, nodeSize);
 
         GameObject tileGameObject = ObjectPool.Instance.GetObjectForType(prefab.name, false);

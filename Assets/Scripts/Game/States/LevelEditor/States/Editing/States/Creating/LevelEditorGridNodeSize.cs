@@ -6,7 +6,7 @@ public class LevelEditorGridNodeSize : MonoBehaviour {
 
     private static LevelEditorGridNodeSize instance;
 
-    public float Size { get { return size; } }
+    public float NodeSize { get { return size; } }
 
     [SerializeField] private float size;
 

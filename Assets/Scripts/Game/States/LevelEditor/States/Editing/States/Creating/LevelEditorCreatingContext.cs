@@ -35,12 +35,29 @@ public class LevelEditorCreatingContext : Context {
             .Do<AbortIfSelectionFieldIsSameAsPreviousSelectionFieldCommand>()
             .Do<DispatchLevelEditorSelectionFieldChangedEventCommand>();
 
+        On<TouchDownEvent>()
+            .Do<DispatchLevelEditorTouchDownOnGridPositionEventCommand>();
+
         On<SwipeMovedEvent>()
+            .Do<DispatchLevelEditorSwipeMovedToGridPositionEventCommand>();
+
+        On<TouchUpEvent>()
+            .Do<DispatchLevelEditorTouchUpOnGridPositionEventCommand>()
+            .Do<LevelEditorClearSelectionFieldCommand>()
+            .Do<LevelEditorClearSelectionFieldAvailableGridPositionsCommand>()
+            .Do<ShowBoxOverlayCommand>(false);
+
+        On<SwipeEndEvent>()
+            .Do<LevelEditorClearSelectionFieldCommand>()
+            .Do<LevelEditorClearSelectionFieldAvailableGridPositionsCommand>()
+            .Do<ShowBoxOverlayCommand>(false);
+
+        On<LevelEditorSwipeMovedToGridPositionEvent>()
             .Do<LevelEditorUpdateSelectionFieldToSwipePositionCommand>()
             .Do<AbortIfSelectionFieldIsSameAsPreviousSelectionFieldCommand>()
             .Do<DispatchLevelEditorSelectionFieldChangedEventCommand>();
 
-        On<LevelEditorSelectionFieldSpawnLimitReachedEvent>()
+        On<LevelEditorSelectionFieldTileSpawnLimitReachedEvent>()
             .Do<AbortIfLevelEditorSelectionFieldIsNotEnabledCommand>()
             .Do<LevelEditorSetSelectionFieldBoxColorTypeCommand>(LevelEditorSelectionFieldBoxColorType.Error);
 
@@ -55,16 +72,6 @@ public class LevelEditorCreatingContext : Context {
 
         On<LevelEditorSelectionFieldChangedEvent>()
             .Do<LevelEditorUpdateBoxOverlayToSelectionFieldCommand>();
-
-        On<TouchUpEvent>()
-            .Do<LevelEditorClearSelectionFieldCommand>()
-            .Do<LevelEditorClearSelectionFieldAvailableGridPositionsCommand>()
-            .Do<ShowBoxOverlayCommand>(false);
-
-        On<SwipeEndEvent>()
-            .Do<LevelEditorClearSelectionFieldCommand>()
-            .Do<LevelEditorClearSelectionFieldAvailableGridPositionsCommand>()
-            .Do<ShowBoxOverlayCommand>(false);
 
     }
 

@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class LevelEditorTilesView : View, ILevelEditorTiles {
 
-    [Inject] private LevelEditorSelectionFieldSpawnLimitReachedEvent levelEditorSelectionFieldSpawnLimitReachedEvent;
+    [Inject] private LevelEditorSelectionFieldTileSpawnLimitReachedEvent selectionFieldTileSpawnLimitReachedEvent;
 
     public int SpawnLimit { get { return spawnLimit; } }
 
@@ -56,7 +56,7 @@ public class LevelEditorTilesView : View, ILevelEditorTiles {
         List<Vector2> newSelectionFieldAvailableGridPositions = nextSelectionFieldAvailableGridPositions.Except(previousSelectionFieldAvailableGridPositions).ToList();
 
         if(newSelectionFieldAvailableGridPositions.Count > spawnLimit) {
-            levelEditorSelectionFieldSpawnLimitReachedEvent.Dispatch();
+            selectionFieldTileSpawnLimitReachedEvent.Dispatch();
             return;
         }
 
@@ -176,7 +176,7 @@ public class LevelEditorTilesView : View, ILevelEditorTiles {
     }
 
     private Vector2 ConvertPositionToGridPosition(Vector2 position, LevelEditorInputType levelEditorInputType) {
-        float nodeSize = LevelEditorGridNodeSize.Instance.Size;
+        float nodeSize = LevelEditorGridNodeSize.Instance.NodeSize;
         Vector2 gridPosition = new Vector2();
 
         switch (levelEditorInputType) {

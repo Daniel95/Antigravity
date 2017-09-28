@@ -5,48 +5,48 @@ public class LevelEditorLevelObjectGrid : LevelEditorGridPositions {
 
     public static LevelEditorLevelObjectGrid Instance { get { return GetInstance(); } }
 
-    public Dictionary<Vector2, LevelObject> Grid { get { return grid; } }
+    public Dictionary<Vector2, LevelObject> Grid { get { return levelObjectgrid; } }
 
     private static LevelEditorLevelObjectGrid instance;
 
-    private Dictionary<Vector2, LevelObject> grid = new Dictionary<Vector2, LevelObject>();
+    private Dictionary<Vector2, LevelObject> levelObjectgrid = new Dictionary<Vector2, LevelObject>();
 
     public LevelObject GetLevelObject(Vector2 gridPosition) {
-        return grid[gridPosition];
+        return levelObjectgrid[gridPosition];
     }
 
     public void SetLevelObject(Vector2 gridPosition, LevelObject levelObject) {
-        if (grid.ContainsKey(gridPosition)) {
+        if (levelObjectgrid.ContainsKey(gridPosition)) {
             RemoveLevelObject(gridPosition);
             AddLevelObject(gridPosition, levelObject);
         } else {
-            grid[gridPosition] = levelObject;
+            levelObjectgrid[gridPosition] = levelObject;
         }
     }
 
     public void ReplaceLevelObject(Vector2 gridPosition, LevelObject levelObject) {
-        LevelObject oldTLevelObject = grid[gridPosition];
+        LevelObject oldTLevelObject = levelObjectgrid[gridPosition];
         oldTLevelObject.Destroy();
-        grid[gridPosition] = levelObject;
+        levelObjectgrid[gridPosition] = levelObject;
     }
 
     public void AddLevelObject(Vector2 gridPosition, LevelObject levelObject) {
         Add(gridPosition);
-        grid.Add(gridPosition, levelObject);
+        levelObjectgrid.Add(gridPosition, levelObject);
     }
 
     public override void Clear() {
         base.Clear();
-        foreach (Vector2 gridPosition in grid.Keys) {
-            grid[gridPosition].Destroy();
+        foreach (Vector2 gridPosition in levelObjectgrid.Keys) {
+            levelObjectgrid[gridPosition].Destroy();
         }
-        grid.Clear();
+        levelObjectgrid.Clear();
     }
 
     public void RemoveLevelObject(Vector2 gridPosition) {
         Remove(gridPosition);
-        grid[gridPosition].Destroy();
-        grid.Remove(gridPosition);
+        levelObjectgrid[gridPosition].Destroy();
+        levelObjectgrid.Remove(gridPosition);
     }
 
     private static LevelEditorLevelObjectGrid GetInstance() {

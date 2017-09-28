@@ -9,7 +9,7 @@ public class LevelEditorStartSelectionFieldAtScreenPositionCommand : Command {
 
     protected override void Execute() {
         Vector2 selectionFieldStartWorldPosition = Camera.main.ScreenToWorldPoint(screenPosition);
-        float nodeSize = LevelEditorGridNodeSize.Instance.Size;
+        float nodeSize = LevelEditorGridNodeSize.Instance.NodeSize;
 
         selectionFieldStatus.SelectionFieldStartGridPosition = GridHelper.WorldToGridPosition(selectionFieldStartWorldPosition, nodeSize);
         selectionFieldStatus.SelectionFieldEndGridPosition = selectionFieldStatus.SelectionFieldStartGridPosition;

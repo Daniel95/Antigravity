@@ -1,11 +1,12 @@
 ﻿using IoCPlus;
+using UnityEngine;
 
 public class AbortIfLevelEditorSelectedLevelObjectIsNoneCommand : Command {
 
-    [Inject] private LevelEditorSelectedLevelObjectStatus levelEditorSelectedLevelObjectStatus;
+    [Inject] private LevelEditorSelectedLevelObjectStatus selectedLevelObjectStatus;
 
     protected override void Execute() {
-        if(levelEditorSelectedLevelObjectStatus.levelObjectType == LevelObjectType.None) {
+        if(selectedLevelObjectStatus.levelObjectType == LevelObjectType.None) {
             Abort();
         }
     }

@@ -3,9 +3,9 @@ using UnityEngine;
 
 public class LevelEditorGridPositions : MonoBehaviour {
 
-    public static List<Vector2> GridPositions { get { return gridPositions; } }
+    public static HashSet<Vector2> GridPositions { get { return gridPositions; } }
 
-    private static List<Vector2> gridPositions = new List<Vector2>();
+    private static HashSet<Vector2> gridPositions = new HashSet<Vector2>();
 
     public bool Contains(Vector2 gridPosition) {
         return gridPositions.Contains(gridPosition);

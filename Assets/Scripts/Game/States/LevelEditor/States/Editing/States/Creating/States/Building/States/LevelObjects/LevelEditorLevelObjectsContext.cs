@@ -17,6 +17,9 @@ public class LevelEditorLevelObjectsContext : Context {
             .Do<DestroyChildInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/Building/LevelObjects/GoToTilesStateButtonUI", CanvasLayer.UI)
             .Do<DestroyChildInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/Building/LevelObjects/LevelObjectButtonGridLayoutGroupUI", CanvasLayer.UI);
 
+        On<TouchDownEvent>()
+
+
         On<TouchUpEvent>()
             .Do<AbortIfLevelEditorSelectedLevelObjectIsNoneCommand>()
             .Do<InstantiateSelectedLevelObjectAtScreenPositionCommand>();
