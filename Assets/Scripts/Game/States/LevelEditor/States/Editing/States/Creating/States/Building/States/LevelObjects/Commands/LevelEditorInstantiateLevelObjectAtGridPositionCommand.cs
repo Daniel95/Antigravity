@@ -19,10 +19,10 @@ public class LevelEditorInstantiateLevelObjectAtGridPositionCommand : Command {
 
         LevelObject levelObject = new LevelObject {
             GameObject = levelObjectGameObject,
-            Size = levelEditorLevelObjectEditorNode.StartSize,
+            Size = levelEditorLevelObjectEditorNode.Size,
         };
 
-        Vector2 levelObjectSize = levelEditorLevelObjectEditorNode.StartSize;
+        Vector2 levelObjectSize = levelEditorLevelObjectEditorNode.Size;
         Vector2 levelObjectSectionStartBuildPoint = new Vector2(gridPosition.x - Mathf.FloorToInt(levelObjectSize.x / 2), gridPosition.y - Mathf.FloorToInt(levelObjectSize.y / 2));
 
         List<LevelObjectSection> levelObjectSections = new List<LevelObjectSection>();

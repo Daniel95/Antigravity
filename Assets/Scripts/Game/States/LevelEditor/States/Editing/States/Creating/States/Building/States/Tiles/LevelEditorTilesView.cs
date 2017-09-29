@@ -76,18 +76,6 @@ public class LevelEditorTilesView : View, ILevelEditorTiles {
         return previouslyOccupiedByLastSelectionField;
     }
 
-    public void SpawnTileAtScreenPosition(Vector2 screenPosition) {
-        SpawnTile(screenPosition, LevelEditorInputType.ScreenSpace);
-    }
-
-    public void SpawnTileAtWorldPosition(Vector2 worldPosition) {
-        SpawnTile(worldPosition, LevelEditorInputType.WorldSpace);
-    }
-
-    public void SpawnTileAtGridPosition(Vector2 gridPosition) {
-        SpawnTile(gridPosition, LevelEditorInputType.GridSpace);
-    }
-
     private void RemoveTile(Vector2 gridPosition, bool regenerateNeighbours, List<Vector2> neighboursIgnoringRegenerate = null) {
         LevelEditorTileGrid.Instance.RemoveTile(gridPosition);
 
@@ -137,27 +125,6 @@ public class LevelEditorTilesView : View, ILevelEditorTiles {
 
             TileGenerator.Instance.GenerateTiles(allGridPositionsToRegenerate);
         }
-    }
-
-    private void SpawnTile(Vector2 position, LevelEditorInputType levelEditorInputType, List<Vector2> neighboursIgnoringRegenerate = null) {
-        Vector2 gridPosition = new Vector2();
-        if(levelEditorInputType != LevelEditorInputType.GridSpace) {
-            gridPosition = ConvertPositionToGridPosition(position, levelEditorInputType);
-        }
-
-        LevelEditorTileGrid.Instance.SetTile(gridPosition, new Tile() { UserGenerated = true });
-
-        List<Vector2> positionsToGenerate = LevelEditorTileGrid.Instance.GetNeighbourPositions(gridPosition, false);
-
-        if(neighboursIgnoringRegenerate != null) {
-            positionsToGenerate = positionsToGenerate.Except(neighboursIgnoringRegenerate).ToList();
-        }
-
-        List<Vector2> nonUserGeneratedTilesToRegenerate = positionsToGenerate.FindAll(x => LevelEditorTileGrid.Instance.Contains(x) && !LevelEditorTileGrid.Instance.GetTile(x).UserGenerated);
-        nonUserGeneratedTilesToRegenerate.ForEach(x => LevelEditorTileGrid.Instance.RemoveTile(x));
-
-        positionsToGenerate.Add(gridPosition);
-        TileGenerator.Instance.GenerateTiles(positionsToGenerate);
     }
 
     private void SpawnTiles(List<Vector2> gridPositions) {

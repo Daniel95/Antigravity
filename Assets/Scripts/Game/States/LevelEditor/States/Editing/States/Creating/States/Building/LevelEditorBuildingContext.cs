@@ -5,6 +5,9 @@ public class LevelEditorBuildingContext : Context {
     protected override void SetBindings() {
         base.SetBindings();
 
+        Bind<LevelEditorSelectedLevelObjectSectionStatus>();
+        Bind<LevelEditorSelectedLevelObjectNodeTypeStatus>();
+
         On<EnterContextSignal>()
             .GotoState<LevelEditorTilesContext>()
             .Do<InstantiateViewInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/Building/GoToErasingStateButtonUI", CanvasLayer.UI);

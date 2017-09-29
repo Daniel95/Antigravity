@@ -5,8 +5,6 @@ public class LevelEditorCreatingContext : Context {
     protected override void SetBindings() {
         base.SetBindings();
 
-        Bind<LevelEditorSelectionFieldChangedEvent>();
-
         On<EnterContextSignal>()
             .Do<InstantiateViewInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/GoToNavigatingStateButtonUI", CanvasLayer.UI)
             .Do<LevelEditorSetSelectionFieldEnabledCommand>(true)

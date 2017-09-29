@@ -22,12 +22,10 @@ public class LevelEditorTileGrid : LevelEditorGridPositions {
     }
 
     public void SetTile(Vector2 gridPosition, Tile tile) {
-        if(tileGrid.ContainsKey(gridPosition)) {
+        if (Contains(gridPosition)) {
             RemoveTile(gridPosition);
-            AddTile(gridPosition, tile);
-        } else {
-            tileGrid[gridPosition] = tile;
         }
+        AddTile(gridPosition, tile);
     }
 
     public void UpdateTile(Vector2 gridPosition, Tile tile) {

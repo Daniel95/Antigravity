@@ -15,7 +15,6 @@ public class LevelObjectSection {
     public void Initiate(Vector2 gridPosition) {
         this.gridPosition = gridPosition;
         LevelEditorLevelObjectSectionGrid.Instance.AddLevelObjectSection(gridPosition, this);
-        Debug.Log("Add " + gridPosition);
     }
 
     public void IncrementLevelObjectGridPosition(Vector2 increment) {

@@ -11,6 +11,13 @@ public class LevelEditorLevelObjectEditorNodesContainer : MonoBehaviour {
 
     [SerializeField] private List<LevelEditorLevelObjectEditorNode> levelObjectEditorNodes;
 
+    private void Awake() {
+        bool sizeOfNodeIsZero = levelObjectEditorNodes.Find(x => x.Size == Vector2.zero) != null;
+        if(sizeOfNodeIsZero) {
+            Debug.LogWarning("LevelObjectEditorNodes size cannot be zero.");
+        }
+    }
+
     public LevelEditorLevelObjectEditorNode GetNode(LevelObjectType levelObjectType) {
         LevelEditorLevelObjectEditorNode levelObjectEditorNode = levelObjectEditorNodes.Find(x => x.LevelObjectType == levelObjectType);
         return levelObjectEditorNode;

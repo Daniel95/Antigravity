@@ -16,8 +16,8 @@ public class GridPositionTileCondition : TileCondition {
                 condition = exists;
                 break;
             case GridPositionType.UserGenerated:
-                bool isSolid = exists && LevelEditorTileGrid.Instance.GetTile(gridPosition).UserGenerated;
-                condition = isSolid;
+                bool isUserGenerated = exists && LevelEditorTileGrid.Instance.GetTile(gridPosition).UserGenerated;
+                condition = isUserGenerated;
                 break;
         }
 

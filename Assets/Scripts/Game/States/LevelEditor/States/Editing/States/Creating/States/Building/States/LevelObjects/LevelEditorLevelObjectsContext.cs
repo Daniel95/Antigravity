@@ -5,9 +5,6 @@ public class LevelEditorLevelObjectsContext : Context {
     protected override void SetBindings() {
         base.SetBindings();
 
-        Bind<LevelEditorSelectedLevelObjectSectionStatus>();
-        Bind<LevelEditorSelectedLevelObjectNodeTypeStatus>();
-
         On<EnterContextSignal>()
             .Do<LevelEditorSetSelectionFieldEnabledCommand>(false)
             .Do<InstantiateViewInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/Building/LevelObjects/GoToTilesStateButtonUI", CanvasLayer.UI)

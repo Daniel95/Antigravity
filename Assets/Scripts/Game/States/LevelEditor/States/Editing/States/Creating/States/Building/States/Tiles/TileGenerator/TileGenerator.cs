@@ -25,7 +25,7 @@ public class TileGenerator : MonoBehaviour {
             if (falseCondition == null) {
                 matchingTileGeneratorNode = tileGeneratorNode;
                 break;
-            } 
+            }
         }
 
         Tile tile = GetTile(matchingTileGeneratorNode.Prefab, matchingTileGeneratorNode.TileType, gridPosition);
