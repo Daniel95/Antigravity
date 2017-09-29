@@ -31,12 +31,10 @@ public class LevelEditorCreatingContext : Context {
             .GotoState<LevelEditorErasingContext>();
 
         On<OutsideUITouchStartEvent>()
+            .Do<DispatchLevelEditorTouchDownOnGridPositionEventCommand>()
             .Do<LevelEditorStartSelectionFieldAtScreenPositionCommand>()
             .Do<AbortIfSelectionFieldIsSameAsPreviousSelectionFieldCommand>()
             .Do<DispatchLevelEditorSelectionFieldChangedEventCommand>();
-
-        On<TouchDownEvent>()
-            .Do<DispatchLevelEditorTouchDownOnGridPositionEventCommand>();
 
         On<SwipeMovedEvent>()
             .Do<DispatchLevelEditorSwipeMovedToGridPositionEventCommand>();

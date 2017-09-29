@@ -176,16 +176,15 @@ public class LevelEditorTilesView : View, ILevelEditorTiles {
     }
 
     private Vector2 ConvertPositionToGridPosition(Vector2 position, LevelEditorInputType levelEditorInputType) {
-        float nodeSize = LevelEditorGridNodeSize.Instance.NodeSize;
         Vector2 gridPosition = new Vector2();
 
         switch (levelEditorInputType) {
             case LevelEditorInputType.ScreenSpace:
                 Vector2 worldPosition = Camera.main.ScreenToWorldPoint(position);
-                gridPosition = GridHelper.WorldToGridPosition(worldPosition, nodeSize);
+                gridPosition = LevelEditorGridHelper.WorldToGridPosition(worldPosition);
                 break;
             case LevelEditorInputType.WorldSpace:
-                gridPosition = GridHelper.WorldToGridPosition(position, nodeSize);
+                gridPosition = LevelEditorGridHelper.WorldToGridPosition(position);
                 break;
             case LevelEditorInputType.GridSpace:
                 gridPosition = position;

@@ -8,8 +8,7 @@ public class DispatchLevelEditorSwipeMovedToGridPositionEventCommand : Command {
     [InjectParameter] private SwipeMovedEvent.Parameter swipeMoveEventParameter;
 
     protected override void Execute() {
-        float nodeSize = LevelEditorGridNodeSize.Instance.NodeSize;
-        Vector2 gridPosition = GridHelper.ScreenToGridPosition(swipeMoveEventParameter.Position, nodeSize);
+        Vector2 gridPosition = LevelEditorGridHelper.ScreenToGridPosition(swipeMoveEventParameter.Position);
         levelEditorSwipeMovedToGridPositionEvent.Dispatch(gridPosition);
     }
 

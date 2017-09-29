@@ -5,7 +5,8 @@ public class LevelEditorLevelObjectsContext : Context {
     protected override void SetBindings() {
         base.SetBindings();
 
-        Bind<LevelEditorSelectedLevelObjectStatus>();
+        Bind<LevelEditorSelectedLevelObjectSectionStatus>();
+        Bind<LevelEditorSelectedLevelObjectNodeTypeStatus>();
 
         On<EnterContextSignal>()
             .Do<LevelEditorSetSelectionFieldEnabledCommand>(false)
@@ -17,12 +18,18 @@ public class LevelEditorLevelObjectsContext : Context {
             .Do<DestroyChildInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/Building/LevelObjects/GoToTilesStateButtonUI", CanvasLayer.UI)
             .Do<DestroyChildInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/Building/LevelObjects/LevelObjectButtonGridLayoutGroupUI", CanvasLayer.UI);
 
-        On<TouchDownEvent>()
+        On<LevelEditorTouchDownOnGridPositionEvent>()
+            .Do<AbortIfLevelEditorSelectedLevelObjectEditorNodeTypeIsCommand>(LevelObjectType.None)
+            .Do<AbortIfLevelEditorGridPositionIsOccupiedCommand>()
+            .Do<LevelEditorInstantiateLevelObjectAtGridPositionCommand>()
+            .Do<LevelEditorUpdateSelectedLevelObjectSectionCommand>();
 
+        On<LevelEditorSwipeMovedToGridPositionEvent>()
+            .Do<AbortIfLevelEditorGridPositionIsOccupiedCommand>()
+            .Do<LevelEditorMoveSelectedLevelObjectToGridPositionCommand>();
 
-        On<TouchUpEvent>()
-            .Do<AbortIfLevelEditorSelectedLevelObjectIsNoneCommand>()
-            .Do<InstantiateSelectedLevelObjectAtScreenPositionCommand>();
+        On<LevelEditorTouchUpOnGridPositionEvent>()
+            .Do<AbortIfLevelEditorGridPositionIsOccupiedCommand>();
 
     }
 

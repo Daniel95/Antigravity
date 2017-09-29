@@ -1,5 +1,8 @@
-﻿public class LevelEditorSelectedLevelObjectStatus {
+﻿using UnityEngine;
 
-    public LevelObjectType levelObjectType;
+public class LevelEditorSelectedLevelObjectSectionStatus {
+
+    public Vector2 GridPosition;
+    public LevelObjectSection LevelObjectSection;
 
 }

@@ -1,16 +1,14 @@
-﻿using UnityEngine;
-using System.Collections;
-using IoCPlus;
+﻿using IoCPlus;
+using UnityEngine;
 
 public class DispatchLevelEditorTouchDownOnGridPositionEventCommand : Command {
 
     [Inject] private LevelEditorTouchDownOnGridPositionEvent levelEditorTouchDownOnGridPositionEvent;
 
-    [Inject] private Vector2 touchDownScreenPosition;
+    [InjectParameter] private Vector2 touchDownScreenPosition;
 
     protected override void Execute() {
-        float nodeSize = LevelEditorGridNodeSize.Instance.NodeSize;
-        Vector2 gridPosition = GridHelper.ScreenToGridPosition(touchDownScreenPosition, nodeSize);
+        Vector2 gridPosition = LevelEditorGridHelper.ScreenToGridPosition(touchDownScreenPosition);
         levelEditorTouchDownOnGridPositionEvent.Dispatch(gridPosition);
     }
 
