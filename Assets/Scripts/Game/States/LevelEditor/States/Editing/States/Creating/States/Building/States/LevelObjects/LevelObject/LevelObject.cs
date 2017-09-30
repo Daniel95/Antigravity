@@ -9,9 +9,10 @@ public class LevelObject {
     public GameObject GameObject;
     public Vector2 LevelObjectNodePosition;
     public List<LevelObjectSection> LevelObjectSections;
-    public Vector2 Size;
+    public Vector2 GridSize;
 
     private Vector2 nodePosition { get { return Transform.position; }  set { Transform.position = value; } }
+    private Vector2 gridPosition { get { return LevelEditorGridHelper.NodeToGridPosition(nodePosition); } set { nodePosition = LevelEditorGridHelper.GridToNodePosition(value); } }
 
     public void Initiate(List<LevelObjectSection> levelObjectSections) {
         LevelObjectSections = levelObjectSections;
@@ -22,9 +23,14 @@ public class LevelObject {
     }
 
     public void IncrementLevelObjectGridPosition(Vector2 incrementalGridPosition) {
-        LevelObjectSection levelObjectSection = LevelObjectSections.Find(x => !CheckGridPositionAvailability(x.GridPosition));
-        bool newLevelObjectSectionIsOccupied = levelObjectSection != null;
+        LevelObjectSection unavailabeLevelObjectSection = LevelObjectSections.Find(x => !CheckGridPositionAvailability(x.GridPosition));
+        bool newLevelObjectSectionIsOccupied = unavailabeLevelObjectSection != null;
         if(newLevelObjectSectionIsOccupied) { return; }
+
+        GameObject.transform.position += (Vector3)LevelEditorGridHelper.GridToNodeVector(incrementalGridPosition);
+
+        List<Vector2> previousLevelObjectSectionGridPositions = LevelObjectSections.Select(x => x.GridPosition).ToList();
+        LevelEditorLevelObjectSectionGrid.Instance.RemoveLevelObjectSections(previousLevelObjectSectionGridPositions);
 
         LevelObjectSections.ForEach(x => x.IncrementLevelObjectSectionGridPosition(incrementalGridPosition));
     }

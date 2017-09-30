@@ -22,11 +22,9 @@ public class LevelEditorLevelObjectsContext : Context {
             .Do<LevelEditorUpdateSelectedLevelObjectSectionCommand>();
 
         On<LevelEditorSwipeMovedToGridPositionEvent>()
-            .Do<AbortIfLevelEditorGridPositionIsOccupiedCommand>()
             .Do<LevelEditorMoveSelectedLevelObjectToGridPositionCommand>();
 
-        On<LevelEditorTouchUpOnGridPositionEvent>()
-            .Do<AbortIfLevelEditorGridPositionIsOccupiedCommand>();
+        //On<LevelEditorTouchUpOnGridPositionEvent>()
 
     }
 

@@ -11,12 +11,13 @@ public class LevelEditorLevelObjectEditorNodesContainer : MonoBehaviour {
 
     [SerializeField] private List<LevelEditorLevelObjectEditorNode> levelObjectEditorNodes;
 
-    private void Awake() {
-        bool sizeOfNodeIsZero = levelObjectEditorNodes.Find(x => x.Size == Vector2.zero) != null;
-        if(sizeOfNodeIsZero) {
-            Debug.LogWarning("LevelObjectEditorNodes size cannot be zero.");
-        }
-    }
+    public Vector2 GetLevelObjectEditorNodeGridSize(LevelObjectType levelObjectType) {
+        LevelEditorLevelObjectEditorNode levelEditorLevelObjectEditorNode = GetNode(levelObjectType);
+        Vector2 nodeSize = levelEditorLevelObjectEditorNode.Prefab.transform.localScale;
+        Vector2 unroundedGridSize = nodeSize / LevelEditorGridNodeSize.Instance.NodeSize;
+        Vector2 gridSize = new Vector2(Mathf.Ceil(unroundedGridSize.x), Mathf.Ceil(unroundedGridSize.y));
+        return gridSize;
+    } 
 
     public LevelEditorLevelObjectEditorNode GetNode(LevelObjectType levelObjectType) {
         LevelEditorLevelObjectEditorNode levelObjectEditorNode = levelObjectEditorNodes.Find(x => x.LevelObjectType == levelObjectType);

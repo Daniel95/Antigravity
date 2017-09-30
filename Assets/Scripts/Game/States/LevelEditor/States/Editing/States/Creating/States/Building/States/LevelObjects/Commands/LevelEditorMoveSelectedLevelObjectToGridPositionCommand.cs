@@ -9,10 +9,7 @@ public class LevelEditorMoveSelectedLevelObjectToGridPositionCommand : Command {
 
     protected override void Execute() {
         LevelObjectSection levelObjectSection = levelEditorSelectedLevelObjectStatus.LevelObjectSection;
-        Vector2 levelObjectSectionGridPosition = levelEditorSelectedLevelObjectStatus.GridPosition;
-        Vector2 offset = gridPosition - levelObjectSectionGridPosition;
-
-        levelObjectSection.IncrementLevelObjectGridPosition(offset);
+        levelObjectSection.SetGridPosition(gridPosition);
     }
 
 }

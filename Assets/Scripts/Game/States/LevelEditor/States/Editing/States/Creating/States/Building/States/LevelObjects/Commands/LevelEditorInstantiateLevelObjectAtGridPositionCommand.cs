@@ -16,21 +16,22 @@ public class LevelEditorInstantiateLevelObjectAtGridPositionCommand : Command {
         Vector2 nodePosition = LevelEditorGridHelper.GridToNodePosition(gridPosition);
 
         GameObject levelObjectGameObject = Object.Instantiate(levelEditorLevelObjectEditorNode.Prefab, nodePosition, new Quaternion());
+        Vector2 gridSize = LevelEditorLevelObjectEditorNodesContainer.Instance.GetLevelObjectEditorNodeGridSize(levelObjectType);
 
         LevelObject levelObject = new LevelObject {
             GameObject = levelObjectGameObject,
-            Size = levelEditorLevelObjectEditorNode.Size,
+            GridSize = gridSize,
         };
 
-        Vector2 levelObjectSize = levelEditorLevelObjectEditorNode.Size;
-        Vector2 levelObjectSectionStartBuildPoint = new Vector2(gridPosition.x - Mathf.FloorToInt(levelObjectSize.x / 2), gridPosition.y - Mathf.FloorToInt(levelObjectSize.y / 2));
+        Vector2 levelObjectSectionStartBuildPoint = new Vector2(gridPosition.x - Mathf.FloorToInt(gridSize.x / 2), gridPosition.y - Mathf.FloorToInt(gridSize.y / 2));
 
         List<LevelObjectSection> levelObjectSections = new List<LevelObjectSection>();
-        for (int y = 0; y < levelObjectSize.y; y++) {
-            for (int x = 0; x < levelObjectSize.x; x++) {
+        for (int y = 0; y < gridSize.y; y++) {
+            for (int x = 0; x < gridSize.x; x++) {
                 Vector2 levelObjectSectionGridPosition = levelObjectSectionStartBuildPoint + new Vector2(x, y);
                 LevelObjectSection levelObjectSection = new LevelObjectSection();
                 levelObjectSection.Initiate(levelObjectSectionGridPosition);
+                levelObjectSections.Add(levelObjectSection);
             }
         }
 

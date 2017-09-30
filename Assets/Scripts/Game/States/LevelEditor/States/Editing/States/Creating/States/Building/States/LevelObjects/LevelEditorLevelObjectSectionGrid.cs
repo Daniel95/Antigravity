@@ -17,12 +17,13 @@ public class LevelEditorLevelObjectSectionGrid : LevelEditorGridPositions {
     }
 
     public void SetLevelObjectSection(Vector2 gridPosition, LevelObjectSection levelObject) {
-        if (levelObjectSectiongrid.ContainsKey(gridPosition)) {
-            RemoveLevelObject(gridPosition);
-            AddLevelObjectSection(gridPosition, levelObject);
-        } else {
-            levelObjectSectiongrid[gridPosition] = levelObject;
+        if (Contains(gridPosition)) {
+            Remove(gridPosition);
+            if(levelObjectSectiongrid.ContainsKey(gridPosition)) {
+                levelObjectSectiongrid.Remove(gridPosition);
+            }
         }
+        AddLevelObjectSection(gridPosition, levelObject);
     }
 
     public void AddLevelObjectSection(Vector2 gridPosition, LevelObjectSection levelObject) {
@@ -45,10 +46,14 @@ public class LevelEditorLevelObjectSectionGrid : LevelEditorGridPositions {
     }
 
     public void RemoveLevelObjectSections(List<Vector2> gridPositions) {
-        gridPositions.ForEach(x => levelObjectSectiongrid.Remove(x));
+        foreach (Vector2 gridPosition in gridPositions) {
+            Remove(gridPosition);
+            levelObjectSectiongrid.Remove(gridPosition);
+        }
     }
 
     public void RemoveLevelObjectSection(Vector2 gridPosition) {
+        Remove(gridPosition);
         levelObjectSectiongrid.Remove(gridPosition);
     }
 

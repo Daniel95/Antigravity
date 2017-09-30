@@ -17,21 +17,17 @@ public class LevelObjectSection {
         LevelEditorLevelObjectSectionGrid.Instance.AddLevelObjectSection(gridPosition, this);
     }
 
-    public void IncrementLevelObjectGridPosition(Vector2 increment) {
+    public void SetGridPosition(Vector2 newGridPosition) {
+        Vector2 offset = newGridPosition - gridPosition;
+
         if (OnLevelObjectIncrementGridPosition != null) {
-            OnLevelObjectIncrementGridPosition(increment);
+            OnLevelObjectIncrementGridPosition(offset);
         }
     }
 
     public void IncrementLevelObjectSectionGridPosition(Vector2 increment) {
         gridPosition += increment;
         LevelEditorLevelObjectSectionGrid.Instance.SetLevelObjectSection(gridPosition, this);
-    }
-
-    public bool LevelObjectCanMoveToDirection(Vector2 direction, int moveAmount) {
-        if(OnLevelObjectCanMoveToDirection == null) { return false; }
-        bool canMove = OnLevelObjectCanMoveToDirection(direction, moveAmount);
-        return canMove;
     }
 
     public void DestroyLevelObject() {
