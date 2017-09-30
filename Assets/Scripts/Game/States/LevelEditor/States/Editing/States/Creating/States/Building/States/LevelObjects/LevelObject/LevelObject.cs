@@ -5,6 +5,7 @@ using UnityEngine;
 public class LevelObject {
 
     public Transform Transform { get { return GameObject.transform; } }
+    public Vector2 GridPosition { get { return LevelEditorGridHelper.NodeToGridPosition(nodePosition); } }
 
     public GameObject GameObject;
     public Vector2 LevelObjectNodePosition;
@@ -12,7 +13,6 @@ public class LevelObject {
     public Vector2 GridSize;
 
     private Vector2 nodePosition { get { return Transform.position; }  set { Transform.position = value; } }
-    private Vector2 gridPosition { get { return LevelEditorGridHelper.NodeToGridPosition(nodePosition); } set { nodePosition = LevelEditorGridHelper.GridToNodePosition(value); } }
 
     public void Initiate(List<LevelObjectSection> levelObjectSections) {
         LevelObjectSections = levelObjectSections;
@@ -23,7 +23,7 @@ public class LevelObject {
     }
 
     public void IncrementLevelObjectGridPosition(Vector2 incrementalGridPosition) {
-        if(!CheckAllGridPositionAvailability()) { return; }
+        if(!CheckAllIncrementedGridPositionAvailability(incrementalGridPosition)) { return; }
 
         GameObject.transform.position += (Vector3)LevelEditorGridHelper.GridToNodeVector(incrementalGridPosition);
 
@@ -33,8 +33,8 @@ public class LevelObject {
         LevelObjectSections.ForEach(x => x.IncrementLevelObjectSectionGridPosition(incrementalGridPosition));
     }
 
-    private bool CheckAllGridPositionAvailability() {
-        LevelObjectSection unavailabeLevelObjectSection = LevelObjectSections.Find(x => !CheckGridPositionAvailability(x.GridPosition));
+    private bool CheckAllIncrementedGridPositionAvailability(Vector2 incrementalGridPosition) {
+        LevelObjectSection unavailabeLevelObjectSection = LevelObjectSections.Find(x => !CheckGridPositionAvailability(x.GridPosition + incrementalGridPosition));
         bool newLevelObjectSectionIsOccupied = unavailabeLevelObjectSection != null;
         return !newLevelObjectSectionIsOccupied;
     }

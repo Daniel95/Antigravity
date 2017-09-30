@@ -40,7 +40,6 @@ public class LevelEditorCreatingContext : Context {
         On<LevelEditorSwipeMovedToGridPositionEvent>()
             .Do<AbortIfLevelEditorGridPositionIsTheSameAsSelectedGridPositionCommand>()
             .Do<LevelEditorUpdateSelectedGridPositionStatusCommand>()
-            .Do<DebugLogMessageCommand>("Moved")
             .Do<DispatchLevelEditorSwipeMovedToNewGridPositionEventCommand>();
 
         On<TouchUpEvent>()
