@@ -57,6 +57,14 @@ public class LevelEditorLevelObjectSectionGrid : LevelEditorGridPositions {
         levelObjectSectiongrid.Remove(gridPosition);
     }
 
+    public bool ContainsLevelObjectSection(Vector2 gridPosition) {
+        if(Contains(gridPosition) && levelObjectSectiongrid.ContainsKey(gridPosition)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     private static LevelEditorLevelObjectSectionGrid GetInstance() {
         if(instance == null) {
             instance = FindObjectOfType<LevelEditorLevelObjectSectionGrid>();
