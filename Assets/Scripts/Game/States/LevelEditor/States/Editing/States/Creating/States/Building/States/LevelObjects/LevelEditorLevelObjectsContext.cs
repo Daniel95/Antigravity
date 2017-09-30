@@ -26,9 +26,11 @@ public class LevelEditorLevelObjectsContext : Context {
             .Do<LevelEditorUpdateSelectedLevelObjectSectionCommand>();
 
         On<LevelEditorSwipeMovedToNewGridPositionEvent>()
+            .Do<AbortIfLevelEditorSelectedLevelObjectSectionStatusIsNullCommand>()
             .Do<LevelEditorMoveSelectedLevelObjectToGridPositionCommand>();
 
-        //On<LevelEditorTouchUpOnGridPositionEvent>()
+        On<LevelEditorTouchUpOnGridPositionEvent>()
+            .Do<LevelEditorResetSelectedLevelObjectSectionStatusCommand>();
 
     }
 
