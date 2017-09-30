@@ -23,9 +23,7 @@ public class LevelObject {
     }
 
     public void IncrementLevelObjectGridPosition(Vector2 incrementalGridPosition) {
-        LevelObjectSection unavailabeLevelObjectSection = LevelObjectSections.Find(x => !CheckGridPositionAvailability(x.GridPosition));
-        bool newLevelObjectSectionIsOccupied = unavailabeLevelObjectSection != null;
-        if(newLevelObjectSectionIsOccupied) { return; }
+        if(!CheckAllGridPositionAvailability()) { return; }
 
         GameObject.transform.position += (Vector3)LevelEditorGridHelper.GridToNodeVector(incrementalGridPosition);
 
@@ -33,6 +31,12 @@ public class LevelObject {
         LevelEditorLevelObjectSectionGrid.Instance.RemoveLevelObjectSections(previousLevelObjectSectionGridPositions);
 
         LevelObjectSections.ForEach(x => x.IncrementLevelObjectSectionGridPosition(incrementalGridPosition));
+    }
+
+    private bool CheckAllGridPositionAvailability() {
+        LevelObjectSection unavailabeLevelObjectSection = LevelObjectSections.Find(x => !CheckGridPositionAvailability(x.GridPosition));
+        bool newLevelObjectSectionIsOccupied = unavailabeLevelObjectSection != null;
+        return !newLevelObjectSectionIsOccupied;
     }
 
     private bool CheckGridPositionAvailability(Vector2 gridPosition) {

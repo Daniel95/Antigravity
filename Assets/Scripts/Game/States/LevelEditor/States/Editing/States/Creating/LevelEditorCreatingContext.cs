@@ -37,6 +37,12 @@ public class LevelEditorCreatingContext : Context {
         On<SwipeMovedEvent>()
             .Do<DispatchLevelEditorSwipeMovedToGridPositionEventCommand>();
 
+        On<LevelEditorSwipeMovedToGridPositionEvent>()
+            .Do<AbortIfLevelEditorGridPositionIsTheSameAsSelectedGridPositionCommand>()
+            .Do<LevelEditorUpdateSelectedGridPositionStatusCommand>()
+            .Do<DebugLogMessageCommand>("Moved")
+            .Do<DispatchLevelEditorSwipeMovedToNewGridPositionEventCommand>();
+
         On<TouchUpEvent>()
             .Do<DispatchLevelEditorTouchUpOnGridPositionEventCommand>()
             .Do<LevelEditorClearSelectionFieldCommand>()
@@ -48,9 +54,8 @@ public class LevelEditorCreatingContext : Context {
             .Do<LevelEditorClearSelectionFieldAvailableGridPositionsCommand>()
             .Do<ShowBoxOverlayCommand>(false);
 
-        On<LevelEditorSwipeMovedToGridPositionEvent>()
+        On<LevelEditorSwipeMovedToNewGridPositionEvent>()
             .Do<LevelEditorUpdateSelectionFieldToSwipePositionCommand>()
-            .Do<AbortIfSelectionFieldIsSameAsPreviousSelectionFieldCommand>()
             .Do<DispatchLevelEditorSelectionFieldChangedEventCommand>();
 
         On<LevelEditorSelectionFieldTileSpawnLimitReachedEvent>()
