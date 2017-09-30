@@ -8,16 +8,16 @@ public class LevelObject {
     public Vector2 GridPosition { get { return LevelEditorGridHelper.NodeToGridPosition(nodePosition); } }
 
     private Vector2 nodePosition { get { return Transform.position; }  set { Transform.position = value; } }
-
     private GameObject gameObject;
     private List<LevelObjectSection> levelObjectSections = new List<LevelObjectSection>();
+
 
     public void Initiate(List<Vector2> levelObjectSectionGridPositions, GameObject gameObject) {
         this.gameObject = gameObject;
 
         foreach (Vector2 levelObjectSectionGridPosition in levelObjectSectionGridPositions) {
             LevelObjectSection levelObjectSection = new LevelObjectSection();
-            levelObjectSection.Initiate(levelObjectSectionGridPosition);
+            levelObjectSection.SetLevelObjectSectionGridPosition(levelObjectSectionGridPosition);
             levelObjectSections.Add(levelObjectSection);
             levelObjectSection.OnLevelObjectIncrementGridPosition += IncrementLevelObjectGridPosition;
             levelObjectSection.OnLevelObectDestroy += OnDestroy;
@@ -25,20 +25,24 @@ public class LevelObject {
     }
 
     public void IncrementLevelObjectGridPosition(Vector2 incrementalGridPosition) {
-        if(!CheckAllIncrementedGridPositionAvailability(incrementalGridPosition)) { return; }
+        Dictionary<Vector2, LevelObjectSection> levelObjectSectionsGrid = GetLevelObjectSectionsGrid();
+        List<Vector2> incremetedLevelobjectGridPositions = levelObjectSectionsGrid.Select(x => x.Key + incrementalGridPosition).ToList();
+        if(!CheckGridPositionsAvailability(incremetedLevelobjectGridPositions)) { return; }
 
         gameObject.transform.position += (Vector3)LevelEditorGridHelper.GridToNodeVector(incrementalGridPosition);
 
-        List<Vector2> previousLevelObjectSectionGridPositions = levelObjectSections.Select(x => x.GridPosition).ToList();
+        List<Vector2> previousLevelObjectSectionGridPositions = levelObjectSectionsGrid.Keys.ToList();
         LevelEditorLevelObjectSectionGrid.Instance.RemoveLevelObjectSections(previousLevelObjectSectionGridPositions);
 
-        levelObjectSections.ForEach(x => x.IncrementLevelObjectSectionGridPosition(incrementalGridPosition));
+        foreach (KeyValuePair<Vector2, LevelObjectSection> levelObjectGridNode in levelObjectSectionsGrid) {
+            Vector2 newGridPosition = levelObjectGridNode.Key + incrementalGridPosition;
+            levelObjectGridNode.Value.SetLevelObjectSectionGridPosition(newGridPosition);
+        }
     }
 
-    private bool CheckAllIncrementedGridPositionAvailability(Vector2 incrementalGridPosition) {
-        LevelObjectSection unavailabeLevelObjectSection = levelObjectSections.Find(x => !CheckGridPositionAvailability(x.GridPosition + incrementalGridPosition));
-        bool newLevelObjectSectionIsOccupied = unavailabeLevelObjectSection != null;
-        return !newLevelObjectSectionIsOccupied;
+    private bool CheckGridPositionsAvailability(List<Vector2> gridPositions) {
+        bool unavailable = gridPositions.Exists(x => !CheckGridPositionAvailability(x));
+        return !unavailable;
     }
 
     private bool CheckGridPositionAvailability(Vector2 gridPosition) {
@@ -48,6 +52,14 @@ public class LevelObject {
         bool occupiedByThisLevelObject = levelObjectSectionPositions.Contains(gridPosition);
 
         return occupiedByThisLevelObject;
+    }
+
+    private Dictionary<Vector2, LevelObjectSection> GetLevelObjectSectionsGrid() {
+        Dictionary<Vector2, LevelObjectSection> levelObjectSectionsGrid = new Dictionary<Vector2, LevelObjectSection>();
+        foreach (LevelObjectSection levelObjectSection in levelObjectSections) {
+            levelObjectSectionsGrid.Add(levelObjectSection.GridPosition, levelObjectSection);
+        }
+        return levelObjectSectionsGrid;
     }
 
     private void OnDestroy() {

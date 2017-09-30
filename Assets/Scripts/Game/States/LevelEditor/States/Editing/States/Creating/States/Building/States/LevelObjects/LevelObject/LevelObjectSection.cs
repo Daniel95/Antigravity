@@ -8,16 +8,10 @@ public class LevelObjectSection {
 
     public Action OnLevelObectDestroy;
     public Action<Vector2> OnLevelObjectIncrementGridPosition;
-    public Func<Vector2, int, bool> OnLevelObjectCanMoveToDirection;
 
     private Vector2 gridPosition;
 
-    public void Initiate(Vector2 gridPosition) {
-        this.gridPosition = gridPosition;
-        LevelEditorLevelObjectSectionGrid.Instance.AddLevelObjectSection(gridPosition, this);
-    }
-
-    public void SetGridPosition(Vector2 newGridPosition) {
+    public void SetLevelObjectGridPosition(Vector2 newGridPosition) {
         Vector2 offset = newGridPosition - gridPosition;
 
         if (OnLevelObjectIncrementGridPosition != null) {
@@ -25,9 +19,9 @@ public class LevelObjectSection {
         }
     }
 
-    public void IncrementLevelObjectSectionGridPosition(Vector2 increment) {
-        gridPosition += increment;
-        LevelEditorLevelObjectSectionGrid.Instance.SetLevelObjectSection(gridPosition, this);
+    public void SetLevelObjectSectionGridPosition(Vector2 gridPosition) {
+        this.gridPosition = gridPosition;
+        LevelEditorLevelObjectSectionGrid.Instance.AddLevelObjectSection(gridPosition, this);
     }
 
     public void DestroyLevelObject() {

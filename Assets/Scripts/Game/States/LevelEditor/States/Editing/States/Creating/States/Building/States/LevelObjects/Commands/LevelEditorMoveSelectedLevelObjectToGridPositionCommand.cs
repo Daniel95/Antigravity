@@ -9,7 +9,7 @@ public class LevelEditorMoveSelectedLevelObjectToGridPositionCommand : Command {
 
     protected override void Execute() {
         LevelObjectSection levelObjectSection = levelEditorSelectedLevelObjectStatus.LevelObjectSection;
-        levelObjectSection.SetGridPosition(gridPosition);
+        levelObjectSection.SetLevelObjectGridPosition(gridPosition);
     }
 
 }
