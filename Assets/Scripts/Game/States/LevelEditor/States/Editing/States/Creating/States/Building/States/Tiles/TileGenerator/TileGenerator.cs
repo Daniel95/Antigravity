@@ -30,7 +30,7 @@ public class TileGenerator : MonoBehaviour {
 
         Tile tile = GetTile(matchingTileGeneratorNode.Prefab, matchingTileGeneratorNode.TileType, gridPosition);
         if (tile.TileType == TileType.Empty) {
-            if(LevelEditorTileGrid.Instance.Contains(gridPosition)) {
+            if (LevelEditorTileGrid.Instance.ContainsTile(gridPosition)) {
                 LevelEditorTileGrid.Instance.RemoveTile(gridPosition);
             }
         } else {

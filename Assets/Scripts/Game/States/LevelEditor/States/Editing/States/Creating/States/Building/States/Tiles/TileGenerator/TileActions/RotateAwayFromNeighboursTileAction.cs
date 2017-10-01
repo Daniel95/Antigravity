@@ -6,7 +6,7 @@ public class RotateAwayFromNeighboursTileAction : TileAction {
     [SerializeField] private GenerateType generateType = GenerateType.All;
 
     public override void Do(Vector2 gridPosition) {
-        List<Vector2> allDirectNeighbourPositions = LevelEditorTileGrid.Instance.GetNeighbourPositions(gridPosition, true, NeighbourType.Direct);
+        List<Vector2> allDirectNeighbourPositions = LevelEditorTileGrid.Instance.GetNeighbourTilePositions(gridPosition, true, NeighbourType.Direct);
 
         List<Vector2> neighboursPositions = new List<Vector2>();
 

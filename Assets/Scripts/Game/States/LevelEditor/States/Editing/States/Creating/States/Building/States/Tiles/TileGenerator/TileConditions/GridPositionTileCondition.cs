@@ -5,7 +5,7 @@ public class GridPositionTileCondition : TileCondition {
     [SerializeField] private GridPositionType gridPositionType;
 
     public override bool Check(Vector2 gridPosition) {
-        bool exists = LevelEditorTileGrid.Instance.Contains(gridPosition);
+        bool exists = LevelEditorTileGrid.Instance.ContainsTile(gridPosition);
         bool condition = false;
 
         switch (gridPositionType) {
