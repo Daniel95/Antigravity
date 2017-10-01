@@ -15,7 +15,80 @@ public class TileGenerator : MonoBehaviour {
 
     [SerializeField] [Reorderable] private List<TileGeneratorNode> tileGeneratorNodes = new List<TileGeneratorNode>();
 
-    public void GenerateTile(Vector2 gridPosition) {
+    public static void SpawnTiles(List<Vector2> gridPositions) {
+        gridPositions.ForEach(x => LevelEditorTileGrid.Instance.SetTile(x, new Tile() { UserGenerated = true }));
+
+        foreach (Vector2 gridPosition in gridPositions) {
+            List<Vector2> allNeighbourPositions = LevelEditorTileGrid.Instance.GetNeighbourTilePositions(gridPosition, false);
+            List<Vector2> positionsToGenerate = allNeighbourPositions.Except(gridPositions).ToList();
+
+            List<Vector2> nonUserGeneratedTilesToRegenerate = positionsToGenerate.FindAll(x => LevelEditorTileGrid.Instance.ContainsTile(x) && !LevelEditorTileGrid.Instance.GetTile(x).UserGenerated);
+            nonUserGeneratedTilesToRegenerate.ForEach(x => LevelEditorTileGrid.Instance.RemoveTile(x));
+
+            positionsToGenerate.Add(gridPosition);
+            Instance.GenerateTiles(positionsToGenerate);
+        }
+    }
+
+    public static void RemoveTile(Vector2 gridPosition, bool regenerateNeighbours, List<Vector2> neighboursIgnoringRegenerate = null) {
+        LevelEditorTileGrid.Instance.RemoveTile(gridPosition);
+
+        if (!regenerateNeighbours) { return; }
+
+        List<Vector2> allNeighbourPositionsToRegenerate = LevelEditorTileGrid.Instance.GetNeighbourTilePositions(gridPosition, false);
+        if (neighboursIgnoringRegenerate != null) {
+            allNeighbourPositionsToRegenerate = allNeighbourPositionsToRegenerate.Except(neighboursIgnoringRegenerate).ToList();
+        }
+
+        List<Vector2> nonUserGeneratedTilesToRegenerate = allNeighbourPositionsToRegenerate.FindAll(x => LevelEditorTileGrid.Instance.ContainsTile(x) && !LevelEditorTileGrid.Instance.GetTile(x).UserGenerated);
+        nonUserGeneratedTilesToRegenerate.ForEach(x => LevelEditorTileGrid.Instance.RemoveTile(x));
+
+        Instance.GenerateTiles(allNeighbourPositionsToRegenerate);
+    }
+
+    public static void RemoveTiles(List<Vector2> gridPositions, bool regenerateNeighbours, List<Vector2> neighboursIgnoringRegenerate) {
+        gridPositions.ForEach(x => LevelEditorTileGrid.Instance.RemoveTile(x));
+
+        if (!regenerateNeighbours) { return; }
+
+        foreach (Vector2 gridPosition in gridPositions) {
+            List<Vector2> allGridPositionsToRegenerate = LevelEditorTileGrid.Instance.GetNeighbourTilePositions(gridPosition, false);
+            allGridPositionsToRegenerate = allGridPositionsToRegenerate.Except(gridPositions).ToList();
+            allGridPositionsToRegenerate.Add(gridPosition);
+            allGridPositionsToRegenerate = allGridPositionsToRegenerate.Except(neighboursIgnoringRegenerate).ToList();
+
+            List<Vector2> nonUserGeneratedTilesToRegenerate = allGridPositionsToRegenerate.FindAll(x => LevelEditorTileGrid.Instance.ContainsTile(x) && !LevelEditorTileGrid.Instance.GetTile(x).UserGenerated);
+            nonUserGeneratedTilesToRegenerate.ForEach(x => LevelEditorTileGrid.Instance.RemoveTile(x));
+
+            Instance.GenerateTiles(allGridPositionsToRegenerate);
+        }
+    }
+
+    public static void RemoveTiles(List<Vector2> gridPositions, bool regenerateNeighbours) {
+        gridPositions.ForEach(x => LevelEditorTileGrid.Instance.RemoveTile(x));
+
+        if (!regenerateNeighbours) { return; }
+
+        foreach (Vector2 gridPosition in gridPositions) {
+            List<Vector2> allGridPositionsToRegenerate = LevelEditorTileGrid.Instance.GetNeighbourTilePositions(gridPosition, false);
+            allGridPositionsToRegenerate = allGridPositionsToRegenerate.Except(gridPositions).ToList();
+            allGridPositionsToRegenerate.Add(gridPosition);
+
+            List<Vector2> nonUserGeneratedTilesToRegenerate = allGridPositionsToRegenerate.FindAll(x => LevelEditorTileGrid.Instance.ContainsTile(x) && !LevelEditorTileGrid.Instance.GetTile(x).UserGenerated);
+            nonUserGeneratedTilesToRegenerate.ForEach(x => LevelEditorTileGrid.Instance.RemoveTile(x));
+
+            Instance.GenerateTiles(allGridPositionsToRegenerate);
+        }
+    }
+
+    public static bool CheckGridPositionEmptyOrNotUserGenerated(Vector2 gridPosition) {
+        bool empty = !LevelEditorTileGrid.Instance.Contains(gridPosition);
+        if (empty) { return true; }
+        bool tileNotUserGenerated = LevelEditorTileGrid.Instance.ContainsTile(gridPosition) && !LevelEditorTileGrid.Instance.GetTile(gridPosition).UserGenerated;
+        return tileNotUserGenerated;
+    }
+
+    private void GenerateTile(Vector2 gridPosition) {
         TileGeneratorNode matchingTileGeneratorNode = null;
 
         for (int i = tileGeneratorNodes.Count - 1; i >= 0; i--) {
@@ -42,24 +115,9 @@ public class TileGenerator : MonoBehaviour {
         }
     }
 
-    public void GenerateTiles(List<Vector2> gridPositions) {
+    private void GenerateTiles(List<Vector2> gridPositions) {
         foreach (Vector2 gridPosition in gridPositions) {
             GenerateTile(gridPosition);
-        }
-    }
-
-    public void RegenerateAutoGeneratedTiles() {
-        List<TileGeneratorNode> autoGenerateTileGeneratorNodes = tileGeneratorNodes.FindAll(x => !x.UserGenerated);
-        List<TileType> autoGeneratedTileTypes = new List<TileType>();
-        autoGenerateTileGeneratorNodes.ForEach(x => autoGeneratedTileTypes.Add(x.TileType));
-
-        foreach (TileType tileType in autoGeneratedTileTypes) {
-            List<Vector2> tileTypeGridPositions = LevelEditorTileGrid.Instance.GetGridPositionsByTileType(tileType);
-
-            tileTypeGridPositions.ForEach(x => LevelEditorTileGrid.Instance.RemoveTile(x));
-            tileTypeGridPositions.ForEach(x => {
-                GenerateTile(x);
-            });
         }
     }
 
@@ -94,7 +152,7 @@ public class TileGenerator : MonoBehaviour {
         return tile;
     }
 
-    private void SetTilesBasedOnTileValue() {
+    private void SetTilesGeneratorNodesBasedOnTileTypes() {
         Array enumArray = Enum.GetValues(typeof(TileType));
         int enumCount = enumArray.Length;
 
@@ -123,11 +181,11 @@ public class TileGenerator : MonoBehaviour {
     }
 
     private void Reset() {
-        SetTilesBasedOnTileValue();
+        SetTilesGeneratorNodesBasedOnTileTypes();
     }
 
     private void OnValidate() {
-        SetTilesBasedOnTileValue();
+        SetTilesGeneratorNodesBasedOnTileTypes();
     }
 
     private Vector2 GetTileSize() {

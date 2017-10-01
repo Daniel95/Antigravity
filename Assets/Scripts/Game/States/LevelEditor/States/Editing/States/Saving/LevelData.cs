@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class LevelSaveData {
 
-    public List<Vector2> TileGridPositions;
+    public List<Vector2> UserGeneratedTileGridPositions;
     public List<LevelObjectSaveData> LevelObjectSaveDatas;
 
 }

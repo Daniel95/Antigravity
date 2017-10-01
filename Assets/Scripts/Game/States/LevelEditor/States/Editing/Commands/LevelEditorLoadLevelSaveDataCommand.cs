@@ -11,11 +11,8 @@ public class LevelEditorLoadLevelSaveDataCommand : Command {
 
         LevelSaveData levelSaveData = SerializeHelper.Deserialize<LevelSaveData>(LevelEditorLevelDataPath.Path + levelFileName);
 
-        List<Vector2> tileGridPositions = levelSaveData.TileGridPositions;
-        foreach (Vector2 tileGridPosition in tileGridPositions) {
-            LevelEditorTileGrid.Instance.SetTile(tileGridPosition, new Tile() { UserGenerated = true });
-        }
-        TileGenerator.Instance.GenerateTiles(tileGridPositions);
+        List<Vector2> tileGridPositions = levelSaveData.UserGeneratedTileGridPositions;
+        TileGenerator.SpawnTiles(tileGridPositions);
 
         List<LevelObjectSaveData> levelObjectSaveDatas = levelSaveData.LevelObjectSaveDatas;
         foreach (LevelObjectSaveData levelObjectSaveData in levelObjectSaveDatas) {

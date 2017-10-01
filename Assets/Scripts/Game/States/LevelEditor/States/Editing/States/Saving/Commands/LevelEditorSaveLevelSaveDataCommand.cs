@@ -23,8 +23,7 @@ public class LevelEditorSaveLevelSaveDataCommand : Command {
 
         string levelFileName = StringHelper.ConvertToXMLCompatible(newLevelName);
 
-
-        List<Vector2> tileGridPositions = LevelEditorTileGrid.Instance.GetTileGridPositions();
+        List<Vector2> userGeneratedTileGridPositions = LevelEditorTileGrid.Instance.GetUserGeneratedTileGridPositions();
         List<LevelObjectSaveData> levelObjectSaveDatas = new List<LevelObjectSaveData>();
 
         List<LevelObject> levelObjects = LevelObject.LevelObjects;
@@ -39,7 +38,7 @@ public class LevelEditorSaveLevelSaveDataCommand : Command {
         }
 
         LevelSaveData levelData = new LevelSaveData {
-            TileGridPositions = tileGridPositions,
+            UserGeneratedTileGridPositions = userGeneratedTileGridPositions,
             LevelObjectSaveDatas = levelObjectSaveDatas,
         };
 
