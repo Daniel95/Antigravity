@@ -8,7 +8,7 @@ public class LevelEditorLevelSelectContext : Context {
         On<EnterContextSignal>()
             .Do<InstantiateViewInCanvasLayerCommand>("UI/LevelEditor/LevelSelect/GoToMainMenuStateButtonUI", CanvasLayer.UI)
             .Do<InstantiateViewInCanvasLayerCommand>("UI/LevelEditor/LevelSelect/LevelEditorLevelSelectGridLayoutGroup", CanvasLayer.UI)
-            .Do<InstantiateLevelEditorLevelSelectButtonsInGridLayoutGroupCommand>();
+            .Do<LevelEditorInstantiateLevelSelectButtonsCommand>();
 
         On<LeaveContextSignal>()
             .Do<DestroyChildInCanvasLayerCommand>("UI/LevelEditor/LevelSelect/GoToMainMenuStateButtonUI", CanvasLayer.UI)

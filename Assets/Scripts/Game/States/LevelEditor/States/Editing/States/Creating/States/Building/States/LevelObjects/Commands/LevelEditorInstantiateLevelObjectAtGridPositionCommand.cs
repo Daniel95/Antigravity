@@ -28,11 +28,11 @@ public class LevelEditorInstantiateLevelObjectAtGridPositionCommand : Command {
         }
 
         LevelEditorLevelObjectEditorNode levelEditorLevelObjectEditorNode = LevelEditorLevelObjectEditorNodesContainer.Instance.GetNode(levelObjectType);
-        Vector2 nodePosition = LevelEditorGridHelper.GridToNodePosition(gridPosition);
-        GameObject levelObjectGameObject = Object.Instantiate(levelEditorLevelObjectEditorNode.Prefab, nodePosition, new Quaternion());
+        Vector2 gameObjectPosition = LevelEditorGridHelper.GridToNodePosition(gridPosition);
+        GameObject levelObjectGameObject = Object.Instantiate(levelEditorLevelObjectEditorNode.Prefab, gameObjectPosition, new Quaternion());
 
         LevelObject levelObject = new LevelObject();
-        levelObject.Initiate(levelObjectSectionGridPositions, levelObjectGameObject);
+        levelObject.Initiate(levelObjectSectionGridPositions, levelObjectGameObject, levelObjectType);
     }
 
 }

@@ -4,15 +4,23 @@ using UnityEngine;
 
 public class LevelObject {
 
-    public Transform Transform { get { return gameObject.transform; } }
-    public Vector2 GridPosition { get { return LevelEditorGridHelper.NodeToGridPosition(nodePosition); } }
+    public static List<LevelObject> LevelObjects { get { return levelObjects; } }
 
-    private Vector2 nodePosition { get { return Transform.position; }  set { Transform.position = value; } }
+    public List<Vector2> GridPositions { get { return levelObjectSections.Select(x => x.GridPosition).ToList(); } }
+    public Vector2 GameObjectPosition { get { return transform.position; }  set { transform.position = value; } }
+    public LevelObjectType LevelObjectType { get { return levelObjectType; } }
+
+    private static List<LevelObject> levelObjects = new List<LevelObject>();
+
+    private Transform transform { get { return gameObject.transform; } }
     private GameObject gameObject;
     private List<LevelObjectSection> levelObjectSections = new List<LevelObjectSection>();
+    private LevelObjectType levelObjectType;
 
+    public void Initiate(List<Vector2> levelObjectSectionGridPositions, GameObject gameObject, LevelObjectType levelObjectType) {
+        levelObjects.Add(this);
 
-    public void Initiate(List<Vector2> levelObjectSectionGridPositions, GameObject gameObject) {
+        this.levelObjectType = levelObjectType;
         this.gameObject = gameObject;
 
         foreach (Vector2 levelObjectSectionGridPosition in levelObjectSectionGridPositions) {
@@ -63,14 +71,15 @@ public class LevelObject {
     }
 
     private void OnDestroy() {
-        Object.Destroy(gameObject);
-
         foreach (LevelObjectSection levelObjectSection in levelObjectSections) {
             LevelEditorLevelObjectSectionGrid.Instance.RemoveLevelObjectSection(levelObjectSection.GridPosition);
 
             levelObjectSection.OnLevelObjectIncrementGridPosition -= IncrementLevelObjectGridPosition;
             levelObjectSection.OnLevelObectDestroy -= OnDestroy;
         }
+
+        Object.Destroy(gameObject);
+        levelObjects.Remove(this);
     }
 
 }

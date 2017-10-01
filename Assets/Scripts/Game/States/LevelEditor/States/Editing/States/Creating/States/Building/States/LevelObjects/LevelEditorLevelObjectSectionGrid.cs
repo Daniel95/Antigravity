@@ -7,10 +7,12 @@ public class LevelEditorLevelObjectSectionGrid : LevelEditorGridPositions {
     public static LevelEditorLevelObjectSectionGrid Instance { get { return GetInstance(); } }
 
     public Dictionary<Vector2, LevelObjectSection> LevelObjectSectionsGrid { get { return levelObjectSectiongrid; } }
+    public List<LevelObject> LevelObjects { get { return levelObjects; } }
 
     private static LevelEditorLevelObjectSectionGrid instance;
 
     private Dictionary<Vector2, LevelObjectSection> levelObjectSectiongrid = new Dictionary<Vector2, LevelObjectSection>();
+    private List<LevelObject> levelObjects = new List<LevelObject>();
 
     public LevelObjectSection GetLevelObjectSection(Vector2 gridPosition) {
         return levelObjectSectiongrid[gridPosition];
@@ -32,13 +34,12 @@ public class LevelEditorLevelObjectSectionGrid : LevelEditorGridPositions {
     }
 
     public override void Clear() {
-        List<Vector2> levelObjectSectionGridPositions = levelObjectSectiongrid.Keys.ToList();
-        for (int i = levelObjectSectionGridPositions.Count; i >= 0; i--) {
-            Vector2 gridPosition = levelObjectSectionGridPositions[i];
-            if(!levelObjectSectiongrid.ContainsKey(gridPosition)) { return; }
+        List<LevelObjectSection> levelObjectSections = levelObjectSectiongrid.Values.ToList();
 
-            levelObjectSectiongrid[gridPosition].DestroyLevelObject();
+        foreach (LevelObjectSection levelObjectSection in levelObjectSections) {
+            levelObjectSection.DestroyLevelObject();
         }
+        levelObjectSectiongrid.Clear();
     }
 
     public void RemoveLevelObject(Vector2 gridPosition) {

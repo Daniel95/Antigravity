@@ -13,7 +13,7 @@ public class LevelEditorEditingContext : Context {
 
         On<EnterContextSignal>()
             .Do<AbortIfLevelEditorLevelNameStatusLoadedLevelNameIsNullOrEmptyCommand>()
-            .Do<LevelEditorLoadGridPositionsCommand>();
+            .Do<LevelEditorLoadLevelSaveDataCommand>();
 
         On<LeaveContextSignal>()
             .Do<LevelEditorClearGridCommand>()

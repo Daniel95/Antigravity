@@ -2,7 +2,7 @@
 using System.IO;
 using UnityEngine;
 
-public class InstantiateLevelEditorLevelSelectButtonsInGridLayoutGroupCommand : Command {
+public class LevelEditorInstantiateLevelSelectButtonsCommand : Command {
 
     [Inject] private IContext context;
 

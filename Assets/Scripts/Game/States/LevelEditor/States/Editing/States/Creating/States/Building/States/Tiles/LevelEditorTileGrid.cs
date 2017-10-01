@@ -16,6 +16,11 @@ public class LevelEditorTileGrid : LevelEditorGridPositions {
         return tileGrid[gridPosition];
     }
 
+    public List<Vector2> GetTileGridPositions() {
+        List<Vector2> tileGridPositions = tileGrid.Keys.ToList();
+        return tileGridPositions;
+    }
+
     public List<Vector2> GetGridPositionsByTileType(TileType tileType) {
         List<Vector2> gridPositionsWithType = tileGrid.Keys.ToList().FindAll(x => tileGrid[x].TileType == tileType);
         return gridPositionsWithType;

@@ -30,7 +30,7 @@ public class LevelEditorSavingContext : Context {
             .Do<DispatchLevelEditorSaveLevelEventCommand>();
 
         On<LevelEditorSaveLevelEvent>()
-            .Do<LevelEditorSaveGridPositionsCommand>()
+            .Do<LevelEditorSaveLevelSaveDataCommand>()
             .Do<LevelEditorUpdateLevelNameStatusCommand>();
 
     }
