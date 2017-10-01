@@ -1,4 +1,4 @@
-﻿public interface ILevelEditorTiles {
+﻿public interface ILevelEditorTileInput {
 
     int SpawnLimit { get; }
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class LevelEditorTilesView : View, ILevelEditorTiles {
+public class LevelEditorTileInputView : View, ILevelEditorTileInput {
 
     [Inject] private LevelEditorSelectionFieldTileSpawnLimitReachedEvent selectionFieldTileSpawnLimitReachedEvent;
 
@@ -11,14 +11,14 @@ public class LevelEditorTilesView : View, ILevelEditorTiles {
 
     [Inject] private LevelEditorSelectionFieldStatus selectionFieldStatus;
 
-    [Inject] private Ref<ILevelEditorTiles> levelEditorTilesRef;
+    [Inject] private Ref<ILevelEditorTileInput> levelEditorTileInputRef;
 
     [SerializeField] private int spawnLimit = 100;
 
     private List<Vector2> selectionFieldAvailableGridPositions = new List<Vector2>();
 
     public override void Initialize() {
-        levelEditorTilesRef.Set(this);
+        levelEditorTileInputRef.Set(this);
     }
 
     public void ClearSelectionFieldAvailableGridPositions() {

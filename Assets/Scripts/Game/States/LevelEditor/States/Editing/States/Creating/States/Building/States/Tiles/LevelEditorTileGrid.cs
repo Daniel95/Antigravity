@@ -6,7 +6,7 @@ public class LevelEditorTileGrid : LevelEditorGridPositions {
 
     public static LevelEditorTileGrid Instance { get { return GetInstance(); } }
 
-    public Dictionary<Vector2, Tile> Grid { get { return tileGrid; } }
+    public Dictionary<Vector2, Tile> TileGrid { get { return tileGrid; } }
 
     private static LevelEditorTileGrid instance;
 
