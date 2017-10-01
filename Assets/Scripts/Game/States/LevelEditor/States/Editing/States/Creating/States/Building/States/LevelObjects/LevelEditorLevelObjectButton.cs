@@ -13,7 +13,11 @@ public class LevelEditorLevelObjectButton : View {
     public void SetLevelObject(LevelObjectType levelObjectType) {
         this.levelObjectType = levelObjectType;
         LevelEditorLevelObjectEditorNode levelObjectEditorNode = LevelEditorLevelObjectEditorNodesContainer.Instance.GetNode(levelObjectType);
-        GetButton().image.sprite = levelObjectEditorNode.Prefab.GetComponent<SpriteRenderer>().sprite;
+
+        SpriteRenderer levelObjectEditorNodeSpriteRenderer = levelObjectEditorNode.Prefab.GetComponentInChildren<SpriteRenderer>();
+
+        GetButton().image.sprite = levelObjectEditorNodeSpriteRenderer.sprite;
+        GetButton().image.color = levelObjectEditorNodeSpriteRenderer.color;
     }
 
     private void OnClicked() {

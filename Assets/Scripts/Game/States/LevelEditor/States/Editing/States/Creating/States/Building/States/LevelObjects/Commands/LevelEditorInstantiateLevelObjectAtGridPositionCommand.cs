@@ -12,7 +12,7 @@ public class LevelEditorInstantiateLevelObjectAtGridPositionCommand : Command {
         LevelObjectType levelObjectType = selectedLevelObjectStatus.LevelObjectType;
         Vector2 gridSize = LevelEditorLevelObjectEditorNodesContainer.Instance.GetLevelObjectEditorNodeGridSize(levelObjectType);
 
-        Vector2 levelObjectSectionStartBuildPoint = new Vector2(gridPosition.x - Mathf.Floor(gridSize.x / 2), gridPosition.y - Mathf.Floor(gridSize.y / 2));
+        Vector2 levelObjectSectionStartBuildPoint = VectorHelper.Decrement(gridPosition, VectorHelper.Floor(gridSize / 2));
 
         List<Vector2> levelObjectSectionGridPositions = new List<Vector2>();
         for (int y = 0; y < gridSize.y; y++) {

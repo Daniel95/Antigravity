@@ -61,7 +61,7 @@ public class CharacterRaycastDirectionView : View, ICharacterRaycastDirection {
             GetCornerBottomRightRaycastData().Direction +
             GetCornerBottomLeftRaycastData().Direction;
 
-        Vector2 cornerDirection = new Vector2(Mathf.Clamp(combinedCornerDirection.x, -1, 1), Mathf.Clamp(combinedCornerDirection.y, -1, 1));
+        Vector2 cornerDirection = VectorHelper.Clamp(combinedCornerDirection, -1, 1);
         return cornerDirection;
     }
 
@@ -76,7 +76,7 @@ public class CharacterRaycastDirectionView : View, ICharacterRaycastDirection {
             bottomRightRaycastData.Direction +
             bottomLeftRaycastData.Direction;
 
-        Vector2 raycastDataDirection = new Vector2(Mathf.Clamp(combinedCornerDirection.x, -1, 1), Mathf.Clamp(combinedCornerDirection.y, -1, 1));
+        Vector2 raycastDataDirection = VectorHelper.Clamp(combinedCornerDirection, -1, 1);
 
         List<Vector2> distances = new List<Vector2>() {
             topRightRaycastData.Distance,

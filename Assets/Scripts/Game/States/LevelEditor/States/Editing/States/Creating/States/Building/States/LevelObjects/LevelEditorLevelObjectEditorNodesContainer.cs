@@ -14,8 +14,8 @@ public class LevelEditorLevelObjectEditorNodesContainer : MonoBehaviour {
     public Vector2 GetLevelObjectEditorNodeGridSize(LevelObjectType levelObjectType) {
         LevelEditorLevelObjectEditorNode levelEditorLevelObjectEditorNode = GetNode(levelObjectType);
         Vector2 nodeSize = levelEditorLevelObjectEditorNode.Prefab.transform.localScale;
-        Vector2 unroundedGridSize = nodeSize / LevelEditorGridNodeSize.Instance.NodeSize;
-        Vector2 gridSize = new Vector2(Mathf.Ceil(unroundedGridSize.x), Mathf.Ceil(unroundedGridSize.y));
+        Vector2 unroundedGridSize = Vector2.one + (nodeSize / LevelEditorGridNodeSize.Instance.NodeSize);
+        Vector2 gridSize = VectorHelper.Floor(unroundedGridSize);
         return gridSize;
     } 
 
