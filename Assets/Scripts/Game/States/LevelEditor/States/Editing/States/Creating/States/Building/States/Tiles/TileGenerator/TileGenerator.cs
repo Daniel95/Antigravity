@@ -80,7 +80,7 @@ public static class TileGenerator {
     private static void GenerateTile(Vector2 gridPosition) {
         GeneratableTileNode matchingTileGeneratorNode = null;
 
-        List<GeneratableTileNode> tileEditorNodes = GenerateableTileLibrary.Instance.GeneratableTiles;
+        List<GeneratableTileNode> tileEditorNodes = GenerateableTileLibrary.GeneratableTiles;
 
         for (int i = tileEditorNodes.Count - 1; i >= 0; i--) {
             GeneratableTileNode tileGeneratorNode = tileEditorNodes[i];
@@ -113,7 +113,7 @@ public static class TileGenerator {
     }
 
     private static bool CheckTileTypeUserGenerated(TileType tileType) {
-        GeneratableTileNode generatableTile = GenerateableTileLibrary.Instance.GeneratableTiles.Find(x => x.TileType == tileType);
+        GeneratableTileNode generatableTile = GenerateableTileLibrary.GeneratableTiles.Find(x => x.TileType == tileType);
         return generatableTile.UserGenerated;
     }
 

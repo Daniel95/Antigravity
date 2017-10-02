@@ -19,7 +19,7 @@ public class LevelEditorLoadLevelSaveDataCommand : Command {
             LevelObject levelObject = new LevelObject();
 
             LevelObjectType levelObjectType = levelObjectSaveData.LevelObjectType;
-            GenerateableLevelObjectNode levelEditorLevelObjectEditorNode = GenerateableLevelObjectLibrary.Instance.GetNode(levelObjectType);
+            GenerateableLevelObjectNode levelEditorLevelObjectEditorNode = GenerateableLevelObjectLibrary.GetNode(levelObjectType);
             GameObject prefab = levelEditorLevelObjectEditorNode.Prefab;
             Vector2 gameObjectPosition = levelObjectSaveData.GameObjectPosition;
             GameObject levelObjectGameObject = Object.Instantiate(prefab, gameObjectPosition, new Quaternion());

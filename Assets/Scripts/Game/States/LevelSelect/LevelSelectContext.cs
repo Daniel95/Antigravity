@@ -10,7 +10,6 @@ public class LevelSelectContext : Context {
             .Do<DestroySelectLevelFieldsCommand>()
             .Do<GenerateSelectableLevelFieldsCommand>()
             .Do<SetSelectableLevelUnlockedCommand>(1)
-            .Do<SetSelectableLevelUnlockedCommand>(7)
             .Do<UnlockNeighboursOfFinishedSelectableLevelsCommand>()
             .Do<ApplySelectableLevelValuesCommand>()
             .Do<SetCameraBoundsCommand>()

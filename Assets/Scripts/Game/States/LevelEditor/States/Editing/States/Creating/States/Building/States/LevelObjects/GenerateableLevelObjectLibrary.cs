@@ -3,9 +3,7 @@ using UnityEngine;
 
 public class GenerateableLevelObjectLibrary : MonoBehaviour {
 
-    public static GenerateableLevelObjectLibrary Instance { get { return GetInstance(); } }
-
-    public List<GenerateableLevelObjectNode> GenerateableLevelObjectNodes { get { return generateableLevelObjectNodes; } }
+    public static List<GenerateableLevelObjectNode> GenerateableLevelObjectNodes { get { return GetInstance().generateableLevelObjectNodes; } }
 
     private static GenerateableLevelObjectLibrary instance;
 
@@ -13,7 +11,7 @@ public class GenerateableLevelObjectLibrary : MonoBehaviour {
 
     private const string GENERATABLE_LEVEL_OBJECT_LIBRARY_PATH = "LevelEditor/Libraries/GenerateableLevelObjectLibrary";
 
-    public Vector2 GetLevelObjectEditorNodeGridSize(LevelObjectType levelObjectType) {
+    public static Vector2 GetLevelObjectEditorNodeGridSize(LevelObjectType levelObjectType) {
         GenerateableLevelObjectNode levelEditorLevelObjectEditorNode = GetNode(levelObjectType);
         Vector2 nodeSize = levelEditorLevelObjectEditorNode.Prefab.transform.localScale;
         Vector2 unroundedGridSize = Vector2.one + (nodeSize / LevelEditorGridNodeSize.Instance.NodeSize);
@@ -21,8 +19,8 @@ public class GenerateableLevelObjectLibrary : MonoBehaviour {
         return gridSize;
     } 
 
-    public GenerateableLevelObjectNode GetNode(LevelObjectType levelObjectType) {
-        GenerateableLevelObjectNode levelObjectEditorNode = generateableLevelObjectNodes.Find(x => x.LevelObjectType == levelObjectType);
+    public static GenerateableLevelObjectNode GetNode(LevelObjectType levelObjectType) {
+        GenerateableLevelObjectNode levelObjectEditorNode = GetInstance().generateableLevelObjectNodes.Find(x => x.LevelObjectType == levelObjectType);
         return levelObjectEditorNode;
     }
 

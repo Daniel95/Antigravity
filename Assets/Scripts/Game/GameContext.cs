@@ -1,5 +1,4 @@
 ﻿using IoCPlus;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GameContext : Context {
@@ -63,7 +62,6 @@ public class GameContext : Context {
         Bind<LevelEditorTouchDownOnGridPositionEvent>();
         Bind<LevelEditorTouchUpOnGridPositionEvent>();
         Bind<LevelEditorSwipeMovedToGridPositionEvent>();
-
 
         Bind<TapEvent>();
         Bind<TwistEvent>();

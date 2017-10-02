@@ -6,9 +6,11 @@ public class LevelEditorLevelOverViewContext : Context {
         base.SetBindings();
 
         On<EnterContextSignal>()
+            .Do<InstantiateViewInCanvasLayerCommand>("UI/LevelEditor/LevelSelect/LevelOverview/GoToLevelEditorMainMenuStateButtonUI", CanvasLayer.UI)
             .Do<DispatchLevelEditorSetlevelSelectButtonInteractableEventCommand>(true);
 
         On<LeaveContextSignal>()
+            .Do<DestroyChildInCanvasLayerCommand>("UI/LevelEditor/LevelSelect/LevelOverview/GoToLevelEditorMainMenuStateButtonUI", CanvasLayer.UI)
             .Do<DispatchLevelEditorSetlevelSelectButtonInteractableEventCommand>(false);
 
         On<LevelEditorLevelSelectButtonClickedEvent>()

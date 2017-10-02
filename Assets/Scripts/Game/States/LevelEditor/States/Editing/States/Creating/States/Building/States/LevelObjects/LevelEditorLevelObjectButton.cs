@@ -12,7 +12,7 @@ public class LevelEditorLevelObjectButton : View {
 
     public void SetLevelObject(LevelObjectType levelObjectType) {
         this.levelObjectType = levelObjectType;
-        GenerateableLevelObjectNode levelObjectEditorNode = GenerateableLevelObjectLibrary.Instance.GetNode(levelObjectType);
+        GenerateableLevelObjectNode levelObjectEditorNode = GenerateableLevelObjectLibrary.GetNode(levelObjectType);
 
         SpriteRenderer levelObjectEditorNodeSpriteRenderer = levelObjectEditorNode.Prefab.GetComponentInChildren<SpriteRenderer>();
 

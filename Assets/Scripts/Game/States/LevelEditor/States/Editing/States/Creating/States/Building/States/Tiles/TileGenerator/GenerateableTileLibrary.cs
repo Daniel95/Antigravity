@@ -6,8 +6,7 @@ using UnityToolbag;
 
 public class GenerateableTileLibrary : MonoBehaviour {
 
-    public static GenerateableTileLibrary Instance { get { return GetInstance(); } }
-    public List<GeneratableTileNode> GeneratableTiles { get { return generatableTiles; } }
+    public static List<GeneratableTileNode> GeneratableTiles { get { return GetInstance().generatableTiles; } }
 
     private static GenerateableTileLibrary instance;
 
