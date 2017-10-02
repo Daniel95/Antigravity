@@ -6,7 +6,7 @@ public class LevelEditorUpdateBoxOverlayToSelectionFieldCommand : Command {
     [InjectParameter] private LevelEditorSelectionFieldChangedEvent.Parameter parameter;
 
     protected override void Execute() {
-        Vector2 halfTileSize = new Vector2(TileGenerator.Instance.TileSize.x / 2, TileGenerator.Instance.TileSize.y / 2);
+        Vector2 halfTileSize = new Vector2(LevelEditorGridNodeSize.Instance.NodeSize / 2, LevelEditorGridNodeSize.Instance.NodeSize / 2);
 
         float minX = Mathf.Min(parameter.SelectionFieldStartPosition.x, parameter.SelectionFieldEndPosition.x);
         float minY = Mathf.Min(parameter.SelectionFieldStartPosition.y, parameter.SelectionFieldEndPosition.y);

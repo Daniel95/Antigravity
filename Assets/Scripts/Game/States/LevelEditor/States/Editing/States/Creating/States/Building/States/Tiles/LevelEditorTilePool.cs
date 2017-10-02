@@ -15,7 +15,7 @@ public class LevelEditorTilePool : MonoBehaviour {
     }
 
     private void CreateTileEntries() {
-        List<TileGeneratorNode> nonEmptyTileGeneratorNodes = TileGenerator.Instance.TileGeneratorNodes.FindAll(x => x.Prefab != null);
+        List<GeneratableTileNode> nonEmptyTileGeneratorNodes = GenerateableTileLibrary.Instance.GeneratableTiles.FindAll(x => x.Prefab != null);
         nonEmptyTileGeneratorNodes.ForEach(x => tileGeneratorNodePrefabs.Add(x.Prefab));
 
         ObjectPool.Instance.Entries = new ObjectPool.ObjectPoolEntry[nonEmptyTileGeneratorNodes.Count];

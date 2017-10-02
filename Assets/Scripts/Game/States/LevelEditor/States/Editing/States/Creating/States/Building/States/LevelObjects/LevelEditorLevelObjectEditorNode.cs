@@ -2,7 +2,7 @@
 using UnityEngine;
 
 [Serializable]
-public class LevelEditorLevelObjectEditorNode {
+public class GenerateableLevelObjectNode {
 
     public GameObject Prefab;
     public LevelObjectType LevelObjectType;

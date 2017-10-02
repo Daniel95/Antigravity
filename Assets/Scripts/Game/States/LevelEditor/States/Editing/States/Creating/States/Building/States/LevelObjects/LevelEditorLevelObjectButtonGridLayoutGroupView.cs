@@ -19,7 +19,7 @@ public class LevelEditorLevelObjectButtonGridLayoutGroupView : View {
             return;
         }
 
-        foreach (LevelEditorLevelObjectEditorNode levelObjectEditorNode in LevelEditorLevelObjectEditorNodesContainer.Instance.LevelObjectEditorNodes) {
+        foreach (GenerateableLevelObjectNode levelObjectEditorNode in GenerateableLevelObjectLibrary.Instance.GenerateableLevelObjectNodes) {
             GameObject levelObjectButtonGameObject = Instantiate(levelObjectButtonPrefab.transform, transform).gameObject;
             LevelEditorLevelObjectButton levelObjectButton = levelObjectButtonGameObject.GetComponent<LevelEditorLevelObjectButton>();
             levelObjectButton.SetLevelObject(levelObjectEditorNode.LevelObjectType);

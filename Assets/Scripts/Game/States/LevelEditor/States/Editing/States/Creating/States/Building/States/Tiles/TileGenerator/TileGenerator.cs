@@ -1,19 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityToolbag;
 
-public class TileGenerator : MonoBehaviour {
-
-    public static TileGenerator Instance { get { return GetInstance(); } }
-    public List<TileGeneratorNode> TileGeneratorNodes { get { return tileGeneratorNodes; } }
-
-    public Vector2 TileSize { get { return GetTileSize(); } }
-
-    private static TileGenerator instance;
-
-    [SerializeField] [Reorderable] private List<TileGeneratorNode> tileGeneratorNodes = new List<TileGeneratorNode>();
+public static class TileGenerator {
 
     public static void SpawnTiles(List<Vector2> gridPositions) {
         gridPositions.ForEach(x => LevelEditorTileGrid.Instance.SetTile(x, new Tile() { UserGenerated = true }));
@@ -26,7 +15,7 @@ public class TileGenerator : MonoBehaviour {
             nonUserGeneratedTilesToRegenerate.ForEach(x => LevelEditorTileGrid.Instance.RemoveTile(x));
 
             positionsToGenerate.Add(gridPosition);
-            Instance.GenerateTiles(positionsToGenerate);
+            GenerateTiles(positionsToGenerate);
         }
     }
 
@@ -43,7 +32,7 @@ public class TileGenerator : MonoBehaviour {
         List<Vector2> nonUserGeneratedTilesToRegenerate = allNeighbourPositionsToRegenerate.FindAll(x => LevelEditorTileGrid.Instance.ContainsTile(x) && !LevelEditorTileGrid.Instance.GetTile(x).UserGenerated);
         nonUserGeneratedTilesToRegenerate.ForEach(x => LevelEditorTileGrid.Instance.RemoveTile(x));
 
-        Instance.GenerateTiles(allNeighbourPositionsToRegenerate);
+        GenerateTiles(allNeighbourPositionsToRegenerate);
     }
 
     public static void RemoveTiles(List<Vector2> gridPositions, bool regenerateNeighbours, List<Vector2> neighboursIgnoringRegenerate) {
@@ -60,7 +49,7 @@ public class TileGenerator : MonoBehaviour {
             List<Vector2> nonUserGeneratedTilesToRegenerate = allGridPositionsToRegenerate.FindAll(x => LevelEditorTileGrid.Instance.ContainsTile(x) && !LevelEditorTileGrid.Instance.GetTile(x).UserGenerated);
             nonUserGeneratedTilesToRegenerate.ForEach(x => LevelEditorTileGrid.Instance.RemoveTile(x));
 
-            Instance.GenerateTiles(allGridPositionsToRegenerate);
+            GenerateTiles(allGridPositionsToRegenerate);
         }
     }
 
@@ -77,7 +66,7 @@ public class TileGenerator : MonoBehaviour {
             List<Vector2> nonUserGeneratedTilesToRegenerate = allGridPositionsToRegenerate.FindAll(x => LevelEditorTileGrid.Instance.ContainsTile(x) && !LevelEditorTileGrid.Instance.GetTile(x).UserGenerated);
             nonUserGeneratedTilesToRegenerate.ForEach(x => LevelEditorTileGrid.Instance.RemoveTile(x));
 
-            Instance.GenerateTiles(allGridPositionsToRegenerate);
+            GenerateTiles(allGridPositionsToRegenerate);
         }
     }
 
@@ -88,11 +77,13 @@ public class TileGenerator : MonoBehaviour {
         return tileNotUserGenerated;
     }
 
-    private void GenerateTile(Vector2 gridPosition) {
-        TileGeneratorNode matchingTileGeneratorNode = null;
+    private static void GenerateTile(Vector2 gridPosition) {
+        GeneratableTileNode matchingTileGeneratorNode = null;
 
-        for (int i = tileGeneratorNodes.Count - 1; i >= 0; i--) {
-            TileGeneratorNode tileGeneratorNode = tileGeneratorNodes[i];
+        List<GeneratableTileNode> tileEditorNodes = GenerateableTileLibrary.Instance.GeneratableTiles;
+
+        for (int i = tileEditorNodes.Count - 1; i >= 0; i--) {
+            GeneratableTileNode tileGeneratorNode = tileEditorNodes[i];
             TileCondition falseCondition = tileGeneratorNode.TileConditions.Find(x => !x.Check(gridPosition));
 
             if (falseCondition == null) {
@@ -115,19 +106,19 @@ public class TileGenerator : MonoBehaviour {
         }
     }
 
-    private void GenerateTiles(List<Vector2> gridPositions) {
+    private static void GenerateTiles(List<Vector2> gridPositions) {
         foreach (Vector2 gridPosition in gridPositions) {
             GenerateTile(gridPosition);
         }
     }
 
-    private bool CheckTileTypeUserGenerated(TileType tileType) {
-        TileGeneratorNode tileGeneratorNode = tileGeneratorNodes.Find(x =>  x.TileType == tileType);
-        return tileGeneratorNode.UserGenerated;
+    private static bool CheckTileTypeUserGenerated(TileType tileType) {
+        GeneratableTileNode generatableTile = GenerateableTileLibrary.Instance.GeneratableTiles.Find(x => x.TileType == tileType);
+        return generatableTile.UserGenerated;
     }
 
-    private Tile GetTile(GameObject prefab, TileType tileType, Vector2 gridPosition) {
-        if(tileType == TileType.Empty) { return new Tile() { TileType = TileType.Empty }; }
+    private static Tile GetTile(GameObject prefab, TileType tileType, Vector2 gridPosition) {
+        if (tileType == TileType.Empty) { return new Tile() { TileType = TileType.Empty }; }
 
         Vector2 tilePosition = LevelEditorGridHelper.GridToNodePosition(gridPosition);
 
@@ -136,7 +127,7 @@ public class TileGenerator : MonoBehaviour {
         bool userGenerated = CheckTileTypeUserGenerated(tileType);
         string tileName = "";
 
-        if(!userGenerated) {
+        if (!userGenerated) {
             tileName += "AutoGenerated ";
         }
 
@@ -150,49 +141,6 @@ public class TileGenerator : MonoBehaviour {
         };
 
         return tile;
-    }
-
-    private void SetTilesGeneratorNodesBasedOnTileTypes() {
-        Array enumArray = Enum.GetValues(typeof(TileType));
-        int enumCount = enumArray.Length;
-
-        if (tileGeneratorNodes.Count == enumCount) { return; }
-
-        int index = 0;
-        IEnumerable<TileType> TileTypeIEnumerable = enumArray.Cast<TileType>();
-
-        foreach (TileType tileType in TileTypeIEnumerable) {
-            if (tileGeneratorNodes.Count <= index) {
-                tileGeneratorNodes.Insert(index, new TileGeneratorNode() {
-                    TileType = tileType,
-                });
-            } else {
-                tileGeneratorNodes[index].TileType = tileType;
-            }
-            index++;
-        }
-    }
-
-    private static TileGenerator GetInstance() {
-        if (instance == null) {
-            instance = GameObject.FindObjectOfType<TileGenerator>();
-        }
-        return instance;
-    }
-
-    private void Reset() {
-        SetTilesGeneratorNodesBasedOnTileTypes();
-    }
-
-    private void OnValidate() {
-        SetTilesGeneratorNodesBasedOnTileTypes();
-    }
-
-    private Vector2 GetTileSize() {
-        float tileWidth = tileGeneratorNodes.Find(x => x.TileType == TileType.Standard).Prefab.transform.localScale.x;
-        float tileHeight = tileWidth;
-        Vector2 tileSize = new Vector2(tileWidth, tileHeight);
-        return tileSize;
     }
 
 }

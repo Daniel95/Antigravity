@@ -10,7 +10,7 @@ public class LevelEditorInstantiateLevelObjectAtGridPositionCommand : Command {
 
     protected override void Execute() {
         LevelObjectType levelObjectType = selectedLevelObjectStatus.LevelObjectType;
-        Vector2 gridSize = LevelEditorLevelObjectEditorNodesContainer.Instance.GetLevelObjectEditorNodeGridSize(levelObjectType);
+        Vector2 gridSize = GenerateableLevelObjectLibrary.Instance.GetLevelObjectEditorNodeGridSize(levelObjectType);
 
         Vector2 levelObjectSectionStartBuildPoint = VectorHelper.Decrement(gridPosition, VectorHelper.Floor(gridSize / 2));
 
@@ -27,7 +27,7 @@ public class LevelEditorInstantiateLevelObjectAtGridPositionCommand : Command {
             }
         }
 
-        LevelEditorLevelObjectEditorNode levelEditorLevelObjectEditorNode = LevelEditorLevelObjectEditorNodesContainer.Instance.GetNode(levelObjectType);
+        GenerateableLevelObjectNode levelEditorLevelObjectEditorNode = GenerateableLevelObjectLibrary.Instance.GetNode(levelObjectType);
         Vector2 gameObjectPosition = LevelEditorGridHelper.GridToNodePosition(gridPosition);
         GameObject levelObjectGameObject = Object.Instantiate(levelEditorLevelObjectEditorNode.Prefab, gameObjectPosition, new Quaternion());
 
