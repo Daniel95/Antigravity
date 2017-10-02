@@ -11,7 +11,7 @@ public class GenerateableLevelObjectLibrary : MonoBehaviour {
 
     [SerializeField] private List<GenerateableLevelObjectNode> generateableLevelObjectNodes;
 
-    private const string GENERATABLE_LEVEL_OBJECT_LIBRARY_PATH = "Libraries/GenerateableLevelObjectLibrary";
+    private const string GENERATABLE_LEVEL_OBJECT_LIBRARY_PATH = "LevelEditor/Libraries/GenerateableLevelObjectLibrary";
 
     public Vector2 GetLevelObjectEditorNodeGridSize(LevelObjectType levelObjectType) {
         GenerateableLevelObjectNode levelEditorLevelObjectEditorNode = GetNode(levelObjectType);

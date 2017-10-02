@@ -13,7 +13,7 @@ public class GenerateableTileLibrary : MonoBehaviour {
 
     [SerializeField] [Reorderable] private List<GeneratableTileNode> generatableTiles = new List<GeneratableTileNode>();
 
-    private const string GENERATABLE_TILE_LIBRARY_PATH = "Libraries/GenerateableTileLibrary";
+    private const string GENERATABLE_TILE_LIBRARY_PATH = "LevelEditor/Libraries/GenerateableTileLibrary";
 
     private static GenerateableTileLibrary GetInstance() {
         if (instance == null) {

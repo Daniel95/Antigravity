@@ -5,7 +5,8 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Button))]
 public class LevelEditorLevelSelectButtonView : View {
 
-    [Inject] private LevelEditorLevelSelectButtonClickedEvent levelEditorLevelSelectButtonClickedEvent;
+    [Inject] private LevelEditorSetLevelSelectButtonInteractableEvent levelSelectButtonInteractableEvent;
+    [Inject] private LevelEditorLevelSelectButtonClickedEvent levelSelectButtonClickedEvent;
 
     [SerializeField] private Text buttonText;
 
@@ -13,13 +14,27 @@ public class LevelEditorLevelSelectButtonView : View {
 
     private Button button;
 
+    public override void Initialize() {
+        base.Initialize();
+        levelSelectButtonInteractableEvent.AddListener(OnSetInteractable);
+    }
+
+    public override void Dispose() {
+        base.Dispose();
+        levelSelectButtonInteractableEvent.RemoveListener(OnSetInteractable);
+    }
+
     public void SetButtonName(string name) {
         levelName = name;
         buttonText.text = levelName;
-    }
+    }   
 
     private void OnClick() {
-        levelEditorLevelSelectButtonClickedEvent.Dispatch(levelName);
+        levelSelectButtonClickedEvent.Dispatch(levelName);
+    }
+
+    private void OnSetInteractable(bool interactable) {
+        button.interactable = interactable;
     }
 
     private void OnEnable() {

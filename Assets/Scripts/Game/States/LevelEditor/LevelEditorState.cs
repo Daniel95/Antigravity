@@ -10,5 +10,7 @@
     Tiles,
     LevelObjects,
     Erasing,
+    LevelOverView,
+    LevelSelected,
 
 }

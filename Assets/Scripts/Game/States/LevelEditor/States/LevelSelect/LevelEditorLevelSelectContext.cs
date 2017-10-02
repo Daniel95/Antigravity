@@ -8,15 +8,20 @@ public class LevelEditorLevelSelectContext : Context {
         On<EnterContextSignal>()
             .Do<InstantiateViewInCanvasLayerCommand>("UI/LevelEditor/LevelSelect/GoToMainMenuStateButtonUI", CanvasLayer.UI)
             .Do<InstantiateViewInCanvasLayerCommand>("UI/LevelEditor/LevelSelect/LevelEditorLevelSelectGridLayoutGroup", CanvasLayer.UI)
-            .Do<LevelEditorInstantiateLevelSelectButtonsCommand>();
+            .Do<LevelEditorInstantiateLevelSelectButtonsCommand>()
+            .GotoState<LevelEditorLevelOverViewContext>();
 
         On<LeaveContextSignal>()
             .Do<DestroyChildInCanvasLayerCommand>("UI/LevelEditor/LevelSelect/GoToMainMenuStateButtonUI", CanvasLayer.UI)
             .Do<DestroyChildInCanvasLayerCommand>("UI/LevelEditor/LevelSelect/LevelEditorLevelSelectGridLayoutGroup", CanvasLayer.UI);
 
-        On<LevelEditorLevelSelectButtonClickedEvent>()
-            .Do<LevelEditorUpdateLevelNameStatusCommand>()
-            .Do<DispatchGoToLevelEditorStateEventCommand>(LevelEditorState.Editing);
+        OnChild<LevelEditorLevelSelectedContext, GoToLevelEditorStateEvent>()
+            .Do<AbortIfLevelEditorStateIsNotLevelEditorStateCommand>(LevelEditorState.LevelOverView)
+            .GotoState<LevelEditorLevelOverViewContext>();
+
+        OnChild<LevelEditorLevelOverViewContext, GoToLevelEditorStateEvent>()
+            .Do<AbortIfLevelEditorStateIsNotLevelEditorStateCommand>(LevelEditorState.LevelSelected)
+            .GotoState<LevelEditorLevelSelectedContext>();
 
     }
 
