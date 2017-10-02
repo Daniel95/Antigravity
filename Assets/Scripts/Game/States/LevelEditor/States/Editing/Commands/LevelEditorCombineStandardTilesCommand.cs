@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CombineStandardTilesCommand : Command {
+public class LevelEditorCombineStandardTilesCommand : Command {
 
     private const string LEVEL_COLLIDER_PATH = "LevelEditor/LevelCollider";
     private const string LEVEL_VISUAL_PATH = "LevelEditor/LevelVisual";

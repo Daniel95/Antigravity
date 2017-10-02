@@ -24,6 +24,10 @@ public class LevelEditorContext : Context {
             .Do<AbortIfLevelEditorStateIsNotLevelEditorStateCommand>(LevelEditorState.LevelSelect)
             .GotoState<LevelEditorLevelSelectContext>();
 
+        On<GoToLevelEditorStateEvent>()
+            .Do<AbortIfLevelEditorStateIsNotLevelEditorStateCommand>(LevelEditorState.Testing)
+            .GotoState<LevelEditorTestingContext>();
+
     }
 
 }

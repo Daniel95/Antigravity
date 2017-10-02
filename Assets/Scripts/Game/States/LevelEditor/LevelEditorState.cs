@@ -12,5 +12,6 @@
     Erasing,
     LevelOverView,
     LevelSelected,
+    Testing,
 
 }
