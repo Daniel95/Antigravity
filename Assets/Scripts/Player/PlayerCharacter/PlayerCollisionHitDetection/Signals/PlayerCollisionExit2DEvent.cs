@@ -1,4 +1,4 @@
 ﻿using IoCPlus;
 using UnityEngine;
 
-public class PlayerCollisionExit2DEvent : Signal<GameObject, Collision2D> {}
+public class PlayerCollisionExit2DEvent : Signal<Collision2D> {}

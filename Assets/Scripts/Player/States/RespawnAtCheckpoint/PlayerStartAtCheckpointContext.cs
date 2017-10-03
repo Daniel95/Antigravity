@@ -12,7 +12,7 @@ public class PlayerStartAtCheckpointContext : Context {
             .Do<EnableInputCommand>(false)
             .Do<EnableWeaponCommand>(false)
             .Do<EnablePlayerJumpCommand>(false)
-            .Do<PlayerResetCollisionDirectionCommand>()
+            .Do<PlayerResetCollisionsCommand>()
             .Do<PlayerMoveTowardsCheckpointCommand>();
 
         On<PlayerMoveTowardsCheckpointCompletedEvent>()

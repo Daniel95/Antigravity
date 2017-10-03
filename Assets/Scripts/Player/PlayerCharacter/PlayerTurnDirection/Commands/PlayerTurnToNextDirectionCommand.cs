@@ -10,7 +10,7 @@ public class PlayerTurnToNextDirectionCommand : Command {
 
     protected override void Execute() {
         Vector2 ceilPreviousVelocityDirection = playerVelocityRef.Get().GetCeilPreviousVelocityDirection();
-        Vector2 collisionDirection = playerCollisionDirectionRef.Get().GetCollisionDirection();
+        Vector2 collisionDirection = playerCollisionDirectionRef.Get().CollisionDirection;
         RaycastData combinedRaycastData = playerRaycastDirectionRef.Get().GetCombinedDirectionAndCenterDistances();
         Vector2 surroundingsDirection = SurroundingDirectionHelper.GetSurroundingsDirection(collisionDirection, combinedRaycastData.Direction);
 

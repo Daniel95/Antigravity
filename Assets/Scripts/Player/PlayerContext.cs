@@ -58,14 +58,9 @@ public class PlayerContext : Context {
             .Do<PlayerBounceCommand>()
             .Do<PlayerPointToCeiledVelocityDirectionCommand>();
 
-        On<PlayerRemoveSavedCollisionDirectionEvent>()
-            .Do<PlayerRemoveSavedCollisionDirectionCommand>();
-
-        On<PlayerRemoveSavedCollisionEvent>()
-            .Do<PlayerRemoveSavedColliderCommand>();
 
         On<PlayerResetSavedCollisionsEvent>()
-            .Do<PlayerResetSavedCollisionsCommand>();
+            .Do<PlayerResetCollisionsCommand>();
 
         On<PlayerTurnToNextDirectionEvent>()
             .Do<PlayerTurnToNextDirectionCommand>()
@@ -89,8 +84,12 @@ public class PlayerContext : Context {
             .Do<DestroyPlayerCommand>()
             .Dispatch<PlayerRespawnEvent>();
 
-        On<PlayerCollisionEnter2DEvent>()
-            .Do<PlayerUpdateCollisionDirectionCommand>();
+        On<CharacterCollisionWithNewDirectionEvent>()
+            .Do<AbortIfGameObjectIsNotPlayerCommand>()
+            .Do<DispatchPlayerCollisionWithNewDirectionEventCommand>();
+
+        On<PlayerCollisionWithNewDirectionEvent>()
+            .Do<DispatchPlayerCollisionEnter2DEvent>();
 
         On<PlayerCollisionEnter2DEvent>()
             .Do<AbortIfPlayerCollidingTagIsPlayerKillerTagCommand>()

@@ -9,7 +9,6 @@ public class PlayerJumpCommand : Command {
 
     [Inject] private PlayerTemporarySpeedChangeEvent playerTemporarySpeedChangeEvent;
     [Inject] private PlayerSetMoveDirectionEvent playerSetMoveDirectionEvent;
-    [Inject] private PlayerRemoveSavedCollisionDirectionEvent playerRemoveCollisionDirectionEvent;
 
     [Inject(Label.Player)] private Ref<ICharacterVelocity> playerVelocityRef;
     [Inject(Label.Player)] private Ref<ICharacterCollisionDirection> playerCollisionDirectionRef;
