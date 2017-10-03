@@ -12,7 +12,7 @@ public class GameContext : Context {
         Bind<PlayerTemporarySpeedChangeEvent>();
         Bind<PlayerTemporarySpeedDecreaseEvent>();
         Bind<PlayerTemporarySpeedChangeEvent>();
-        Bind<PlayerRemoveCollisionDirectionEvent>();
+        Bind<PlayerRemoveSavedCollisionDirectionEvent>();
         Bind<PlayerTryJumpEvent>();
         Bind<PlayerBounceEvent>();
         Bind<PlayerRespawnEvent>();
@@ -50,7 +50,7 @@ public class GameContext : Context {
         Bind<HoldShotEvent>();
         Bind<EnterGrapplingHookContextEvent>();
         Bind<UpdateGrapplingHookRopeEvent>();
-        Bind<EnterPullingHookContextSignal>();
+        Bind<EnterPullingHookContextEvent>();
         Bind<CameraZoomedEvent>();
         Bind<LevelEditorSavingLevelNameInputFieldValueChangedEvent>();
         Bind<LevelEditorSavingSaveButtonClickedEvent>();

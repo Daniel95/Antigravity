@@ -11,7 +11,7 @@ public class PullingHookContext : Context {
             .Do<PlayerSetMoveDirectionToHookProjectileDirectionCommand>();
 
         On<EnterContextSignal>()
-            .Dispatch<EnterPullingHookContextSignal>()
+            .Dispatch<EnterPullingHookContextEvent>()
             .Dispatch<CancelHookEvent>();
     }
 }

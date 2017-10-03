@@ -18,6 +18,12 @@ public class CharacterTurnDirectionView : View, ICharacterTurnDirection {
 
     public void TurnToNextDirection(Vector2 moveDirection, Vector2 surroundingsDirection, Vector2 collisionDirection, Vector2 raycastHitDistance) {
         Vector2 nextDirection = CalculateDirection(moveDirection, surroundingsDirection, collisionDirection, raycastHitDistance);
+        /*
+        Debug.Log("collisionDirection " + collisionDirection);
+        Debug.Log("surroundingsDirection " + surroundingsDirection);
+        Debug.Log("nextDirection " + nextDirection);
+        Debug.Log("____________________");
+        */
         characterSetMoveDirectionEvent.Dispatch(gameObject, nextDirection);
     }
 

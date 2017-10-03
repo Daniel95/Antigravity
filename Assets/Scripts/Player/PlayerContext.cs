@@ -58,8 +58,14 @@ public class PlayerContext : Context {
             .Do<PlayerBounceCommand>()
             .Do<PlayerPointToCeiledVelocityDirectionCommand>();
 
-        On<PlayerRemoveCollisionDirectionEvent>()
-            .Do<PlayerRemoveCollisionDirectionCommand>();
+        On<PlayerRemoveSavedCollisionDirectionEvent>()
+            .Do<PlayerRemoveSavedCollisionDirectionCommand>();
+
+        On<PlayerRemoveSavedCollisionEvent>()
+            .Do<PlayerRemoveSavedColliderCommand>();
+
+        On<PlayerResetSavedCollisionsEvent>()
+            .Do<PlayerResetSavedCollisionsCommand>();
 
         On<PlayerTurnToNextDirectionEvent>()
             .Do<PlayerTurnToNextDirectionCommand>()
@@ -79,7 +85,7 @@ public class PlayerContext : Context {
             .Do<InstantiatePrefabOnPlayerPositionCommand>("Effects/DieEffect");
 
         On<PlayerDiedEvent>()
-            .Do<PlayerResetCollisionDirectionCommand>()
+            .Dispatch<PlayerResetSavedCollisionsEvent>()
             .Do<DestroyPlayerCommand>()
             .Dispatch<PlayerRespawnEvent>();
 

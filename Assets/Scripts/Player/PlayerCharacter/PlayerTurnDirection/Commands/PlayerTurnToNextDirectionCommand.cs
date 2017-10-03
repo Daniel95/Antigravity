@@ -11,9 +11,9 @@ public class PlayerTurnToNextDirectionCommand : Command {
     protected override void Execute() {
         Vector2 ceilPreviousVelocityDirection = playerVelocityRef.Get().GetCeilPreviousVelocityDirection();
         Vector2 collisionDirection = playerCollisionDirectionRef.Get().GetCollisionDirection();
-        RaycastData cominedRaycastData = playerRaycastDirectionRef.Get().GetCombinedDirectionAndCenterDistances();
-        Vector2 surroundingsDirection = SurroundingDirectionHelper.GetSurroundingsDirection(collisionDirection, cominedRaycastData.Direction);
+        RaycastData combinedRaycastData = playerRaycastDirectionRef.Get().GetCombinedDirectionAndCenterDistances();
+        Vector2 surroundingsDirection = SurroundingDirectionHelper.GetSurroundingsDirection(collisionDirection, combinedRaycastData.Direction);
 
-        playerMoveDirectionRef.Get().TurnToNextDirection(ceilPreviousVelocityDirection, surroundingsDirection, collisionDirection, cominedRaycastData.Distance);
+        playerMoveDirectionRef.Get().TurnToNextDirection(ceilPreviousVelocityDirection, surroundingsDirection, collisionDirection, combinedRaycastData.Distance);
     }
 }

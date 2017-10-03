@@ -45,7 +45,7 @@ public class PlayerStateContext : Context {
             .Do<AbortIfPlayerStateStatusStateIsStateCommand>(PlayerState.Grappling)
             .GotoState<PlayerGrapplingContext>();
 
-        On<EnterPullingHookContextSignal>()
+        On<EnterPullingHookContextEvent>()
             .Do<AbortIfPlayerStateStatusStateIsStateCommand>(PlayerState.Floating)
             .GotoState<PlayerFloatingContext>();
 

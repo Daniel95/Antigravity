@@ -6,6 +6,7 @@ public interface ICharacterCollisionDirection {
 
     Vector2 UpdateCollisionDirection(Collision2D collision);
     Vector2 GetCollisionDirection();
-    void RemoveCollisionDirection(Vector2 collisionDirection);
-    void ResetCollisionDirection();
+    void RemoveSavedCollisionDirection(Vector2 collisionDirection);
+    void RemoveSavedCollider(Collision2D collider);
+    void ResetSavedCollisions();
 }

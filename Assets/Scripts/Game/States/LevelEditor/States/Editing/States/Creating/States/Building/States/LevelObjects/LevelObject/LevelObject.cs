@@ -20,6 +20,10 @@ public class LevelObject {
     public void Initiate(List<Vector2> levelObjectSectionGridPositions, GameObject gameObject, LevelObjectType levelObjectType) {
         levelObjects.Add(this);
 
+        if(gameObject == null) {
+            Debug.LogError("GameObject is null");
+        }
+
         this.levelObjectType = levelObjectType;
         this.gameObject = gameObject;
 
