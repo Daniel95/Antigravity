@@ -23,14 +23,9 @@ public class CharacterRaycastDirectionView : View, ICharacterRaycastDirection {
         RaycastData centerRaycastData = GetCenterRaycastData();
         Vector2 cornersDirection = GetCornersDirection();
 
-        Debug.Log("cornersDirection " + cornersDirection);
-        Debug.Log("centerRaycastData.Direction " + centerRaycastData.Direction);
-
         Vector2 combinedDirection = centerRaycastData.Direction + cornersDirection;
 
         Vector2 raycastDataDirection = VectorHelper.Clamp(combinedDirection, -1, 1);
-
-        Debug.Log("raycastDataDirection " + raycastDataDirection);
 
         return new RaycastData() {
             Direction = raycastDataDirection,

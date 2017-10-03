@@ -17,11 +17,14 @@ public class CharacterTurnDirectionView : View, ICharacterTurnDirection {
     private Vector2 savedDirection;
 
     public void TurnToNextDirection(Vector2 moveDirection, Vector2 surroundingsDirection, Vector2 collisionDirection, Vector2 raycastHitDistance) {
+        //Debug.Log("____________________ " + FrameHelper.FrameCount);
+        //Debug.Log("previous savedDirection " + savedDirection);
+        //Debug.Log("collisionDirection " + collisionDirection);
+        //Debug.Log("surroundingsDirection " + surroundingsDirection);
+        //Debug.Log("moveDirection " + moveDirection);
         Vector2 nextDirection = CalculateDirection(moveDirection, surroundingsDirection, collisionDirection, raycastHitDistance);
-        Debug.Log("collisionDirection " + collisionDirection);
-        Debug.Log("surroundingsDirection " + surroundingsDirection);
-        Debug.Log("nextDirection " + nextDirection);
-        Debug.Log("____________________");
+        //Debug.Log("new savedDirection " + savedDirection);
+        //Debug.Log("nextDirection " + nextDirection);
         characterSetMoveDirectionEvent.Dispatch(gameObject, nextDirection);
     }
 

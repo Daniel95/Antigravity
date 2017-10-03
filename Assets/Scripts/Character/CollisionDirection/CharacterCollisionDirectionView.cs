@@ -13,6 +13,11 @@ public class CharacterCollisionDirectionView : View, ICharacterCollisionDirectio
     private Dictionary<Collision2D, Vector2> collisions = new Dictionary<Collision2D, Vector2>();
     private Vector2 collisionDirection;
 
+    private void OnCollisionEnter2D(Collision2D collision) {
+        AddCollision(collision);
+        UpdateCollisionDirection(collision);
+    }
+
     private void OnCollisionStay2D(Collision2D collision) {
         AddCollision(collision);
         UpdateCollisionDirection(collision);
