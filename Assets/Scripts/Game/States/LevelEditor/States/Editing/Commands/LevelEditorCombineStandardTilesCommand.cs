@@ -18,20 +18,22 @@ public class LevelEditorCombineStandardTilesCommand : Command {
         List<GameObject> gameObjectCollidersToCombine = new List<GameObject>();
         List<GameObject> gameObjectSpriteRenderersToCombine = new List<GameObject>();
         foreach (Tile tile in grid.Values) {
-            GameObject originalTileGameObject = tile.GameObject;
-            GameObject duplicateTileGameObject = Object.Instantiate(originalTileGameObject);
-
-            gameObjectCollidersToCombine.Add(duplicateTileGameObject);
+            gameObjectCollidersToCombine.Add(tile.GameObject);
             if (tile.TileType != TileType.Standard) { continue; }
-            gameObjectSpriteRenderersToCombine.Add(duplicateTileGameObject);
+            gameObjectSpriteRenderersToCombine.Add(tile.GameObject);
         }
 
         List<SpriteRenderer> spriteRenderersToCombine = new List<SpriteRenderer>();
         List<BoxCollider2D> boxCollidersToCombine = new List<BoxCollider2D>();
 
+
         foreach (GameObject gameObjectColliderToCombine in gameObjectCollidersToCombine) {
             BoxCollider2D boxColliderToCombine = gameObjectColliderToCombine.GetComponent<BoxCollider2D>();
-            boxCollidersToCombine.Add(boxColliderToCombine);
+            if(boxColliderToCombine != null) {
+                boxCollidersToCombine.Add(boxColliderToCombine);
+            } else {
+                gameObjectColliderToCombine.transform.SetParent(levelColliderGameObject.transform);
+            }
         }
 
         foreach (GameObject gameObjectSpriteRendererToCombine in gameObjectSpriteRenderersToCombine) {
@@ -39,14 +41,14 @@ public class LevelEditorCombineStandardTilesCommand : Command {
             spriteRenderersToCombine.Add(spriteRendererToCombine);
         }
 
+        CompositeCollider2D compositeCollider = levelColliderGameObject.GetComponent<CompositeCollider2D>();
+        ColliderHelper.CombineBoxCollidersInCompositeCollider(boxCollidersToCombine, compositeCollider);
+
         GameObject levelVisualGameObject = Object.Instantiate(levelVisualPrefab, levelColliderGameObject.transform);
         Material material = levelVisualGameObject.GetComponent<Material>();
         SpriteRenderer spriteRenderer = levelVisualGameObject.GetComponent<SpriteRenderer>();
 
         SpriteHelper.CombineSpritesOfGameObjects(spriteRenderersToCombine, material, spriteRenderer);
-
-        CompositeCollider2D compositeCollider = levelColliderGameObject.GetComponent<CompositeCollider2D>();
-        ColliderHelper.CombineBoxCollidersInCompositeCollider(boxCollidersToCombine, compositeCollider);
 
         foreach (GameObject gameObjectSpriteRenderer in gameObjectSpriteRenderersToCombine) {
             Object.Destroy(gameObjectSpriteRenderer);
