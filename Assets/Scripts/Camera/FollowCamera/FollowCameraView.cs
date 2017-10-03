@@ -35,12 +35,14 @@ public class FollowCameraView : View, IFollowCamera {
     }
 
     private IEnumerator FollowUpdate() {
-        while (target != null && cameraRef.Get().CameraBounds != null) {
+        while (target != null) {
             Vector2 localTargetPosition = transform.InverseTransformVector(target.position);
             Vector2 delta = localTargetPosition - (Vector2)transform.localPosition;
             Vector2 destination = (Vector2)transform.localPosition + delta;
-            Vector2 clampedBoundsDestination = cameraRef.Get().CameraBounds.GetClampedBoundsPosition(destination);
-            Vector2 nextPos = Vector2.SmoothDamp(transform.localPosition, clampedBoundsDestination, ref velocity, smoothness, Mathf.Infinity, Time.deltaTime);
+            if (cameraRef.Get().CameraBounds != null) {
+                destination = cameraRef.Get().CameraBounds.GetClampedBoundsPosition(destination);
+            }
+            Vector2 nextPos = Vector2.SmoothDamp(transform.localPosition, destination, ref velocity, smoothness, Mathf.Infinity, Time.deltaTime);
             transform.localPosition = nextPos;
 
             yield return null;

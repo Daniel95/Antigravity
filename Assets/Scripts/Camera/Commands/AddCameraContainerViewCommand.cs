@@ -6,7 +6,7 @@ public class AddCameraContainerViewCommand : Command {
     [Inject] private IContext context;
 
     protected override void Execute() {
-        CameraContainerView cameraContainerView = Object.FindObjectOfType<CameraContainerView>();
+        CameraContainerView cameraContainerView = CameraContainerView.Instance;
         if(cameraContainerView == null) {
             Debug.LogWarning("No CameraContainerView found.");
         }

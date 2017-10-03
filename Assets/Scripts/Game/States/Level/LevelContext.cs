@@ -14,8 +14,11 @@ public class LevelContext : Context {
             .AddContext<LevelUIContext>()
             .GotoState<PlayerContext>()
             .Do<SetFollowCameraTargetCommand>()
-            .Do<SetCameraBoundsCommand>()
             .Do<EnableFollowCameraCommand>(true);
+
+        On<EnterContextSignal>()
+            .Do<AbortIfCameraBoundsAreNullCommand>()
+            .Do<SetCameraBoundsCommand>();
 
         On<LeaveContextSignal>()
             .Do<EnableFollowCameraCommand>(false);
