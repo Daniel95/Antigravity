@@ -5,7 +5,7 @@ using UnityEngine.UI;
 [RequireComponent(typeof(GridLayoutGroup))]
 public class LevelEditorLevelObjectButtonGridLayoutGroupView : View {
 
-    private const string LEVEL_OBJECT_PREFAB_PATH = "UI/LevelEditor/Editing/Creating/Building/LevelObjects/LevelObjectButtonUI";
+    private const string LEVEL_OBJECT_PREFAB_PATH = "UI/LevelEditor/Editing/Creating/Building/LevelObject/LevelObjectButtonUI";
 
     private void Awake() {
         InstantiateLevelObjectButtons();

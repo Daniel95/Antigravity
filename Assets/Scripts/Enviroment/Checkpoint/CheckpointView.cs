@@ -10,7 +10,7 @@ public class CheckpointView : View, ICheckpoint {
 
     public bool Unlocked { get { return unlocked; } set { unlocked = value; } }
     public GameObject CheckpointGameObject { get { return gameObject; } }
-    public GameObject CheckpointBoundaryGameObject { get { return checkpointBoundary.gameObject; } }
+    public GameObject CheckpointBoundaryGameObject { get { return FindObjectIdCheckpointBoundary().gameObject; } }
 
     [SerializeField] private LayerMask raycastLayers;
     [SerializeField] private float maxRaycastDistance = 30;
@@ -20,7 +20,6 @@ public class CheckpointView : View, ICheckpoint {
 
     private const string CHECKPOINT_BOUNDARY_PREFAB_PATH = "Enviroment/CheckpointBoundary";
 
-    private CheckpointBoundary checkpointBoundary;
     private Coroutine drawDebugBoundaryCoroutine;
     private AnimatedBody animatedBody;
 
@@ -50,20 +49,19 @@ public class CheckpointView : View, ICheckpoint {
 
     [ContextMenu("Update Checkpoint Boundary")]
     private void GenerateBoundary() {
-        checkpointBoundary = GetCheckpointBoundary();
+        CheckpointBoundary checkpointBoundary = GetCheckpointBoundary();
         checkpointBoundary.UpdateBoundary(transform, GetRaycastHitUp(), GetRaycastHitDown());
     }
 
     private CheckpointBoundary GetCheckpointBoundary() {
-        if(!string.IsNullOrEmpty(checkPointBoundaryId)) {
+        if (!string.IsNullOrEmpty(checkPointBoundaryId)) {
             CheckpointBoundary foundCheckpointBounadry = FindObjectIdCheckpointBoundary();
 
             if(foundCheckpointBounadry != null) {
                 return foundCheckpointBounadry;
             } 
         }
-
-        CheckpointBoundary generatedCheckpointBoundary = GenerateCheckpointBoundary();
+        CheckpointBoundary generatedCheckpointBoundary = GenerateCheckpointBoundary(ref checkPointBoundaryId);
         return generatedCheckpointBoundary;
     }
 
@@ -71,15 +69,15 @@ public class CheckpointView : View, ICheckpoint {
         GameObject foundCheckPointBoundaryGameObject = ObjectId.Find(checkPointBoundaryId);
         if(foundCheckPointBoundaryGameObject == null) { return null; }
 
-        checkpointBoundary = foundCheckPointBoundaryGameObject.GetComponent<CheckpointBoundary>();
+        CheckpointBoundary checkpointBoundary = foundCheckPointBoundaryGameObject.GetComponent<CheckpointBoundary>();
         return checkpointBoundary;
     }
 
-    private CheckpointBoundary GenerateCheckpointBoundary() {
+    private CheckpointBoundary GenerateCheckpointBoundary(ref string id) {
         CheckpointBoundary checkPointBoundaryPrefab = Resources.Load<CheckpointBoundary>(CHECKPOINT_BOUNDARY_PREFAB_PATH);
-        checkpointBoundary = Instantiate(checkPointBoundaryPrefab);
+        CheckpointBoundary checkpointBoundary = Instantiate(checkPointBoundaryPrefab);
         ObjectId checkpointBoundaryObjectId = checkpointBoundary.gameObject.GetComponent<ObjectId>();
-        checkpointBoundaryObjectId.GenerateId();
+        id = checkpointBoundaryObjectId.GenerateId();
 #if UNITY_EDITOR
         EditorGUIUtility.systemCopyBuffer = checkpointBoundaryObjectId.Id;
 #endif

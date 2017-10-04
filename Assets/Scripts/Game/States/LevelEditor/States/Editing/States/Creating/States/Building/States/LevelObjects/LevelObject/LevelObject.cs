@@ -16,6 +16,7 @@ public class LevelObject {
     private GameObject gameObject;
     private List<LevelObjectSection> levelObjectSections = new List<LevelObjectSection>();
     private LevelObjectType levelObjectType;
+    private List<LevelObjectLevelEditorInput> levelObjectEditorInputs;
 
     public void Initiate(List<Vector2> levelObjectSectionGridPositions, GameObject gameObject, LevelObjectType levelObjectType) {
         levelObjects.Add(this);
@@ -26,6 +27,8 @@ public class LevelObject {
 
         this.levelObjectType = levelObjectType;
         this.gameObject = gameObject;
+
+        levelObjectEditorInputs = gameObject.GetComponents<LevelObjectLevelEditorInput>().ToList();
 
         foreach (Vector2 levelObjectSectionGridPosition in levelObjectSectionGridPositions) {
             LevelObjectSection levelObjectSection = new LevelObjectSection();
@@ -50,6 +53,8 @@ public class LevelObject {
             Vector2 newGridPosition = levelObjectGridNode.Key + incrementalGridPosition;
             levelObjectGridNode.Value.SetLevelObjectSectionGridPosition(newGridPosition);
         }
+
+        levelObjectEditorInputs.ForEach(x => x.TranslateInput());
     }
 
     private bool CheckGridPositionsAvailability(List<Vector2> gridPositions) {

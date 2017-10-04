@@ -5,11 +5,8 @@ public class LevelEditorBuildingContext : Context {
     protected override void SetBindings() {
         base.SetBindings();
 
-        Bind<LevelEditorSelectedLevelObjectSectionStatus>();
-        Bind<LevelEditorSelectedLevelObjectNodeTypeStatus>();
-
         On<EnterContextSignal>()
-            .GotoState<LevelEditorTilesContext>()
+            .GotoState<LevelEditorTileContext>()
             .Do<InstantiateViewInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/Building/GoToErasingStateButtonUI", CanvasLayer.UI);
 
         On<LeaveContextSignal>()
@@ -17,11 +14,11 @@ public class LevelEditorBuildingContext : Context {
 
         On<GoToLevelEditorStateEvent>()
             .Do<AbortIfLevelEditorStateIsNotLevelEditorStateCommand>(LevelEditorState.LevelObjects)
-            .GotoState<LevelEditorLevelObjectsContext>();
+            .GotoState<LevelEditorLevelObjectContext>();
 
         On<GoToLevelEditorStateEvent>()
             .Do<AbortIfLevelEditorStateIsNotLevelEditorStateCommand>(LevelEditorState.Tiles)
-            .GotoState<LevelEditorTilesContext>();
+            .GotoState<LevelEditorTileContext>();
 
     }
 

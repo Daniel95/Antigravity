@@ -5,7 +5,7 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Button))]
 public class LevelEditorLevelObjectButton : View {
 
-    [Inject] private LevelEditorSelectedLevelObjectNodeTypeStatus levelEditorSelectedLevelObjectStatus;
+    [Inject] private LevelEditorLevelObjectButtonClickedEvent levelEditorLevelObjectButtonClickedEvent;
 
     private Button button;
     private LevelObjectType levelObjectType;
@@ -21,7 +21,7 @@ public class LevelEditorLevelObjectButton : View {
     }
 
     private void OnClicked() {
-        levelEditorSelectedLevelObjectStatus.LevelObjectType = levelObjectType;
+        levelEditorLevelObjectButtonClickedEvent.Dispatch(levelObjectType);
     }
 
     private void OnEnable() {

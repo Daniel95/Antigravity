@@ -30,6 +30,14 @@ public class CanvasUIView : View, ICanvasUI {
         child.transform.SetParent(layerTransform, false);
     }
 
+    public bool ContainsCanvasLayerChild(CanvasLayer canvasLayer, string key) {
+        Dictionary<string, GameObject> layerChilds = canvasLayerChildByKey[canvasLayer];
+
+        GameObject child;
+        bool contains = layerChilds.TryGetValue(key, out child);
+        return contains;
+    }
+
     public GameObject GetCanvasLayerChild(CanvasLayer canvasLayer, string key) {
         Dictionary<string, GameObject> layerChilds = canvasLayerChildByKey[canvasLayer];
 

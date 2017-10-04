@@ -1,8 +1,19 @@
-﻿using UnityEngine;
+﻿using IoCPlus;
 
-public class LevelEditorSelectedLevelObjectSectionStatus {
+public class LevelEditorSelectedLevelObjectSectionStatus : StatusView {
 
-    public Vector2 GridPosition;
-    public LevelObjectSection LevelObjectSection;
+    [Inject] private static LevelEditorSelectedLevelObjectSectionStatusUpdatedEvent selectedLevelObjectSectionStatusUpdatedEvent;
+
+    public static LevelObjectSection LevelObjectSection {
+        get {
+            return levelObjectSection;
+        }
+        set {
+            levelObjectSection = value;
+            selectedLevelObjectSectionStatusUpdatedEvent.Dispatch();
+        }
+    }
+
+    private static LevelObjectSection levelObjectSection;
 
 }

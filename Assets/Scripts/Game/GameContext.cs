@@ -62,6 +62,12 @@ public class GameContext : Context {
         Bind<LevelEditorTouchDownOnGridPositionEvent>();
         Bind<LevelEditorTouchUpOnGridPositionEvent>();
         Bind<LevelEditorSwipeMovedToGridPositionEvent>();
+        Bind<LevelEditorLevelObjectButtonClickedEvent>();
+        Bind<LevelEditorLevelObjectInputTypeButtonClickedEvent>();
+        Bind<LevelEditorLevelObjectDeleteButtonClickedEvent>();
+        Bind<LevelEditorSelectedLevelObjectNodeStatusUpdatedEvent>();
+        Bind<LevelEditorSelectedLevelObjectSectionStatusUpdatedEvent>();
+        Bind<LevelEditorSelectedLevelObjectInputTypeStatusUpdatedEvent>();
 
         Bind<TapEvent>();
         Bind<TwistEvent>();
@@ -119,6 +125,7 @@ public class GameContext : Context {
         Bind<Ref<ILevelEditorSavingSaveButton>>();
         Bind<Ref<ILevelEditorSavingLevelNameInputField>>();
         Bind<Ref<ILevelEditorLevelSelectGridLayoutGroup>>();
+        Bind<Ref<IStatusViewContainer>>();
 
         Bind<Refs<ICheckpoint>>();
 
@@ -159,6 +166,7 @@ public class GameContext : Context {
             .InstantiateView<DebugInputView>()
             .Do<LoadGameStateCommand>()
             .Do<InstantiateViewPrefabCommand>("Components/TouchInput")
+            .Do<InstantiateViewPrefabCommand>("Components/StatusViewContainer")
             .Do<InstantiateViewPrefabCommand>("UI/Canvas/CanvasUI")
             .Do<InstantiateViewInCanvasLayerCommand>("UI/FPSCounterUI", CanvasLayer.UI)
             .AddContext<CameraContext>()

@@ -4,12 +4,11 @@ using UnityEngine;
 
 public class LevelEditorInstantiateLevelObjectAtGridPositionCommand : Command {
 
-    [Inject] private LevelEditorSelectedLevelObjectNodeTypeStatus selectedLevelObjectStatus;
-
     [InjectParameter] private Vector2 gridPosition;
 
     protected override void Execute() {
-        LevelObjectType levelObjectType = selectedLevelObjectStatus.LevelObjectType;
+        GenerateableLevelObjectNode generateableLevelObjectNode = LevelEditorSelectedLevelObjectNodeViewStatus.LevelObjectNode;
+        LevelObjectType levelObjectType = generateableLevelObjectNode.LevelObjectType;
         Vector2 gridSize = GenerateableLevelObjectLibrary.GetLevelObjectEditorNodeGridSize(levelObjectType);
 
         Vector2 levelObjectSectionStartBuildPoint = VectorHelper.Decrement(gridPosition, VectorHelper.Floor(gridSize / 2));
@@ -27,9 +26,8 @@ public class LevelEditorInstantiateLevelObjectAtGridPositionCommand : Command {
             }
         }
 
-        GenerateableLevelObjectNode levelEditorLevelObjectEditorNode = GenerateableLevelObjectLibrary.GetNode(levelObjectType);
         Vector2 gameObjectPosition = LevelEditorGridHelper.GridToNodePosition(gridPosition);
-        GameObject levelObjectGameObject = Object.Instantiate(levelEditorLevelObjectEditorNode.Prefab, gameObjectPosition, new Quaternion());
+        GameObject levelObjectGameObject = Object.Instantiate(generateableLevelObjectNode.Prefab, gameObjectPosition, new Quaternion());
 
         LevelObject levelObject = new LevelObject();
         levelObject.Initiate(levelObjectSectionGridPositions, levelObjectGameObject, levelObjectType);
