@@ -20,7 +20,6 @@ public class LevelEditorSelectionFieldStatusView : StatusView {
     public static Vector2 SelectionFieldEndGridPosition;
 
     [Inject] private static LevelEditorSelectionFieldEnabledUpdatedEvent selectionFieldEnabledUpdatedEvent;
-    //[Inject] private static LevelEditorSelectionFieldEnabledUpdatedEvent selectionFieldEnabledUpdatedEvent;
 
     private new static bool enabled;
 

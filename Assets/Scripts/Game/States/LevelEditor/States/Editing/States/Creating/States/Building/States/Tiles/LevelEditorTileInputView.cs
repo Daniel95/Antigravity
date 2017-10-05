@@ -47,7 +47,7 @@ public class LevelEditorTileInputView : View, ILevelEditorTileInput {
     public void RemoveTilesSpawnedByLastSelectionField() {
         List<Vector2> tilePositionsInSelectionField = LevelEditorSelectionFieldStatusView.SelectionFieldGridPositions.FindAll(x => LevelEditorTileGrid.Instance.ContainsTile(x));
         List<Vector2> tilesSpawnedByLastSelectionField = tilePositionsInSelectionField.FindAll(x => CheckGridPositionPreviouslyOccupiedByLastSelectionField(x));
-        tilesSpawnedByLastSelectionField.ForEach(x => LevelEditorTileGrid.Instance.RemoveTile(x));
+        TileGenerator.RemoveTiles(tilesSpawnedByLastSelectionField, true);
     }
 
     public void ReplaceNewTilesInSelectionField() {
