@@ -56,7 +56,8 @@ public class LevelEditorLevelObjectContext : Context {
             .Do<LevelEditorUpdateSelectedLevelObjectSectionStatusCommand>();
 
         On<LevelEditorLevelObjectDeleteButtonClickedEvent>()
-            .Do<LevelEditorDestroyLevelObjectOfSelectedLevelObjectSectionCommand>();
+            .Do<LevelEditorDestroyLevelObjectOfSelectedLevelObjectSectionCommand>()
+            .Do<LevelEditorResetSelectedLevelObjectSectionStatusCommand>();
 
         On<LevelEditorSelectedLevelObjectSectionStatusUpdatedEvent>()
             .Do<AbortIfLevelEditorSelectedLevelObjectSectionStatusIsNullCommand>()
