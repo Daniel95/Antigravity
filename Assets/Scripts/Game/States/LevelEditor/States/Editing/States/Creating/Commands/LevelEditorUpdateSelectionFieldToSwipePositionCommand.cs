@@ -3,15 +3,14 @@ using UnityEngine;
 
 public class LevelEditorUpdateSelectionFieldToSwipePositionCommand : Command {
 
-    [Inject] private LevelEditorSelectionFieldStatus selectionFieldStatus;
-
     [InjectParameter] private Vector2 gridPosition;
 
     protected override void Execute() {
-        selectionFieldStatus.SelectionFieldEndGridPosition = gridPosition;
-
-        selectionFieldStatus.PreviousSelectionFieldGridPositions = selectionFieldStatus.SelectionFieldGridPositions;
-        selectionFieldStatus.SelectionFieldGridPositions = GridHelper.GetSelection(selectionFieldStatus.SelectionFieldStartGridPosition, selectionFieldStatus.SelectionFieldEndGridPosition);
+        LevelEditorSelectionFieldStatusView.SelectionFieldEndGridPosition = gridPosition;
+        Debug.Log("Update endposition to " + gridPosition);
+        Debug.Log("startposition is now " + LevelEditorSelectionFieldStatusView.SelectionFieldStartGridPosition);
+        LevelEditorSelectionFieldStatusView.PreviousSelectionFieldGridPositions = LevelEditorSelectionFieldStatusView.SelectionFieldGridPositions;
+        LevelEditorSelectionFieldStatusView.SelectionFieldGridPositions = GridHelper.GetSelection(LevelEditorSelectionFieldStatusView.SelectionFieldStartGridPosition, LevelEditorSelectionFieldStatusView.SelectionFieldEndGridPosition);
     }
 
 }

@@ -4,6 +4,7 @@
 
     void ClearSelectionFieldAvailableGridPositions();
     void RemoveTilesInSelectionField();
+    void RemoveTilesSpawnedByLastSelectionField();
     void ReplaceNewTilesInSelectionField();
 
 }

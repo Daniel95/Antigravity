@@ -1,6 +1,6 @@
 ﻿using IoCPlus;
 
-public class RemoveTilesInSelectionFieldCommand : Command {
+public class LevelEditorRemoveTilesInSelectionFieldCommand : Command {
 
     [Inject] private Ref<ILevelEditorTileInput> levelEditorTileInputRef;
 

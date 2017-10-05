@@ -9,14 +9,12 @@ public class LevelEditorTileInputView : View, ILevelEditorTileInput {
 
     public int SpawnLimit { get { return spawnLimit; } }
 
-    [Inject] private LevelEditorSelectionFieldStatus selectionFieldStatus;
-
     [Inject] private Ref<ILevelEditorTileInput> levelEditorTileInputRef;
 
     [SerializeField] private int spawnLimit = 100;
 
     private List<Vector2> selectionFieldAvailableGridPositions = new List<Vector2>();
-
+    
     public override void Initialize() {
         levelEditorTileInputRef.Set(this);
     }
@@ -29,7 +27,7 @@ public class LevelEditorTileInputView : View, ILevelEditorTileInput {
         List<Vector2> previousSelectionFieldAvailableGridPositions = selectionFieldAvailableGridPositions;
         List<Vector2> nextSelectionFieldAvailableGridPositions = new List<Vector2>();
 
-        List<Vector2> selectionFieldTileGridPositions = LevelEditorTileGrid.Instance.FilterNonEmptyOrNonTiles(selectionFieldStatus.SelectionFieldGridPositions);
+        List<Vector2> selectionFieldTileGridPositions = LevelEditorTileGrid.Instance.FilterNonEmptyOrNonTiles(LevelEditorSelectionFieldStatusView.SelectionFieldGridPositions);
 
         foreach (Vector2 selectionFieldGridPosition in selectionFieldTileGridPositions) {
             if (!TileGenerator.CheckGridPositionEmptyOrNotUserGenerated(selectionFieldGridPosition) || CheckGridPositionPreviouslyOccupiedByLastSelectionField(selectionFieldGridPosition)) {
@@ -46,11 +44,17 @@ public class LevelEditorTileInputView : View, ILevelEditorTileInput {
         selectionFieldAvailableGridPositions = nextSelectionFieldAvailableGridPositions;
     }
 
+    public void RemoveTilesSpawnedByLastSelectionField() {
+        List<Vector2> tilePositionsInSelectionField = LevelEditorSelectionFieldStatusView.SelectionFieldGridPositions.FindAll(x => LevelEditorTileGrid.Instance.ContainsTile(x));
+        List<Vector2> tilesSpawnedByLastSelectionField = tilePositionsInSelectionField.FindAll(x => CheckGridPositionPreviouslyOccupiedByLastSelectionField(x));
+        tilesSpawnedByLastSelectionField.ForEach(x => LevelEditorTileGrid.Instance.RemoveTile(x));
+    }
+
     public void ReplaceNewTilesInSelectionField() {
         List<Vector2> previousSelectionFieldAvailableGridPositions = selectionFieldAvailableGridPositions;
         List<Vector2> nextSelectionFieldAvailableGridPositions = new List<Vector2>();
 
-        List<Vector2> selectionFieldTileGridPositions = LevelEditorTileGrid.Instance.FilterNonEmptyOrNonTiles(selectionFieldStatus.SelectionFieldGridPositions);
+        List<Vector2> selectionFieldTileGridPositions = LevelEditorTileGrid.Instance.FilterNonEmptyOrNonTiles(LevelEditorSelectionFieldStatusView.SelectionFieldGridPositions);
 
         foreach (Vector2 selectionFieldGridPosition in selectionFieldTileGridPositions) {
             if (TileGenerator.CheckGridPositionEmptyOrNotUserGenerated(selectionFieldGridPosition) || CheckGridPositionPreviouslyOccupiedByLastSelectionField(selectionFieldGridPosition)) {

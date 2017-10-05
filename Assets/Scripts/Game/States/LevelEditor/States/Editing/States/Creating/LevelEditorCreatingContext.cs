@@ -6,8 +6,10 @@ public class LevelEditorCreatingContext : Context {
         base.SetBindings();
 
         On<EnterContextSignal>()
+            .Do<AddStatusViewToStatusViewContainerCommand<LevelEditorSelectionFieldStatusView>>()
             .Do<InstantiateViewInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/GoToNavigatingStateButtonUI", CanvasLayer.UI)
             .Do<LevelEditorSetSelectionFieldEnabledCommand>(true)
+            .Do<EnableCameraZoomInputCommand>(true)
             .Do<ShowGridOverlayCommand>(true)
             .Do<SetGridOverlaySizeToScreenWorldSizeCommand>()
             .Do<SetGridOverlayOriginToHalfTileSizeCommand>()
@@ -15,7 +17,10 @@ public class LevelEditorCreatingContext : Context {
             .GotoState<LevelEditorBuildingContext>();
 
         On<LeaveContextSignal>()
-            .Do<ShowGridOverlayCommand>(false);
+            .Do<RemoveStatusViewFromStatusViewContainerCommand<LevelEditorSelectionFieldStatusView>>()
+            .Do<LevelEditorSetSelectionFieldEnabledCommand>(false)
+            .Do<ShowGridOverlayCommand>(false)
+            .Do<EnableCameraZoomInputCommand>(false);
 
         On<LeaveContextSignal>()
             .Do<DestroyChildInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/GoToNavigatingStateButtonUI", CanvasLayer.UI);
@@ -29,8 +34,11 @@ public class LevelEditorCreatingContext : Context {
             .GotoState<LevelEditorErasingContext>();
 
         On<OutsideUITouchStartEvent>()
-            .Do<DispatchLevelEditorTouchDownOnGridPositionEventCommand>()
-            .Do<LevelEditorStartSelectionFieldAtScreenPositionCommand>()
+            .Do<DispatchLevelEditorTouchDownOnGridPositionEventCommand>();
+
+        On<LevelEditorTouchDownOnGridPositionEvent>()
+            .Do<AbortIfLevelEditorSelectionFieldIsDisabledCommand>()
+            .Do<LevelEditorStartSelectionFieldAtGridPositionCommand>()
             .Do<AbortIfSelectionFieldIsSameAsPreviousSelectionFieldCommand>()
             .Do<DispatchLevelEditorSelectionFieldChangedEventCommand>();
 
@@ -45,33 +53,44 @@ public class LevelEditorCreatingContext : Context {
         On<TouchUpEvent>()
             .Do<DispatchLevelEditorTouchUpOnGridPositionEventCommand>()
             .Do<LevelEditorClearSelectionFieldCommand>()
-            .Do<LevelEditorClearSelectionFieldAvailableGridPositionsCommand>()
             .Do<ShowBoxOverlayCommand>(false);
 
         On<SwipeEndEvent>()
             .Do<LevelEditorClearSelectionFieldCommand>()
-            .Do<LevelEditorClearSelectionFieldAvailableGridPositionsCommand>()
             .Do<ShowBoxOverlayCommand>(false);
 
+        On<PinchStartedEvent>()
+            .Do<LevelEditorSetSelectionFieldEnabledCommand>(false);
+
+        On<PinchStoppedEvent>()
+            .Do<LevelEditorClearSelectionFieldCommand>()
+            .Do<LevelEditorSetSelectionFieldEnabledCommand>(true);
+
         On<LevelEditorSwipeMovedToNewGridPositionEvent>()
+            .Do<AbortIfLevelEditorSelectionFieldIsDisabledCommand>()
             .Do<LevelEditorUpdateSelectionFieldToSwipePositionCommand>()
             .Do<DispatchLevelEditorSelectionFieldChangedEventCommand>();
 
         On<LevelEditorSelectionFieldTileSpawnLimitReachedEvent>()
-            .Do<AbortIfLevelEditorSelectionFieldIsNotEnabledCommand>()
             .Do<LevelEditorSetSelectionFieldBoxColorTypeCommand>(LevelEditorSelectionFieldBoxColorType.Error);
 
         On<LevelEditorSelectionFieldChangedEvent>()
-            .Do<AbortIfLevelEditorSelectionFieldIsNotEnabledCommand>()
             .Do<LevelEditorSetSelectionFieldBoxColorTypeCommand>(LevelEditorSelectionFieldBoxColorType.Default);
 
         On<LevelEditorSelectionFieldChangedEvent>()
-            .Do<AbortIfLevelEditorSelectionFieldIsNotEnabledCommand>()
             .Do<AbortIfBoxOverlayIsShownCommand>()
             .Do<ShowBoxOverlayCommand>(true);
 
         On<LevelEditorSelectionFieldChangedEvent>()
             .Do<LevelEditorUpdateBoxOverlayToSelectionFieldCommand>();
+
+        On<LevelEditorSelectionFieldEnabledUpdatedEvent>()
+            .Do<AbortIfLevelEditorSelectionFieldIsDisabledCommand>()
+            .Do<ShowBoxOverlayCommand>(true);
+
+        On<LevelEditorSelectionFieldEnabledUpdatedEvent>()
+            .Do<AbortIfLevelEditorSelectionFieldIsEnabledCommand>()
+            .Do<ShowBoxOverlayCommand>(false);
 
     }
 

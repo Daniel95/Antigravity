@@ -12,8 +12,7 @@ public class LevelEditorNavigatingContext : Context {
 
         On<LeaveContextSignal>()
             .Do<DestroyChildInCanvasLayerCommand>("UI/LevelEditor/Editing/Navigating/GoToCreatingStateButtonUI", CanvasLayer.UI)
-            .Do<EnableCameraMoveInputCommand>(false)
-            .Do<EnableCameraZoomInputCommand>(false);
+            .Do<EnableCameraMoveInputCommand>(false);
 
         On<CameraZoomedEvent>()
             .Do<AbortIfGridOverlayIsNotShownCommand>()

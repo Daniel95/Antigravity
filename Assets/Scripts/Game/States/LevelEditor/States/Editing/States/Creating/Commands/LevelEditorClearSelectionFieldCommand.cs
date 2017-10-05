@@ -1,12 +1,13 @@
 ﻿using IoCPlus;
+using UnityEngine;
 
 public class LevelEditorClearSelectionFieldCommand : Command {
 
-    [Inject] private LevelEditorSelectionFieldStatus selectionFieldStatus;
-
     protected override void Execute() {
-        selectionFieldStatus.PreviousSelectionFieldGridPositions.Clear();
-        selectionFieldStatus.SelectionFieldGridPositions.Clear();
+        LevelEditorSelectionFieldStatusView.PreviousSelectionFieldGridPositions.Clear();
+        LevelEditorSelectionFieldStatusView.SelectionFieldGridPositions.Clear();
+        LevelEditorSelectionFieldStatusView.SelectionFieldStartGridPosition = Vector2.zero;
+        LevelEditorSelectionFieldStatusView.SelectionFieldEndGridPosition = Vector2.zero;
     }
 
 }

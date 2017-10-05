@@ -12,7 +12,21 @@ public class LevelEditorTileContext : Context {
             .Do<DestroyChildInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/Building/Tile/GoToObjectsStateButtonUI", CanvasLayer.UI);
 
         On<LevelEditorSelectionFieldChangedEvent>()
-            .Do<ReplaceNewTilesInSelectionFieldCommand>();
+            .Do<LevelEditorReplaceNewTilesInSelectionFieldCommand>();
+
+        On<LevelEditorTouchUpOnGridPositionEvent>()
+            .Do<LevelEditorClearSelectionFieldAvailableTileGridPositionsCommand>();
+
+        On<SwipeEndEvent>()
+            .Do<LevelEditorClearSelectionFieldAvailableTileGridPositionsCommand>();
+
+       On<PinchStartedEvent>()
+            .Do<LevelEditorRemoveTilesSpawnedByLastSelectionFieldCommand>()
+            .Do<LevelEditorClearSelectionFieldAvailableTileGridPositionsCommand>();
+
+        On<PinchMovedEvent>()
+            .Do<LevelEditorRemoveTilesSpawnedByLastSelectionFieldCommand>()
+            .Do<LevelEditorClearSelectionFieldAvailableTileGridPositionsCommand>();
 
     }
 

@@ -1,20 +1,16 @@
 ﻿using IoCPlus;
 using UnityEngine;
 
-public class LevelEditorStartSelectionFieldAtScreenPositionCommand : Command {
+public class LevelEditorStartSelectionFieldAtGridPositionCommand : Command {
 
-    [Inject] private LevelEditorSelectionFieldStatus selectionFieldStatus;
-
-    [InjectParameter] private Vector2 screenPosition;
+    [InjectParameter] private Vector2 gridPosition;
 
     protected override void Execute() {
-        Vector2 selectionFieldStartWorldPosition = Camera.main.ScreenToWorldPoint(screenPosition);
+        LevelEditorSelectionFieldStatusView.SelectionFieldStartGridPosition = gridPosition;
+        LevelEditorSelectionFieldStatusView.SelectionFieldEndGridPosition = LevelEditorSelectionFieldStatusView.SelectionFieldStartGridPosition;
 
-        selectionFieldStatus.SelectionFieldStartGridPosition = LevelEditorGridHelper.WorldToGridPosition(selectionFieldStartWorldPosition);
-        selectionFieldStatus.SelectionFieldEndGridPosition = selectionFieldStatus.SelectionFieldStartGridPosition;
-
-        selectionFieldStatus.PreviousSelectionFieldGridPositions = selectionFieldStatus.SelectionFieldGridPositions;
-        selectionFieldStatus.SelectionFieldGridPositions = GridHelper.GetSelection(selectionFieldStatus.SelectionFieldStartGridPosition, selectionFieldStatus.SelectionFieldEndGridPosition);
+        LevelEditorSelectionFieldStatusView.PreviousSelectionFieldGridPositions = LevelEditorSelectionFieldStatusView.SelectionFieldGridPositions;
+        LevelEditorSelectionFieldStatusView.SelectionFieldGridPositions = GridHelper.GetSelection(LevelEditorSelectionFieldStatusView.SelectionFieldStartGridPosition, LevelEditorSelectionFieldStatusView.SelectionFieldEndGridPosition);
     }
 
 }

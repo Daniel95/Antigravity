@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class TouchInputView : View {
 
+    public static bool IsPinching { get { return isPinching; } }
+
     [Inject] private TapEvent tapEvent;
     [Inject] private DragStartedEvent dragStartedEvent;
     [Inject] private DragMovedEvent dragMovedEvent;
@@ -30,7 +32,7 @@ public class TouchInputView : View {
     [Inject] private PinchStoppedEvent pinchStoppedEvent;
     [Inject] private TwistEvent twistEvent;
 
-    private bool isPinching;
+    private static bool isPinching;
 
     private int uiLayer;
 

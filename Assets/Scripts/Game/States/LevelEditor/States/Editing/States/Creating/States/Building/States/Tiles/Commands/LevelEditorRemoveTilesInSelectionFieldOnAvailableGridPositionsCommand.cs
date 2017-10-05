@@ -1,6 +1,6 @@
 ﻿using IoCPlus;
 
-public class LevelEditorClearSelectionFieldAvailableGridPositionsCommand : Command {
+public class LevelEditorRemoveTilesInSelectionFieldOnAvailableGridPositionsCommand : Command {
 
     [Inject] private Ref<ILevelEditorTileInput> levelEditorTileInputRef;
 
