@@ -7,11 +7,12 @@ public class LevelEditorNavigatingContext : Context {
 
         On<EnterContextSignal>()
             .Do<InstantiateViewInCanvasLayerCommand>("UI/LevelEditor/Editing/Navigating/GoToCreatingStateButtonUI", CanvasLayer.UI)
-            .Do<EnableCameraMoveInputCommand>(true)
-            .Do<EnableCameraZoomInputCommand>(true);
+            .Do<EnableCameraZoomInputCommand>(true)
+            .Do<EnableCameraMoveInputCommand>(true);
 
         On<LeaveContextSignal>()
             .Do<DestroyChildInCanvasLayerCommand>("UI/LevelEditor/Editing/Navigating/GoToCreatingStateButtonUI", CanvasLayer.UI)
+            .Do<EnableCameraZoomInputCommand>(false)
             .Do<EnableCameraMoveInputCommand>(false);
 
         On<CameraZoomedEvent>()

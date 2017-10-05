@@ -18,6 +18,7 @@ public class LevelEditorCreatingContext : Context {
 
         On<LeaveContextSignal>()
             .Do<RemoveStatusViewFromStatusViewContainerCommand<LevelEditorSelectionFieldStatusView>>()
+            .Do<LevelEditorClearSelectionFieldCommand>()
             .Do<LevelEditorSetSelectionFieldEnabledCommand>(false)
             .Do<ShowGridOverlayCommand>(false)
             .Do<EnableCameraZoomInputCommand>(false);
@@ -62,6 +63,10 @@ public class LevelEditorCreatingContext : Context {
         On<PinchStartedEvent>()
             .Do<LevelEditorSetSelectionFieldEnabledCommand>(false);
 
+        On<CameraZoomedEvent>()
+            .Do<AbortIfGridOverlayIsNotShownCommand>()
+            .Do<SetGridOverlaySizeToScreenWorldSizeCommand>();
+
         On<PinchStoppedEvent>()
             .Do<LevelEditorClearSelectionFieldCommand>()
             .Do<LevelEditorSetSelectionFieldEnabledCommand>(true);
@@ -83,10 +88,6 @@ public class LevelEditorCreatingContext : Context {
 
         On<LevelEditorSelectionFieldChangedEvent>()
             .Do<LevelEditorUpdateBoxOverlayToSelectionFieldCommand>();
-
-        On<LevelEditorSelectionFieldEnabledUpdatedEvent>()
-            .Do<AbortIfLevelEditorSelectionFieldIsDisabledCommand>()
-            .Do<ShowBoxOverlayCommand>(true);
 
         On<LevelEditorSelectionFieldEnabledUpdatedEvent>()
             .Do<AbortIfLevelEditorSelectionFieldIsEnabledCommand>()
