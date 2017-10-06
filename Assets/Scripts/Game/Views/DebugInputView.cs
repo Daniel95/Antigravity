@@ -25,6 +25,7 @@ public class DebugInputView : View {
 
     [Inject] private GoToCurrentSceneEvent goToCurrentSceneEvent;
     [Inject] private GoToSceneEvent goToSceneEvent;
+    [Inject] private LevelNameStatus levelNameStatus;
 
     private static DebugInputView instance;
 
@@ -65,6 +66,10 @@ public class DebugInputView : View {
         if (sceneStatus.currentScene == Scenes.LevelSelect) {
             goToCurrentSceneEvent.Dispatch();
         }
+    }
+
+    public void DeleteAllLevelData() {
+        SerializeHelper.DeleteFilesInFolder(LevelEditorLevelDataPath.Path);
     }
 
     private static DebugInputView GetInstance() {

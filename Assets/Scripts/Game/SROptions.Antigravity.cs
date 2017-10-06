@@ -29,6 +29,11 @@ public partial class SROptions {
         SRDebug.Instance.HideDebugPanel();
     }
 
+    public void DeleteAllLevelSaveData() {
+        debugInputView.DeleteAllLevelData();
+        SRDebug.Instance.HideDebugPanel();
+    }
+
     [Category("Delete on startup :")]
     public bool DeleteGameSaveOnStart {
         get {
