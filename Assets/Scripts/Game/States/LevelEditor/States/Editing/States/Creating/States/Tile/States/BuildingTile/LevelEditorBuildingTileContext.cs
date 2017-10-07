@@ -14,6 +14,10 @@ public class LevelEditorBuildingTileContext : Context {
         On<LevelEditorSelectionFieldChangedEvent>()
             .Do<LevelEditorReplaceNewTilesInSelectionFieldCommand>();
 
+        On<PinchStartedEvent>()
+            .Do<LevelEditorRemoveTilesSpawnedByLastSelectionFieldCommand>()
+            .Do<LevelEditorClearSelectionFieldAvailableGridPositionsCommand>();
+
     }
 
 }

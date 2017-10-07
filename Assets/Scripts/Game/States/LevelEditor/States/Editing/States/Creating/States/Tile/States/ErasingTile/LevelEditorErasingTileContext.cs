@@ -14,6 +14,10 @@ public class LevelEditorErasingTileContext : Context {
         On<LevelEditorSelectionFieldChangedEvent>()
             .Do<LevelEditorRemoveTilesInSelectionFieldCommand>();
 
+        On<PinchStartedEvent>()
+            .Do<LevelEditorSpawnTilesRemovedInLastSelectionFieldCommand>()
+            .Do<LevelEditorClearSelectionFieldAvailableGridPositionsCommand>();
+
     }
 
 }

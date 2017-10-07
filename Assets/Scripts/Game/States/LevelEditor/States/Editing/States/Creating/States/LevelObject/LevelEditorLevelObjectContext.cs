@@ -11,7 +11,6 @@ public class LevelEditorLevelObjectContext : Context {
             .Do<AddStatusViewToStatusViewContainerCommand<LevelEditorSelectedLevelObjectNodeViewStatus>>()
             .Do<AddStatusViewToStatusViewContainerCommand<LevelEditorSelectedLevelObjectInputTypeStatus>>()
             .Do<AddStatusViewToStatusViewContainerCommand<LevelEditorSelectedLevelObjectSectionStatus>>()
-            .Do<LevelEditorSetSelectionFieldEnabledCommand>(false)
             .Do<InstantiateViewInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/LevelObject/GoToTileStateButtonUI", CanvasLayer.UI)
             .Do<InstantiateViewInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/LevelObject/LevelObjectButtonGridLayoutGroupUI", CanvasLayer.UI)
             .Do<LevelEditorInstantiateLevelObjectButtonsCommand>("UI/LevelEditor/Editing/Creating/LevelObject/LevelObjectButtonUI");
@@ -20,7 +19,6 @@ public class LevelEditorLevelObjectContext : Context {
             .Do<RemoveStatusViewFromStatusViewContainerCommand<LevelEditorSelectedLevelObjectNodeViewStatus>>()
             .Do<RemoveStatusViewFromStatusViewContainerCommand<LevelEditorSelectedLevelObjectInputTypeStatus>>()
             .Do<RemoveStatusViewFromStatusViewContainerCommand<LevelEditorSelectedLevelObjectSectionStatus>>()
-            .Do<LevelEditorSetSelectionFieldEnabledCommand>(true)
             .Do<DestroyChildInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/LevelObject/GoToTileStateButtonUI", CanvasLayer.UI)
             .Do<DestroyChildInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/LevelObject/LevelObjectButtonGridLayoutGroupUI", CanvasLayer.UI);
 

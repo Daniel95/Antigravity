@@ -42,8 +42,6 @@ public class LevelEditorTileContext : Context {
             .Do<ShowBoxOverlayCommand>(false);
 
         On<PinchStartedEvent>()
-            .Do<LevelEditorRemoveTilesSpawnedByLastSelectionFieldCommand>()
-            .Do<LevelEditorClearSelectionFieldAvailableGridPositionsCommand>()
             .Do<LevelEditorSetSelectionFieldEnabledCommand>(false);
 
         On<PinchMovedEvent>()
