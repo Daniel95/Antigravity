@@ -5,7 +5,7 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Button))]
 public class LevelEditorLevelObjectInputTypeButtonView : View {
 
-    [SerializeField] private LevelObjectInputType levelEditorLevelObjectInputType;
+    [SerializeField] private LevelObjectTransformType levelObjectTransformType;
 
     [Inject] private LevelEditorLevelObjectInputTypeButtonClickedEvent levelEditorLevelObjectInputTypeButtonClickedEvent;
 
@@ -23,7 +23,7 @@ public class LevelEditorLevelObjectInputTypeButtonView : View {
     }
 
     private void OnClick() {
-        levelEditorLevelObjectInputTypeButtonClickedEvent.Dispatch(levelEditorLevelObjectInputType);
+        levelEditorLevelObjectInputTypeButtonClickedEvent.Dispatch(levelObjectTransformType);
     }
 
     private void Awake() {

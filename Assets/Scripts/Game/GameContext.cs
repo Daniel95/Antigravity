@@ -163,6 +163,7 @@ public class GameContext : Context {
         Bind<PlayerSessionStatsStatus>();
         Bind<LevelNameStatus>();
         Bind<LevelEditorSelectedGridPositionStatus>();
+        Bind<LevelEditorReleasedSinceLevelObjectSpawnStatus>();
 
         On<EnterContextSignal>()
             .InstantiateView<ApplicationView>()

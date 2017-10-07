@@ -6,20 +6,20 @@ public class LevelEditorLevelObjectScaleContext : Context {
         base.SetBindings();
 
         On<EnterContextSignal>()
-            .Do<AbortIfLevelEditorSelectedLevelObjectNodeInputTypeDoesNotContainInputTypeCommand>(LevelObjectInputType.Translate)
-            .Do<InstantiateViewInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/LevelObject/SetLevelObjectInputTypeToTranslateButtonUI", CanvasLayer.UI);
+            .Do<AbortIfLevelEditorSelectedLevelObjectNodeTransformTypeDoesNotContainCommand>(LevelObjectTransformType.Translate)
+            .Do<InstantiateViewInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/LevelObject/SetLevelObjectTransformTypeToTranslateButtonUI", CanvasLayer.UI);
 
         On<EnterContextSignal>()
-            .Do<AbortIfLevelEditorSelectedLevelObjectNodeInputTypeDoesNotContainInputTypeCommand>(LevelObjectInputType.Scale)
-            .Do<InstantiateViewInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/LevelObject/SetLevelObjectInputTypeToRotateButtonUI", CanvasLayer.UI);
+            .Do<AbortIfLevelEditorSelectedLevelObjectNodeTransformTypeDoesNotContainCommand>(LevelObjectTransformType.Scale)
+            .Do<InstantiateViewInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/LevelObject/SetLevelObjectTransformTypeToRotateButtonUI", CanvasLayer.UI);
 
         On<LeaveContextSignal>()
-            .Do<AbortIfChildInCanvasLayerDoesNotExistCommand>("UI/LevelEditor/Editing/Creating/Building/LevelObject/SetLevelObjectInputTypeToTranslateButtonUI", CanvasLayer.UI)
-            .Do<DestroyChildInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/LevelObject/SetLevelObjectInputTypeToTranslateButtonUI", CanvasLayer.UI);
+            .Do<AbortIfChildInCanvasLayerDoesNotExistCommand>("UI/LevelEditor/Editing/Creating/Building/LevelObject/SetLevelObjectTransformTypeToTranslateButtonUI", CanvasLayer.UI)
+            .Do<DestroyChildInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/LevelObject/SetLevelObjectTransformTypeToTranslateButtonUI", CanvasLayer.UI);
 
         On<LeaveContextSignal>()
-            .Do<AbortIfChildInCanvasLayerDoesNotExistCommand>("UI/LevelEditor/Editing/Creating/LevelObject/SetLevelObjectInputTypeToRotateButtonUI", CanvasLayer.UI)
-            .Do<DestroyChildInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/LevelObject/SetLevelObjectInputTypeToRotateButtonUI", CanvasLayer.UI);
+            .Do<AbortIfChildInCanvasLayerDoesNotExistCommand>("UI/LevelEditor/Editing/Creating/LevelObject/SetLevelObjectTransformTypeToRotateButtonUI", CanvasLayer.UI)
+            .Do<DestroyChildInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/LevelObject/SetLevelObjectTransformTypeToRotateButtonUI", CanvasLayer.UI);
 
         On<LevelEditorSwipeMovedToNewGridPositionEvent>()
             .Do<AbortIfLevelEditorSelectedLevelObjectSectionStatusIsNullCommand>()

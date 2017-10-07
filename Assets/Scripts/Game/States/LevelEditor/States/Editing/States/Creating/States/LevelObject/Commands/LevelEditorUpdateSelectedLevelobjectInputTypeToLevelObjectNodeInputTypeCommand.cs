@@ -1,10 +1,10 @@
 ﻿using IoCPlus;
 
-public class LevelEditorUpdateSelectedLevelObjectInputTypeToLevelObjectNodeInputTypeCommand : Command {
+public class LevelEditorUpdateSelectedLevelObjectTransformTypeToLevelObjectNodeTransformTypeCommand : Command {
 
     protected override void Execute() {
-        LevelObjectInputType levelObjectInputType = LevelEditorSelectedLevelObjectNodeViewStatus.LevelObjectNode.GetDefaultLevelObjectInputType();
-        LevelEditorSelectedLevelObjectInputTypeStatus.LevelObjectInputType = levelObjectInputType;
+        LevelObjectTransformType levelObjectTransformType = LevelEditorSelectedLevelObjectNodeViewStatus.LevelObjectNode.GetDefaultLevelObjectInputType();
+        LevelEditorSelectedLevelObjectTransformTypeStatus.LevelObjectTransformType = levelObjectTransformType;
     }
 
 }

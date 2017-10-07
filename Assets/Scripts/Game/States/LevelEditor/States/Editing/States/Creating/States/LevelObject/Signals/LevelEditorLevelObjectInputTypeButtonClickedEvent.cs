@@ -1,3 +1,3 @@
 ﻿using IoCPlus;
 
-public class LevelEditorLevelObjectInputTypeButtonClickedEvent : Signal<LevelObjectInputType> { }
+public class LevelEditorLevelObjectInputTypeButtonClickedEvent : Signal<LevelObjectTransformType> { }

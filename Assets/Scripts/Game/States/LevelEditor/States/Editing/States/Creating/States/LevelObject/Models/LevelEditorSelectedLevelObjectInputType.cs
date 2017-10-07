@@ -1,10 +1,10 @@
 ﻿using IoCPlus;
 
-public class LevelEditorSelectedLevelObjectInputTypeStatus : StatusView {
+public class LevelEditorSelectedLevelObjectTransformTypeStatus : StatusView {
 
     [Inject] private static LevelEditorSelectedLevelObjectInputTypeStatusUpdatedEvent selectedLevelObjectInputTypeStatusUpdatedEvent;
 
-    public static LevelObjectInputType LevelObjectInputType {
+    public static LevelObjectTransformType LevelObjectTransformType {
         get {
             return levelObjectInputType;
         }
@@ -14,6 +14,6 @@ public class LevelEditorSelectedLevelObjectInputTypeStatus : StatusView {
         }
     }
 
-    private static LevelObjectInputType levelObjectInputType;
+    private static LevelObjectTransformType levelObjectInputType;
 
 }

@@ -8,11 +8,11 @@ public class GenerateableLevelObjectNode {
     public GameObject Prefab;
     public bool IsSolid = true; 
     public LevelObjectType LevelObjectType;
-    public List<LevelObjectInputType> AvailableInputTypes = new List<LevelObjectInputType>() {
-        LevelObjectInputType.Translate,
+    public List<LevelObjectTransformType> AvailableInputTypes = new List<LevelObjectTransformType>() {
+        LevelObjectTransformType.Translate,
     };
 
-    public LevelObjectInputType GetDefaultLevelObjectInputType() {
+    public LevelObjectTransformType GetDefaultLevelObjectInputType() {
         return AvailableInputTypes[0];
     }
 
