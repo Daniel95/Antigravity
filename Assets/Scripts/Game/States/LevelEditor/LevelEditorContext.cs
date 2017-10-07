@@ -7,8 +7,6 @@ public class LevelEditorContext : Context {
 
         Bind<GoToLevelEditorStateEvent>();
 
-        Bind<LevelNameStatus>();
-
         On<EnterContextSignal>()
             .GotoState<LevelEditorMainMenuContext>();
 

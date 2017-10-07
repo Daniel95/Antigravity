@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TouchInputView : View {
 
-    public static bool IsPinching { get { return isPinching; } }
+    public static bool IsPinching { get { return startedTouchingAfterPinch; } }
 
     [Inject] private TapEvent tapEvent;
     [Inject] private DragStartedEvent dragStartedEvent;
@@ -32,7 +32,7 @@ public class TouchInputView : View {
     [Inject] private PinchStoppedEvent pinchStoppedEvent;
     [Inject] private TwistEvent twistEvent;
 
-    private static bool isPinching;
+    private static bool startedTouchingAfterPinch;
 
     private int uiLayer;
 
@@ -81,7 +81,7 @@ public class TouchInputView : View {
     }
 
     private void OnDrag(Gesture gesture) {
-        if (isPinching) { return; }
+        if (!startedTouchingAfterPinch) { return; }
         dragMovedEvent.Dispatch(new DragMovedEvent.Parameter() {
             DeltaPosition = gesture.deltaPosition,
             Position = gesture.position
@@ -89,8 +89,8 @@ public class TouchInputView : View {
     }
 
     private void OnDragEnd(Gesture gesture) {
-        if (isPinching) {
-            isPinching = false;
+        if (!startedTouchingAfterPinch) {
+            startedTouchingAfterPinch = true;
             pinchStoppedEvent.Dispatch(gesture.position);
         } else {
             dragStoppedEvent.Dispatch(gesture.position);
@@ -105,7 +105,7 @@ public class TouchInputView : View {
     }
 
     private void OnSwipe(Gesture gesture) {
-        if (isPinching) { return; }
+        if (!startedTouchingAfterPinch) { return; }
         if (gesture.position == lastSwipePosition) { return; }
 
         swipeMovedEvent.Dispatch(new SwipeMovedEvent.Parameter() {
@@ -134,6 +134,7 @@ public class TouchInputView : View {
 
     private void OnTouchStart(Gesture gesture) {
         touchStartEvent.Dispatch(gesture.position);
+        startedTouchingAfterPinch = true;
         if (gesture.touchCount == 1) {
             singleTouchStartEvent.Dispatch(gesture.position);
         }
@@ -160,16 +161,15 @@ public class TouchInputView : View {
     }
 
     private void OnPinch(Gesture gesture) {
-        if (!isPinching) {
-            isPinching = true;
+        if (startedTouchingAfterPinch) {
             dragStoppedEvent.Dispatch(gesture.position);
             pinchStartedEvent.Dispatch(gesture.position);
         }
+        startedTouchingAfterPinch = false;
         pinchMovedEvent.Dispatch(gesture.position, gesture.deltaPinch);
     }
 
     private void OnPinchEnd(Gesture gesture) {
-        isPinching = false;
         pinchStoppedEvent.Dispatch(gesture.position);
     }
 

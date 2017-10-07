@@ -12,16 +12,17 @@ public class LevelEditorLevelObjectContext : Context {
             .Do<AddStatusViewToStatusViewContainerCommand<LevelEditorSelectedLevelObjectInputTypeStatus>>()
             .Do<AddStatusViewToStatusViewContainerCommand<LevelEditorSelectedLevelObjectSectionStatus>>()
             .Do<LevelEditorSetSelectionFieldEnabledCommand>(false)
-            .Do<InstantiateViewInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/Building/LevelObject/GoToTilesStateButtonUI", CanvasLayer.UI)
-            .Do<InstantiateViewInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/Building/LevelObject/LevelObjectButtonGridLayoutGroupUI", CanvasLayer.UI);
+            .Do<InstantiateViewInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/LevelObject/GoToTileStateButtonUI", CanvasLayer.UI)
+            .Do<InstantiateViewInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/LevelObject/LevelObjectButtonGridLayoutGroupUI", CanvasLayer.UI)
+            .Do<LevelEditorInstantiateLevelObjectButtonsCommand>("UI/LevelEditor/Editing/Creating/LevelObject/LevelObjectButtonUI");
 
         On<LeaveContextSignal>()
             .Do<RemoveStatusViewFromStatusViewContainerCommand<LevelEditorSelectedLevelObjectNodeViewStatus>>()
             .Do<RemoveStatusViewFromStatusViewContainerCommand<LevelEditorSelectedLevelObjectInputTypeStatus>>()
             .Do<RemoveStatusViewFromStatusViewContainerCommand<LevelEditorSelectedLevelObjectSectionStatus>>()
             .Do<LevelEditorSetSelectionFieldEnabledCommand>(true)
-            .Do<DestroyChildInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/Building/LevelObject/GoToTilesStateButtonUI", CanvasLayer.UI)
-            .Do<DestroyChildInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/Building/LevelObject/LevelObjectButtonGridLayoutGroupUI", CanvasLayer.UI);
+            .Do<DestroyChildInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/LevelObject/GoToTileStateButtonUI", CanvasLayer.UI)
+            .Do<DestroyChildInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/LevelObject/LevelObjectButtonGridLayoutGroupUI", CanvasLayer.UI);
 
         On<LeaveContextSignal>()
             .Do<LevelEditorResetSelectedLevelObjectSectionStatusCommand>();
@@ -61,18 +62,18 @@ public class LevelEditorLevelObjectContext : Context {
 
         On<LevelEditorSelectedLevelObjectSectionStatusUpdatedEvent>()
             .Do<AbortIfLevelEditorSelectedLevelObjectSectionStatusIsNullCommand>()
-            .Do<AbortIfChildInCanvasLayerDoesExistCommand>("UI/LevelEditor/Editing/Creating/Building/LevelObject/DestroyLevelObjectButtonUI", CanvasLayer.UI)
-            .Do<InstantiateViewInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/Building/LevelObject/DestroyLevelObjectButtonUI", CanvasLayer.UI);
+            .Do<AbortIfChildInCanvasLayerDoesExistCommand>("UI/LevelEditor/Editing/Creating/LevelObject/DestroyLevelObjectButtonUI", CanvasLayer.UI)
+            .Do<InstantiateViewInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/LevelObject/DestroyLevelObjectButtonUI", CanvasLayer.UI);
 
         On<LevelEditorSelectedLevelObjectSectionStatusUpdatedEvent>()
             .Do<AbortIfLevelEditorSelectedLevelObjectSectionStatusIsNotNullCommand>()
-            .Do<AbortIfChildInCanvasLayerDoesNotExistCommand>("UI/LevelEditor/Editing/Creating/Building/LevelObject/DestroyLevelObjectButtonUI", CanvasLayer.UI)
-            .Do<DestroyChildInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/Building/LevelObject/DestroyLevelObjectButtonUI", CanvasLayer.UI);
+            .Do<AbortIfChildInCanvasLayerDoesNotExistCommand>("UI/LevelEditor/Editing/Creating/LevelObject/DestroyLevelObjectButtonUI", CanvasLayer.UI)
+            .Do<DestroyChildInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/LevelObject/DestroyLevelObjectButtonUI", CanvasLayer.UI);
 
         On<LevelEditorSelectedLevelObjectNodeStatusUpdatedEvent>()
             .Do<AbortIfLevelEditorSelectedLevelObjectNodeIsNotNullCommand>()
-            .Do<AbortIfChildInCanvasLayerDoesNotExistCommand>("UI/LevelEditor/Editing/Creating/Building/LevelObject/DestroyLevelObjectButtonUI", CanvasLayer.UI)
-            .Do<DestroyChildInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/Building/LevelObject/SetLevelObjectInputTypeToTranslateButtonUI", CanvasLayer.UI);
+            .Do<AbortIfChildInCanvasLayerDoesNotExistCommand>("UI/LevelEditor/Editing/Creating/LevelObject/DestroyLevelObjectButtonUI", CanvasLayer.UI)
+            .Do<DestroyChildInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/LevelObject/SetLevelObjectInputTypeToTranslateButtonUI", CanvasLayer.UI);
 
     }
 

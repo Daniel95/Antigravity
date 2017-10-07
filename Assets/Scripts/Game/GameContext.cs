@@ -127,6 +127,7 @@ public class GameContext : Context {
         Bind<Ref<ILevelEditorSavingLevelNameInputField>>();
         Bind<Ref<ILevelEditorLevelSelectGridLayoutGroup>>();
         Bind<Ref<IStatusViewContainer>>();
+        Bind<Ref<ILevelEditorLevelObjectButtonGridLayoutGroup>>();
 
         Bind<Refs<ICheckpoint>>();
 
@@ -159,6 +160,7 @@ public class GameContext : Context {
         Bind<WeaponStatus>();
         Bind<PlayerJumpStatus>();
         Bind<PlayerSessionStatsStatus>();
+        Bind<LevelNameStatus>();
         Bind<LevelEditorSelectedGridPositionStatus>();
 
         On<EnterContextSignal>()

@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Button))]
-public class LevelEditorLevelObjectButton : View {
+public class LevelEditorLevelObjectButtonView : View {
 
     [Inject] private LevelEditorLevelObjectButtonClickedEvent levelEditorLevelObjectButtonClickedEvent;
 

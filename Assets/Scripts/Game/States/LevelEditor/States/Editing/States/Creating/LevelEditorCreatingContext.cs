@@ -14,7 +14,7 @@ public class LevelEditorCreatingContext : Context {
             .Do<SetGridOverlaySizeToScreenWorldSizeCommand>()
             .Do<SetGridOverlayOriginToHalfTileSizeCommand>()
             .Do<SetGridOverlayStepToTileSizeCommand>()
-            .GotoState<LevelEditorBuildingContext>();
+            .GotoState<LevelEditorTileContext>();
 
         On<LeaveContextSignal>()
             .Do<RemoveStatusViewFromStatusViewContainerCommand<LevelEditorSelectionFieldStatusView>>()
@@ -26,13 +26,13 @@ public class LevelEditorCreatingContext : Context {
         On<LeaveContextSignal>()
             .Do<DestroyChildInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/GoToNavigatingStateButtonUI", CanvasLayer.UI);
 
-        OnChild<LevelEditorErasingContext, GoToLevelEditorStateEvent>()
-            .Do<AbortIfLevelEditorStateIsNotLevelEditorStateCommand>(LevelEditorState.Building)
-            .GotoState<LevelEditorBuildingContext>();
+        On<GoToLevelEditorStateEvent>()
+        .Do<AbortIfLevelEditorStateIsNotLevelEditorStateCommand>(LevelEditorState.LevelObjects)
+        .GotoState<LevelEditorLevelObjectContext>();
 
-        OnChild<LevelEditorBuildingContext, GoToLevelEditorStateEvent>()
-            .Do<AbortIfLevelEditorStateIsNotLevelEditorStateCommand>(LevelEditorState.Erasing)
-            .GotoState<LevelEditorErasingContext>();
+        On<GoToLevelEditorStateEvent>()
+            .Do<AbortIfLevelEditorStateIsNotLevelEditorStateCommand>(LevelEditorState.Tile)
+            .GotoState<LevelEditorTileContext>();
 
         On<OutsideUITouchStartEvent>()
             .Do<DispatchLevelEditorTouchDownOnGridPositionEventCommand>();

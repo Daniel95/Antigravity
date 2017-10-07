@@ -7,6 +7,8 @@ using UnityEngine.EventSystems;
 
 public class CanvasUIView : View, ICanvasUI {
 
+    public Transform Transform { get { return transform; } }
+
     [Inject] private Ref<ICanvasUI> canvasRef;
 
     [SerializeField] private float dragThresholdInInches = 0.1f;

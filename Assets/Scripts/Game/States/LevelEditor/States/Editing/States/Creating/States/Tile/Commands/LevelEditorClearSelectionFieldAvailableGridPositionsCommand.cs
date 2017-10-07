@@ -1,6 +1,7 @@
 ﻿using IoCPlus;
+using UnityEngine;
 
-public class LevelEditorRemoveTilesInSelectionFieldOnAvailableGridPositionsCommand : Command {
+public class LevelEditorClearSelectionFieldAvailableGridPositionsCommand : Command {
 
     [Inject] private Ref<ILevelEditorTileInput> levelEditorTileInputRef;
 
