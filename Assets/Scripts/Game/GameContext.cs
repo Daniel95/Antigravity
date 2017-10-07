@@ -64,6 +64,7 @@ public class GameContext : Context {
         Bind<LevelEditorSwipeMovedToGridPositionEvent>();
         Bind<LevelEditorLevelObjectButtonClickedEvent>();
         Bind<LevelEditorSelectionFieldEnabledUpdatedEvent>();
+        Bind<LevelEditorSwipeMovedToNewGridPositionEvent>();
         Bind<LevelEditorLevelObjectInputTypeButtonClickedEvent>();
         Bind<LevelEditorLevelObjectDeleteButtonClickedEvent>();
         Bind<LevelEditorSelectedLevelObjectNodeStatusUpdatedEvent>();

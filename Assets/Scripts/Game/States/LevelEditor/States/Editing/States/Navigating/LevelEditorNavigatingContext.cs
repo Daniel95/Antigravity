@@ -15,10 +15,6 @@ public class LevelEditorNavigatingContext : Context {
             .Do<EnableCameraZoomInputCommand>(false)
             .Do<EnableCameraMoveInputCommand>(false);
 
-        On<CameraZoomedEvent>()
-            .Do<AbortIfGridOverlayIsNotShownCommand>()
-            .Do<SetGridOverlaySizeToScreenWorldSizeCommand>();
-
     }
 
 }
