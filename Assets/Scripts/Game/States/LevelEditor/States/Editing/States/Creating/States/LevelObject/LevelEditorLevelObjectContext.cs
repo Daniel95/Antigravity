@@ -32,7 +32,7 @@ public class LevelEditorLevelObjectContext : Context {
             .Do<AbortIfLevelEditorSelectedLevelObjectSectionStatusIsNullCommand>()
             .Do<AbortIfLevelEditorReleasedSinceLevelObjectSpawnStatusIsCommand>(true)
             .Do<LevelEditorDestroyLevelObjectOfSelectedLevelObjectSectionCommand>()
-            .Dispatch<LevelEditorSelectedLevelObjectSectionStatusUpdatedEvent>();
+            .Do<LevelEditorResetSelectedLevelObjectSectionStatusCommand>();
 
         On<PinchStoppedEvent>()
             .Do<LevelEditorSetReleasedSinceLevelObjectSpawnStatusCommand>(true);
@@ -68,8 +68,6 @@ public class LevelEditorLevelObjectContext : Context {
             .Do<LevelEditorUpdateSelectedLevelObjectSectionStatusCommand>()
             .Do<LevelEditorSetReleasedSinceLevelObjectSpawnStatusCommand>(false);
 
-
-
         On<LevelEditorLevelObjectDeleteButtonClickedEvent>()
             .Do<LevelEditorDestroyLevelObjectOfSelectedLevelObjectSectionCommand>()
             .Do<LevelEditorResetSelectedLevelObjectSectionStatusCommand>();
@@ -83,11 +81,6 @@ public class LevelEditorLevelObjectContext : Context {
             .Do<AbortIfLevelEditorSelectedLevelObjectSectionStatusIsNotNullCommand>()
             .Do<AbortIfChildInCanvasLayerDoesNotExistCommand>("UI/LevelEditor/Editing/Creating/LevelObject/DestroyLevelObjectButtonUI", CanvasLayer.UI)
             .Do<DestroyChildInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/LevelObject/DestroyLevelObjectButtonUI", CanvasLayer.UI);
-
-        On<LevelEditorSelectedLevelObjectNodeStatusUpdatedEvent>()
-            .Do<AbortIfLevelEditorSelectedLevelObjectNodeIsNotNullCommand>()
-            .Do<AbortIfChildInCanvasLayerDoesNotExistCommand>("UI/LevelEditor/Editing/Creating/LevelObject/DestroyLevelObjectButtonUI", CanvasLayer.UI)
-            .Do<DestroyChildInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/LevelObject/SetLevelObjectInputTypeToTranslateButtonUI", CanvasLayer.UI);
 
     }
 
