@@ -2,10 +2,10 @@
 
 public class LevelEditorUpdateSelectedLevelObjectTransformTypeStatusCommand : Command {
 
-    [InjectParameter] private LevelObjectTransformType levelEditorLevelObjectInputType;
+    [InjectParameter] private LevelObjectTransformType levelEditorLevelObjectTransformType;
 
     protected override void Execute() {
-        LevelEditorSelectedLevelObjectTransformTypeStatus.LevelObjectTransformType = levelEditorLevelObjectInputType;
+        LevelEditorSelectedLevelObjectTransformTypeStatus.LevelObjectTransformType = levelEditorLevelObjectTransformType;
     }
 
 }

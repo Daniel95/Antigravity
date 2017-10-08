@@ -7,7 +7,7 @@ public class LevelEditorLevelObjectInputTypeButtonView : View {
 
     [SerializeField] private LevelObjectTransformType levelObjectTransformType;
 
-    [Inject] private LevelEditorLevelObjectInputTypeButtonClickedEvent levelEditorLevelObjectInputTypeButtonClickedEvent;
+    [Inject] private LevelEditorLevelObjectTransformTypeButtonClickedEvent levelEditorLevelObjectInputTypeButtonClickedEvent;
 
     private Button button;
 

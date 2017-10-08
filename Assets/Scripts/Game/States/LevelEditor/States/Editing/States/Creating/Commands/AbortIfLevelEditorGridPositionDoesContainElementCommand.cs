@@ -1,7 +1,7 @@
 ﻿using IoCPlus;
 using UnityEngine;
 
-public class AbortIfLevelEditorGridPositionIsOccupiedCommand : Command {
+public class AbortIfLevelEditorGridPositionDoesContainElementCommand : Command {
 
     [InjectParameter] private Vector2 gridPosition;
 

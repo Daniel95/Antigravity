@@ -7,12 +7,15 @@ public class LevelEditorLevelObjectSectionGrid : LevelEditorGridPositions {
     public static LevelEditorLevelObjectSectionGrid Instance { get { return GetInstance(); } }
 
     public Dictionary<Vector2, LevelObjectSection> LevelObjectSectionsGrid { get { return levelObjectSectiongrid; } }
-    public List<LevelObject> LevelObjects { get { return levelObjects; } }
 
     private static LevelEditorLevelObjectSectionGrid instance;
 
     private Dictionary<Vector2, LevelObjectSection> levelObjectSectiongrid = new Dictionary<Vector2, LevelObjectSection>();
-    private List<LevelObject> levelObjects = new List<LevelObject>();
+
+    public LevelObject GetLevelObject(Vector2 gridPosition) {
+        LevelObject levelObject = LevelObject.LevelObjects.Find(x => x.GridPositions.Contains(gridPosition));
+        return levelObject;
+    }
 
     public LevelObjectSection GetLevelObjectSection(Vector2 gridPosition) {
         return levelObjectSectiongrid[gridPosition];

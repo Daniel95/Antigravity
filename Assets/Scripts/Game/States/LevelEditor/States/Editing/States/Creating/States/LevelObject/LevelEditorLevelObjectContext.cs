@@ -41,29 +41,29 @@ public class LevelEditorLevelObjectContext : Context {
             .Do<LevelEditorUpdateSelectedLevelObjectNodeCommand>()
             .Do<LevelEditorUpdateSelectedLevelObjectTransformTypeToLevelObjectNodeTransformTypeCommand>();
 
-        On<LevelEditorLevelObjectInputTypeButtonClickedEvent>()
-            .Do<LevelEditorUpdateSelectedLevelObjectTransformTypeStatusCommand>();
+        On<LevelEditorSelectedLevelObjectSectionStatusUpdatedEvent>()
+            .Do<AbortIfLevelEditorSelectedLevelObjectSectionStatusIsNullCommand>()
+            .Do<LevelEditorUpdateSelectedLevelObjectTransformTypeToSelectedLevelObjectSectionTransformTypeCommand>();
 
-        On<LevelEditorSelectedLevelObjectInputTypeStatusUpdatedEvent>()
+        On<LevelEditorSelectedLevelObjectTransformTypeStatusUpdatedEvent>()
             .Do<AbortIfLevelEditorSelectedLevelObjectTransformTypeIsNotCommand>(LevelObjectTransformType.Translate)
             .GotoState<LevelEditorLevelObjectTranslateContext>();
 
-        On<LevelEditorSelectedLevelObjectInputTypeStatusUpdatedEvent>()
+        On<LevelEditorSelectedLevelObjectTransformTypeStatusUpdatedEvent>()
             .Do<AbortIfLevelEditorSelectedLevelObjectTransformTypeIsNotCommand>(LevelObjectTransformType.Scale)
             .GotoState<LevelEditorLevelObjectScaleContext>();
 
-        On<LevelEditorSelectedLevelObjectInputTypeStatusUpdatedEvent>()
+        On<LevelEditorSelectedLevelObjectTransformTypeStatusUpdatedEvent>()
             .Do<AbortIfLevelEditorSelectedLevelObjectTransformTypeIsNotCommand>(LevelObjectTransformType.Rotate)
             .GotoState<LevelEditorLevelObjectRotateContext>();
 
-        On<LevelEditorTouchDownOnGridPositionEvent>()
-            .Do<AbortIfLevelEditorGridPositionDoesNotContainLevelObjectSectionCommand>()
+        On<LevelEditorTouchDownOnLevelObjectEvent>()
             .Do<LevelEditorUpdateSelectedLevelObjectSectionStatusCommand>();
 
         On<LevelEditorTouchDownOnGridPositionEvent>()
             .Do<AbortIfLevelEditorReleasedSinceLevelObjectSpawnStatusIsCommand>(false)
             .Do<AbortIfLevelEditorSelectedLevelObjectNodeIsNullCommand>()
-            .Do<AbortIfLevelEditorGridPositionIsOccupiedCommand>()
+            .Do<AbortIfLevelEditorGridPositionDoesContainElementCommand>()
             .Do<LevelEditorInstantiateLevelObjectAtGridPositionCommand>()
             .Do<LevelEditorUpdateSelectedLevelObjectSectionStatusCommand>()
             .Do<LevelEditorSetReleasedSinceLevelObjectSpawnStatusCommand>(false);
@@ -81,6 +81,7 @@ public class LevelEditorLevelObjectContext : Context {
             .Do<AbortIfLevelEditorSelectedLevelObjectSectionStatusIsNotNullCommand>()
             .Do<AbortIfChildInCanvasLayerDoesNotExistCommand>("UI/LevelEditor/Editing/Creating/LevelObject/DestroyLevelObjectButtonUI", CanvasLayer.UI)
             .Do<DestroyChildInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/LevelObject/DestroyLevelObjectButtonUI", CanvasLayer.UI);
+
 
     }
 

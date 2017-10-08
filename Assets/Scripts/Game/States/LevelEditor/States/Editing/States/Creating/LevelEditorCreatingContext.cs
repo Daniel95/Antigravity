@@ -22,7 +22,7 @@ public class LevelEditorCreatingContext : Context {
             .Do<DestroyChildInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/GoToNavigatingStateButtonUI", CanvasLayer.UI);
 
         On<GoToLevelEditorStateEvent>()
-            .Do<AbortIfLevelEditorStateIsNotLevelEditorStateCommand>(LevelEditorState.LevelObjects)
+            .Do<AbortIfLevelEditorStateIsNotLevelEditorStateCommand>(LevelEditorState.LevelObject)
             .GotoState<LevelEditorLevelObjectContext>();
 
         On<GoToLevelEditorStateEvent>()
@@ -34,6 +34,21 @@ public class LevelEditorCreatingContext : Context {
 
         On<SwipeMovedEvent>()
             .Do<DispatchLevelEditorSwipeMovedToGridPositionEventCommand>();
+
+        On<LevelEditorTouchDownOnGridPositionEvent>()
+            .Do<AbortIfLevelEditorGridPositionDoesNotContainLevelObjectSectionCommand>()
+            .Do<DispatchLevelEditorTouchDownOnLevelObjectEventCommand>();
+
+        On<LevelEditorTouchDownOnGridPositionEvent>()
+            .Do<AbortIfLevelEditorGridPositionDoesNotContainTileCommand>()
+            .Do<AbortIfContextStateIsCommand<LevelEditorTileContext>>()
+            .Do<LevelEditorStartSelectionFieldAtGridPositionCommand>()
+            .GotoState<LevelEditorTileContext>();
+
+        On<LevelEditorTouchDownOnLevelObjectEvent>()
+            .Do<AbortIfContextStateIsCommand<LevelEditorLevelObjectContext>>()
+            .GotoState<LevelEditorLevelObjectContext>()
+            .Do<LevelEditorUpdateSelectedLevelObjectSectionStatusCommand>();
 
         On<LevelEditorSwipeMovedToGridPositionEvent>()
             .Do<AbortIfLevelEditorGridPositionIsTheSameAsSelectedGridPositionCommand>()

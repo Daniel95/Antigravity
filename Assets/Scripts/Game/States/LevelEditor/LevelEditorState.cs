@@ -8,7 +8,7 @@
     Saving,
     BuildingTile,
     Tile,
-    LevelObjects,
+    LevelObject,
     ErasingTile,
     LevelOverView,
     LevelSelected,

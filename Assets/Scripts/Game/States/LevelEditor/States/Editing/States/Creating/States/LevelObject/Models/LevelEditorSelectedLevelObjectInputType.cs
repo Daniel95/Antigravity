@@ -2,18 +2,18 @@
 
 public class LevelEditorSelectedLevelObjectTransformTypeStatus : StatusView {
 
-    [Inject] private static LevelEditorSelectedLevelObjectInputTypeStatusUpdatedEvent selectedLevelObjectInputTypeStatusUpdatedEvent;
+    [Inject] private static LevelEditorSelectedLevelObjectTransformTypeStatusUpdatedEvent selectedLevelObjectTransformTypeStatusUpdatedEvent;
 
     public static LevelObjectTransformType LevelObjectTransformType {
         get {
-            return levelObjectInputType;
+            return levelObjectTransformType;
         }
         set {
-            levelObjectInputType = value;
-            selectedLevelObjectInputTypeStatusUpdatedEvent.Dispatch();
+            levelObjectTransformType = value;
+            selectedLevelObjectTransformTypeStatusUpdatedEvent.Dispatch();
         }
     }
 
-    private static LevelObjectTransformType levelObjectInputType;
+    private static LevelObjectTransformType levelObjectTransformType;
 
 }
