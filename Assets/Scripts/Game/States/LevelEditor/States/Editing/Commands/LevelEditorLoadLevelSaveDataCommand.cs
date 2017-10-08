@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class LevelEditorLoadLevelSaveDataCommand : Command {
 
+    [Inject] private LevelContainerStatus levelContainerStatus;
     [Inject] private LevelNameStatus levelNameStatus;
 
     protected override void Execute() {
@@ -22,7 +23,7 @@ public class LevelEditorLoadLevelSaveDataCommand : Command {
             GenerateableLevelObjectNode levelEditorLevelObjectEditorNode = GenerateableLevelObjectLibrary.GetNode(levelObjectType);
             GameObject prefab = levelEditorLevelObjectEditorNode.Prefab;
             Vector2 gameObjectPosition = levelObjectSaveData.GameObjectPosition;
-            GameObject levelObjectGameObject = Object.Instantiate(prefab, gameObjectPosition, new Quaternion());
+            GameObject levelObjectGameObject = Object.Instantiate(prefab, gameObjectPosition, new Quaternion(), levelContainerStatus.LevelContainer);
 
             levelObject.Initiate(levelObjectSaveData.GridPositions, levelObjectGameObject, levelObjectType);
         }

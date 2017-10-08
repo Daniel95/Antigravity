@@ -164,6 +164,7 @@ public class GameContext : Context {
         Bind<LevelNameStatus>();
         Bind<LevelEditorSelectedGridPositionStatus>();
         Bind<LevelEditorReleasedSinceLevelObjectSpawnStatus>();
+        Bind<LevelContainerStatus>();
 
         On<EnterContextSignal>()
             .InstantiateView<ApplicationView>()
@@ -191,11 +192,11 @@ public class GameContext : Context {
 
         OnChild<LoadingContext, GoToSceneCompletedEvent>()
             .Do<AbortIfSceneIsNotSceneCommand>(Scenes.TestLvl)
-            .GotoState<LevelContext>();
+            .GotoState<GameLevelContext>();
 
         OnChild<LoadingContext, GoToSceneCompletedEvent>()
             .Do<AbortIfSceneIsNotALevelCommand>()
-            .GotoState<LevelContext>();
+            .GotoState<GameLevelContext>();
 
         On<GoToCurrentSceneEvent>()
             .Do<SetNextSceneToCurrentSceneCommand>()

@@ -11,7 +11,6 @@ public class LevelContext : Context {
         On<EnterContextSignal>()
             .Do<ResetPlayerSessionStatsStatusLevelDeaths>()
             .Do<SetCheckpointToNullCommand>()
-            .AddContext<LevelUIContext>()
             .GotoState<PlayerContext>()
             .Do<SetFollowCameraTargetCommand>()
             .Do<EnableFollowCameraCommand>(true);
@@ -21,6 +20,7 @@ public class LevelContext : Context {
             .Do<SetCameraBoundsCommand>();
 
         On<LeaveContextSignal>()
+            .Do<DestroyPlayerCommand>()
             .Do<EnableFollowCameraCommand>(false);
 
         OnChild<PlayerContext, PlayerRespawnEvent>()

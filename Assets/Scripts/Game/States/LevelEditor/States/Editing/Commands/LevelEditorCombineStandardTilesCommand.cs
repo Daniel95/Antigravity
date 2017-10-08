@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class LevelEditorCombineStandardTilesCommand : Command {
 
+    [Inject] private LevelContainerStatus levelContainerStatus;
+
     private const string LEVEL_COLLIDER_PATH = "LevelEditor/LevelCollider";
     private const string LEVEL_VISUAL_PATH = "LevelEditor/LevelVisual";
 
@@ -11,7 +13,7 @@ public class LevelEditorCombineStandardTilesCommand : Command {
         GameObject levelColliderPrefab = Resources.Load<GameObject>(LEVEL_COLLIDER_PATH);
         GameObject levelVisualPrefab = Resources.Load<GameObject>(LEVEL_VISUAL_PATH);
 
-        GameObject levelColliderGameObject = Object.Instantiate(levelColliderPrefab);
+        GameObject levelColliderGameObject = Object.Instantiate(levelColliderPrefab, levelContainerStatus.LevelContainer);
 
         Dictionary<Vector2, Tile> grid = LevelEditorTileGrid.Instance.TileGrid;
 
@@ -25,7 +27,6 @@ public class LevelEditorCombineStandardTilesCommand : Command {
 
         List<SpriteRenderer> spriteRenderersToCombine = new List<SpriteRenderer>();
         List<BoxCollider2D> boxCollidersToCombine = new List<BoxCollider2D>();
-
 
         foreach (GameObject gameObjectColliderToCombine in gameObjectCollidersToCombine) {
             BoxCollider2D boxColliderToCombine = gameObjectColliderToCombine.GetComponent<BoxCollider2D>();

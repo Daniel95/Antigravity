@@ -12,13 +12,13 @@ public class StatusViewContainer : View, IStatusViewContainer {
 
     public void AddStatusView<T>() where T : StatusView {
         string name = typeof(T).ToString();
-        GameObject gameObject = new GameObject() {
+        GameObject gameObjectStatusViewGameObject = new GameObject() {
             name = name,
         };
-        gameObject.transform.SetParent(transform);
-        T statusView = gameObject.AddComponent<T>();
+        gameObjectStatusViewGameObject.transform.SetParent(transform);
+        T statusView = gameObjectStatusViewGameObject.AddComponent<T>();
         statusViewsByKey.Add(name, statusView);
-        context.InstantiateView(statusView);
+        context.AddView(statusView);
     }
 
     public void RemoveStatusView<T>() where T : StatusView {

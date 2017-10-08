@@ -14,7 +14,7 @@ public class LevelEditorLevelSelectContext : Context {
             .Do<DestroyChildInCanvasLayerCommand>("UI/LevelEditor/LevelSelect/LevelEditorLevelSelectGridLayoutGroup", CanvasLayer.UI);
 
         OnChild<LevelEditorLevelSelectedContext, GoToLevelEditorStateEvent>()
-            .Do<AbortIfLevelEditorStateIsNotLevelEditorStateCommand>(LevelEditorState.LevelOverView)
+            .Do<AbortIfLevelEditorStateIsNotLevelEditorStateCommand>(LevelEditorState.LevelOverview)
             .GotoState<LevelEditorLevelOverViewContext>();
 
         OnChild<LevelEditorLevelOverViewContext, GoToLevelEditorStateEvent>()

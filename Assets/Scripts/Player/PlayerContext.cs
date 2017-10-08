@@ -58,7 +58,6 @@ public class PlayerContext : Context {
             .Do<PlayerBounceCommand>()
             .Do<PlayerPointToCeiledVelocityDirectionCommand>();
 
-
         On<PlayerResetSavedCollisionsEvent>()
             .Do<PlayerResetCollisionsCommand>();
 

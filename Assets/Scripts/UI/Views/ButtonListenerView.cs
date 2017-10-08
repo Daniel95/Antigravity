@@ -1,18 +1,21 @@
-﻿using UnityEngine;
+﻿using IoCPlus;
+using UnityEngine;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Button))]
-public class ButtonListenerView : ListenerView {
+public abstract class ButtonListenerView : View {
 
     private Button button;
 
+    protected abstract void OnButtonClick();
+
     private void OnEnable() {
         GetButton();
-        button.onClick.AddListener(DispatchSignal);
+        button.onClick.AddListener(OnButtonClick);
     }
 
     private void OnDisable() {
-        button.onClick.RemoveListener(DispatchSignal);
+        button.onClick.RemoveListener(OnButtonClick);
     }
 
     private Button GetButton() {

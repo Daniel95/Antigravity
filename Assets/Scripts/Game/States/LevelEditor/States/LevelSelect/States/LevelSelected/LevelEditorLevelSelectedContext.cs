@@ -15,6 +15,9 @@ public class LevelEditorLevelSelectedContext : Context {
             .Do<DestroyChildInCanvasLayerCommand>("UI/LevelEditor/LevelSelect/LevelSelected/GoToLevelEditorTestingStateButtonUI", CanvasLayer.UI)
             .Do<DestroyChildInCanvasLayerCommand>("UI/LevelEditor/LevelSelect/LevelSelected/GoToLevelEditorEditingStateButtonUI", CanvasLayer.UI);
 
+        On<GoToLevelEditorLevelOverviewStateButtonClickedEvent>()
+            .Do<LevelEditorClearLevelNameStatusCommand>()
+            .Do<DispatchGoToLevelEditorStateEventCommand>(LevelEditorState.LevelOverview);
 
     }
 

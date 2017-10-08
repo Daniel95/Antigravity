@@ -10,7 +10,7 @@
     Tile,
     LevelObject,
     ErasingTile,
-    LevelOverView,
+    LevelOverview,
     LevelSelected,
     Testing,
 
