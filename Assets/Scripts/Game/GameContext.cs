@@ -85,18 +85,20 @@ public class GameContext : Context {
         Bind<OutsideUITouchStartEvent>();
         Bind<TouchUpEvent>();
         Bind<UITouchUpEvent>();
-        Bind<SingleTouchDownEvent>();
-        Bind<SingleTouchStartEvent>();
-        Bind<SingleTouchUpEvent>();
-        Bind<SingleTouchCancelEvent>();
-        Bind<MultiTouchStartEvent>();
-        Bind<MultiTouchDownEvent>();
-        Bind<MultiTouchUpEvent>();
+        Bind<TouchDown1FingerEvent>();
+        Bind<TouchStart1FingerEvent>();
+        Bind<TouchUp1FingerEvent>();
+        Bind<Touch1FingerCancelEvent>();
+        Bind<TouchStart2FingersEvent>();
+        Bind<TouchDown2FingersEvent>();
+        Bind<TouchUp2FingersEvent>();
+        Bind<SwipeMoved2FingersEvent>();
+        Bind<SwipeEnd2FingersEvent>();
         Bind<PinchStartedEvent>();
         Bind<PinchMovedEvent>();
         Bind<PinchStoppedEvent>();
         Bind<EmptyTapEvent>();
-        Bind<StartIdleEvent>();
+        Bind<IdleStartEvent>();
 
         Bind<CollisionEnter2DEvent>();
         Bind<CollisionStay2DEvent>();
@@ -119,6 +121,7 @@ public class GameContext : Context {
         Bind<Ref<IWeapon>>();
         Bind<Ref<IHook>>();
         Bind<Ref<IHookProjectile>>();
+        Bind<Ref<ITouchInput>>();
         Bind<Ref<IPCInput>>();
         Bind<Ref<IMobileInput>>();
         Bind<Ref<IGrapplingHook>>();

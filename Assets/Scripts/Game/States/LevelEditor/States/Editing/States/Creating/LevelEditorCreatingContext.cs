@@ -9,6 +9,8 @@ public class LevelEditorCreatingContext : Context {
             .Do<InstantiateViewInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/GoToNavigatingStateButtonUI", CanvasLayer.UI)
             .Do<ShowGridOverlayCommand>(true)
             .Do<EnableCameraZoomInputCommand>(true)
+            .Do<EnableCameraMoveInputCommand>(true)
+            .Do<SetCameraMoveInputTypeCommand>(CameraMoveInputType.Swipe2Fingers)
             .Do<SetGridOverlaySizeToScreenWorldSizeCommand>()
             .Do<SetGridOverlayOriginToHalfTileSizeCommand>()
             .Do<SetGridOverlayStepToTileSizeCommand>()
@@ -16,7 +18,9 @@ public class LevelEditorCreatingContext : Context {
 
         On<LeaveContextSignal>()
             .Do<ShowGridOverlayCommand>(false)
-            .Do<EnableCameraZoomInputCommand>(false);
+            .Do<EnableCameraZoomInputCommand>(false)
+            .Do<EnableCameraMoveInputCommand>(false)
+            .Do<SetCameraMoveInputTypeCommand>(CameraMoveInputType.Swipe);
 
         On<LeaveContextSignal>()
             .Do<DestroyChildInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/GoToNavigatingStateButtonUI", CanvasLayer.UI);
@@ -30,15 +34,15 @@ public class LevelEditorCreatingContext : Context {
             .GotoState<LevelEditorTileContext>();
 
         On<OutsideUITouchStartEvent>()
-            .Do<AbortIfMultiTouchedAfterIdleCommand>()
+            .Do<AbortIfTouchStarted2FingersAfterIdleCommand>()
             .Do<DispatchLevelEditorTouchDownOnGridPositionEventCommand>();
 
         On<SwipeMovedEvent>()
-            .Do<AbortIfMultiTouchedAfterIdleCommand>()
+            .Do<AbortIfTouchStarted2FingersAfterIdleCommand>()
             .Do<DispatchLevelEditorSwipeMovedToGridPositionEventCommand>();
 
         On<TouchUpEvent>()
-            .Do<AbortIfMultiTouchedAfterIdleCommand>()
+            .Do<AbortIfTouchStarted2FingersAfterIdleCommand>()
             .Do<DispatchLevelEditorTouchUpOnGridPositionEventCommand>();
 
         On<LevelEditorTouchDownOnGridPositionEvent>()

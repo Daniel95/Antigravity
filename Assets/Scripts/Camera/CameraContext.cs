@@ -14,7 +14,13 @@ public class CameraContext : Context {
 
         On<SwipeMovedEvent>()
             .Do<AbortIfCameraMoveInputIsFalseCommand>()
+            .Do<AbortIfCameraMoveInputTypeIsNotCommand>(CameraMoveInputType.Swipe)
             .Do<SwipeCameraCommand>();
+
+        On<SwipeMoved2FingersEvent>()
+            .Do<AbortIfCameraMoveInputIsFalseCommand>()
+            .Do<AbortIfCameraMoveInputTypeIsNotCommand>(CameraMoveInputType.Swipe2Fingers)
+            .Do<Swipe2FingersCameraCommand>();
 
         On<PinchMovedEvent>()
             .Do<AbortIfCameraZoomInputIsFalseCommand>()

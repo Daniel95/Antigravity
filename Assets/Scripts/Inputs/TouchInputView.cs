@@ -2,9 +2,13 @@ using HedgehogTeam.EasyTouch;
 using IoCPlus;
 using UnityEngine;
 
-public class TouchInputView : View {
+public class TouchInputView : View, ITouchInput {
 
-    public static bool MultiTouchedAfterIdle { get { return multiTouchedAfterIdle; } }
+    public bool TouchStarted2FingersAfterIdle { get { return touchStarted2FingersAfterIdle; } }
+    public bool Pinching { get { return pinching; } }
+    public bool Idling { get { return idling; } }
+
+    [Inject] private Ref<ITouchInput> touchInputViewRef;
 
     [Inject] private TapEvent tapEvent;
     [Inject] private DragStartedEvent dragStartedEvent;
@@ -20,28 +24,35 @@ public class TouchInputView : View {
     [Inject] private OutsideUITouchStartEvent outsideUITouchStartEvent;
     [Inject] private TouchUpEvent touchUpEvent;
     [Inject] private UITouchUpEvent uiTouchUpEvent;
-    [Inject] private SingleTouchDownEvent singleTouchDownEvent;
-    [Inject] private SingleTouchStartEvent singleTouchStartEvent;
-    [Inject] private SingleTouchUpEvent singleTouchUpEvent;
-    [Inject] private SingleTouchCancelEvent singleTouchCancelEvent;
-    [Inject] private MultiTouchStartEvent multiTouchStartEvent;
-    [Inject] private MultiTouchDownEvent multiTouchDownEvent;
-    [Inject] private MultiTouchUpEvent multiTouchUpEvent;
+    [Inject] private TouchDown1FingerEvent touchDown1FingerEvent;
+    [Inject] private TouchStart1FingerEvent touchStart1FingerEvent;
+    [Inject] private TouchUp1FingerEvent touchUp1FingerEvent;
+    [Inject] private Touch1FingerCancelEvent touch1FingerCancelEvent;
+    [Inject] private TouchStart2FingersEvent touchStart2FingersEvent;
+    [Inject] private TouchDown2FingersEvent touchDown2FingersEvent;
+    [Inject] private TouchUp2FingersEvent touchUp2FingersEvent;
+    [Inject] private SwipeMoved2FingersEvent swipeMoved2FingersEvent;
+    [Inject] private SwipeEnd2FingersEvent swipeEnd2FingersEvent;
     [Inject] private PinchStartedEvent pinchStartedEvent;
     [Inject] private PinchMovedEvent pinchMovedEvent;
     [Inject] private PinchStoppedEvent pinchStoppedEvent;
     [Inject] private TwistEvent twistEvent;
-    [Inject] private StartIdleEvent startIdleEvent;
+    [Inject] private IdleStartEvent idleStartEvent;
 
-    private static bool multiTouchedAfterIdle;
+    private static bool instance;
+
+    private static bool touchStarted2FingersAfterIdle;
     private bool pinching;
     private bool idling;
 
     private int uiLayer;
 
     private Vector2 lastSwipePosition;
+    private Vector2 lastSwipe2FingersPosition;
 
     public override void Initialize() {
+        touchInputViewRef.Set(this);
+
         EasyTouch.On_DragStart += OnDragStart;
         EasyTouch.On_Drag += OnDrag;
         EasyTouch.On_DragEnd += OnDragEnd;
@@ -54,10 +65,12 @@ public class TouchInputView : View {
         EasyTouch.On_Pinch += OnPinch;
         EasyTouch.On_PinchEnd += OnPinchEnd;
         EasyTouch.On_UIElementTouchUp += EasyTouch_On_UIElementTouchUp;
-        EasyTouch.On_TouchStart2Fingers += On_TouchStart2Fingers;
-        EasyTouch.On_TouchDown2Fingers += On_TouchDown2Fingers;
-        EasyTouch.On_TouchUp2Fingers += On_TouchUp2Fingers;
-        EasyTouch.On_Twist += On_Twist;
+        EasyTouch.On_TouchStart2Fingers += OnTouchStart2Fingers;
+        EasyTouch.On_TouchDown2Fingers += OnTouchDown2Fingers;
+        EasyTouch.On_TouchUp2Fingers += OnTouchUp2Fingers;
+        EasyTouch.On_Twist += OnTwist;
+        EasyTouch.On_Swipe2Fingers += OnSwipe2Fingers;
+        EasyTouch.On_SwipeEnd2Fingers += OnSwipeEnd2Fingers;
     }
 
     public override void Dispose(){
@@ -73,10 +86,12 @@ public class TouchInputView : View {
         EasyTouch.On_Pinch -= OnPinch;
         EasyTouch.On_PinchEnd -= OnPinchEnd;
         EasyTouch.On_UIElementTouchUp -= EasyTouch_On_UIElementTouchUp;
-        EasyTouch.On_TouchStart2Fingers -= On_TouchStart2Fingers;
-        EasyTouch.On_TouchDown2Fingers -= On_TouchDown2Fingers;
-        EasyTouch.On_TouchUp2Fingers -= On_TouchUp2Fingers;
-        EasyTouch.On_Twist -= On_Twist;
+        EasyTouch.On_TouchStart2Fingers -= OnTouchStart2Fingers;
+        EasyTouch.On_TouchDown2Fingers -= OnTouchDown2Fingers;
+        EasyTouch.On_TouchUp2Fingers -= OnTouchUp2Fingers;
+        EasyTouch.On_Twist -= OnTwist;
+        EasyTouch.On_Swipe2Fingers -= OnSwipe2Fingers;
+        EasyTouch.On_SwipeEnd2Fingers -= OnSwipeEnd2Fingers;
     }
 
     private void OnDragStart(Gesture gesture) {
@@ -140,11 +155,10 @@ public class TouchInputView : View {
 
         touchStartEvent.Dispatch(gesture.position);
         if (gesture.touchCount == 1) {
-            singleTouchStartEvent.Dispatch(gesture.position);
+            touchStart1FingerEvent.Dispatch(gesture.position);
         }
         if (gesture.touchCount >= 2) {
-            singleTouchCancelEvent.Dispatch();
-            multiTouchedAfterIdle = true;
+            touch1FingerCancelEvent.Dispatch();
         }
         if (gesture.pickedObject == null || gesture.pickedObject.layer != uiLayer) {
             outsideUITouchStartEvent.Dispatch(gesture.position);
@@ -154,7 +168,7 @@ public class TouchInputView : View {
     private void OnTouchDown(Gesture gesture) {
         touchDownEvent.Dispatch(gesture.position);
         if (gesture.touchCount == 1) {
-            singleTouchDownEvent.Dispatch(gesture.position);
+            touchDown1FingerEvent.Dispatch(gesture.position);
         }
     }
 
@@ -165,7 +179,7 @@ public class TouchInputView : View {
         }
         touchUpEvent.Dispatch(gesture.position);
         if (gesture.touchCount == 1) {
-            singleTouchUpEvent.Dispatch(gesture.position);
+            touchUp1FingerEvent.Dispatch(gesture.position);
         }
     }
 
@@ -186,21 +200,36 @@ public class TouchInputView : View {
         uiTouchUpEvent.Dispatch(gesture.position);
     }
     
-    private void On_Twist(Gesture gesture) {
+    private void OnTwist(Gesture gesture) {
         twistEvent.Dispatch(gesture.twistAngle);
     }
 
-    private void On_TouchStart2Fingers(Gesture gesture) {
-        multiTouchStartEvent.Dispatch(gesture.position);
+    private void OnTouchStart2Fingers(Gesture gesture) {
+        touchStart2FingersEvent.Dispatch(gesture.position);
+        touchStarted2FingersAfterIdle = true;
     }
 
-    private void On_TouchDown2Fingers(Gesture gesture) {
-        multiTouchDownEvent.Dispatch(gesture.position);
-
+    private void OnTouchDown2Fingers(Gesture gesture) {
+        touchDown2FingersEvent.Dispatch(gesture.position);
     }
 
-    private void On_TouchUp2Fingers(Gesture gesture) {
-        multiTouchUpEvent.Dispatch(gesture.position);
+    private void OnTouchUp2Fingers(Gesture gesture) {
+        touchUp2FingersEvent.Dispatch(gesture.position);
+    }
+
+    private void OnSwipe2Fingers(Gesture gesture) {
+        if (gesture.position == lastSwipe2FingersPosition) { return; }
+
+        swipeMoved2FingersEvent.Dispatch(new SwipeMoved2FingersEvent.Parameter() {
+            DeltaPosition = gesture.deltaPosition,
+            Position = gesture.position
+        });
+
+        lastSwipe2FingersPosition = gesture.position;
+    }
+
+    private void OnSwipeEnd2Fingers(Gesture gesture) {
+        swipeEnd2FingersEvent.Dispatch(gesture.swipeVector);
     }
 
     private void Awake() {
@@ -209,8 +238,8 @@ public class TouchInputView : View {
 
     private void Update() {
         if (!idling && EasyTouch.GetTouchCount() <= 0) {
-            startIdleEvent.Dispatch();
-            multiTouchedAfterIdle = false;
+            idleStartEvent.Dispatch();
+            touchStarted2FingersAfterIdle = false;
             idling = true;
         }
     }
