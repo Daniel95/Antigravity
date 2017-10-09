@@ -24,8 +24,7 @@ public class LevelEditorLevelObjectContext : Context {
         On<LeaveContextSignal>()
             .Do<LevelEditorResetSelectedLevelObjectSectionStatusCommand>();
 
-        On<TouchUpEvent>()
-            .Do<AbortIfFingerTouchCountIsHigherThenCommand>(1)
+        On<LevelEditorTouchUpOnGridPositionEvent>()
             .Do<LevelEditorSetReleasedSinceLevelObjectSpawnStatusCommand>(true);
 
         On<PinchStartedEvent>()

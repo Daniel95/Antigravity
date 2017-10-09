@@ -96,6 +96,7 @@ public class GameContext : Context {
         Bind<PinchMovedEvent>();
         Bind<PinchStoppedEvent>();
         Bind<EmptyTapEvent>();
+        Bind<StartIdleEvent>();
 
         Bind<CollisionEnter2DEvent>();
         Bind<CollisionStay2DEvent>();

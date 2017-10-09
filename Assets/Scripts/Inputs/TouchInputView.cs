@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TouchInputView : View {
 
-    public static bool IsPinching { get { return startedTouchingAfterPinch; } }
+    public static bool MultiTouchedAfterIdle { get { return multiTouchedAfterIdle; } }
 
     [Inject] private TapEvent tapEvent;
     [Inject] private DragStartedEvent dragStartedEvent;
@@ -31,8 +31,11 @@ public class TouchInputView : View {
     [Inject] private PinchMovedEvent pinchMovedEvent;
     [Inject] private PinchStoppedEvent pinchStoppedEvent;
     [Inject] private TwistEvent twistEvent;
+    [Inject] private StartIdleEvent startIdleEvent;
 
-    private static bool startedTouchingAfterPinch;
+    private static bool multiTouchedAfterIdle;
+    private bool pinching;
+    private bool idling;
 
     private int uiLayer;
 
@@ -81,7 +84,8 @@ public class TouchInputView : View {
     }
 
     private void OnDrag(Gesture gesture) {
-        if (!startedTouchingAfterPinch) { return; }
+        if (pinching) { return; }
+
         dragMovedEvent.Dispatch(new DragMovedEvent.Parameter() {
             DeltaPosition = gesture.deltaPosition,
             Position = gesture.position
@@ -89,8 +93,8 @@ public class TouchInputView : View {
     }
 
     private void OnDragEnd(Gesture gesture) {
-        if (!startedTouchingAfterPinch) {
-            startedTouchingAfterPinch = true;
+        if (pinching) {
+            pinching = false;
             pinchStoppedEvent.Dispatch(gesture.position);
         } else {
             dragStoppedEvent.Dispatch(gesture.position);
@@ -105,7 +109,6 @@ public class TouchInputView : View {
     }
 
     private void OnSwipe(Gesture gesture) {
-        if (!startedTouchingAfterPinch) { return; }
         if (gesture.position == lastSwipePosition) { return; }
 
         swipeMovedEvent.Dispatch(new SwipeMovedEvent.Parameter() {
@@ -133,13 +136,15 @@ public class TouchInputView : View {
     }
 
     private void OnTouchStart(Gesture gesture) {
+        idling = false;
+
         touchStartEvent.Dispatch(gesture.position);
-        startedTouchingAfterPinch = true;
         if (gesture.touchCount == 1) {
             singleTouchStartEvent.Dispatch(gesture.position);
         }
         if (gesture.touchCount >= 2) {
             singleTouchCancelEvent.Dispatch();
+            multiTouchedAfterIdle = true;
         }
         if (gesture.pickedObject == null || gesture.pickedObject.layer != uiLayer) {
             outsideUITouchStartEvent.Dispatch(gesture.position);
@@ -154,6 +159,10 @@ public class TouchInputView : View {
     }
 
     private void OnTouchUp(Gesture gesture) {
+        if(pinching) {
+            pinching = false;
+            pinchStoppedEvent.Dispatch(gesture.position);
+        }
         touchUpEvent.Dispatch(gesture.position);
         if (gesture.touchCount == 1) {
             singleTouchUpEvent.Dispatch(gesture.position);
@@ -161,11 +170,11 @@ public class TouchInputView : View {
     }
 
     private void OnPinch(Gesture gesture) {
-        if (startedTouchingAfterPinch) {
+        if (!pinching) {
             dragStoppedEvent.Dispatch(gesture.position);
             pinchStartedEvent.Dispatch(gesture.position);
+            pinching = true;
         }
-        startedTouchingAfterPinch = false;
         pinchMovedEvent.Dispatch(gesture.position, gesture.deltaPinch);
     }
 
@@ -196,5 +205,13 @@ public class TouchInputView : View {
 
     private void Awake() {
         uiLayer = LayerMask.NameToLayer("UI");
+    }
+
+    private void Update() {
+        if (!idling && EasyTouch.GetTouchCount() <= 0) {
+            startIdleEvent.Dispatch();
+            multiTouchedAfterIdle = false;
+            idling = true;
+        }
     }
 }

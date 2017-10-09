@@ -30,10 +30,16 @@ public class LevelEditorCreatingContext : Context {
             .GotoState<LevelEditorTileContext>();
 
         On<OutsideUITouchStartEvent>()
+            .Do<AbortIfMultiTouchedAfterIdleCommand>()
             .Do<DispatchLevelEditorTouchDownOnGridPositionEventCommand>();
 
         On<SwipeMovedEvent>()
+            .Do<AbortIfMultiTouchedAfterIdleCommand>()
             .Do<DispatchLevelEditorSwipeMovedToGridPositionEventCommand>();
+
+        On<TouchUpEvent>()
+            .Do<AbortIfMultiTouchedAfterIdleCommand>()
+            .Do<DispatchLevelEditorTouchUpOnGridPositionEventCommand>();
 
         On<LevelEditorTouchDownOnGridPositionEvent>()
             .Do<AbortIfLevelEditorGridPositionDoesNotContainLevelObjectSectionCommand>()

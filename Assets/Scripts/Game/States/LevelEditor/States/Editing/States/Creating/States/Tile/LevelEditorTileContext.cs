@@ -31,11 +31,6 @@ public class LevelEditorTileContext : Context {
             .Do<AbortIfSelectionFieldIsSameAsPreviousSelectionFieldCommand>()
             .Do<DispatchLevelEditorSelectionFieldChangedEventCommand>();
 
-        On<TouchUpEvent>()
-            .Do<DispatchLevelEditorTouchUpOnGridPositionEventCommand>()
-            .Do<LevelEditorClearSelectionFieldCommand>()
-            .Do<ShowBoxOverlayCommand>(false);
-
         On<SwipeEndEvent>()
             .Do<LevelEditorClearSelectionFieldCommand>()
             .Do<LevelEditorClearSelectionFieldAvailableGridPositionsCommand>()
@@ -58,7 +53,9 @@ public class LevelEditorTileContext : Context {
             .Do<DispatchLevelEditorSelectionFieldChangedEventCommand>();
 
         On<LevelEditorTouchUpOnGridPositionEvent>()
-            .Do<LevelEditorClearSelectionFieldAvailableGridPositionsCommand>();
+            .Do<LevelEditorClearSelectionFieldCommand>()
+            .Do<LevelEditorClearSelectionFieldAvailableGridPositionsCommand>()
+            .Do<ShowBoxOverlayCommand>(false);
 
         On<LevelEditorSelectionFieldTileSpawnLimitReachedEvent>()
             .Do<LevelEditorSetSelectionFieldBoxColorTypeCommand>(LevelEditorSelectionFieldBoxColorType.Error);
