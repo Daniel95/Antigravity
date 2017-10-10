@@ -5,7 +5,6 @@ using UnityEngine;
 public class TouchInputView : View, ITouchInput {
 
     public bool TouchStarted2FingersAfterIdle { get { return touchStarted2FingersAfterIdle; } }
-    public bool SwipeMoving { get { return swipeMoving; } }
     public bool SwipeMoving2Fingers { get { return swipe2FingersDelta > pinchDelta; } }
     public bool Pinching { get { return pinching; } }
     public bool Idling { get { return idling; } }
@@ -50,8 +49,6 @@ public class TouchInputView : View, ITouchInput {
 
     private static bool touchStarted2FingersAfterIdle;
     private bool pinching;
-    private bool swipeMoving;
-    private bool swipeMoving2Fingers;
     private bool idling;
 
     private int uiLayer;
@@ -144,8 +141,6 @@ public class TouchInputView : View, ITouchInput {
     private void OnSwipe(Gesture gesture) {
         if (gesture.position == lastSwipePosition) { return; }
 
-        swipeMoving = true;
-
         swipeMovedEvent.Dispatch(new SwipeMovedEvent.Parameter() {
             DeltaPosition = gesture.deltaPosition,
             Position = gesture.position
@@ -167,7 +162,6 @@ public class TouchInputView : View, ITouchInput {
             }
         }
 
-        swipeMoving = false;
         swipeEndEvent.Dispatch(swipeVector);
     }
 
@@ -246,10 +240,12 @@ public class TouchInputView : View, ITouchInput {
     }
 
     private void OnSwipe2Fingers(Gesture gesture) {
+        if (gesture.position == lastSwipe2FingersPosition) {
+            swipe2FingersDelta = 0;
+            return;
+        }
         swipe2FingersDelta = Vector2.Distance(lastSwipe2FingersPosition, gesture.position);
 
-        if (gesture.position == lastSwipe2FingersPosition) { return; }
-        swipeMoving2Fingers = true;
         swipeMoved2FingersEvent.Dispatch(new SwipeMoved2FingersEvent.Parameter() {
             DeltaPosition = gesture.deltaPosition,
             Position = gesture.position
@@ -260,7 +256,6 @@ public class TouchInputView : View, ITouchInput {
 
     private void OnSwipeEnd2Fingers(Gesture gesture) {
         swipe2FingersDelta = 0;
-        swipeMoving2Fingers = false;
         swipeEnd2FingersEvent.Dispatch(gesture.swipeVector);
     }
 
