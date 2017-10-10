@@ -76,6 +76,7 @@ public class GameContext : Context {
         Bind<DragStartedEvent>();
         Bind<DragMovedEvent>();
         Bind<DragStoppedEvent>();
+        Bind<SwipeStartEvent>();
         Bind<SwipedLeftEvent>();
         Bind<SwipedRightEvent>();
         Bind<SwipeMovedEvent>();
@@ -92,6 +93,7 @@ public class GameContext : Context {
         Bind<TouchStart2FingersEvent>();
         Bind<TouchDown2FingersEvent>();
         Bind<TouchUp2FingersEvent>();
+        Bind<SwipeStart2FingersEvent>();
         Bind<SwipeMoved2FingersEvent>();
         Bind<SwipeEnd2FingersEvent>();
         Bind<PinchStartedEvent>();

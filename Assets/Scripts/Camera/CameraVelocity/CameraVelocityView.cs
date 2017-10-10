@@ -43,6 +43,11 @@ public class CameraVelocityView : View, ICameraVelocity {
         }
     }
 
+    public void StartSwipe(Vector2 touchScreenStartPosition) {
+        Vector2 touchViewportPosition = Camera.main.ScreenToViewportPoint(touchScreenStartPosition);
+        previousTouchViewportPosition = touchViewportPosition;
+    }
+
     public void Swipe(Vector2 touchScreenPosition) {
         Vector2 touchViewportPosition = Camera.main.ScreenToViewportPoint(touchScreenPosition);
         Vector2 delta = previousTouchViewportPosition - touchViewportPosition;
