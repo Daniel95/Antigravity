@@ -5,7 +5,7 @@ using UnityEngine;
 public class TouchInputView : View, ITouchInput {
 
     public bool TouchStarted2FingersAfterIdle { get { return touchStarted2FingersAfterIdle; } }
-    public bool SwipeMoving2Fingers { get { return swipe2FingersDelta > pinchDelta; } }
+    public bool SwipeDelta2FingersBiggerThenPinchDelta { get { return swipe2FingersDelta > pinchDelta; } }
     public bool Pinching { get { return pinching; } }
     public bool Idling { get { return idling; } }
 

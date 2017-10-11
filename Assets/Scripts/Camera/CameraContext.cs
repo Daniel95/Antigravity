@@ -34,7 +34,7 @@ public class CameraContext : Context {
 
         On<PinchMovedEvent>()
             .Do<AbortIfCameraZoomInputIsFalseCommand>()
-            .Do<AbortIfSwipeMoving2FingersCommand>()
+            .Do<AbortIfSwipeDelta2FingersBiggerThenPinchDeltaCommand>()
             .Do<ZoomCameraCommand>();
 
     }
