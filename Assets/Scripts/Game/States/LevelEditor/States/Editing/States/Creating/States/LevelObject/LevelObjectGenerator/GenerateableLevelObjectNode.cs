@@ -6,7 +6,7 @@ using UnityEngine;
 public class GenerateableLevelObjectNode {
 
     public GameObject Prefab;
-    public bool IsSolid = true; 
+    public bool OnGrid = true; 
     public LevelObjectType LevelObjectType;
     public List<LevelObjectTransformType> AvailableInputTypes = new List<LevelObjectTransformType>() {
         LevelObjectTransformType.Translate,

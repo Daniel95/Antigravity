@@ -47,18 +47,25 @@ public class LevelEditorCreatingContext : Context {
 
         On<LevelEditorTouchDownOnGridPositionEvent>()
             .Do<AbortIfLevelEditorGridPositionDoesNotContainLevelObjectSectionCommand>()
-            .Do<DispatchLevelEditorTouchDownOnLevelObjectEventCommand>();
+            .Dispatch<LevelEditorTouchDownOnLevelObjectEvent>()
+            .Do<DispatchLevelEditorTouchDownOnOnGridLevelObjectEventCommand>();
+
+        On<TouchDownEvent>()
+            .Do<AbortIfLevelEditorMousePositionDoesContainLevelObjectSectionCommand>()
+            .Do<LevelEditorUpdateSelectedOffGridLevelObjectStatusCommand>()
+            .Do<AbortIfLevelEditorSelectedOffGridLevelObjectIsNullCommand>()
+            .Dispatch<LevelEditorTouchDownOnLevelObjectEvent>()
+            .Dispatch<LevelEditorTouchDownOnOffGridLevelObjectEvent>();
+
+        On<LevelEditorTouchDownOnLevelObjectEvent>()
+            .Do<AbortIfContextStateIsCommand<LevelEditorLevelObjectContext>>()
+            .GotoState<LevelEditorLevelObjectContext>();
 
         On<LevelEditorTouchDownOnGridPositionEvent>()
             .Do<AbortIfLevelEditorGridPositionDoesNotContainTileCommand>()
             .Do<AbortIfContextStateIsCommand<LevelEditorTileContext>>()
             .Do<LevelEditorStartSelectionFieldAtGridPositionCommand>()
             .GotoState<LevelEditorTileContext>();
-
-        On<LevelEditorTouchDownOnLevelObjectEvent>()
-            .Do<AbortIfContextStateIsCommand<LevelEditorLevelObjectContext>>()
-            .GotoState<LevelEditorLevelObjectContext>()
-            .Do<LevelEditorUpdateSelectedLevelObjectSectionStatusCommand>();
 
         On<LevelEditorSwipeMovedToGridPositionEvent>()
             .Do<AbortIfLevelEditorGridPositionIsTheSameAsSelectedGridPositionCommand>()
