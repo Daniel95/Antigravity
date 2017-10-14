@@ -21,13 +21,18 @@ public class LevelEditorLevelObjectContext : Context {
             .Do<DestroyChildInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/LevelObject/LevelObjectButtonGridLayoutGroupUI", CanvasLayer.UI);
 
         On<LevelEditorTouchDownOnOnGridLevelObjectEvent>()
-            .Do<LevelEditorUpdateSelectedLevelObjectSectionStatusCommand>()
             .Do<AbortIfContextStateIsCommand<LevelEditorOnGridLevelObjectContext>>()
             .GotoState<LevelEditorOnGridLevelObjectContext>();
+
+        On<LevelEditorTouchDownOnOnGridLevelObjectEvent>()
+            .Do<LevelEditorUpdateSelectedLevelObjectSectionStatusCommand>();
 
         On<LevelEditorTouchDownOnOffGridLevelObjectEvent>()
             .Do<AbortIfContextStateIsCommand<LevelEditorOffGridLevelObjectContext>>()
             .GotoState<LevelEditorOffGridLevelObjectContext>();
+
+        On<LevelEditorTouchDownOnOffGridLevelObjectEvent>()
+            .Do<LevelEditorUpdateSelectedOffGridLevelObjectStatusCommand>();
 
         On<LevelEditorTouchUpOnGridPositionEvent>()
             .Do<LevelEditorSetReleasedSinceLevelObjectSpawnStatusCommand>(true);

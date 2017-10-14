@@ -52,8 +52,7 @@ public class LevelEditorCreatingContext : Context {
 
         On<TouchDownEvent>()
             .Do<AbortIfLevelEditorMousePositionDoesContainLevelObjectSectionCommand>()
-            .Do<LevelEditorUpdateSelectedOffGridLevelObjectStatusCommand>()
-            .Do<AbortIfLevelEditorSelectedOffGridLevelObjectIsNullCommand>()
+            .Do<AbortIfMousePositionIsNotOverGameObjectWithTagCommand>("TEMP")
             .Dispatch<LevelEditorTouchDownOnLevelObjectEvent>()
             .Dispatch<LevelEditorTouchDownOnOffGridLevelObjectEvent>();
 

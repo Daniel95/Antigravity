@@ -73,6 +73,7 @@ public class GameContext : Context {
         Bind<LevelEditorTouchDownOnOffGridLevelObjectEvent>();
         Bind<LevelEditorTouchDownOnOnGridLevelObjectEvent>();
         Bind<LevelEditorLevelObjectTranslateOnGridEvent>();
+        Bind<LevelEditorLevelObjectTranslateOffGridEvent>();
         Bind<LevelEditorLevelObjectScaleEvent>();
         Bind<LevelEditorLevelObjectRotateEvent>();
 
