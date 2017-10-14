@@ -1,7 +1,18 @@
-﻿using UnityEngine;
+﻿using IoCPlus;
+using UnityEngine;
 
-public class LevelEditorSelectedOffGridLevelObjectStatus {
+public class LevelEditorSelectedOffGridLevelObjectStatus : StatusView {
 
-    public GameObject OffGridLevelObject;
+    [Inject] private static LevelEditorSelectedOffGridLevelObjectStatusUpdatedEvent selectedOffGridLevelObjectStatusUpdatedEvent;
+
+    public static GameObject OffGridLevelObject {
+        get { return offGridLevelObject; }
+        set {
+            selectedOffGridLevelObjectStatusUpdatedEvent.Dispatch();
+            offGridLevelObject = value;
+        }
+    }
+
+    private static GameObject offGridLevelObject;
 
 }

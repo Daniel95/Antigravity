@@ -1,7 +1,7 @@
 ﻿using IoCPlus;
 using UnityEngine;
 
-public class LevelEditorUpdateSelectedLevelObjectTransformTypeToSelectedLevelObjectSectionTransformTypeCommand : Command {
+public class LevelEditorUpdateSelectedLevelObjectTransformTypeToSelectedLevelObjectSectionCommand : Command {
 
     protected override void Execute() {
         LevelObjectType levelObjectType = LevelEditorSelectedLevelObjectSectionStatus.LevelObjectSection.LevelObject.LevelObjectType;

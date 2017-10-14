@@ -2,5 +2,8 @@
 
     Start,
     Finish,
+    Checkpoint,
+    KillZone,
+    BounceZone,
 
 }

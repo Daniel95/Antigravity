@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class GenerateableLevelObjectLibrary : MonoBehaviour {
@@ -22,6 +23,23 @@ public class GenerateableLevelObjectLibrary : MonoBehaviour {
     public static GenerateableLevelObjectNode GetNode(LevelObjectType levelObjectType) {
         GenerateableLevelObjectNode levelObjectEditorNode = GetInstance().generateableLevelObjectNodes.Find(x => x.LevelObjectType == levelObjectType);
         return levelObjectEditorNode;
+    }
+
+    public static GenerateableLevelObjectNode GetNode(string levelObjectInstanceName) {
+        string levelObjectPrefabName = levelObjectInstanceName.Replace("(Clone)", "");
+        GenerateableLevelObjectNode levelObjectEditorNode = GetInstance().generateableLevelObjectNodes.Find(x => x.Prefab.name == levelObjectPrefabName);
+        return levelObjectEditorNode;
+    }
+
+    public static bool Contains(LevelObjectType levelObjectType) {
+        bool containsLevelObjectEditorNode = GetInstance().generateableLevelObjectNodes.Exists(x => x.LevelObjectType == levelObjectType);
+        return containsLevelObjectEditorNode;
+    }
+
+    public static bool Contains(string levelObjectInstanceName) {
+        string levelObjectPrefabName = levelObjectInstanceName.Replace("(Clone)", "");
+        bool containsLevelObjectEditorNode = GetInstance().generateableLevelObjectNodes.Exists(x => x.Prefab.name == levelObjectPrefabName);
+        return containsLevelObjectEditorNode;
     }
 
     private static GenerateableLevelObjectLibrary GetInstance() {

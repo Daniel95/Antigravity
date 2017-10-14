@@ -6,16 +6,12 @@ public class LevelEditorOnGridLevelObjectContext : Context {
     protected override void SetBindings() {
         base.SetBindings();
 
-        On<EnterContextSignal>()
-            .Do<AddStatusViewToStatusViewContainerCommand<LevelEditorSelectedLevelObjectSectionStatus>>();
-
         On<LeaveContextSignal>()
-            .Do<RemoveStatusViewFromStatusViewContainerCommand<LevelEditorSelectedLevelObjectSectionStatus>>()
             .Do<LevelEditorResetSelectedLevelObjectSectionStatusCommand>();
 
         On<LevelEditorSelectedLevelObjectSectionStatusUpdatedEvent>()
             .Do<AbortIfLevelEditorSelectedLevelObjectSectionStatusIsNullCommand>()
-            .Do<LevelEditorUpdateSelectedLevelObjectTransformTypeToSelectedLevelObjectSectionTransformTypeCommand>();
+            .Do<LevelEditorUpdateSelectedLevelObjectTransformTypeToSelectedLevelObjectSectionCommand>();
 
         On<PinchStartedEvent>()
             .Do<AbortIfLevelEditorSelectedLevelObjectSectionStatusIsNullCommand>()
