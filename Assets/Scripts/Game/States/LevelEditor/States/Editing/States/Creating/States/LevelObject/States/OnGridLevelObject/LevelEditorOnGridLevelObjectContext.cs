@@ -13,9 +13,6 @@ public class LevelEditorOnGridLevelObjectContext : Context {
             .Do<RemoveStatusViewFromStatusViewContainerCommand<LevelEditorSelectedLevelObjectSectionStatus>>()
             .Do<LevelEditorResetSelectedLevelObjectSectionStatusCommand>();
 
-        On<LevelEditorTouchDownOnOnGridLevelObjectEvent>()
-            .Do<LevelEditorUpdateSelectedLevelObjectSectionStatusCommand>();
-
         On<LevelEditorSelectedLevelObjectSectionStatusUpdatedEvent>()
             .Do<AbortIfLevelEditorSelectedLevelObjectSectionStatusIsNullCommand>()
             .Do<LevelEditorUpdateSelectedLevelObjectTransformTypeToSelectedLevelObjectSectionTransformTypeCommand>();
@@ -33,6 +30,10 @@ public class LevelEditorOnGridLevelObjectContext : Context {
             .Do<LevelEditorInstantiateLevelObjectAtGridPositionCommand>()
             .Do<LevelEditorUpdateSelectedLevelObjectSectionStatusCommand>()
             .Do<LevelEditorSetReleasedSinceLevelObjectSpawnStatusCommand>(false);
+
+        On<LevelEditorLevelObjectTranslateOnGridEvent>()
+            .Do<AbortIfLevelEditorSelectedLevelObjectSectionStatusIsNullCommand>()
+            .Do<LevelEditorMoveSelectedLevelObjectToGridPositionCommand>();
 
         On<LevelEditorLevelObjectDeleteButtonClickedEvent>()
             .Do<LevelEditorDestroyLevelObjectOfSelectedLevelObjectSectionCommand>()

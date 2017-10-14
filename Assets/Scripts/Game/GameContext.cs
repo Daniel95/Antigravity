@@ -72,6 +72,9 @@ public class GameContext : Context {
         Bind<LevelEditorSelectedLevelObjectTransformTypeStatusUpdatedEvent>();
         Bind<LevelEditorTouchDownOnOffGridLevelObjectEvent>();
         Bind<LevelEditorTouchDownOnOnGridLevelObjectEvent>();
+        Bind<LevelEditorLevelObjectTranslateOnGridEvent>();
+        Bind<LevelEditorLevelObjectScaleEvent>();
+        Bind<LevelEditorLevelObjectRotateEvent>();
 
         Bind<TapEvent>();
         Bind<TwistEvent>();
