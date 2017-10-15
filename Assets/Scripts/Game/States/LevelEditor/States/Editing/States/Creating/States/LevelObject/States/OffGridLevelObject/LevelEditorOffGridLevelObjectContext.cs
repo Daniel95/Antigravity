@@ -6,7 +6,8 @@ public class LevelEditorOffGridLevelObjectContext : Context {
     protected override void SetBindings() {
         base.SetBindings();
 
-        On<TouchDownEvent>()
+        On<TouchStartEvent>()
+            .Do<AbortIfMousePositionIsOverOffGridLevelObjectCommand>()
             .Do<AbortIfLevelEditorReleasedSinceLevelObjectSpawnStatusIsCommand>(false)
             .Do<LevelEditorInstantiateAndSelectOffGridLevelObjectAtScreenPositionCommand>()
             .Do<LevelEditorSetReleasedSinceLevelObjectSpawnStatusCommand>(false);

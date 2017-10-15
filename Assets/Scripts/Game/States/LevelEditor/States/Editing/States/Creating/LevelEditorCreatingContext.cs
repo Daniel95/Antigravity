@@ -50,7 +50,7 @@ public class LevelEditorCreatingContext : Context {
             .Dispatch<LevelEditorTouchDownOnLevelObjectEvent>()
             .Do<DispatchLevelEditorTouchDownOnOnGridLevelObjectEventCommand>();
 
-        On<TouchDownEvent>()
+        On<TouchStartEvent>()
             .Do<AbortIfLevelEditorMousePositionDoesContainLevelObjectSectionCommand>()
             .Do<AbortIfMousePositionIsNotOverOffGridLevelObjectCommand>()
             .Dispatch<LevelEditorTouchDownOnLevelObjectEvent>()

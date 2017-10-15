@@ -2,15 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LevelEditorUpdateSelectedOffGridLevelObjectStatusCommand : Command {
+public class AbortIfMousePositionIsOverOffGridLevelObjectCommand : Command {
 
     protected override void Execute() {
         List<Transform> transforms = RaycastHelper.GetTransformOnMousePosition2D();
-
         foreach (Transform transform in transforms) {
             GenerateableLevelObjectNode generateableLevelObjectNode = GenerateableLevelObjectLibrary.GetNode(transform.name);
             if (generateableLevelObjectNode != null && !generateableLevelObjectNode.OnGrid) {
-                LevelEditorSelectedOffGridLevelObjectStatus.OffGridLevelObject = transform.gameObject;
+                Abort();
                 return;
             }
         }

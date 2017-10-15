@@ -1,23 +1,19 @@
 ﻿using IoCPlus;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class AbortIfMousePositionIsNotOverOffGridLevelObjectCommand : Command {
 
     protected override void Execute() {
-        Transform transformOnMousePosition = RaycastHelper.GetTransformOnMousePosition2D();
+        List<Transform> transforms = RaycastHelper.GetTransformOnMousePosition2D();
+        foreach (Transform transform in transforms) {
+            GenerateableLevelObjectNode generateableLevelObjectNode = GenerateableLevelObjectLibrary.GetNode(transform.name);
+            if (generateableLevelObjectNode != null && !generateableLevelObjectNode.OnGrid) {
+                return;
+            }
+        }
 
-        if (transformOnMousePosition == null) {
-            Abort();
-            return;
-        }
-        if (!GenerateableLevelObjectLibrary.Contains(transformOnMousePosition.name)) {
-            Abort();
-            return;
-        }
-        if (GenerateableLevelObjectLibrary.GetNode(transformOnMousePosition.name).OnGrid) {
-            Abort();
-            return;
-        }
+        Abort();
     }
 
 }
