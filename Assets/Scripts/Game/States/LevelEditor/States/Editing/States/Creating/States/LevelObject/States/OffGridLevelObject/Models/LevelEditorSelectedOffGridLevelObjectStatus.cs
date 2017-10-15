@@ -8,8 +8,8 @@ public class LevelEditorSelectedOffGridLevelObjectStatus : StatusView {
     public static GameObject OffGridLevelObject {
         get { return offGridLevelObject; }
         set {
-            selectedOffGridLevelObjectStatusUpdatedEvent.Dispatch();
             offGridLevelObject = value;
+            selectedOffGridLevelObjectStatusUpdatedEvent.Dispatch();
         }
     }
 

@@ -23,13 +23,13 @@ public class LevelEditorOnGridLevelObjectContext : Context {
             .Do<AbortIfLevelEditorReleasedSinceLevelObjectSpawnStatusIsCommand>(false)
             .Do<AbortIfLevelEditorSelectedLevelObjectNodeIsNullCommand>()
             .Do<AbortIfLevelEditorGridPositionDoesContainElementCommand>()
-            .Do<LevelEditorInstantiateLevelObjectAtGridPositionCommand>()
+            .Do<LevelEditorInstantiateOnGridLevelObjectAtGridPositionCommand>()
             .Do<LevelEditorUpdateSelectedLevelObjectSectionStatusCommand>()
             .Do<LevelEditorSetReleasedSinceLevelObjectSpawnStatusCommand>(false);
 
         On<LevelEditorLevelObjectTranslateOnGridEvent>()
             .Do<AbortIfLevelEditorSelectedLevelObjectSectionStatusIsNullCommand>()
-            .Do<LevelEditorMoveSelectedLevelObjectToGridPositionCommand>();
+            .Do<LevelEditorMoveSelectedOnGridLevelObjectToGridPositionCommand>();
 
         On<LevelEditorLevelObjectDeleteButtonClickedEvent>()
             .Do<LevelEditorDestroyLevelObjectOfSelectedLevelObjectSectionCommand>()

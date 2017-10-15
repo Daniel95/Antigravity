@@ -1,7 +1,7 @@
 ﻿using IoCPlus;
 using UnityEngine;
 
-public class LevelEditorMoveSelectedLevelObjectToGridPositionCommand : Command {
+public class LevelEditorMoveSelectedOnGridLevelObjectToGridPositionCommand : Command {
 
     [InjectParameter] private Vector2 gridPosition;
 

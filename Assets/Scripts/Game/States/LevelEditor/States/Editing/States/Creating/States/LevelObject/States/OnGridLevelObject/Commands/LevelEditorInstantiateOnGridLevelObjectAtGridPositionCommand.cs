@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LevelEditorInstantiateLevelObjectAtGridPositionCommand : Command {
+public class LevelEditorInstantiateOnGridLevelObjectAtGridPositionCommand : Command {
 
     [InjectParameter] private Vector2 gridPosition;
 
