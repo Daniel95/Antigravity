@@ -9,7 +9,7 @@ public class DispatchLevelEditorLevelObjectTranslateOffGridEventCommand : Comman
 
     protected override void Execute() {
         Vector2 screenPosition = swipeMovedEventParameter.Position;
-        Vector2 worldPosition = LevelEditorGridHelper.ScreenToNodePosition(screenPosition);
+        Vector2 worldPosition = Camera.main.ScreenToWorldPoint(screenPosition);
         levelObjectTranslateOffGridEvent.Dispatch(worldPosition);
     }
 

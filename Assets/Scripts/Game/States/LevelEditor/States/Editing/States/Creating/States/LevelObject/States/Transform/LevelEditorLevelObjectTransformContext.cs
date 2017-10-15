@@ -5,7 +5,13 @@ public class LevelEditorLevelObjectTransformContext : Context {
 
     protected override void SetBindings() {
         base.SetBindings();
-      
+
+        On<EnterContextSignal>()
+            .Do<AddStatusViewToStatusViewContainerCommand<LevelEditorTranslateStartPositionStatus>>();
+
+        On<LeaveContextSignal>()
+            .Do<RemoveStatusViewFromStatusViewContainerCommand<LevelEditorTranslateStartPositionStatus>>();
+
         On<LevelEditorSelectedLevelObjectTransformTypeStatusUpdatedEvent>()
             .Do<AbortIfLevelEditorSelectedLevelObjectTransformTypeIsNotCommand>(LevelObjectTransformType.Translate)
             .GotoState<LevelEditorLevelObjectTranslateContext>();

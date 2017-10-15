@@ -21,6 +21,9 @@ public class LevelEditorLevelObjectTranslateContext : Context {
             .Do<AbortIfChildInCanvasLayerDoesNotExistCommand>("UI/LevelEditor/Editing/Creating/LevelObject/SetLevelObjectTransformTypeToScaleButtonUI", CanvasLayer.UI)
             .Do<DestroyChildInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/LevelObject/SetLevelObjectTransformTypeToScaleButtonUI", CanvasLayer.UI);
 
+        On<SwipeStartEvent>()
+            .Do<LevelEditorUpdateTranslateStartPositionStatusCommand>();
+
         On<LevelEditorSwipeMovedToNewGridPositionEvent>()
             .Do<DispatchLevelEditorLevelObjectTranslateOnGridEventCommand>();
 

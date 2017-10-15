@@ -12,6 +12,10 @@ public class LevelEditorOffGridLevelObjectContext : Context {
             .Do<LevelEditorInstantiateAndSelectOffGridLevelObjectAtScreenPositionCommand>()
             .Do<LevelEditorSetReleasedSinceLevelObjectSpawnStatusCommand>(false);
 
+        On<LevelEditorTranslateStartWorldPositionStatusUpdatedEvent>()
+            .Do<AbortIfLevelEditorSelectedOffGridLevelObjectIsNullCommand>()
+            .Do<LevelEditorUpdateOffGridTranslateStartOffsetPositionCommand>();
+
         On<LevelEditorLevelObjectTranslateOffGridEvent>()
             .Do<AbortIfLevelEditorSelectedOffGridLevelObjectIsNullCommand>()
             .Do<LevelEditorMoveSelectedOffGridLevelObjectToWorldPositionCommand>();
