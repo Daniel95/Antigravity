@@ -19,7 +19,7 @@ public class LevelEditorOnGridLevelObjectContext : Context {
             .Do<LevelEditorDestroyLevelObjectOfSelectedLevelObjectSectionCommand>()
             .Do<LevelEditorResetSelectedLevelObjectSectionStatusCommand>();
 
-        On<LevelEditorTouchDownOnGridPositionEvent>()
+        On<LevelEditorTouchStartOnGridPositionEvent>()
             .Do<AbortIfLevelEditorReleasedSinceLevelObjectSpawnStatusIsCommand>(false)
             .Do<AbortIfLevelEditorSelectedLevelObjectNodeIsNullCommand>()
             .Do<AbortIfLevelEditorGridPositionDoesContainElementCommand>()

@@ -59,7 +59,7 @@ public class GameContext : Context {
         Bind<LevelEditorSaveLevelEvent>();
         Bind<LevelEditorSelectionFieldChangedEvent>();
         Bind<LevelEditorSelectionFieldTileSpawnLimitReachedEvent>();
-        Bind<LevelEditorTouchDownOnGridPositionEvent>();
+        Bind<LevelEditorTouchStartOnGridPositionEvent>();
         Bind<LevelEditorTouchUpOnGridPositionEvent>();
         Bind<LevelEditorSwipeMovedToGridPositionEvent>();
         Bind<LevelEditorLevelObjectButtonClickedEvent>();

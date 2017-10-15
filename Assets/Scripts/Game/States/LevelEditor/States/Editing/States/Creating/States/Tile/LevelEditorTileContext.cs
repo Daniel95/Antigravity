@@ -25,7 +25,7 @@ public class LevelEditorTileContext : Context {
             .Do<AbortIfLevelEditorStateIsNotLevelEditorStateCommand>(LevelEditorState.ErasingTile)
             .GotoState<LevelEditorErasingTileContext>();
 
-        On<LevelEditorTouchDownOnGridPositionEvent>()
+        On<LevelEditorTouchStartOnGridPositionEvent>()
             .Do<AbortIfLevelEditorSelectionFieldIsDisabledCommand>()
             .Do<LevelEditorStartSelectionFieldAtGridPositionCommand>()
             .Do<AbortIfSelectionFieldIsSameAsPreviousSelectionFieldCommand>()

@@ -35,7 +35,7 @@ public class LevelEditorCreatingContext : Context {
 
         On<OutsideUITouchStartEvent>()
             .Do<AbortIfTouchStarted2FingersAfterIdleCommand>()
-            .Do<DispatchLevelEditorTouchDownOnGridPositionEventCommand>();
+            .Do<DispatchLevelEditorTouchStartOnGridPositionEventCommand>();
 
         On<SwipeMovedEvent>()
             .Do<AbortIfTouchStarted2FingersAfterIdleCommand>()
@@ -45,7 +45,7 @@ public class LevelEditorCreatingContext : Context {
             .Do<AbortIfTouchStarted2FingersAfterIdleCommand>()
             .Do<DispatchLevelEditorTouchUpOnGridPositionEventCommand>();
 
-        On<LevelEditorTouchDownOnGridPositionEvent>()
+        On<LevelEditorTouchStartOnGridPositionEvent>()
             .Do<AbortIfLevelEditorGridPositionDoesNotContainLevelObjectSectionCommand>()
             .Dispatch<LevelEditorTouchDownOnLevelObjectEvent>()
             .Do<DispatchLevelEditorTouchDownOnOnGridLevelObjectEventCommand>();
@@ -60,7 +60,7 @@ public class LevelEditorCreatingContext : Context {
             .Do<AbortIfContextStateIsCommand<LevelEditorLevelObjectContext>>()
             .GotoState<LevelEditorLevelObjectContext>();
 
-        On<LevelEditorTouchDownOnGridPositionEvent>()
+        On<LevelEditorTouchStartOnGridPositionEvent>()
             .Do<AbortIfLevelEditorGridPositionDoesNotContainTileCommand>()
             .Do<AbortIfContextStateIsCommand<LevelEditorTileContext>>()
             .Do<LevelEditorStartSelectionFieldAtGridPositionCommand>()
