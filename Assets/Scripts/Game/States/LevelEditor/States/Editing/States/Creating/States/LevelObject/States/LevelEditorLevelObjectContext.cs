@@ -24,11 +24,11 @@ public class LevelEditorLevelObjectContext : Context {
             .Do<DestroyChildInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/LevelObject/GoToTileStateButtonUI", CanvasLayer.UI)
             .Do<DestroyChildInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/LevelObject/LevelObjectButtonGridLayoutGroupUI", CanvasLayer.UI);
 
-        On<LevelEditorTouchDownOnOnGridLevelObjectEvent>()
+        On<LevelEditorTouchStartOnOnGridLevelObjectEvent>()
             .Do<AbortIfContextStateIsCommand<LevelEditorOnGridLevelObjectContext>>()
             .GotoState<LevelEditorOnGridLevelObjectContext>();
 
-        On<LevelEditorTouchDownOnOnGridLevelObjectEvent>()
+        On<LevelEditorTouchStartOnOnGridLevelObjectEvent>()
             .Do<LevelEditorUpdateSelectedLevelObjectSectionStatusCommand>();
 
         On<LevelEditorTouchDownOnOffGridLevelObjectEvent>()

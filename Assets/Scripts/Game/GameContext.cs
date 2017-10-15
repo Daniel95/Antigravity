@@ -62,6 +62,11 @@ public class GameContext : Context {
         Bind<LevelEditorTouchStartOnGridPositionEvent>();
         Bind<LevelEditorTouchUpOnGridPositionEvent>();
         Bind<LevelEditorSwipeMovedToGridPositionEvent>();
+        Bind<LevelEditorSwipeMovedOnWorldEvent>();
+        Bind<LevelEditorSwipeStartOnWorldEvent>();
+        Bind<LevelEditorTouchDownOnWorldEvent>();
+        Bind<LevelEditorTouchStartOnWorldEvent>();
+        Bind<LevelEditorTouchUpOnWorldEvent>();
         Bind<LevelEditorLevelObjectButtonClickedEvent>();
         Bind<LevelEditorSelectionFieldEnabledUpdatedEvent>();
         Bind<LevelEditorSwipeMovedToNewGridPositionEvent>();
@@ -73,12 +78,11 @@ public class GameContext : Context {
         Bind<LevelEditorTranslateStartWorldPositionStatusUpdatedEvent>();
         Bind<LevelEditorSelectedOffGridLevelObjectStatusUpdatedEvent>();
         Bind<LevelEditorTouchDownOnOffGridLevelObjectEvent>();
-        Bind<LevelEditorTouchDownOnOnGridLevelObjectEvent>();
+        Bind<LevelEditorTouchStartOnOnGridLevelObjectEvent>();
         Bind<LevelEditorLevelObjectTranslateOnGridEvent>();
         Bind<LevelEditorLevelObjectTranslateOffGridEvent>();
         Bind<LevelEditorLevelObjectScaleEvent>();
         Bind<LevelEditorLevelObjectRotateEvent>();
-
 
         Bind<TapEvent>();
         Bind<TwistEvent>();

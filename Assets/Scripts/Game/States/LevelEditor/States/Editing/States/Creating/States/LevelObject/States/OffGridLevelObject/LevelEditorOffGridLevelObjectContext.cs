@@ -11,6 +11,7 @@ public class LevelEditorOffGridLevelObjectContext : Context {
             .Do<LevelEditorDestroySelectedOffGridLevelObjectCommand>();
 
         On<TouchStartEvent>()
+            .Do<AbortIfTouchStarted2FingersAfterIdleCommand>()
             .Do<AbortIfMousePositionIsOverOffGridLevelObjectCommand>()
             .Do<AbortIfLevelEditorReleasedSinceLevelObjectSpawnStatusIsCommand>(false)
             .Do<LevelEditorInstantiateAndSelectOffGridLevelObjectAtScreenPositionCommand>()

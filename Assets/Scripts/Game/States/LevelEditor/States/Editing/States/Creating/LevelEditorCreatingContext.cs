@@ -35,22 +35,34 @@ public class LevelEditorCreatingContext : Context {
 
         On<OutsideUITouchStartEvent>()
             .Do<AbortIfTouchStarted2FingersAfterIdleCommand>()
+            .Do<DispatchLevelEditorTouchStartOnWorldEventCommand>()
             .Do<DispatchLevelEditorTouchStartOnGridPositionEventCommand>();
 
-        On<SwipeMovedEvent>()
+        On<TouchDownEvent>()
             .Do<AbortIfTouchStarted2FingersAfterIdleCommand>()
-            .Do<DispatchLevelEditorSwipeMovedToGridPositionEventCommand>();
+            .Do<DispatchLevelEditorTouchDownOnWorldEventCommand>();
 
         On<TouchUpEvent>()
             .Do<AbortIfTouchStarted2FingersAfterIdleCommand>()
+            .Do<DispatchLevelEditorTouchUpOnWorldEventCommand>()
             .Do<DispatchLevelEditorTouchUpOnGridPositionEventCommand>();
+
+        On<SwipeStartEvent>()
+            .Do<AbortIfTouchStarted2FingersAfterIdleCommand>()
+            .Do<DispatchLevelEditorSwipeStartOnWorldEventCommand>();
+
+        On<SwipeMovedEvent>()
+            .Do<AbortIfTouchStarted2FingersAfterIdleCommand>()
+            .Do<DispatchLevelEditorSwipeMovedOnWorldEvent>()
+            .Do<DispatchLevelEditorSwipeMovedToGridPositionEventCommand>();
 
         On<LevelEditorTouchStartOnGridPositionEvent>()
             .Do<AbortIfLevelEditorGridPositionDoesNotContainLevelObjectSectionCommand>()
             .Dispatch<LevelEditorTouchDownOnLevelObjectEvent>()
-            .Do<DispatchLevelEditorTouchDownOnOnGridLevelObjectEventCommand>();
+            .Do<DispatchLevelEditorTouchStartOnOnGridLevelObjectEventCommand>();
 
         On<TouchStartEvent>()
+            .Do<AbortIfTouchStarted2FingersAfterIdleCommand>()
             .Do<AbortIfLevelEditorMousePositionDoesContainLevelObjectSectionCommand>()
             .Do<AbortIfMousePositionIsNotOverOffGridLevelObjectCommand>()
             .Dispatch<LevelEditorTouchDownOnLevelObjectEvent>()

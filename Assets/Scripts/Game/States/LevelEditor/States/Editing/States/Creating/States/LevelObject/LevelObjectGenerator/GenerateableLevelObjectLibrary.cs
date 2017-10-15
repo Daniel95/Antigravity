@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityToolbag;
 
 public class GenerateableLevelObjectLibrary : MonoBehaviour {
 
@@ -8,7 +9,7 @@ public class GenerateableLevelObjectLibrary : MonoBehaviour {
 
     private static GenerateableLevelObjectLibrary instance;
 
-    [SerializeField] private List<GenerateableLevelObjectNode> generateableLevelObjectNodes;
+    [SerializeField] [Reorderable] private List<GenerateableLevelObjectNode> generateableLevelObjectNodes;
 
     private const string GENERATABLE_LEVEL_OBJECT_LIBRARY_PATH = "LevelEditor/Libraries/GenerateableLevelObjectLibrary";
 

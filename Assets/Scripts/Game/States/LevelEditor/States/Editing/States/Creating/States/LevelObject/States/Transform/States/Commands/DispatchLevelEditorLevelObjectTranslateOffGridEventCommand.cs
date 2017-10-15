@@ -5,11 +5,9 @@ public class DispatchLevelEditorLevelObjectTranslateOffGridEventCommand : Comman
 
     [Inject] private LevelEditorLevelObjectTranslateOffGridEvent levelObjectTranslateOffGridEvent;
 
-    [InjectParameter] private SwipeMovedEvent.Parameter swipeMovedEventParameter;
+    [InjectParameter] private Vector2 worldPosition;
 
     protected override void Execute() {
-        Vector2 screenPosition = swipeMovedEventParameter.Position;
-        Vector2 worldPosition = Camera.main.ScreenToWorldPoint(screenPosition);
         levelObjectTranslateOffGridEvent.Dispatch(worldPosition);
     }
 
