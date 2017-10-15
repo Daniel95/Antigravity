@@ -4,6 +4,7 @@ public class LevelEditorDestroyLevelObjectOfSelectedLevelObjectSectionCommand : 
 
     protected override void Execute() {
         LevelEditorSelectedLevelObjectSectionStatus.LevelObjectSection.DestroyLevelObject();
+        LevelEditorSelectedLevelObjectSectionStatus.LevelObjectSection = null;
     }
 
 }

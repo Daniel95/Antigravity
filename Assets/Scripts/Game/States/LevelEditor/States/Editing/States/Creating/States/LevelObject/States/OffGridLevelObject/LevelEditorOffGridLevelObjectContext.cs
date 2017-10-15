@@ -1,10 +1,14 @@
 ﻿using IoCPlus;
-using UnityEngine;
 
 public class LevelEditorOffGridLevelObjectContext : Context {
 
     protected override void SetBindings() {
         base.SetBindings();
+
+        On<PinchStartedEvent>()
+            .Do<AbortIfLevelEditorSelectedOffGridLevelObjectIsNullCommand>()
+            .Do<AbortIfLevelEditorReleasedSinceLevelObjectSpawnStatusIsCommand>(true)
+            .Do<LevelEditorDestroySelectedOffGridLevelObjectCommand>();
 
         On<TouchStartEvent>()
             .Do<AbortIfMousePositionIsOverOffGridLevelObjectCommand>()
@@ -21,9 +25,7 @@ public class LevelEditorOffGridLevelObjectContext : Context {
             .Do<LevelEditorMoveSelectedOffGridLevelObjectToWorldPositionCommand>();
 
         On<LevelEditorLevelObjectDeleteButtonClickedEvent>()
-            .Do<LevelEditorDestroySelectedOffGridLevelObjectCommand>()
-            .Do<LevelEditorResetSelectedLevelObjectSectionStatusCommand>()
-            .Do<LevelEditorResetSelectedOffGridLevelObjectStatusCommand>();
+            .Do<LevelEditorDestroySelectedOffGridLevelObjectCommand>();
 
         On<LevelEditorSelectedOffGridLevelObjectStatusUpdatedEvent>()
             .Do<AbortIfLevelEditorSelectedOffGridLevelObjectIsNullCommand>()

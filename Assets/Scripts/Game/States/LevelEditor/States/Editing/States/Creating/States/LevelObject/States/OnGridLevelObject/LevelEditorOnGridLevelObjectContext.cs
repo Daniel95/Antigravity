@@ -32,8 +32,7 @@ public class LevelEditorOnGridLevelObjectContext : Context {
             .Do<LevelEditorMoveSelectedOnGridLevelObjectToGridPositionCommand>();
 
         On<LevelEditorLevelObjectDeleteButtonClickedEvent>()
-            .Do<LevelEditorDestroyLevelObjectOfSelectedLevelObjectSectionCommand>()
-            .Do<LevelEditorResetSelectedLevelObjectSectionStatusCommand>();
+            .Do<LevelEditorDestroyLevelObjectOfSelectedLevelObjectSectionCommand>();
 
         On<LevelEditorSelectedLevelObjectSectionStatusUpdatedEvent>()
             .Do<AbortIfLevelEditorSelectedLevelObjectSectionStatusIsNullCommand>()
