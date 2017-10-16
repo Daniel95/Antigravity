@@ -5,6 +5,9 @@ public class LevelEditorOffGridLevelObjectContext : Context {
     protected override void SetBindings() {
         base.SetBindings();
 
+        On<LeaveContextSignal>()
+            .Do<LevelEditorResetSelectedOffGridLevelObjectStatusCommand>();
+
         On<PinchStartedEvent>()
             .Do<AbortIfLevelEditorSelectedOffGridLevelObjectIsNullCommand>()
             .Do<AbortIfLevelEditorReleasedSinceLevelObjectSpawnStatusIsCommand>(true)
