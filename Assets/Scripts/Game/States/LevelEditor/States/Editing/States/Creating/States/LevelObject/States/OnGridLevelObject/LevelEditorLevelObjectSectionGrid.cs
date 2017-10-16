@@ -12,8 +12,8 @@ public class LevelEditorLevelObjectSectionGrid : LevelEditorGridPositions {
 
     private Dictionary<Vector2, LevelObjectSection> levelObjectSectiongrid = new Dictionary<Vector2, LevelObjectSection>();
 
-    public LevelObject GetLevelObject(Vector2 gridPosition) {
-        LevelObject levelObject = LevelObject.LevelObjects.Find(x => x.GridPositions.Contains(gridPosition));
+    public OnGridLevelObject GetLevelObject(Vector2 gridPosition) {
+        OnGridLevelObject levelObject = OnGridLevelObject.OnGridLevelObjects.Find(x => x.GridPositions.Contains(gridPosition));
         return levelObject;
     }
 

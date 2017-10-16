@@ -5,13 +5,13 @@ using UnityEngine;
 public class LevelObjectSection {
 
     public Vector2 GridPosition { get { return gridPosition; } }
-    public LevelObject LevelObject { get { return GetLevelObject(); } }
+    public OnGridLevelObject LevelObject { get { return GetLevelObject(); } }
 
     public Action OnLevelObectDestroy;
     public Action<Vector2> OnLevelObjectIncrementGridPosition;
 
     private Vector2 gridPosition;
-    private LevelObject levelObject;
+    private OnGridLevelObject levelObject;
 
     public void SetLevelObjectGridPosition(Vector2 newGridPosition) {
         Vector2 offset = newGridPosition - gridPosition;
@@ -32,7 +32,7 @@ public class LevelObjectSection {
         }
     }
 
-    private LevelObject GetLevelObject() {
+    private OnGridLevelObject GetLevelObject() {
         if(levelObject == null) {
             levelObject = LevelEditorLevelObjectSectionGrid.Instance.GetLevelObject(gridPosition);
         }

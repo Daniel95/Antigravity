@@ -29,7 +29,7 @@ public class LevelEditorInstantiateOnGridLevelObjectAtGridPositionCommand : Comm
         Vector2 gameObjectPosition = LevelEditorGridHelper.GridToNodePosition(gridPosition);
         GameObject levelObjectGameObject = Object.Instantiate(generateableLevelObjectNode.Prefab, gameObjectPosition, new Quaternion());
 
-        LevelObject levelObject = new LevelObject();
+        OnGridLevelObject levelObject = new OnGridLevelObject();
         levelObject.Initiate(levelObjectSectionGridPositions, levelObjectGameObject, levelObjectType);
     }
 

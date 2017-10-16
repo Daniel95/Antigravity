@@ -185,6 +185,8 @@ public class GameContext : Context {
         Bind<LevelEditorReleasedSinceLevelObjectSpawnStatus>();
         Bind<LevelEditorOffGridTranslateStartOffsetStatus>();
         Bind<LevelContainerStatus>();
+        Bind<LevelEditorOffGridLevelObjectsStatus>();
+        Bind<LevelEditorStatus>();
 
         On<EnterContextSignal>()
             .InstantiateView<ApplicationView>()

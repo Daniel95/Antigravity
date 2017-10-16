@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class LevelObjectSaveData {
+public class OnGridLevelObjectSaveData {
 
     public Vector2 GameObjectPosition;
     public List<Vector2> GridPositions;

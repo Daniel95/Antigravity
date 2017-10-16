@@ -2,15 +2,15 @@
 using System.Linq;
 using UnityEngine;
 
-public class LevelObject {
+public class OnGridLevelObject {
 
-    public static List<LevelObject> LevelObjects { get { return levelObjects; } }
+    public static List<OnGridLevelObject> OnGridLevelObjects { get { return OnGridlevelObjects; } }
 
     public List<Vector2> GridPositions { get { return levelObjectSections.Select(x => x.GridPosition).ToList(); } }
     public Vector2 GameObjectPosition { get { return transform.position; }  set { transform.position = value; } }
     public LevelObjectType LevelObjectType { get { return levelObjectType; } }
 
-    private static List<LevelObject> levelObjects = new List<LevelObject>();
+    private static List<OnGridLevelObject> OnGridlevelObjects = new List<OnGridLevelObject>();
 
     private Transform transform { get { return gameObject.transform; } }
     private GameObject gameObject;
@@ -19,7 +19,7 @@ public class LevelObject {
     private List<LevelObjectLevelEditorInput> levelObjectEditorInputs;
 
     public void Initiate(List<Vector2> levelObjectSectionGridPositions, GameObject gameObject, LevelObjectType levelObjectType) {
-        levelObjects.Add(this);
+        OnGridlevelObjects.Add(this);
 
         if(gameObject == null) {
             Debug.LogError("GameObject is null");
@@ -88,7 +88,7 @@ public class LevelObject {
         }
 
         Object.Destroy(gameObject);
-        levelObjects.Remove(this);
+        OnGridlevelObjects.Remove(this);
     }
 
 }
