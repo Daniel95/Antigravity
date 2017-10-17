@@ -25,18 +25,20 @@ public class CharacterCollisionDirectionView : View, ICharacterCollisionDirectio
 
     private void OnCollisionExit2D(Collision2D collision) {
         collisions.Remove(collision);
-        UpdateCollisionDirection(collision);
+        UpdateCollisionDirection(collision, false);
     }
 
     private void LateUpdate() {
         collisions.Clear();
     }
 
-    private void UpdateCollisionDirection(Collision2D collision) {
+    private void UpdateCollisionDirection(Collision2D collision, bool possiblyDispatchCollisionEvent = true) {
         Vector2 newCollisionDirection = GetCollisionDirection();
         if (collisionDirection != newCollisionDirection) {
             collisionDirection = newCollisionDirection;
-            characterCollisionWithNewDirectionEvent.Dispatch(collision, newCollisionDirection, gameObject);
+            if(possiblyDispatchCollisionEvent) {
+                characterCollisionWithNewDirectionEvent.Dispatch(collision, newCollisionDirection, gameObject);
+            }
         }
     }
 
