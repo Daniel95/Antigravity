@@ -8,7 +8,11 @@ public class LevelEditorContext : Context {
         Bind<GoToLevelEditorStateEvent>();
 
         On<EnterContextSignal>()
+            .Do<LevelEditorSetLevelEditorStatusCommand>(true)
             .GotoState<LevelEditorMainMenuContext>();
+
+        On<LeaveContextSignal>()
+            .Do<LevelEditorSetLevelEditorStatusCommand>(false);
 
         On<GoToLevelEditorStateEvent>()
             .Do<AbortIfLevelEditorStateIsNotLevelEditorStateCommand>(LevelEditorState.MainMenu)
