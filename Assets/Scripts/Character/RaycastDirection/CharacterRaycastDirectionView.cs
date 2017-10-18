@@ -225,7 +225,7 @@ public class CharacterRaycastDirectionView : View, ICharacterRaycastDirection {
         RaycastHit2D[] hits = Physics2D.RaycastAll(startPostion, direction, length, layers);
 
         for (int i = 0; i < hits.Length; i++) {
-            if(hits[i].collider.gameObject != gameObject) {
+            if(hits[i].collider.gameObject != gameObject && !hits[i].collider.isTrigger) {
                 distance = hits[i].distance;
                 return true;
             }
@@ -239,7 +239,7 @@ public class CharacterRaycastDirectionView : View, ICharacterRaycastDirection {
         RaycastHit2D[] hits = Physics2D.RaycastAll(startPostion, direction, length, layers);
 
         for (int i = 0; i < hits.Length; i++) {
-            if (hits[i].collider.gameObject != gameObject) {
+            if (hits[i].collider.gameObject != gameObject && !hits[i].collider.isTrigger) {
                 raycastHit2D = hits[i];
                 return true;
             }
