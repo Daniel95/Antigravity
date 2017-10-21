@@ -11,7 +11,7 @@ public class HookView : View, IHook, ITriggerer {
     public List<Transform> Anchors { get { return anchors; } }
     public LineRenderer LineRenderer { get { return lineRenderer; } }
     public List<int> HookableLayers { get { return hookableLayers; } }
-    public LayerMask RayLayers { get { return rayLayers; } }
+    public LayerMask RopeRaycastLayerMask { get { return ropeRaycastLayermask; } }
     public float DirectionSpeedNeutralValue { get { return directionSpeedNeutralValue; } }
     public float MinimalDistanceFromOwner { get { return minimalDistanceFromOwner; } }
 
@@ -22,7 +22,7 @@ public class HookView : View, IHook, ITriggerer {
 
     [Inject] private UpdateHookEvent updateHookEvent;
 
-    [SerializeField] private LayerMask rayLayers;
+    [SerializeField] private LayerMask ropeRaycastLayermask;
     [SerializeField] private GameObject hookLinePrefab;
     [SerializeField] private float directionSpeedNeutralValue = 0.15f;
     [SerializeField] private float minimalDistanceFromOwner = 0.75f;

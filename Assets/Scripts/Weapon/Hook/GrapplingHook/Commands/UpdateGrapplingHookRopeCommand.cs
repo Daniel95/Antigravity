@@ -14,14 +14,14 @@ public class UpdateGrapplingHookRopeCommand : Command {
         IGrapplingHook grapplingHook = grapplingHookRef.Get();
         Vector2 ownerPosition = weaponRef.Get().Owner.transform.position;
 
-        RaycastHit2D hitToAnchor = Physics2D.Linecast(ownerPosition, hook.Anchors[0].position);
+        RaycastHit2D hitToAnchor = Physics2D.Linecast(ownerPosition, hook.Anchors[0].position, hook.RopeRaycastLayerMask);
 
         if (hitToAnchor.collider != null) {
             Vector2 anchorPosition = hitToAnchor.point + (ownerPosition - hitToAnchor.point).normalized * 0.1f;
             addHookAnchorEvent.Dispatch(anchorPosition, hitToAnchor.transform);
             grapplingHook.DistanceJoint.distance = Vector2.Distance(ownerPosition, hitToAnchor.point);
         } else if (hook.Anchors.Count > 1) {
-            RaycastHit2D hitToPreviousAnchor = Physics2D.Linecast(ownerPosition, hook.Anchors[1].position);
+            RaycastHit2D hitToPreviousAnchor = Physics2D.Linecast(ownerPosition, hook.Anchors[1].position, hook.RopeRaycastLayerMask);
             if (hitToPreviousAnchor.collider == null) {
                 grapplingHook.DistanceJoint.distance = Vector2.Distance(ownerPosition, hook.Anchors[0].position) + Vector2.Distance(hook.Anchors[0].position, hook.Anchors[1].position);
                 hook.DestroyAnchorAt(0);

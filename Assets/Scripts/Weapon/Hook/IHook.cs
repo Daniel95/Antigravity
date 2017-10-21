@@ -6,6 +6,7 @@ interface IHook {
     HookState ActiveHookState { get; }
     HookState LastHookState { get; }
     List<Transform> Anchors { get; }
+    LayerMask RopeRaycastLayerMask { get; }
     List<int> HookableLayers { get; }
     float DirectionSpeedNeutralValue { get; }
     float MinimalDistanceFromOwner { get; }
