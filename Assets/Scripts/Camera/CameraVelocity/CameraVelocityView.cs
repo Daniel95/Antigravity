@@ -35,11 +35,11 @@ public class CameraVelocityView : View, ICameraVelocity {
         previousTouchViewportPosition = Camera.main.ScreenToViewportPoint(touchScreenPosition);
     }
 
-    public void Zoom(float delta) {
+    public void Zoom(Vector2 position, float delta) {
         zoomVelocity = zoomSpeed * delta;
 
         if (zoomUpdateCoroutine == null) {
-            zoomUpdateCoroutine = StartCoroutine(ZoomUpdate());
+            zoomUpdateCoroutine = StartCoroutine(ZoomUpdate(position));
         }
     }
 
@@ -92,14 +92,20 @@ public class CameraVelocityView : View, ICameraVelocity {
         moveUpdateCoroutine = null;
     }
 
-    private IEnumerator ZoomUpdate() {
+    private IEnumerator ZoomUpdate(Vector2 zoomScreenPosition) {
         ICamera camera = cameraRef.Get();
+
+        Vector2 zoomWorldPosition = Camera.main.ScreenToWorldPoint(zoomScreenPosition);
 
         while (Mathf.Abs(zoomVelocity) > 0.001f) {
             zoomVelocity /= mass;
-            float orthographicSize = Camera.main.orthographicSize + zoomVelocity;
+            float orthographicSize = Camera.main.orthographicSize - zoomVelocity;
             float clampedOrthographicSize = Mathf.Clamp(orthographicSize, camera.MinOrthographicSize, camera.MaxOrthographicSize);
             camera.OrthographicSize = clampedOrthographicSize;
+
+            float speed = (1.0f / Camera.main.orthographicSize * zoomVelocity);
+            Vector3 offset = ((Vector3)zoomWorldPosition - transform.localPosition);
+            transform.localPosition += offset * speed;
 
             cameraZoomedEvent.Dispatch();
 
