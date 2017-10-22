@@ -181,6 +181,7 @@ public class GameContext : Context {
         Bind<PlayerJumpStatus>();
         Bind<PlayerSessionStatsStatus>();
         Bind<LevelNameStatus>();
+        Bind<LevelEditorSelectionFieldSnapSizeStatus>();
         Bind<LevelEditorSelectedGridPositionStatus>();
         Bind<LevelEditorReleasedSinceLevelObjectSpawnStatus>();
         Bind<LevelEditorOffGridTranslateStartOffsetStatus>();

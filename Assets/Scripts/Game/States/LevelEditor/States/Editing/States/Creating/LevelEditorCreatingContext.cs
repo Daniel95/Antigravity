@@ -12,8 +12,8 @@ public class LevelEditorCreatingContext : Context {
             .Do<EnableCameraMoveInputCommand>(true)
             .Do<SetCameraMoveInputTypeCommand>(CameraMoveInputType.Swipe2Fingers)
             .Do<SetGridOverlaySizeToScreenWorldSizeCommand>()
-            .Do<SetGridOverlayOriginToHalfTileSizeCommand>()
-            .Do<SetGridOverlayStepToTileSizeCommand>()
+            .Do<LevelEditorSetGridOverlayOriginSizeToMinusHalfSnapSizeCommand>()
+            .Do<LevelEditorSetGridOverlayStepToTileSnapSizeCommand>()
             .GotoState<LevelEditorTileContext>();
 
         On<LeaveContextSignal>()

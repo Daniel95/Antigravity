@@ -31,7 +31,7 @@ public class LevelEditorGridPositions : MonoBehaviour {
             combinedOffsets += offsetToNeighbour;
         }
 
-        Vector2 neighbourDirection = RoundingHelper.InvertOnNegativeCeilMax(combinedOffsets, 1);
+        Vector2 neighbourDirection = VectorHelper.InvertOnNegativeCeil(combinedOffsets);
 
         return neighbourDirection;
     }
