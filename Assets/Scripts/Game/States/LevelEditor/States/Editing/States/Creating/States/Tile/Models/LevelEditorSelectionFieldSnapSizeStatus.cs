@@ -1,7 +1,18 @@
-﻿using UnityEngine;
+﻿using IoCPlus;
+using UnityEngine;
 
-public class LevelEditorSelectionFieldSnapSizeStatus {
+public class LevelEditorSelectionFieldSnapSizeStatus : StatusView {
 
-    public Vector2 Size = new Vector2(1, 1);
+    [Inject] private static LevelEditorSelectionFieldSnapSizeStatusUpdatedEvent selectionFieldSnapSizeStatusUpdatedEvent;
+
+    public static Vector2 Size {
+        get { return size; }
+        set {
+            size = value;
+            selectionFieldSnapSizeStatusUpdatedEvent.Dispatch();
+        }
+    }
+
+    private static Vector2 size = Vector2.one;
 
 }

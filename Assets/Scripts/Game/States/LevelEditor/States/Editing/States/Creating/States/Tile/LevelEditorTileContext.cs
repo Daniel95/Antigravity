@@ -6,16 +6,28 @@ public class LevelEditorTileContext : Context {
         base.SetBindings();
 
         On<EnterContextSignal>()
-            .Do<InstantiateViewInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/Tile/GoToLevelObjectStateButtonUI", CanvasLayer.UI)
             .Do<AddStatusViewToStatusViewContainerCommand<LevelEditorSelectionFieldStatusView>>()
+            .Do<AddStatusViewToStatusViewContainerCommand<LevelEditorSelectionFieldSnapSizeStatus>>()
+            .Do<InstantiateViewInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/Tile/GoToLevelObjectStateButtonUI", CanvasLayer.UI)
+            .Do<InstantiateViewInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/Tile/SelectionFieldSnapSizeButtonUI", CanvasLayer.UI)
+            .Do<ShowGridOverlayCommand>(true)
+            .Do<SetGridOverlaySizeToScreenWorldSizeCommand>()
+            .Do<LevelEditorSetGridOverlayOriginSizeToMinusHalfSnapSizeCommand>()
+            .Do<LevelEditorSetGridOverlayStepToTileSnapSizeCommand>()
             .Do<LevelEditorSetSelectionFieldEnabledCommand>(true)
             .GotoState<LevelEditorBuildingTileContext>();
 
         On<LeaveContextSignal>()
-            .Do<DestroyChildInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/Tile/GoToLevelObjectStateButtonUI", CanvasLayer.UI)
             .Do<RemoveStatusViewFromStatusViewContainerCommand<LevelEditorSelectionFieldStatusView>>()
+            .Do<RemoveStatusViewFromStatusViewContainerCommand<LevelEditorSelectionFieldSnapSizeStatus>>()
+            .Do<DestroyChildInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/Tile/GoToLevelObjectStateButtonUI", CanvasLayer.UI)
+            .Do<DestroyChildInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/Tile/SelectionFieldSnapSizeButtonUI", CanvasLayer.UI)
             .Do<LevelEditorClearSelectionFieldCommand>()
+            .Do<ShowGridOverlayCommand>(false)
             .Do<LevelEditorSetSelectionFieldEnabledCommand>(false);
+
+        On<LevelEditorSelectionFieldSnapSizeStatusUpdatedEvent>()
+            .Do<LevelEditorSetGridOverlayStepToTileSnapSizeCommand>();
 
         OnChild<LevelEditorErasingTileContext, GoToLevelEditorStateEvent>()
             .Do<AbortIfLevelEditorStateIsNotLevelEditorStateCommand>(LevelEditorState.BuildingTile)

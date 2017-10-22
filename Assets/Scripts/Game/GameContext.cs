@@ -77,6 +77,7 @@ public class GameContext : Context {
         Bind<LevelEditorSelectedLevelObjectTransformTypeStatusUpdatedEvent>();
         Bind<LevelEditorTranslateStartWorldPositionStatusUpdatedEvent>();
         Bind<LevelEditorSelectedOffGridLevelObjectStatusUpdatedEvent>();
+        Bind<LevelEditorSelectionFieldSnapSizeStatusUpdatedEvent>();
         Bind<LevelEditorTouchDownOnOffGridLevelObjectEvent>();
         Bind<LevelEditorTouchStartOnOnGridLevelObjectEvent>();
         Bind<LevelEditorLevelObjectTranslateOnGridEvent>();
@@ -181,7 +182,6 @@ public class GameContext : Context {
         Bind<PlayerJumpStatus>();
         Bind<PlayerSessionStatsStatus>();
         Bind<LevelNameStatus>();
-        Bind<LevelEditorSelectionFieldSnapSizeStatus>();
         Bind<LevelEditorSelectedGridPositionStatus>();
         Bind<LevelEditorReleasedSinceLevelObjectSpawnStatus>();
         Bind<LevelEditorOffGridTranslateStartOffsetStatus>();

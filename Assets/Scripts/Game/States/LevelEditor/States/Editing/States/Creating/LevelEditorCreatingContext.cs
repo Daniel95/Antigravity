@@ -7,17 +7,12 @@ public class LevelEditorCreatingContext : Context {
 
         On<EnterContextSignal>()
             .Do<InstantiateViewInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/GoToNavigatingStateButtonUI", CanvasLayer.UI)
-            .Do<ShowGridOverlayCommand>(true)
             .Do<EnableCameraZoomInputCommand>(true)
             .Do<EnableCameraMoveInputCommand>(true)
             .Do<SetCameraMoveInputTypeCommand>(CameraMoveInputType.Swipe2Fingers)
-            .Do<SetGridOverlaySizeToScreenWorldSizeCommand>()
-            .Do<LevelEditorSetGridOverlayOriginSizeToMinusHalfSnapSizeCommand>()
-            .Do<LevelEditorSetGridOverlayStepToTileSnapSizeCommand>()
             .GotoState<LevelEditorTileContext>();
 
         On<LeaveContextSignal>()
-            .Do<ShowGridOverlayCommand>(false)
             .Do<EnableCameraZoomInputCommand>(false)
             .Do<EnableCameraMoveInputCommand>(false)
             .Do<SetCameraMoveInputTypeCommand>(CameraMoveInputType.Swipe);
