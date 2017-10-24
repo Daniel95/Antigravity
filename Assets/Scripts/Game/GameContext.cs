@@ -185,7 +185,7 @@ public class GameContext : Context {
         Bind<LevelEditorSelectedGridPositionStatus>();
         Bind<LevelEditorReleasedSinceLevelObjectSpawnStatus>();
         Bind<LevelEditorOffGridTranslateStartOffsetStatus>();
-        Bind<LevelContainerStatus>();
+        Bind<LevelContainerTransformStatus>();
         Bind<LevelEditorOffGridLevelObjectsStatus>();
         Bind<LevelEditorStatus>();
 

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class LevelContainerStatus {
+public class LevelContainerTransformStatus {
 
     public Transform LevelContainer;
 

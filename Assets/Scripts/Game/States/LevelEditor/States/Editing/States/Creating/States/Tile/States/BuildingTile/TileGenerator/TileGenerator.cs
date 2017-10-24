@@ -76,21 +76,42 @@ public static class TileGenerator {
         bool tileNotUserGenerated = LevelEditorTileGrid.Instance.ContainsTile(gridPosition) && !LevelEditorTileGrid.Instance.GetTile(gridPosition).UserGenerated;
         return tileNotUserGenerated;
     }
+    
+    public static Dictionary<Vector2, TileType> GenerateFakeTiles(List<Vector2> gridPositions) {
+        Dictionary<Vector2, TileType> gridPositionsByTileType = new Dictionary<Vector2, TileType>();
 
-    private static void GenerateTile(Vector2 gridPosition) {
-        GeneratableTileNode matchingTileGeneratorNode = null;
+        gridPositions.ForEach(x => LevelEditorTileGrid.Instance.SetTile(x, new Tile() { UserGenerated = true }));
 
-        List<GeneratableTileNode> tileEditorNodes = GenerateableTileLibrary.GeneratableTiles;
+        foreach (Vector2 gridPosition in gridPositions) {
+            List<Vector2> allNeighbourPositions = LevelEditorTileGrid.Instance.GetNeighbourTilePositions(gridPosition, false);
+            List<Vector2> positionsToGenerate = allNeighbourPositions.Except(gridPositions).ToList();
 
-        for (int i = tileEditorNodes.Count - 1; i >= 0; i--) {
-            GeneratableTileNode tileGeneratorNode = tileEditorNodes[i];
-            TileCondition falseCondition = tileGeneratorNode.TileConditions.Find(x => !x.Check(gridPosition));
+            List<Vector2> nonUserGeneratedTilesToRegenerate = positionsToGenerate.FindAll(x => LevelEditorTileGrid.Instance.ContainsTile(x) && !LevelEditorTileGrid.Instance.GetTile(x).UserGenerated);
+            nonUserGeneratedTilesToRegenerate.ForEach(x => LevelEditorTileGrid.Instance.RemoveTile(x));
 
-            if (falseCondition == null) {
-                matchingTileGeneratorNode = tileGeneratorNode;
-                break;
+            positionsToGenerate.Add(gridPosition);
+
+            foreach (Vector2 gridPositionToGenerate in positionsToGenerate) {
+                GeneratableTileNode matchingTileGeneratorNode = GetGeneratableTileNode(gridPositionToGenerate);
+                if (matchingTileGeneratorNode.TileType == TileType.Empty) { 
+                    if (gridPositionsByTileType.ContainsKey(gridPosition)) {
+                        gridPositionsByTileType.Remove(gridPosition);
+                    }
+                } else {
+                    if (gridPositionsByTileType.ContainsKey(gridPositionToGenerate)) {
+                        gridPositionsByTileType[gridPositionToGenerate] = matchingTileGeneratorNode.TileType;
+                    } else {
+                        gridPositionsByTileType.Add(gridPositionToGenerate, matchingTileGeneratorNode.TileType);
+                    }
+                }
             }
         }
+
+        return gridPositionsByTileType;
+    }
+
+    private static void GenerateTile(Vector2 gridPosition) {
+        GeneratableTileNode matchingTileGeneratorNode = GetGeneratableTileNode(gridPosition);
 
         Tile tile = GetTile(matchingTileGeneratorNode.Prefab, matchingTileGeneratorNode.TileType, gridPosition);
         if (tile.TileType == TileType.Empty) {
@@ -115,6 +136,22 @@ public static class TileGenerator {
     private static bool CheckTileTypeUserGenerated(TileType tileType) {
         GeneratableTileNode generatableTile = GenerateableTileLibrary.GeneratableTiles.Find(x => x.TileType == tileType);
         return generatableTile.UserGenerated;
+    }
+
+    private static GeneratableTileNode GetGeneratableTileNode(Vector2 gridPosition) {
+        GeneratableTileNode matchingTileGeneratorNode = null;
+        List<GeneratableTileNode> tileEditorNodes = GenerateableTileLibrary.GeneratableTiles;
+
+        for (int i = tileEditorNodes.Count - 1; i >= 0; i--) {
+            GeneratableTileNode tileGeneratorNode = tileEditorNodes[i];
+            bool falseConditionFound = tileGeneratorNode.TileConditions.Exists(x => !x.Check(gridPosition));
+            if (!falseConditionFound) {
+                matchingTileGeneratorNode = tileGeneratorNode;
+                break;
+            }
+        }
+
+        return matchingTileGeneratorNode;
     }
 
     private static Tile GetTile(GameObject prefab, TileType tileType, Vector2 gridPosition) {

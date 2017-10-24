@@ -5,12 +5,16 @@ public class LevelEditorTestingContext : Context {
     protected override void SetBindings() {
         base.SetBindings();
 
+        Bind<DeserializedLevelSaveDataStatus>();
+
         On<EnterContextSignal>()
             .Do<InstantiateViewInCanvasLayerCommand>("UI/LevelEditor/Testing/GoToLevelEditorLevelSelectStateButtonUI", CanvasLayer.UI)
             .Do<LevelEditorSetLevelEditorStatusCommand>(false)
+            .Do<UpdateDeserializedLevelSaveDataCommand>()
             .Do<InstantiateLevelContainerCommand>()
-            .Do<LevelEditorLoadLevelSaveDataCommand>()
-            .Do<LevelEditorCombineStandardTilesCommand>()
+            .Do<SpawnCombinedStandardTilesCommand>()
+            .Do<SpawnNonStandardTilesCommand>()
+            .Do<SpawnLevelObjectsCommand>()
             .GotoState<LevelContext>();
 
         On<LeaveContextSignal>()

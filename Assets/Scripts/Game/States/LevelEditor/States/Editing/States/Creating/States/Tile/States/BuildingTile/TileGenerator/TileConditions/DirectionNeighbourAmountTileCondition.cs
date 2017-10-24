@@ -7,7 +7,6 @@ public class DirectionNeighbourAmountTileCondition : GenerateTypeAmountTileCondi
 
     public override bool Check(Vector2 gridPosition) {
         List<Vector2> directNeighbourPositions = LevelEditorTileGrid.Instance.GetNeighbourTilePositions(gridPosition, true, NeighbourType.Direct);
-
         bool condition = CheckGenerateTypeAmount(directNeighbourPositions);
 
         return condition;

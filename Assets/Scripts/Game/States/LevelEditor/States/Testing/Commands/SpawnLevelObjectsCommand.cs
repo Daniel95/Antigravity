@@ -1,21 +1,17 @@
-﻿using IoCPlus;
+﻿using UnityEngine;
+using System.Collections;
+using IoCPlus;
 using System.Collections.Generic;
-using UnityEngine;
 
-public class LevelEditorLoadLevelSaveDataCommand : Command {
+public class SpawnLevelObjectsCommand : Command {
 
+    [Inject] private DeserializedLevelSaveDataStatus deserializedLevelSaveDataStatus;
+    [Inject] private LevelContainerTransformStatus levelContainerStatus;
     [Inject] private LevelEditorStatus levelEditorStatus;
     [Inject] private LevelEditorOffGridLevelObjectsStatus offGridLevelObjectsStatus;
-    [Inject] private LevelContainerTransformStatus levelContainerStatus;
-    [Inject] private LevelNameStatus levelNameStatus;
 
     protected override void Execute() {
-        string levelFileName = StringHelper.ConvertToXMLCompatible(levelNameStatus.Name);
-
-        LevelSaveData levelSaveData = SerializeHelper.Deserialize<LevelSaveData>(LevelEditorLevelDataPath.Path + levelFileName);
-
-        List<Vector2> tileGridPositions = levelSaveData.UserGeneratedTileGridPositions;
-        TileGenerator.SpawnTiles(tileGridPositions);
+        LevelSaveData levelSaveData = deserializedLevelSaveDataStatus.LevelSaveData;
 
         List<OnGridLevelObjectSaveData> onGridlevelObjectsSaveData = levelSaveData.OnGridLevelObjectsSaveData;
         SpawnOnGridLevelObjects(onGridlevelObjectsSaveData);
@@ -49,10 +45,9 @@ public class LevelEditorLoadLevelSaveDataCommand : Command {
             GameObject levelObjectGameObject = Object.Instantiate(prefab, position, new Quaternion(), levelContainerStatus.LevelContainer);
             levelObjectGameObject.transform.localScale = offGridlevelObjectSaveData.Size;
 
-            if(levelEditorStatus.Active) {
+            if (levelEditorStatus.Active) {
                 offGridLevelObjectsStatus.OffGridLevelObjectsByGameObject.Add(levelObjectGameObject, levelObjectType);
             }
         }
     }
-
 }

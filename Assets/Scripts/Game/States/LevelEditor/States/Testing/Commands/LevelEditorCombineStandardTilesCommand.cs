@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class LevelEditorCombineStandardTilesCommand : Command {
 
-    [Inject] private LevelContainerStatus levelContainerStatus;
+    [Inject] private LevelContainerTransformStatus levelContainerStatus;
 
     private const string LEVEL_COLLIDER_PATH = "LevelEditor/LevelCollider";
     private const string LEVEL_VISUAL_PATH = "LevelEditor/LevelVisual";
@@ -27,7 +27,7 @@ public class LevelEditorCombineStandardTilesCommand : Command {
             standardTileGrid.Add(gridValue.Key, gridValue.Value.GameObject);
         }
 
-        List<List<Vector2>> rectangles = GridHelper.SplitIntoRectangles(standardTileGrid.Keys.ToList());
+        List<List<Vector2>> rectangles = GridHelper.SortIntoRectangles(standardTileGrid.Keys.ToList());
 
         foreach (List<Vector2> rectangle in rectangles) {
             List<SpriteRenderer> spriteRenderersToCombine = new List<SpriteRenderer>();
