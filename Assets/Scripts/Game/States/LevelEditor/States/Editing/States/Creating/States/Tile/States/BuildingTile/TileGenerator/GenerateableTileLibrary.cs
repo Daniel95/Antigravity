@@ -14,6 +14,10 @@ public class GenerateableTileLibrary : MonoBehaviour {
 
     private const string GENERATABLE_TILE_LIBRARY_PATH = "LevelEditor/Libraries/GenerateableTileLibrary";
 
+    public static GeneratableTileNode GetGeneratableTileNode(TileType tileType) {
+        return GetInstance().generatableTiles.Find(x => x.TileType == tileType);
+    }
+
     private static GenerateableTileLibrary GetInstance() {
         if (instance == null) {
             instance = Resources.Load<GenerateableTileLibrary>(GENERATABLE_TILE_LIBRARY_PATH);

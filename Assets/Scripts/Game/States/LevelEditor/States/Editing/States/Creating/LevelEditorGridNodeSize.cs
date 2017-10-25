@@ -12,7 +12,7 @@ public class LevelEditorGridNodeSize : MonoBehaviour {
 
     public static LevelEditorGridNodeSize GetInstance() {
         if (instance == null) {
-            instance = Object.FindObjectOfType<LevelEditorGridNodeSize>();
+            instance = FindObjectOfType<LevelEditorGridNodeSize>();
         }
         return instance;
     }

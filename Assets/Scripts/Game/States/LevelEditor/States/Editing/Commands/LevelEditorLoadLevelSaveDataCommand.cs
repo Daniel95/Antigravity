@@ -1,5 +1,6 @@
 ﻿using IoCPlus;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class LevelEditorLoadLevelSaveDataCommand : Command {
@@ -14,8 +15,11 @@ public class LevelEditorLoadLevelSaveDataCommand : Command {
 
         LevelSaveData levelSaveData = SerializeHelper.Deserialize<LevelSaveData>(LevelEditorLevelDataPath.Path + levelFileName);
 
-        List<Vector2> tileGridPositions = levelSaveData.UserGeneratedTileGridPositions;
-        TileGenerator.SpawnTiles(tileGridPositions);
+        List<Vector2> standardTileGridPositions = levelSaveData.StandardTileGridPositions;
+        List<Vector2> nonStandardUserGeneratedTileGridPositions = levelSaveData.NonStandardUserGeneratedTilesSaveData.Select(x => x.GridPosition).ToList();
+        List<Vector2> userGeneratedTileGridPositions = standardTileGridPositions.Concat(nonStandardUserGeneratedTileGridPositions).ToList();
+
+        TileGenerator.SpawnTiles(userGeneratedTileGridPositions);
 
         List<OnGridLevelObjectSaveData> onGridlevelObjectsSaveData = levelSaveData.OnGridLevelObjectsSaveData;
         SpawnOnGridLevelObjects(onGridlevelObjectsSaveData);

@@ -32,6 +32,17 @@ public class LevelEditorTileGrid : LevelEditorGridPositions {
         return userGeneratedTileGridPosition;
     }
 
+    public List<Vector2> GetNonUserGeneratedTileGridPositions() {
+        List<Vector2> userGeneratedTileGridPosition = new List<Vector2>();
+        foreach (KeyValuePair<Vector2, Tile> tileByGridPosition in tileGrid) {
+            if (!tileByGridPosition.Value.UserGenerated) {
+                userGeneratedTileGridPosition.Add(tileByGridPosition.Key);
+            }
+        }
+
+        return userGeneratedTileGridPosition;
+    }
+
     public List<Vector2> GetGridPositionsByTileType(TileType tileType) {
         List<Vector2> gridPositionsWithType = tileGrid.Keys.ToList().FindAll(x => tileGrid[x].TileType == tileType);
         return gridPositionsWithType;

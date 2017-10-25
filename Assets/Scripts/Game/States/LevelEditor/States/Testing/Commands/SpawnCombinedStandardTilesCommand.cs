@@ -8,7 +8,6 @@ public class SpawnCombinedStandardTilesCommand : Command {
     [Inject] private LevelContainerTransformStatus levelContainerStatus;
 
     private const string LEVEL_COLLIDER_PATH = "LevelEditor/LevelCollider";
-    private const string LEVEL_VISUAL_PATH = "LevelEditor/LevelVisual";
 
     protected override void Execute() {
         GameObject levelColliderPrefab = Resources.Load<GameObject>(LEVEL_COLLIDER_PATH);
@@ -20,12 +19,8 @@ public class SpawnCombinedStandardTilesCommand : Command {
     }
 
     private List<GameObject> InstantiateStandardTiles(Transform parent) {
-        GameObject levelVisualPrefab = Resources.Load<GameObject>(LEVEL_VISUAL_PATH);
-
         LevelSaveData levelSaveData = deserializedLevelSaveDataStatus.LevelSaveData;
-        List<Vector2> userGeneratedTileGridPositions = levelSaveData.UserGeneratedTileGridPositions;
-
-        List<Vector2> standardTilePositions = GetFakeStandardTilePositions(userGeneratedTileGridPositions);
+        List<Vector2> standardTilePositions = levelSaveData.StandardTileGridPositions;
 
         float preRectangleSplitTime = Time.realtimeSinceStartup;
         List<List<Vector2>> rectangles = GridHelper.SortIntoRectangles(standardTilePositions);
@@ -57,22 +52,11 @@ public class SpawnCombinedStandardTilesCommand : Command {
         float height = offset.y + nodeSize;
         Vector2 scale = new Vector2(width, height);
 
-        GeneratableTileNode generatableTileNode = GenerateableTileLibrary.GeneratableTiles.Find(x => x.TileType == TileType.Standard);
+        GeneratableTileNode generatableTileNode = GenerateableTileLibrary.GetGeneratableTileNode(TileType.Standard);
         GameObject standardTile = Object.Instantiate(generatableTileNode.Prefab, centerWorldPosition, new Quaternion(), parent);
         standardTile.transform.localScale = scale;
 
         return standardTile;
-    }
-
-    private List<Vector2> GetFakeStandardTilePositions(List<Vector2> fakeGridPositions) {
-        Dictionary<Vector2, TileType> gridPositionsByTileType = TileGenerator.GenerateFakeTiles(fakeGridPositions);
-        List<Vector2> standardTilePositions = new List<Vector2>();
-        foreach (KeyValuePair<Vector2, TileType> gridPositionByTileType in gridPositionsByTileType) {
-            if (gridPositionByTileType.Value != TileType.Standard) { continue; }
-            standardTilePositions.Add(gridPositionByTileType.Key);
-        }
-
-        return standardTilePositions;
     }
 
     private static void CombineGameObjectColliders(List<GameObject> gameObjectCollidersToCombine, GameObject parent) {

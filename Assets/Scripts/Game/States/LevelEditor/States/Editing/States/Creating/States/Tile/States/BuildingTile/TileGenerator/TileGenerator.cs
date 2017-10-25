@@ -76,39 +76,6 @@ public static class TileGenerator {
         bool tileNotUserGenerated = LevelEditorTileGrid.Instance.ContainsTile(gridPosition) && !LevelEditorTileGrid.Instance.GetTile(gridPosition).UserGenerated;
         return tileNotUserGenerated;
     }
-    
-    public static Dictionary<Vector2, TileType> GenerateFakeTiles(List<Vector2> gridPositions) {
-        Dictionary<Vector2, TileType> gridPositionsByTileType = new Dictionary<Vector2, TileType>();
-
-        gridPositions.ForEach(x => LevelEditorTileGrid.Instance.SetTile(x, new Tile() { UserGenerated = true }));
-
-        foreach (Vector2 gridPosition in gridPositions) {
-            List<Vector2> allNeighbourPositions = LevelEditorTileGrid.Instance.GetNeighbourTilePositions(gridPosition, false);
-            List<Vector2> positionsToGenerate = allNeighbourPositions.Except(gridPositions).ToList();
-
-            List<Vector2> nonUserGeneratedTilesToRegenerate = positionsToGenerate.FindAll(x => LevelEditorTileGrid.Instance.ContainsTile(x) && !LevelEditorTileGrid.Instance.GetTile(x).UserGenerated);
-            nonUserGeneratedTilesToRegenerate.ForEach(x => LevelEditorTileGrid.Instance.RemoveTile(x));
-
-            positionsToGenerate.Add(gridPosition);
-
-            foreach (Vector2 gridPositionToGenerate in positionsToGenerate) {
-                GeneratableTileNode matchingTileGeneratorNode = GetGeneratableTileNode(gridPositionToGenerate);
-                if (matchingTileGeneratorNode.TileType == TileType.Empty) { 
-                    if (gridPositionsByTileType.ContainsKey(gridPosition)) {
-                        gridPositionsByTileType.Remove(gridPosition);
-                    }
-                } else {
-                    if (gridPositionsByTileType.ContainsKey(gridPositionToGenerate)) {
-                        gridPositionsByTileType[gridPositionToGenerate] = matchingTileGeneratorNode.TileType;
-                    } else {
-                        gridPositionsByTileType.Add(gridPositionToGenerate, matchingTileGeneratorNode.TileType);
-                    }
-                }
-            }
-        }
-
-        return gridPositionsByTileType;
-    }
 
     private static void GenerateTile(Vector2 gridPosition) {
         GeneratableTileNode matchingTileGeneratorNode = GetGeneratableTileNode(gridPosition);
@@ -134,7 +101,7 @@ public static class TileGenerator {
     }
 
     private static bool CheckTileTypeUserGenerated(TileType tileType) {
-        GeneratableTileNode generatableTile = GenerateableTileLibrary.GeneratableTiles.Find(x => x.TileType == tileType);
+        GeneratableTileNode generatableTile = GenerateableTileLibrary.GetGeneratableTileNode(tileType);
         return generatableTile.UserGenerated;
     }
 

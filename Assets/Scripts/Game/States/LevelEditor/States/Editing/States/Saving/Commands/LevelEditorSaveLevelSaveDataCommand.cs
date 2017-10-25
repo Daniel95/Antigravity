@@ -1,6 +1,7 @@
 ﻿using IoCPlus;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 
 public class LevelEditorSaveLevelSaveDataCommand : Command {
@@ -25,16 +26,43 @@ public class LevelEditorSaveLevelSaveDataCommand : Command {
 
         List<OnGridLevelObjectSaveData> onGridLevelObjectsSaveData = ExtractOnGridLevelObjectsSaveData();
         List<OffGridLevelObjectSaveData> offGridLevelObjectsSaveData = ExtractOffGridLevelObjectsSaveData();
+
+        List<Vector2> standardTilePositions = LevelEditorTileGrid.Instance.GetGridPositionsByTileType(TileType.Standard);
+
         List<Vector2> userGeneratedTileGridPositions = LevelEditorTileGrid.Instance.GetUserGeneratedTileGridPositions();
+        List<Vector2> nonStandardUserGeneratedTileGridPositions = userGeneratedTileGridPositions.Except(standardTilePositions).ToList();
+        List<TileSaveData> nonStandardUserGeneratedTileSaveData = ExtractTilesSaveData(nonStandardUserGeneratedTileGridPositions);
+
+        List<Vector2> nonUserGeneratedTileGridPositions = LevelEditorTileGrid.Instance.GetNonUserGeneratedTileGridPositions();
+        List<TileSaveData> nonStandardNonUserGeneratedTilesSaveData = ExtractTilesSaveData(nonUserGeneratedTileGridPositions);
 
         LevelSaveData levelData = new LevelSaveData {
-            UserGeneratedTileGridPositions = userGeneratedTileGridPositions,
+            StandardTileGridPositions = standardTilePositions,
+            NonStandardUserGeneratedTilesSaveData = nonStandardUserGeneratedTileSaveData,
+            NonStandardNonUserGeneratedTilesSaveData = nonStandardNonUserGeneratedTilesSaveData,
             OnGridLevelObjectsSaveData = onGridLevelObjectsSaveData,
             OffGridLevelObjectsSaveData = offGridLevelObjectsSaveData,
         };
 
         string levelFileName = StringHelper.ConvertToXMLCompatible(newLevelName);
         SerializeHelper.Serialize(LevelEditorLevelDataPath.Path + levelFileName, levelData);
+    }
+
+    private static List<TileSaveData> ExtractTilesSaveData(List<Vector2> gridPositions) {
+        List<TileSaveData> tilesSaveData = new List<TileSaveData>();
+        foreach (Vector2 gridPosition in gridPositions) {
+            Tile tile = LevelEditorTileGrid.Instance.GetTile(gridPosition);
+
+            TileSaveData tileSaveData = new TileSaveData {
+                GridPosition = gridPosition,
+                Rotation = tile.GameObject.transform.rotation,
+                TileType = tile.TileType,
+            };
+
+            tilesSaveData.Add(tileSaveData);
+        }
+
+        return tilesSaveData;
     }
 
     private static List<OnGridLevelObjectSaveData> ExtractOnGridLevelObjectsSaveData() {
