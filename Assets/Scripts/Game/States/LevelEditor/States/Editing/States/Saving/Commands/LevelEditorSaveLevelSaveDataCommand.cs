@@ -29,17 +29,13 @@ public class LevelEditorSaveLevelSaveDataCommand : Command {
 
         List<Vector2> standardTilePositions = LevelEditorTileGrid.Instance.GetGridPositionsByTileType(TileType.Standard);
 
-        List<Vector2> userGeneratedTileGridPositions = LevelEditorTileGrid.Instance.GetUserGeneratedTileGridPositions();
-        List<Vector2> nonStandardUserGeneratedTileGridPositions = userGeneratedTileGridPositions.Except(standardTilePositions).ToList();
-        List<TileSaveData> nonStandardUserGeneratedTileSaveData = ExtractTilesSaveData(nonStandardUserGeneratedTileGridPositions);
-
-        List<Vector2> nonUserGeneratedTileGridPositions = LevelEditorTileGrid.Instance.GetNonUserGeneratedTileGridPositions();
-        List<TileSaveData> nonStandardNonUserGeneratedTilesSaveData = ExtractTilesSaveData(nonUserGeneratedTileGridPositions);
+        List<Vector2> tileGridPositions = LevelEditorTileGrid.Instance.GetTileGridPositions();
+        List<Vector2> nonStandardTileGridPositions = tileGridPositions.Except(standardTilePositions).ToList();
+        List<TileSaveData> nonStandardTileSaveData = ExtractTilesSaveData(nonStandardTileGridPositions);
 
         LevelSaveData levelData = new LevelSaveData {
             StandardTileGridPositions = standardTilePositions,
-            NonStandardUserGeneratedTilesSaveData = nonStandardUserGeneratedTileSaveData,
-            NonStandardNonUserGeneratedTilesSaveData = nonStandardNonUserGeneratedTilesSaveData,
+            NonStandardTilesSaveData = nonStandardTileSaveData,
             OnGridLevelObjectsSaveData = onGridLevelObjectsSaveData,
             OffGridLevelObjectsSaveData = offGridLevelObjectsSaveData,
         };

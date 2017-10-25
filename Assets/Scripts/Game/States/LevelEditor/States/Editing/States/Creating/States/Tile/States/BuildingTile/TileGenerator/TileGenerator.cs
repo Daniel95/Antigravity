@@ -78,7 +78,7 @@ public static class TileGenerator {
     }
 
     private static void GenerateTile(Vector2 gridPosition) {
-        GeneratableTileNode matchingTileGeneratorNode = GetGeneratableTileNode(gridPosition);
+        GenerateableTileNode matchingTileGeneratorNode = GetGeneratableTileNode(gridPosition);
 
         Tile tile = GetTile(matchingTileGeneratorNode.Prefab, matchingTileGeneratorNode.TileType, gridPosition);
         if (tile.TileType == TileType.Empty) {
@@ -101,16 +101,16 @@ public static class TileGenerator {
     }
 
     private static bool CheckTileTypeUserGenerated(TileType tileType) {
-        GeneratableTileNode generatableTile = GenerateableTileLibrary.GetGeneratableTileNode(tileType);
+        GenerateableTileNode generatableTile = GenerateableTileLibrary.GetGeneratableTileNode(tileType);
         return generatableTile.UserGenerated;
     }
 
-    private static GeneratableTileNode GetGeneratableTileNode(Vector2 gridPosition) {
-        GeneratableTileNode matchingTileGeneratorNode = null;
-        List<GeneratableTileNode> tileEditorNodes = GenerateableTileLibrary.GeneratableTiles;
+    private static GenerateableTileNode GetGeneratableTileNode(Vector2 gridPosition) {
+        GenerateableTileNode matchingTileGeneratorNode = null;
+        List<GenerateableTileNode> tileEditorNodes = GenerateableTileLibrary.GenerateableTiles;
 
         for (int i = tileEditorNodes.Count - 1; i >= 0; i--) {
-            GeneratableTileNode tileGeneratorNode = tileEditorNodes[i];
+            GenerateableTileNode tileGeneratorNode = tileEditorNodes[i];
             bool falseConditionFound = tileGeneratorNode.TileConditions.Exists(x => !x.Check(gridPosition));
             if (!falseConditionFound) {
                 matchingTileGeneratorNode = tileGeneratorNode;

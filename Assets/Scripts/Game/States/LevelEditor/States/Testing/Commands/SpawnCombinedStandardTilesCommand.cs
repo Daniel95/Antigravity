@@ -52,7 +52,7 @@ public class SpawnCombinedStandardTilesCommand : Command {
         float height = offset.y + nodeSize;
         Vector2 scale = new Vector2(width, height);
 
-        GeneratableTileNode generatableTileNode = GenerateableTileLibrary.GetGeneratableTileNode(TileType.Standard);
+        GenerateableTileNode generatableTileNode = GenerateableTileLibrary.GetGeneratableTileNode(TileType.Standard);
         GameObject standardTile = Object.Instantiate(generatableTileNode.Prefab, centerWorldPosition, new Quaternion(), parent);
         standardTile.transform.localScale = scale;
 

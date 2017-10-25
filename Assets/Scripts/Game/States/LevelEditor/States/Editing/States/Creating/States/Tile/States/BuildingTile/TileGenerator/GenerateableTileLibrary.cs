@@ -6,15 +6,15 @@ using UnityToolbag;
 
 public class GenerateableTileLibrary : MonoBehaviour {
 
-    public static List<GeneratableTileNode> GeneratableTiles { get { return GetInstance().generatableTiles; } }
+    public static List<GenerateableTileNode> GenerateableTiles { get { return GetInstance().generatableTiles; } }
 
     private static GenerateableTileLibrary instance;
 
-    [SerializeField] [Reorderable] private List<GeneratableTileNode> generatableTiles = new List<GeneratableTileNode>();
+    [SerializeField] [Reorderable] private List<GenerateableTileNode> generatableTiles = new List<GenerateableTileNode>();
 
     private const string GENERATABLE_TILE_LIBRARY_PATH = "LevelEditor/Libraries/GenerateableTileLibrary";
 
-    public static GeneratableTileNode GetGeneratableTileNode(TileType tileType) {
+    public static GenerateableTileNode GetGeneratableTileNode(TileType tileType) {
         return GetInstance().generatableTiles.Find(x => x.TileType == tileType);
     }
 
@@ -36,7 +36,7 @@ public class GenerateableTileLibrary : MonoBehaviour {
 
         foreach (TileType tileType in TileTypeIEnumerable) {
             if (generatableTiles.Count <= index) {
-                generatableTiles.Insert(index, new GeneratableTileNode() {
+                generatableTiles.Insert(index, new GenerateableTileNode() {
                     TileType = tileType,
                 });
             } else {

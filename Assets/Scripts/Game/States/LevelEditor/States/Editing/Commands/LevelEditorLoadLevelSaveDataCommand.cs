@@ -16,9 +16,15 @@ public class LevelEditorLoadLevelSaveDataCommand : Command {
         LevelSaveData levelSaveData = SerializeHelper.Deserialize<LevelSaveData>(LevelEditorLevelDataPath.Path + levelFileName);
 
         List<Vector2> standardTileGridPositions = levelSaveData.StandardTileGridPositions;
-        List<Vector2> nonStandardUserGeneratedTileGridPositions = levelSaveData.NonStandardUserGeneratedTilesSaveData.Select(x => x.GridPosition).ToList();
-        List<Vector2> userGeneratedTileGridPositions = standardTileGridPositions.Concat(nonStandardUserGeneratedTileGridPositions).ToList();
 
+        List<Vector2> nonStandardTileGridPositions = new List<Vector2>();
+        foreach (TileSaveData tileSaveData in levelSaveData.NonStandardTilesSaveData) {
+            GenerateableTileNode generateableTileNode = GenerateableTileLibrary.GetGeneratableTileNode(tileSaveData.TileType);
+            if(!generateableTileNode.UserGenerated) { continue; }
+            nonStandardTileGridPositions.Add(tileSaveData.GridPosition);
+        }
+
+        List<Vector2> userGeneratedTileGridPositions = standardTileGridPositions.Concat(nonStandardTileGridPositions).ToList();
         TileGenerator.SpawnTiles(userGeneratedTileGridPositions);
 
         List<OnGridLevelObjectSaveData> onGridlevelObjectsSaveData = levelSaveData.OnGridLevelObjectsSaveData;

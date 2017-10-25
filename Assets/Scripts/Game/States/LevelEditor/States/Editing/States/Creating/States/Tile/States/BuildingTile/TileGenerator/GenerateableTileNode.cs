@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
-public class GeneratableTileNode {
+public class GenerateableTileNode {
 
     public GameObject Prefab;
     public TileType TileType;
