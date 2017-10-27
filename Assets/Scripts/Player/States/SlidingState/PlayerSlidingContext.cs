@@ -14,5 +14,11 @@ public class PlayerSlidingContext : Context {
 
         On<CancelDragInputEvent>()
             .Do<PlayerPointToSavedDirectionCommand>();
+
+        On<PlayerTriggerEnter2DEvent>()
+            .Do<AbortIfTriggerTagIsNotTheSameCommand>(Tags.ConvexCorner)
+            .Do<DebugLogMessageCommand>("___________________")
+            .Do<DebugLogMessageCommand>("Start Checking Rotate")
+            .Do<PlayerStartCheckingRotateAroundCornerConditionsCommand>();
     }
 }

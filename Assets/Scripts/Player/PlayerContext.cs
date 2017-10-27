@@ -62,6 +62,7 @@ public class PlayerContext : Context {
             .Do<PlayerResetCollisionsCommand>();
 
         On<PlayerTurnToNextDirectionEvent>()
+            .Do<DebugLogMessageCommand>("Turn")
             .Do<PlayerTurnToNextDirectionCommand>()
             .Do<PlayerPointToSavedDirectionCommand>();
 

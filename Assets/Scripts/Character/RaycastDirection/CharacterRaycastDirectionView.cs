@@ -249,7 +249,7 @@ public class CharacterRaycastDirectionView : View, ICharacterRaycastDirection {
         return false;
     }
 
-    private void Start() {
+    private void Awake() {
         if (showDebugRays) {
             StartCoroutine(DebugRays());
         }
