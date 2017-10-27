@@ -10,9 +10,11 @@ public class LevelEditorGridNodeSize : MonoBehaviour {
 
     [SerializeField] private float size;
 
+    private const string GRID_NODE_SIZE_PREFAB_PATH = "LevelEditor/Libraries/GridNodeSizeLibrary";
+
     public static LevelEditorGridNodeSize GetInstance() {
         if (instance == null) {
-            instance = FindObjectOfType<LevelEditorGridNodeSize>();
+            instance = Resources.Load<LevelEditorGridNodeSize>(GRID_NODE_SIZE_PREFAB_PATH);
         }
         return instance;
     }
