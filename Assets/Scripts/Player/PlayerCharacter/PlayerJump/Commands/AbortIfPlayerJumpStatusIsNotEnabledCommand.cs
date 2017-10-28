@@ -1,12 +1,13 @@
 ﻿using IoCPlus;
 
-public class AbortIfPlayerJumpIsNotEnabledCommand : Command {
+public class AbortIfPlayerJumpStatusIsNotEnabledCommand : Command {
 
     [Inject] private PlayerJumpStatus playerJumpStatus;
 
     protected override void Execute() {
-        if(!playerJumpStatus.JumpIsEnabled) {
+        if(!playerJumpStatus.Enabled) {
             Abort();
         }
     }
+
 }

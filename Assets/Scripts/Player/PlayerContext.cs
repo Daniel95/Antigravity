@@ -13,7 +13,8 @@ public class PlayerContext : Context {
             .AddContext<PlayerStateContext>()
             .Do<EnableInputCommand>(true)
             .Do<EnableWeaponCommand>(true)
-            .Do<EnablePlayerJumpCommand>(true)
+            .Do<EnablePlayerJumpStatusCommand>(true)
+            .Do<EnablePlayerTurnStatusCommand>(true)
             .Do<PlayerSetSavedDirectionToStartDirectionCommand>()
             .Do<PlayerSetMoveDirectionToStartDirectionCommand>()
             .Do<PlayerPointToMoveDirectionCommand>();
@@ -62,6 +63,7 @@ public class PlayerContext : Context {
             .Do<PlayerResetCollisionsCommand>();
 
         On<PlayerTurnToNextDirectionEvent>()
+            .Do<AbortIfPlayerTurnStatusIsNotEnabledCommand>()
             .Do<DebugLogMessageCommand>("Turn")
             .Do<PlayerTurnToNextDirectionCommand>()
             .Do<PlayerPointToSavedDirectionCommand>();

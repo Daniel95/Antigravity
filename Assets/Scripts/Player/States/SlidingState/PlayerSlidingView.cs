@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class PlayerSlidingView : CharacterSlidingView {
 
+    [Inject] private PlayerJumpStatus playerJumpStatus;
+    [Inject] private PlayerTurnStatus playerTurnStatus;
+
     [SerializeField] private float rotateSpeed = 90;
 
     [Inject(Label.Player)] private Ref<ICharacterVelocity> playerVelocityRef;
@@ -24,6 +27,9 @@ public class PlayerSlidingView : CharacterSlidingView {
     }
 
     private IEnumerator Rotate90DegreesAroundPosition(Vector2 positionToRotateAround) {
+        playerJumpStatus.Enabled = false;
+        playerTurnStatus.Enabled = false;
+
         Vector2 targetOffset = positionToRotateAround - (Vector2)transform.position;
         Vector2 targetDirection = (targetOffset).normalized;
         Vector2 moveDirectionRight = Quaternion.AngleAxis(90, -Vector3.forward) * playerVelocityRef.Get().MoveDirection;
@@ -72,6 +78,9 @@ public class PlayerSlidingView : CharacterSlidingView {
         playerTurnRef.Get().SavedDirection = VectorHelper.Round(rotation * playerTurnRef.Get().SavedDirection);
         playerDirectionPointerRef.Get().PointToDirection(playerTurnRef.Get().SavedDirection);
         playerVelocityRef.Get().EnableDirectionalMovement();
+
+        playerJumpStatus.Enabled = true;
+        playerTurnStatus.Enabled = true;
 
         rotate90DegreesAroundPosition = null;
     }

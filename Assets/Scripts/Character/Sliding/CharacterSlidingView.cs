@@ -29,15 +29,14 @@ public class CharacterSlidingView : View, ICharacterSliding {
             return;
         }
 
-        if(checkAligningWithTargetCoroutine != null) {
-            Debug.Log("Stopping previous checkAligningWithTargetCoroutine");
-            StopCheckingRotateAroundCornerConditions();
-        }
+        StopCheckingRotateAroundCornerConditions();
         checkAligningWithTargetCoroutine = StartCoroutine(CheckAligningWithPosition(cornerPosition));
     }
 
     public void StopCheckingRotateAroundCornerConditions() {
-        StopCoroutine(checkAligningWithTargetCoroutine);
+        if (checkAligningWithTargetCoroutine != null) {
+            StopCoroutine(checkAligningWithTargetCoroutine);
+        }
     }
 
     private IEnumerator CheckAligningWithPosition(Vector2 cornerPosition) {

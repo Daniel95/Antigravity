@@ -181,6 +181,7 @@ public class GameContext : Context {
         Bind<InputStatus>();
         Bind<WeaponStatus>();
         Bind<PlayerJumpStatus>();
+        Bind<PlayerTurnStatus>();
         Bind<PlayerSessionStatsStatus>();
         Bind<LevelNameStatus>();
         Bind<LevelEditorSelectedGridPositionStatus>();

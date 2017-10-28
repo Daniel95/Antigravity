@@ -1,11 +1,11 @@
 ﻿using IoCPlus;
 using UnityEngine;
 
-public class EnablePlayerJumpCommand : Command<bool> {
+public class EnablePlayerJumpStatusCommand : Command<bool> {
 
     [Inject] private PlayerJumpStatus playerJumpStatus;
 
     protected override void Execute(bool enable) {
-        playerJumpStatus.JumpIsEnabled = enable;
+        playerJumpStatus.Enabled = enable;
     }
 }
