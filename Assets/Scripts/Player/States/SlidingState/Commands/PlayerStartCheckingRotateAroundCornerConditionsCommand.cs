@@ -9,6 +9,7 @@ public class PlayerStartCheckingRotateAroundCornerConditionsCommand : Command {
 
     protected override void Execute() {
         Vector2 cornerPosition = collider.transform.position;
+        Debug.Log("collider " + collider.name, collider.gameObject);
         playerSlidingRef.Get().StartCheckingRotateAroundCornerConditions(cornerPosition);
     }
 

@@ -20,29 +20,31 @@ public class PlayerSlidingView : CharacterSlidingView {
 
     private void StartRotating90DegreesAroundPosition(Vector2 position) {
         if(rotate90DegreesAroundPosition != null) { return; }
-
         rotate90DegreesAroundPosition = StartCoroutine(Rotate90DegreesAroundPosition(position));
     }
 
     private IEnumerator Rotate90DegreesAroundPosition(Vector2 positionToRotateAround) {
-        Vector2 targetDirection = (positionToRotateAround - (Vector2)transform.position).normalized;
-        bool targetIsToTheRight = VectorHelper.DirectionIsToTheRight(transform.right, targetDirection);
+        Vector2 targetOffset = positionToRotateAround - (Vector2)transform.position;
+        Vector2 targetDirection = (targetOffset).normalized;
+        Vector2 moveDirectionRight = Quaternion.AngleAxis(90, -Vector3.forward) * playerVelocityRef.Get().MoveDirection;
 
+        bool targetIsToTheRight = VectorHelper.DirectionIsToTheRight(moveDirectionRight, targetDirection);
 
         playerVelocityRef.Get().DisableDirectionalMovement();
+        playerVelocityRef.Get().SetVelocity(Vector2.zero);
 
         Vector3 rotateAxis = targetIsToTheRight ? -Vector3.forward : Vector3.forward;
 
         float startAngle = transform.rotation.eulerAngles.z;
 
-        Debug.Log("targetDirection " + targetDirection);
-        Debug.Log("transform.right " + transform.right);
+        Debug.Log("___________ " + FrameHelper.FrameCount);
+        Debug.Log("targetOffset " + targetOffset);
+        Debug.Log("moveDirectionRight " + moveDirectionRight);
         Debug.Log("targetIsToTheRight " + targetIsToTheRight);
-        Debug.Log("rotateAxis " + rotateAxis);
 
         while (true) {
             float speed = playerVelocityRef.Get().CurrentSpeed;
-            transform.RotateAround(positionToRotateAround, rotateAxis, (rotateSpeed * speed) * Time.deltaTime);
+            transform.RotateAround(positionToRotateAround, rotateAxis, (speed * rotateSpeed) * Time.deltaTime);
 
             float angleOffset = Mathf.Abs(Mathf.DeltaAngle(transform.rotation.eulerAngles.z, startAngle));
             if (angleOffset >= 90) {
@@ -58,6 +60,10 @@ public class PlayerSlidingView : CharacterSlidingView {
         Vector3 roundedAngles = new Vector3(eulerAngles.x, eulerAngles.y, roundedZAngle);
         transform.rotation = Quaternion.Euler(roundedAngles);
         */
+
+        Vector2 newOffset = Quaternion.AngleAxis(90, (rotateAxis * -1)) * targetOffset;
+        transform.position = positionToRotateAround + newOffset;
+
         transform.rotation = new Quaternion();
 
         Quaternion rotation = Quaternion.AngleAxis(90, rotateAxis);

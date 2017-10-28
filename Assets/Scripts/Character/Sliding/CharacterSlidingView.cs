@@ -12,9 +12,13 @@ public class CharacterSlidingView : View, ICharacterSliding {
     private Coroutine checkAligningWithTargetCoroutine;
 
     public void StartCheckingRotateAroundCornerConditions(Vector2 cornerPosition) {
+        Debug.Log("player position " + transform.position);
+        Debug.Log("cornerPosition position " + cornerPosition);
+
         Vector2 moveDirection = characterVelocityRef.Get().MoveDirection;
         if(moveDirection.x != 0 && moveDirection.y != 0) {
             Debug.LogError("Not sliding");
+            return;
         }
 
         Vector2 directionToCorner = cornerPosition - (Vector2)transform.position;
@@ -25,6 +29,10 @@ public class CharacterSlidingView : View, ICharacterSliding {
             return;
         }
 
+        if(checkAligningWithTargetCoroutine != null) {
+            Debug.Log("Stopping previous checkAligningWithTargetCoroutine");
+            StopCheckingRotateAroundCornerConditions();
+        }
         checkAligningWithTargetCoroutine = StartCoroutine(CheckAligningWithPosition(cornerPosition));
     }
 
@@ -44,6 +52,7 @@ public class CharacterSlidingView : View, ICharacterSliding {
             }
             yield return null;
         }
+        checkAligningWithTargetCoroutine = null;
     }
 
     private bool CheckDirectionAxisesHaveSameSign(Vector2 direction1, Vector2 direction2) {

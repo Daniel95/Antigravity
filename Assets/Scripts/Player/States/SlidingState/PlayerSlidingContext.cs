@@ -20,5 +20,10 @@ public class PlayerSlidingContext : Context {
             .Do<DebugLogMessageCommand>("___________________")
             .Do<DebugLogMessageCommand>("Start Checking Rotate")
             .Do<PlayerStartCheckingRotateAroundCornerConditionsCommand>();
+
+        On<PlayerTriggerExit2DEvent>()
+            .Do<AbortIfTriggerTagIsNotTheSameCommand>(Tags.ConvexCorner)
+            .Do<PlayerStopCheckingRotateAroundCornerConditionsCommand>();
+
     }
 }
