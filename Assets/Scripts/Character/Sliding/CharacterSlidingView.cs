@@ -12,8 +12,14 @@ public class CharacterSlidingView : View, ICharacterSliding {
     private Coroutine checkAligningWithTargetCoroutine;
 
     public void StartCheckingRotateAroundCornerConditions(Vector2 cornerPosition) {
-        Debug.Log("player position " + transform.position);
-        Debug.Log("cornerPosition position " + cornerPosition);
+        //Debug.Log(checkAligningWithTargetCoroutine);
+        if (checkAligningWithTargetCoroutine != null) {
+            //Debug.Break();
+            return;
+        }
+
+        //Debug.Log("player position " + transform.position);
+        //Debug.Log("cornerPosition position " + cornerPosition);
 
         Vector2 moveDirection = characterVelocityRef.Get().MoveDirection;
         if(moveDirection.x != 0 && moveDirection.y != 0) {
@@ -29,13 +35,13 @@ public class CharacterSlidingView : View, ICharacterSliding {
             return;
         }
 
-        StopCheckingRotateAroundCornerConditions();
         checkAligningWithTargetCoroutine = StartCoroutine(CheckAligningWithPosition(cornerPosition));
     }
 
     public void StopCheckingRotateAroundCornerConditions() {
         if (checkAligningWithTargetCoroutine != null) {
             StopCoroutine(checkAligningWithTargetCoroutine);
+            checkAligningWithTargetCoroutine = null;
         }
     }
 
