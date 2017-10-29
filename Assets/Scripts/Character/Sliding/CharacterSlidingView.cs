@@ -20,20 +20,11 @@ public class CharacterSlidingView : View, ICharacterSliding {
 
         Vector2 moveDirection = characterVelocityRef.Get().MoveDirection;
 
-        if(moveDirection.x != 0 && moveDirection.y != 0) {
-            Debug.LogError("Not sliding");
-            Debug.Break();
-            return;
-        }
+        if(moveDirection.x != 0 && moveDirection.y != 0) { return; }
 
         cornerDirection = VectorHelper.Round(targetCornerTransform.rotation * Vector2.one);
 
-
-        if (moveDirection.x != cornerDirection.x && moveDirection.y != cornerDirection.y) {
-            return;
-        }
-
-        DebugHelper.SetDebugPosition(targetCornerTransform.position, "targetCornerTransform.position", true);
+        if (moveDirection.x != cornerDirection.x && moveDirection.y != cornerDirection.y) { return; }
 
         currentTargetCornerTransform = targetCornerTransform;
         checkAligningWithTargetCoroutine = StartCoroutine(CheckAligningWithPosition(targetCornerTransform.position));

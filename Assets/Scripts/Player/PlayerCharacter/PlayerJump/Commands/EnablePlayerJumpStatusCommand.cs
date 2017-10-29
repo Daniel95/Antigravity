@@ -8,4 +8,5 @@ public class EnablePlayerJumpStatusCommand : Command<bool> {
     protected override void Execute(bool enable) {
         playerJumpStatus.Enabled = enable;
     }
+
 }

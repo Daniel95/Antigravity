@@ -43,13 +43,6 @@ public class PlayerSlidingView : CharacterSlidingView {
 
         float startAngle = transform.rotation.eulerAngles.z;
 
-        //Debug.Log("___________ " + FrameHelper.FrameCount);
-        //Debug.Log("start rotate slide ");
-
-        //Debug.Log("targetOffset " + targetOffset);
-        //Debug.Log("moveDirectionRight " + moveDirectionRight);
-        //Debug.Log("targetIsToTheRight " + targetIsToTheRight);
-
         while (true) {
             float speed = playerVelocityRef.Get().CurrentSpeed;
             transform.RotateAround(positionToRotateAround, rotateAxis, (speed * rotateSpeed) * Time.deltaTime);

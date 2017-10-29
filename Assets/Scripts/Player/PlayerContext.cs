@@ -36,6 +36,7 @@ public class PlayerContext : Context {
             .Dispatch<GoToNextSceneEvent>();
 
         On<JumpInputEvent>()
+            .Do<AbortIfPlayerJumpStatusIsNotEnabledCommand>()
             .Dispatch<PlayerTryJumpEvent>();
 
         On<PlayerTryJumpEvent>()
