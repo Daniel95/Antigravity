@@ -16,7 +16,7 @@ public class GenerateableLevelObjectLibrary : MonoBehaviour {
     public static Vector2 GetLevelObjectEditorNodeGridSize(LevelObjectType levelObjectType) {
         GenerateableLevelObjectNode levelEditorLevelObjectEditorNode = GetNode(levelObjectType);
         Vector2 nodeSize = levelEditorLevelObjectEditorNode.Prefab.transform.localScale;
-        Vector2 unroundedGridSize = Vector2.one + (nodeSize / LevelEditorGridNodeSize.Instance.NodeSize);
+        Vector2 unroundedGridSize = Vector2.one + (nodeSize / LevelEditorGridNodeSizeLibrary.Instance.NodeSize);
         Vector2 gridSize = VectorHelper.Floor(unroundedGridSize);
         return gridSize;
     } 

@@ -7,9 +7,8 @@ public class LevelEditorTileContext : Context {
 
         On<EnterContextSignal>()
             .Do<AddStatusViewToStatusViewContainerCommand<LevelEditorSelectionFieldStatusView>>()
-            .Do<AddStatusViewToStatusViewContainerCommand<LevelEditorSelectionFieldSnapSizeStatus>>()
             .Do<InstantiateViewInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/Tile/GoToLevelObjectStateButtonUI", CanvasLayer.UI)
-            .Do<InstantiateViewInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/Tile/SelectionFieldSnapSizeButtonUI", CanvasLayer.UI)
+            .Do<InstantiateViewInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/Tile/GridSnapSizeButtonUI", CanvasLayer.UI)
             .Do<ShowGridOverlayCommand>(true)
             .Do<SetGridOverlaySizeToScreenWorldSizeCommand>()
             .Do<LevelEditorSetGridOverlayOriginSizeToMinusHalfSnapSizeCommand>()
@@ -19,15 +18,11 @@ public class LevelEditorTileContext : Context {
 
         On<LeaveContextSignal>()
             .Do<RemoveStatusViewFromStatusViewContainerCommand<LevelEditorSelectionFieldStatusView>>()
-            .Do<RemoveStatusViewFromStatusViewContainerCommand<LevelEditorSelectionFieldSnapSizeStatus>>()
             .Do<DestroyChildInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/Tile/GoToLevelObjectStateButtonUI", CanvasLayer.UI)
-            .Do<DestroyChildInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/Tile/SelectionFieldSnapSizeButtonUI", CanvasLayer.UI)
+            .Do<DestroyChildInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/Tile/GridSnapSizeButtonUI", CanvasLayer.UI)
             .Do<LevelEditorClearSelectionFieldCommand>()
             .Do<ShowGridOverlayCommand>(false)
             .Do<LevelEditorSetSelectionFieldEnabledCommand>(false);
-
-        On<LevelEditorSelectionFieldSnapSizeStatusUpdatedEvent>()
-            .Do<LevelEditorSetGridOverlayStepToTileSnapSizeCommand>();
 
         OnChild<LevelEditorErasingTileContext, GoToLevelEditorStateEvent>()
             .Do<AbortIfLevelEditorStateIsNotLevelEditorStateCommand>(LevelEditorState.BuildingTile)

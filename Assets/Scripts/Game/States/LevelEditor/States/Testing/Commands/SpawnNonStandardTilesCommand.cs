@@ -15,7 +15,7 @@ public class SpawnNonStandardTilesCommand : Command {
 
             GameObject nonStandardTile = Object.Instantiate(prefab, position, rotation);
 
-            Vector2 size = new Vector2(LevelEditorGridNodeSize.Instance.NodeSize, LevelEditorGridNodeSize.Instance.NodeSize);
+            Vector2 size = new Vector2(LevelEditorGridNodeSizeLibrary.Instance.NodeSize, LevelEditorGridNodeSizeLibrary.Instance.NodeSize);
             nonStandardTile.transform.localScale = size;
             nonStandardTile.transform.SetParent(levelContainerStatus.LevelContainer);
         }

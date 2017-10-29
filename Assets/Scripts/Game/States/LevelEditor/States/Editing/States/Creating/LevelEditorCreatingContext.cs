@@ -10,9 +10,12 @@ public class LevelEditorCreatingContext : Context {
             .Do<EnableCameraZoomInputCommand>(true)
             .Do<EnableCameraMoveInputCommand>(true)
             .Do<SetCameraMoveInputTypeCommand>(CameraMoveInputType.Swipe2Fingers)
+            .Do<AddStatusViewToStatusViewContainerCommand<LevelEditorGridSnapSizeStatus>>()
+            .Do<LevelEditorSetGridSnapSizeToGridSnapSizeTypeCommand>(GridSnapSizeType.Default)
             .GotoState<LevelEditorTileContext>();
 
         On<LeaveContextSignal>()
+            .Do<RemoveStatusViewFromStatusViewContainerCommand<LevelEditorGridSnapSizeStatus>>()
             .Do<EnableCameraZoomInputCommand>(false)
             .Do<EnableCameraMoveInputCommand>(false)
             .Do<SetCameraMoveInputTypeCommand>(CameraMoveInputType.Swipe);
@@ -81,6 +84,9 @@ public class LevelEditorCreatingContext : Context {
         On<CameraZoomedEvent>()
             .Do<AbortIfGridOverlayIsNotShownCommand>()
             .Do<SetGridOverlaySizeToScreenWorldSizeCommand>();
+
+        On<LevelEditorGridSnapSizeStatusUpdatedEvent>()
+            .Do<LevelEditorSetGridOverlayStepToTileSnapSizeCommand>();
 
     }
 

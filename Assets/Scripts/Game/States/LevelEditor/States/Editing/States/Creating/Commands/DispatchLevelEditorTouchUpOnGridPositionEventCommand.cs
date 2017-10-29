@@ -8,7 +8,7 @@ public class DispatchLevelEditorTouchUpOnGridPositionEventCommand : Command {
     [InjectParameter] private Vector2 touchDownScreenPosition;
 
     protected override void Execute() {
-        float nodeSize = LevelEditorGridNodeSize.Instance.NodeSize;
+        float nodeSize = LevelEditorGridNodeSizeLibrary.Instance.NodeSize;
         Vector2 gridPosition = LevelEditorGridHelper.ScreenToGridPosition(touchDownScreenPosition);
         levelEditorTouchUpOnGridPositionEvent.Dispatch(gridPosition);
     }

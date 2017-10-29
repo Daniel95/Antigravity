@@ -1,12 +1,17 @@
 ﻿using IoCPlus;
-using UnityEngine;
 
 public class LevelEditorOnGridLevelObjectContext : Context {
 
     protected override void SetBindings() {
         base.SetBindings();
 
+        On<EnterContextSignal>()
+            .Do<LevelEditorSetGridSnapSizeToGridSnapSizeTypeCommand>(GridSnapSizeType.Smallest)
+            .Do<ShowGridOverlayCommand>(true);
+
         On<LeaveContextSignal>()
+            .Do<ShowGridOverlayCommand>(false)
+            .Do<LevelEditorSetGridSnapSizeToPreviousCommand>()
             .Do<LevelEditorResetSelectedLevelObjectSectionStatusCommand>();
 
         On<LevelEditorSelectedLevelObjectSectionStatusUpdatedEvent>()

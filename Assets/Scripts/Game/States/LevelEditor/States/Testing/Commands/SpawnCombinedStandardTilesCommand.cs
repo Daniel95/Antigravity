@@ -46,7 +46,7 @@ public class SpawnCombinedStandardTilesCommand : Command {
         Vector2 endWorldPosition = LevelEditorGridHelper.GridToNodePosition(endGridPosition);
         Vector2 offset = VectorHelper.Abs(endWorldPosition - startWorldPosition);
 
-        float nodeSize = LevelEditorGridNodeSize.Instance.NodeSize;
+        float nodeSize = LevelEditorGridNodeSizeLibrary.Instance.NodeSize;
 
         float width = offset.x + nodeSize;
         float height = offset.y + nodeSize;

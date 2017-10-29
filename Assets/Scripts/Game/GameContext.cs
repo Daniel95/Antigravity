@@ -77,7 +77,7 @@ public class GameContext : Context {
         Bind<LevelEditorSelectedLevelObjectTransformTypeStatusUpdatedEvent>();
         Bind<LevelEditorTranslateStartWorldPositionStatusUpdatedEvent>();
         Bind<LevelEditorSelectedOffGridLevelObjectStatusUpdatedEvent>();
-        Bind<LevelEditorSelectionFieldSnapSizeStatusUpdatedEvent>();
+        Bind<LevelEditorGridSnapSizeStatusUpdatedEvent>();
         Bind<LevelEditorTouchDownOnOffGridLevelObjectEvent>();
         Bind<LevelEditorTouchStartOnOnGridLevelObjectEvent>();
         Bind<LevelEditorLevelObjectTranslateOnGridEvent>();
