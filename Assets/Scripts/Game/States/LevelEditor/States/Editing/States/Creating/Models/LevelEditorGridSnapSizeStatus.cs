@@ -8,7 +8,6 @@ public class LevelEditorGridSnapSizeStatus : StatusView {
     public static Vector2 Size {
         get { return size; }
         set {
-            Debug.Log(value);
             previousSize = size;
             size = value;
             gridSnapSizeStatusUpdatedEvent.Dispatch();

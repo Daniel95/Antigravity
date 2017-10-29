@@ -49,10 +49,12 @@ public class LevelEditorLevelObjectContext : Context {
             .Do<LevelEditorUpdateSelectedLevelObjectTransformTypeToLevelObjectNodeTransformTypeCommand>();
 
         On<LevelEditorSelectedLevelObjectNodeStatusUpdatedEvent>()
+            .Do<AbortIfContextStateIsCommand<LevelEditorOnGridLevelObjectContext>>()
             .Do<AbortIfLevelEditorSelectedLevelObjectIsNotOnGridCommand>()
             .GotoState<LevelEditorOnGridLevelObjectContext>();
 
         On<LevelEditorSelectedLevelObjectNodeStatusUpdatedEvent>()
+            .Do<AbortIfContextStateIsCommand<LevelEditorOffGridLevelObjectContext>>()
             .Do<AbortIfLevelEditorSelectedLevelObjectIsOnGridCommand>()
             .GotoState<LevelEditorOffGridLevelObjectContext>();
 

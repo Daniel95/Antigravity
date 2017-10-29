@@ -16,6 +16,7 @@ public class LevelEditorOnGridLevelObjectContext : Context {
 
         On<LevelEditorSelectedLevelObjectSectionStatusUpdatedEvent>()
             .Do<AbortIfLevelEditorSelectedLevelObjectSectionStatusIsNullCommand>()
+            .Do<LevelEditorUpdateSelectedLevelObjectNodeToLevelObjectSectionCommand>()
             .Do<LevelEditorUpdateSelectedLevelObjectTransformTypeToSelectedLevelObjectSectionCommand>();
 
         On<PinchStartedEvent>()
