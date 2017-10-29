@@ -21,6 +21,7 @@ public class PlayerSlidingContext : Context {
 
         On<PlayerTriggerExit2DEvent>()
             .Do<AbortIfTriggerTagIsNotTheSameCommand>(Tags.ConvexCorner)
+            .Do<AbortIfPlayerSlidingCurrentTargetTransformIsNotColliderTransformCommand>()
             .Do<PlayerStopCheckingRotateAroundCornerConditionsCommand>();
 
     }

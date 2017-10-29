@@ -64,7 +64,7 @@ public class PlayerContext : Context {
 
         On<PlayerTurnToNextDirectionEvent>()
             .Do<AbortIfPlayerTurnStatusIsNotEnabledCommand>()
-            .Do<DebugLogMessageCommand>("Turn")
+            //.Do<DebugLogMessageCommand>("Turn")
             .Do<PlayerTurnToNextDirectionCommand>()
             .Do<PlayerPointToSavedDirectionCommand>();
 

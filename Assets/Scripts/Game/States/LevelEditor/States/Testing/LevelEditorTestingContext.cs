@@ -8,6 +8,7 @@ public class LevelEditorTestingContext : Context {
         Bind<DeserializedLevelSaveDataStatus>();
 
         On<EnterContextSignal>()
+            .Do<DebugBreakCommand>()
             .Do<InstantiateViewInCanvasLayerCommand>("UI/LevelEditor/Testing/GoToLevelEditorLevelSelectStateButtonUI", CanvasLayer.UI)
             .Do<LevelEditorSetLevelEditorStatusCommand>(false)
             .Do<UpdateDeserializedLevelSaveDataCommand>()

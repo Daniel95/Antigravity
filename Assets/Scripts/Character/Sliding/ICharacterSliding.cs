@@ -1,8 +1,10 @@
 ﻿using UnityEngine;
 
-public interface ICharacterSliding  {
+public interface ICharacterSliding {
 
-    void StartCheckingRotateAroundCornerConditions(Vector2 position);
+    Transform CurrentTargetCornerTransform { get; }
+
+    void StartCheckingRotateAroundCornerConditions(Transform targetCornerTransform);
     void StopCheckingRotateAroundCornerConditions();
 
 }

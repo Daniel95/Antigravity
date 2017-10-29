@@ -63,7 +63,7 @@ public class ScreenShake : MonoBehaviour {
         Vector2 startPosition = transform.localPosition;
 
         while (shakeStrength > 0) {
-            Vector2 randomizedOffset = MathHelper.GetRandomizedVector2(-shakeStrength, shakeStrength);
+            Vector2 randomizedOffset = VectorHelper.GetRandomizedVector2(-shakeStrength, shakeStrength);
             transform.localPosition = startPosition + randomizedOffset;
             yield return new WaitForEndOfFrame();
         }
