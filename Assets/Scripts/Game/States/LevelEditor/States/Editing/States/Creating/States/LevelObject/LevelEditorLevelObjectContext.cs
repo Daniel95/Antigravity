@@ -8,7 +8,6 @@ public class LevelEditorLevelObjectContext : Context {
 
         On<EnterContextSignal>()
             .AddContext<LevelEditorLevelObjectTransformContext>()
-            .Do<AddStatusViewToStatusViewContainerCommand<LevelEditorSelectedLevelObjectNodeViewStatus>>()
             .Do<AddStatusViewToStatusViewContainerCommand<LevelEditorSelectedLevelObjectTransformTypeStatus>>()
             .Do<AddStatusViewToStatusViewContainerCommand<LevelEditorSelectedLevelObjectStatus>>()
             .Do<InstantiateViewInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/LevelObject/GoToTileStateButtonUI", CanvasLayer.UI)
@@ -16,7 +15,6 @@ public class LevelEditorLevelObjectContext : Context {
             .Do<LevelEditorInstantiateLevelObjectButtonsCommand>("UI/LevelEditor/Editing/Creating/LevelObject/LevelObjectButtonUI");
 
         On<LeaveContextSignal>()
-            .Do<RemoveStatusViewFromStatusViewContainerCommand<LevelEditorSelectedLevelObjectNodeViewStatus>>()
             .Do<RemoveStatusViewFromStatusViewContainerCommand<LevelEditorSelectedLevelObjectTransformTypeStatus>>()
             .Do<RemoveStatusViewFromStatusViewContainerCommand<LevelEditorSelectedLevelObjectStatus>>()
             .Do<DestroyChildInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/LevelObject/GoToTileStateButtonUI", CanvasLayer.UI)
@@ -44,6 +42,7 @@ public class LevelEditorLevelObjectContext : Context {
         On<TouchStartEvent>()
             .Do<AbortIfTouchStarted2FingersAfterIdleCommand>()
             .Do<AbortIfMousePositionIsOverLevelObjectCommand>()
+            .Do<AbortIfLevelEditorScreenPositionDoesContainGridElementCommand>()
             .Do<AbortIfLevelEditorReleasedSinceLevelObjectSpawnStatusIsCommand>(false)
             .Do<LevelEditorInstantiateAndSelectLevelObjectAtScreenPositionCommand>()
             .Do<LevelEditorSetReleasedSinceLevelObjectSpawnStatusCommand>(false);
@@ -61,6 +60,7 @@ public class LevelEditorLevelObjectContext : Context {
 
         On<LevelEditorSelectedLevelObjectStatusUpdatedEvent>()
             .Do<AbortIfLevelEditorSelectedLevelObjectIsNullCommand>()
+            .Do<LevelEditorUpdateSelectedLevelObjectNodeToSelectedLevelObjectStatusCommand>()
             .Do<LevelEditorUpdateSelectedLevelObjectTransformTypeToSelectedLevelObjectCommand>();
 
         On<LevelEditorSelectedLevelObjectStatusUpdatedEvent>()

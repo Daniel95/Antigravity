@@ -3,7 +3,7 @@
 public class LevelEditorUpdateSelectedLevelObjectTransformTypeToLevelObjectNodeTransformTypeCommand : Command {
 
     protected override void Execute() {
-        LevelObjectTransformType levelObjectTransformType = LevelEditorSelectedLevelObjectNodeViewStatus.LevelObjectNode.GetDefaultLevelObjectInputType();
+        LevelObjectTransformType levelObjectTransformType = LevelEditorSelectedLevelObjectNodeStatus.LevelObjectNode.GetDefaultLevelObjectInputType();
         LevelEditorSelectedLevelObjectTransformTypeStatus.LevelObjectTransformType = levelObjectTransformType;
     }
 

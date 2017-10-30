@@ -6,7 +6,7 @@ public class LevelEditorUpdateSelectedLevelObjectNodeCommand : Command {
 
     protected override void Execute() {
         GenerateableLevelObjectNode generateableLevelObjectNode = GenerateableLevelObjectLibrary.GetNode(levelObjectType);
-        LevelEditorSelectedLevelObjectNodeViewStatus.LevelObjectNode = generateableLevelObjectNode;
+        LevelEditorSelectedLevelObjectNodeStatus.LevelObjectNode = generateableLevelObjectNode;
     }
 
 }

@@ -3,7 +3,7 @@
 public class AbortIfLevelEditorSelectedLevelObjectNodeTypeIsLevelObjectTypeCommand : Command<LevelObjectType> {
 
     protected override void Execute(LevelObjectType levelObjectType) {
-        if(LevelEditorSelectedLevelObjectNodeViewStatus.LevelObjectNode.LevelObjectType == levelObjectType) {
+        if(LevelEditorSelectedLevelObjectNodeStatus.LevelObjectNode.LevelObjectType == levelObjectType) {
             Abort();
         }
     }

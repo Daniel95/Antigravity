@@ -10,11 +10,11 @@ public class LevelEditorInstantiateAndSelectLevelObjectAtScreenPositionCommand :
     protected override void Execute() {
         Vector2 worldPosition = Camera.main.ScreenToWorldPoint(screenPosition);
 
-        GenerateableLevelObjectNode generateableLevelObjectNode = LevelEditorSelectedLevelObjectNodeViewStatus.LevelObjectNode;
+        GenerateableLevelObjectNode generateableLevelObjectNode = LevelEditorSelectedLevelObjectNodeStatus.LevelObjectNode;
         GameObject levelObjectGameObject = Object.Instantiate(generateableLevelObjectNode.Prefab, worldPosition, new Quaternion());
         LevelEditorSelectedLevelObjectStatus.LevelObject = levelObjectGameObject;
 
-        LevelObjectType levelObjectType = LevelEditorSelectedLevelObjectNodeViewStatus.LevelObjectNode.LevelObjectType;
+        LevelObjectType levelObjectType = LevelEditorSelectedLevelObjectNodeStatus.LevelObjectNode.LevelObjectType;
         levelEditorLevelObjectsStatus.LevelObjectsByGameObject.Add(levelObjectGameObject, levelObjectType);
     }
 

@@ -3,7 +3,7 @@
 public class AbortIfLevelEditorSelectedLevelObjectNodeTransformTypeDoesNotContainCommand : Command<LevelObjectTransformType> {
 
     protected override void Execute(LevelObjectTransformType levelEditorLevelObjectTransformType) {
-        if(!LevelEditorSelectedLevelObjectNodeViewStatus.LevelObjectNode.AvailableInputTypes.Contains(levelEditorLevelObjectTransformType)) {
+        if(!LevelEditorSelectedLevelObjectNodeStatus.LevelObjectNode.AvailableInputTypes.Contains(levelEditorLevelObjectTransformType)) {
             Abort();
         }
     }

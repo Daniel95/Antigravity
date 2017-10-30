@@ -55,15 +55,15 @@ public class LevelEditorCreatingContext : Context {
             .Do<DispatchLevelEditorSwipeMovedToGridPositionEventCommand>();
 
         On<TouchStartEvent>()
+            .Do<AbortIfContextStateIsCommand<LevelEditorLevelObjectContext>>()
+            .Do<AbortIfLevelEditorScreenPositionDoesContainGridElementCommand>()
             .Do<AbortIfTouchStarted2FingersAfterIdleCommand>()
-            .Do<AbortIfMousePositionIsNotOverLevelObjectCommand>()
-            //.Do<AbortIfContextStateIsCommand<LevelEditorLevelObjectContext>>()
             .GotoState<LevelEditorLevelObjectContext>()
             .Dispatch<LevelEditorTouchDownOnLevelObjectEvent>();
 
         On<LevelEditorTouchStartOnGridPositionEvent>()
-            .Do<AbortIfLevelEditorGridPositionDoesNotContainTileCommand>()
             .Do<AbortIfContextStateIsCommand<LevelEditorTileContext>>()
+            .Do<AbortIfLevelEditorGridPositionDoesNotContainTileCommand>()
             .Do<LevelEditorStartSelectionFieldAtGridPositionCommand>()
             .GotoState<LevelEditorTileContext>();
 
