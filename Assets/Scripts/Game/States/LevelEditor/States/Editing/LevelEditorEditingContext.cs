@@ -17,7 +17,7 @@ public class LevelEditorEditingContext : Context {
 
         On<LeaveContextSignal>()
             .Do<LevelEditorClearGridCommand>()
-            .Do<LevelEditorClearOffGridLevelObjectsCommand>()
+            .Do<LevelEditorClearLevelObjectsCommand>()
             .Do<LevelEditorClearLevelNameStatusCommand>()
             .Do<ResetCamerPositionCommand>()
             .Do<SetCameraOrthographicSizeCommand>(10)

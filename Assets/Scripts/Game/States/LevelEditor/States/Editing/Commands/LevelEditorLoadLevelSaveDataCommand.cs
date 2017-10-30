@@ -6,7 +6,7 @@ using UnityEngine;
 public class LevelEditorLoadLevelSaveDataCommand : Command {
 
     [Inject] private LevelEditorStatus levelEditorStatus;
-    [Inject] private LevelEditorOffGridLevelObjectsStatus offGridLevelObjectsStatus;
+    [Inject] private LevelEditorLevelObjectsStatus levelObjectsStatus;
     [Inject] private LevelContainerTransformStatus levelContainerStatus;
     [Inject] private LevelNameStatus levelNameStatus;
 
@@ -27,40 +27,22 @@ public class LevelEditorLoadLevelSaveDataCommand : Command {
         List<Vector2> userGeneratedTileGridPositions = standardTileGridPositions.Concat(nonStandardTileGridPositions).ToList();
         TileGenerator.SpawnTiles(userGeneratedTileGridPositions);
 
-        List<OnGridLevelObjectSaveData> onGridlevelObjectsSaveData = levelSaveData.OnGridLevelObjectsSaveData;
-        SpawnOnGridLevelObjects(onGridlevelObjectsSaveData);
-
-        List<OffGridLevelObjectSaveData> offGridlevelObjectsSaveData = levelSaveData.OffGridLevelObjectsSaveData;
-        SpawnOffGridLevelObjects(offGridlevelObjectsSaveData);
+        List<LevelObjectSaveData> levelObjectsSaveData = levelSaveData.LevelObjectsSaveData;
+        SpawnLevelObjects(levelObjectsSaveData);
     }
 
-    private void SpawnOnGridLevelObjects(List<OnGridLevelObjectSaveData> onGridlevelObjectsSaveData) {
-        foreach (OnGridLevelObjectSaveData onGridlevelObjectSaveData in onGridlevelObjectsSaveData) {
-            OnGridLevelObject onGridlevelObject = new OnGridLevelObject();
-
-            LevelObjectType levelObjectType = onGridlevelObjectSaveData.LevelObjectType;
+    private void SpawnLevelObjects(List<LevelObjectSaveData> levelObjectsSaveData) {
+        foreach (LevelObjectSaveData levelObjectSaveData in levelObjectsSaveData) {
+            LevelObjectType levelObjectType = levelObjectSaveData.LevelObjectType;
             GenerateableLevelObjectNode levelEditorLevelObjectEditorNode = GenerateableLevelObjectLibrary.GetNode(levelObjectType);
             GameObject prefab = levelEditorLevelObjectEditorNode.Prefab;
-            Vector2 gameObjectPosition = onGridlevelObjectSaveData.GameObjectPosition;
-
-            GameObject levelObjectGameObject = Object.Instantiate(prefab, gameObjectPosition, new Quaternion(), levelContainerStatus.LevelContainer);
-
-            onGridlevelObject.Initiate(onGridlevelObjectSaveData.GridPositions, levelObjectGameObject, levelObjectType);
-        }
-    }
-
-    private void SpawnOffGridLevelObjects(List<OffGridLevelObjectSaveData> offGridlevelObjectsSaveData) {
-        foreach (OffGridLevelObjectSaveData offGridlevelObjectSaveData in offGridlevelObjectsSaveData) {
-            LevelObjectType levelObjectType = offGridlevelObjectSaveData.LevelObjectType;
-            GenerateableLevelObjectNode levelEditorLevelObjectEditorNode = GenerateableLevelObjectLibrary.GetNode(levelObjectType);
-            GameObject prefab = levelEditorLevelObjectEditorNode.Prefab;
-            Vector2 position = offGridlevelObjectSaveData.Position;
+            Vector2 position = levelObjectSaveData.Position;
 
             GameObject levelObjectGameObject = Object.Instantiate(prefab, position, new Quaternion(), levelContainerStatus.LevelContainer);
-            levelObjectGameObject.transform.localScale = offGridlevelObjectSaveData.Size;
+            levelObjectGameObject.transform.localScale = levelObjectSaveData.Size;
 
             if(levelEditorStatus.Active) {
-                offGridLevelObjectsStatus.OffGridLevelObjectsByGameObject.Add(levelObjectGameObject, levelObjectType);
+                levelObjectsStatus.LevelObjectsByGameObject.Add(levelObjectGameObject, levelObjectType);
             }
         }
     }

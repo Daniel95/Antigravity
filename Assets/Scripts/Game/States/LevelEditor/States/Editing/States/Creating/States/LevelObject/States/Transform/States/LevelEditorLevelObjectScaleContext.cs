@@ -21,10 +21,6 @@ public class LevelEditorLevelObjectScaleContext : Context {
             .Do<AbortIfChildInCanvasLayerDoesNotExistCommand>("UI/LevelEditor/Editing/Creating/LevelObject/SetLevelObjectTransformTypeToRotateButtonUI", CanvasLayer.UI)
             .Do<DestroyChildInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/LevelObject/SetLevelObjectTransformTypeToRotateButtonUI", CanvasLayer.UI);
 
-        On<LevelEditorSwipeMovedToNewGridPositionEvent>()
-            .Do<AbortIfLevelEditorSelectedLevelObjectSectionStatusIsNullCommand>()
-            .Do<DebugLogMessageCommand>("Scale");
-
     }
 
 }

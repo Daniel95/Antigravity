@@ -24,11 +24,8 @@ public class LevelEditorLevelObjectTranslateContext : Context {
         On<LevelEditorSwipeStartOnWorldEvent>()
             .Do<LevelEditorUpdateTranslateStartPositionStatusCommand>();
 
-        On<LevelEditorSwipeMovedToNewGridPositionEvent>()
-            .Do<DispatchLevelEditorLevelObjectTranslateOnGridEventCommand>();
-
         On<LevelEditorSwipeMovedOnWorldEvent>()
-            .Do<DispatchLevelEditorLevelObjectTranslateOffGridEventCommand>();
+            .Do<DispatchLevelEditorLevelObjectTranslateEventCommand>();
 
     }
 

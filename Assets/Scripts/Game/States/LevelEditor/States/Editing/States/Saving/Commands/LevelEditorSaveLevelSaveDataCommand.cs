@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class LevelEditorSaveLevelSaveDataCommand : Command {
 
-    [Inject] private LevelEditorOffGridLevelObjectsStatus offGridLevelObjectsStatus;
+    [Inject] private LevelEditorLevelObjectsStatus levelObjectsStatus;
 
     [Inject] private LevelNameStatus levelNameStatus;
 
@@ -24,8 +24,7 @@ public class LevelEditorSaveLevelSaveDataCommand : Command {
             }
         }
 
-        List<OnGridLevelObjectSaveData> onGridLevelObjectsSaveData = ExtractOnGridLevelObjectsSaveData();
-        List<OffGridLevelObjectSaveData> offGridLevelObjectsSaveData = ExtractOffGridLevelObjectsSaveData();
+        List<LevelObjectSaveData> levelObjectsSaveData = ExtractLevelObjectsSaveData();
 
         List<Vector2> standardTilePositions = LevelEditorTileGrid.Instance.GetGridPositionsByTileType(TileType.Standard);
 
@@ -36,8 +35,7 @@ public class LevelEditorSaveLevelSaveDataCommand : Command {
         LevelSaveData levelData = new LevelSaveData {
             StandardTileGridPositions = standardTilePositions,
             NonStandardTilesSaveData = nonStandardTileSaveData,
-            OnGridLevelObjectsSaveData = onGridLevelObjectsSaveData,
-            OffGridLevelObjectsSaveData = offGridLevelObjectsSaveData,
+            LevelObjectsSaveData = levelObjectsSaveData,
         };
 
         string levelFileName = StringHelper.ConvertToXMLCompatible(newLevelName);
@@ -61,37 +59,21 @@ public class LevelEditorSaveLevelSaveDataCommand : Command {
         return tilesSaveData;
     }
 
-    private static List<OnGridLevelObjectSaveData> ExtractOnGridLevelObjectsSaveData() {
-        List<OnGridLevelObjectSaveData> onGridLevelObjectSaveDatas = new List<OnGridLevelObjectSaveData>();
-        List<OnGridLevelObject> levelObjects = OnGridLevelObject.OnGridLevelObjects;
+    private List<LevelObjectSaveData> ExtractLevelObjectsSaveData() {
+        List<LevelObjectSaveData> levelObjectSaveDatas = new List<LevelObjectSaveData>();
 
-        foreach (OnGridLevelObject levelObject in levelObjects) {
-            OnGridLevelObjectSaveData levelObjectSaveData = new OnGridLevelObjectSaveData {
-                GridPositions = levelObject.GridPositions,
-                GameObjectPosition = levelObject.GameObjectPosition,
-                LevelObjectType = levelObject.LevelObjectType,
-            };
-            onGridLevelObjectSaveDatas.Add(levelObjectSaveData);
-        }
-
-        return onGridLevelObjectSaveDatas;
-    }
-
-    private List<OffGridLevelObjectSaveData> ExtractOffGridLevelObjectsSaveData() {
-        List<OffGridLevelObjectSaveData> offGridLevelObjectSaveDatas = new List<OffGridLevelObjectSaveData>();
-
-        Dictionary<GameObject, LevelObjectType> OffGridLevelObjectsByGameObject = offGridLevelObjectsStatus.OffGridLevelObjectsByGameObject;
-        foreach (KeyValuePair<GameObject, LevelObjectType> levelObjectTypeByGameObject in OffGridLevelObjectsByGameObject) {
-            Transform offGridLevelObjectTransform = levelObjectTypeByGameObject.Key.transform;
-            OffGridLevelObjectSaveData offGridLevelObjectSaveData = new OffGridLevelObjectSaveData {
-                Position = offGridLevelObjectTransform.position,
-                Size = offGridLevelObjectTransform.localScale,
+        Dictionary<GameObject, LevelObjectType> levelObjectsByGameObject = levelObjectsStatus.LevelObjectsByGameObject;
+        foreach (KeyValuePair<GameObject, LevelObjectType> levelObjectTypeByGameObject in levelObjectsByGameObject) {
+            Transform levelObjectTransform = levelObjectTypeByGameObject.Key.transform;
+            LevelObjectSaveData levelObjectSaveData = new LevelObjectSaveData {
+                Position = levelObjectTransform.position,
+                Size = levelObjectTransform.localScale,
                 LevelObjectType = levelObjectTypeByGameObject.Value,
             };
-            offGridLevelObjectSaveDatas.Add(offGridLevelObjectSaveData);
+            levelObjectSaveDatas.Add(levelObjectSaveData);
         }
 
-        return offGridLevelObjectSaveDatas;
+        return levelObjectSaveDatas;
     }
 
 }

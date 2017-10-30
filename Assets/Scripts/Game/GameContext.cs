@@ -76,14 +76,12 @@ public class GameContext : Context {
         Bind<LevelEditorSelectedLevelObjectSectionStatusUpdatedEvent>();
         Bind<LevelEditorSelectedLevelObjectTransformTypeStatusUpdatedEvent>();
         Bind<LevelEditorTranslateStartWorldPositionStatusUpdatedEvent>();
-        Bind<LevelEditorSelectedOffGridLevelObjectStatusUpdatedEvent>();
+        Bind<LevelEditorSelectedLevelObjectStatusUpdatedEvent>();
         Bind<LevelEditorGridSnapSizeStatusUpdatedEvent>();
-        Bind<LevelEditorTouchDownOnOffGridLevelObjectEvent>();
-        Bind<LevelEditorTouchStartOnOnGridLevelObjectEvent>();
-        Bind<LevelEditorLevelObjectTranslateOnGridEvent>();
-        Bind<LevelEditorLevelObjectTranslateOffGridEvent>();
+        Bind<LevelEditorLevelObjectTranslateEvent>();
         Bind<LevelEditorLevelObjectScaleEvent>();
         Bind<LevelEditorLevelObjectRotateEvent>();
+        Bind<LevelEditorTouchDownOnLevelObjectEvent>();
 
         Bind<TapEvent>();
         Bind<TwistEvent>();
@@ -186,9 +184,9 @@ public class GameContext : Context {
         Bind<LevelNameStatus>();
         Bind<LevelEditorSelectedGridPositionStatus>();
         Bind<LevelEditorReleasedSinceLevelObjectSpawnStatus>();
-        Bind<LevelEditorOffGridTranslateStartOffsetStatus>();
+        Bind<LevelEditorLevelObjectTranslateStartOffsetStatus>();
         Bind<LevelContainerTransformStatus>();
-        Bind<LevelEditorOffGridLevelObjectsStatus>();
+        Bind<LevelEditorLevelObjectsStatus>();
         Bind<LevelEditorStatus>();
 
         On<EnterContextSignal>()

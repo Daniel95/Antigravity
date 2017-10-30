@@ -54,21 +54,12 @@ public class LevelEditorCreatingContext : Context {
             .Do<DispatchLevelEditorSwipeMovedOnWorldEvent>()
             .Do<DispatchLevelEditorSwipeMovedToGridPositionEventCommand>();
 
-        On<LevelEditorTouchStartOnGridPositionEvent>()
-            .Do<AbortIfLevelEditorGridPositionDoesNotContainLevelObjectSectionCommand>()
-            .Dispatch<LevelEditorTouchDownOnLevelObjectEvent>()
-            .Do<DispatchLevelEditorTouchStartOnOnGridLevelObjectEventCommand>();
-
         On<TouchStartEvent>()
             .Do<AbortIfTouchStarted2FingersAfterIdleCommand>()
-            .Do<AbortIfLevelEditorMousePositionDoesContainLevelObjectSectionCommand>()
-            .Do<AbortIfMousePositionIsNotOverOffGridLevelObjectCommand>()
-            .Dispatch<LevelEditorTouchDownOnLevelObjectEvent>()
-            .Dispatch<LevelEditorTouchDownOnOffGridLevelObjectEvent>();
-
-        On<LevelEditorTouchDownOnLevelObjectEvent>()
-            .Do<AbortIfContextStateIsCommand<LevelEditorLevelObjectContext>>()
-            .GotoState<LevelEditorLevelObjectContext>();
+            .Do<AbortIfMousePositionIsNotOverLevelObjectCommand>()
+            //.Do<AbortIfContextStateIsCommand<LevelEditorLevelObjectContext>>()
+            .GotoState<LevelEditorLevelObjectContext>()
+            .Dispatch<LevelEditorTouchDownOnLevelObjectEvent>();
 
         On<LevelEditorTouchStartOnGridPositionEvent>()
             .Do<AbortIfLevelEditorGridPositionDoesNotContainTileCommand>()
