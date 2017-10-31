@@ -24,4 +24,5 @@ public interface ICharacterVelocity {
     void SetSpeed(float newSpeed);
     void SwitchVelocity();
     void SwitchMoveDirection();
+
 }

@@ -13,9 +13,7 @@ public class SpawnCombinedStandardTilesCommand : Command {
         GameObject levelColliderPrefab = Resources.Load<GameObject>(LEVEL_COLLIDER_PATH);
         GameObject levelColliderGameObject = Object.Instantiate(levelColliderPrefab, levelContainerStatus.LevelContainer);
 
-        List<GameObject> standardTiles = InstantiateStandardTiles(levelColliderGameObject.transform);
-
-        CombineGameObjectColliders(standardTiles, levelColliderGameObject);
+        InstantiateStandardTiles(levelColliderGameObject.transform);
     }
 
     private List<GameObject> InstantiateStandardTiles(Transform parent) {
@@ -57,21 +55,6 @@ public class SpawnCombinedStandardTilesCommand : Command {
         standardTile.transform.localScale = scale;
 
         return standardTile;
-    }
-
-    private static void CombineGameObjectColliders(List<GameObject> gameObjectCollidersToCombine, GameObject parent) {
-        List<BoxCollider2D> boxCollidersToCombine = new List<BoxCollider2D>();
-        foreach (GameObject gameObjectColliderToCombine in gameObjectCollidersToCombine) {
-            BoxCollider2D boxColliderToCombine = gameObjectColliderToCombine.GetComponent<BoxCollider2D>();
-            if (boxColliderToCombine != null) {
-                boxCollidersToCombine.Add(boxColliderToCombine);
-            } else {
-                gameObjectColliderToCombine.transform.SetParent(parent.transform);
-            }
-        }
-
-        CompositeCollider2D compositeCollider = parent.GetComponent<CompositeCollider2D>();
-        ColliderHelper.CombineBoxCollidersInCompositeCollider(boxCollidersToCombine, compositeCollider);
     }
 
 }

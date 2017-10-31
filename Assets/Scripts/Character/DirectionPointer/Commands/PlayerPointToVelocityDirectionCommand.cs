@@ -10,5 +10,6 @@ public class PlayerPointToVelocityDirectionCommand : Command {
         Vector2 velocityDirection = playerVelocityRef.Get().GetVelocityDirection();
         playerDirectionPointerRef.Get().PointToDirection(velocityDirection);
     }
+
 }
 

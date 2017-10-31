@@ -9,11 +9,11 @@ public class PlayerTurnToNextDirectionCommand : Command {
     [Inject(Label.Player)] private Ref<ICharacterCollisionDirection> playerCollisionDirectionRef;
 
     protected override void Execute() {
-        Vector2 moveDirection = playerVelocityRef.Get().MoveDirection;
+        Vector2 invertOnNegativeCeiledMoveDirection = VectorHelper.InvertOnNegativeCeil(playerVelocityRef.Get().MoveDirection);
         Vector2 collisionDirection = playerCollisionDirectionRef.Get().CollisionDirection;
         RaycastData combinedRaycastData = playerRaycastDirectionRef.Get().GetCombinedDirectionAndCenterDistances();
         Vector2 surroundingsDirection = SurroundingDirectionHelper.GetSurroundingsDirection(collisionDirection, combinedRaycastData.Direction);
 
-        playerMoveDirectionRef.Get().TurnToNextDirection(moveDirection, surroundingsDirection, collisionDirection, combinedRaycastData.Distance);
+        playerMoveDirectionRef.Get().TurnToNextDirection(invertOnNegativeCeiledMoveDirection, surroundingsDirection, collisionDirection, combinedRaycastData.Distance);
     }
 }

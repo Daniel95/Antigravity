@@ -6,8 +6,6 @@ using UnityEngine;
 [RequireComponent(typeof(Collider2D))]
 public class CharacterCollisionDirectionView : View, ICharacterCollisionDirection {
 
-    [Inject] private CharacterCollisionWithNewDirectionEvent characterCollisionWithNewDirectionEvent;
-
     public Vector2 CollisionDirection { get { return collisionDirection; } }
     public int SavedCollisionsCount { get { return collisions.Count; } }
 
@@ -16,28 +14,17 @@ public class CharacterCollisionDirectionView : View, ICharacterCollisionDirectio
 
     private void OnCollisionEnter2D(Collision2D collision) {
         AddCollision(collision);
-        UpdateCollisionDirection(collision);
+        collisionDirection = GetCollisionDirection();
     }
 
     private void OnCollisionStay2D(Collision2D collision) {
         AddCollision(collision);
-        UpdateCollisionDirection(collision);
+        collisionDirection = GetCollisionDirection();
     }
 
     private void OnCollisionExit2D(Collision2D collision) {
         collisions.Remove(collision.collider);
-        UpdateCollisionDirection(collision, false);
-    }
-
-    private void UpdateCollisionDirection(Collision2D collision, bool possiblyDispatchCollisionEvent = true) {
-        Vector2 newCollisionDirection = GetCollisionDirection();
-
-        if (collisionDirection != newCollisionDirection) {
-            collisionDirection = newCollisionDirection;
-            if(possiblyDispatchCollisionEvent) {
-                characterCollisionWithNewDirectionEvent.Dispatch(collision, newCollisionDirection, gameObject);
-            }
-        }
+        collisionDirection = GetCollisionDirection();
     }
 
     private Vector2 GetCollisionDirection() {
@@ -66,6 +53,10 @@ public class CharacterCollisionDirectionView : View, ICharacterCollisionDirectio
         } else {
             collisions.Add(collision.collider, combinedDirection);
         }
+    }
+
+    private void LateUpdate() {
+        collisions.Clear();
     }
 
     public void ResetCollisions() {

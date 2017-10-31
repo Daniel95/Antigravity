@@ -8,4 +8,5 @@ public class PlayerSetMoveDirectionToVelocityDirectionCommand : Command {
     protected override void Execute() {
         playerVelocityRef.Get().SetMoveDirection(playerVelocityRef.Get().GetVelocityDirection());
     }
+
 }

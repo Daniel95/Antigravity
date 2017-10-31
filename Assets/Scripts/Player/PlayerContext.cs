@@ -65,7 +65,7 @@ public class PlayerContext : Context {
 
         On<PlayerTurnToNextDirectionEvent>()
             .Do<AbortIfPlayerTurnStatusIsNotEnabledCommand>()
-            //.Do<DebugLogMessageCommand>("Turn")
+            .Do<DebugLogMessageCommand>("Turn")
             .Do<PlayerTurnToNextDirectionCommand>()
             .Do<PlayerPointToSavedDirectionCommand>();
 
@@ -86,13 +86,6 @@ public class PlayerContext : Context {
             .Dispatch<PlayerResetSavedCollisionsEvent>()
             .Do<DestroyPlayerCommand>()
             .Dispatch<PlayerRespawnEvent>();
-
-        On<CharacterCollisionWithNewDirectionEvent>()
-            .Do<AbortIfGameObjectIsNotPlayerCommand>()
-            .Do<DispatchPlayerCollisionWithNewDirectionEventCommand>();
-
-        On<PlayerCollisionWithNewDirectionEvent>()
-            .Do<DispatchPlayerCollisionEnter2DEvent>();
 
         On<PlayerCollisionEnter2DEvent>()
             .Do<AbortIfPlayerCollidingTagIsPlayerKillerTagCommand>()
@@ -134,4 +127,5 @@ public class PlayerContext : Context {
             .Do<AbortIfGameObjectIsNotPlayerCommand>()
             .Do<DispatchPlayerTriggerExit2DEvent>();
     }
+
 }

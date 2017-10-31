@@ -7,4 +7,5 @@ public class PlayerCollisionDirectionView : CharacterCollisionDirectionView {
     public override void Initialize() {
         playerCollisionDirectionRef.Set(this);
     }
+
 }

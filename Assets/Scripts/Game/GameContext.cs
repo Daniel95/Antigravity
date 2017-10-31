@@ -12,7 +12,6 @@ public class GameContext : Context {
         Bind<PlayerTemporarySpeedChangeEvent>();
         Bind<PlayerTemporarySpeedDecreaseEvent>();
         Bind<PlayerTemporarySpeedChangeEvent>();
-        Bind<CharacterCollisionWithNewDirectionEvent>();
         Bind<PlayerTryJumpEvent>();
         Bind<PlayerBounceEvent>();
         Bind<PlayerRespawnEvent>();
