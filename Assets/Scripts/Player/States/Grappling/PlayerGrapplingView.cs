@@ -3,7 +3,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class PlayerGrapplingView : View, IPlayerGrappling, ITriggerer {
+public class PlayerGrapplingView : View, IPlayerGrappling {
 
     public Action ActivateTrigger { get; set; }
     public Action StopTrigger { get; set; }

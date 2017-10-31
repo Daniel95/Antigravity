@@ -1,14 +1,16 @@
 ﻿using IoCPlus;
 using UnityEngine;
 
-public class AbortIfHookProjectileCollidingLayerIsAHookableLayerCommand : Command {
+public class AbortIfHookProjectileCollidingLayerIsNotAHookableLayerCommand : Command {
 
     [Inject] private Ref<IHook> hookRef;
     [Inject] private Ref<IHookProjectile> hookProjectileRef;
 
     protected override void Execute() {
-        if(!hookRef.Get().HookableLayers.Contains(hookProjectileRef.Get().CollidingTransformLayer)) {
+        if(!hookRef.Get().HookableLayersLayerMask.Contains(hookProjectileRef.Get().CollidingTransformLayer)) {
             Abort();
         }
+
     }
+
 }

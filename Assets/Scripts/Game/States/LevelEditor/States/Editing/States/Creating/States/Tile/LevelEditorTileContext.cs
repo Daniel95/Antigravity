@@ -8,7 +8,7 @@ public class LevelEditorTileContext : Context {
         On<EnterContextSignal>()
             .Do<AddStatusViewToStatusViewContainerCommand<LevelEditorSelectionFieldStatusView>>()
             .Do<InstantiateViewInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/Tile/GoToLevelObjectStateButtonUI", CanvasLayer.UI)
-            .Do<InstantiateViewInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/Tile/GridSnapSizeButtonUI", CanvasLayer.UI)
+            //.Do<InstantiateViewInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/Tile/GridSnapSizeButtonUI", CanvasLayer.UI)
             .Do<ShowGridOverlayCommand>(true)
             .Do<SetGridOverlaySizeToScreenWorldSizeCommand>()
             .Do<LevelEditorSetGridOverlayOriginSizeToMinusHalfSnapSizeCommand>()
@@ -19,7 +19,7 @@ public class LevelEditorTileContext : Context {
         On<LeaveContextSignal>()
             .Do<RemoveStatusViewFromStatusViewContainerCommand<LevelEditorSelectionFieldStatusView>>()
             .Do<DestroyChildInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/Tile/GoToLevelObjectStateButtonUI", CanvasLayer.UI)
-            .Do<DestroyChildInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/Tile/GridSnapSizeButtonUI", CanvasLayer.UI)
+            //.Do<DestroyChildInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/Tile/GridSnapSizeButtonUI", CanvasLayer.UI)
             .Do<LevelEditorClearSelectionFieldCommand>()
             .Do<ShowGridOverlayCommand>(false)
             .Do<LevelEditorSetSelectionFieldEnabledCommand>(false);

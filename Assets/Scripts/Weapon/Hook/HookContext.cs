@@ -92,17 +92,18 @@ public class HookContext : Context {
 
         On<HookProjectileTriggerEnterNonPlayerCollision2DEvent>()
             .Do<WaitFramesCommand>(1)
-            .Do<AbortIfHookProjectileCollidingLayerIsAHookableLayerCommand>()
+            .Do<AbortIfHookProjectileCollidingLayerIsNotAHookableLayerCommand>()
             .Dispatch<HookProjectileAttachedEvent>()
             .OnAbort<DispatchPullBackHookEventCommand>();
 
         On<HookProjectileAttachedEvent>()
-            .Do<AbortIfCollidingLayerIsNotLayerCommand>(HookableLayer.GrappleSurface)
             .GotoState<GrapplingHookContext>();
 
+        /*
         On<HookProjectileAttachedEvent>()
-            .Do<AbortIfCollidingLayerIsNotLayerCommand>(HookableLayer.PullSurface)
+            .Do<AbortIfCollidingLayerIsNotLayerCommand>(HookableLayerLibrary.PullSurface)
             .GotoState<PullingHookContext>();
+        */    
 
         On<TriggerEnter2DEvent>()
             .Do<AbortIfColliderIsNotATriggerCommand>()

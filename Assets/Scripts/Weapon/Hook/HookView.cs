@@ -4,13 +4,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HookView : View, IHook, ITriggerer {
+public class HookView : View, IHook {
 
     public HookState ActiveHookState { get { return activeHookState; } }
     public HookState LastHookState { get { return lastHookState; } }
     public List<Transform> Anchors { get { return anchors; } }
     public LineRenderer LineRenderer { get { return lineRenderer; } }
-    public List<int> HookableLayers { get { return hookableLayers; } }
+    public LayerMask HookableLayersLayerMask { get { return hookableLayersLayerMask; } }
     public LayerMask RopeRaycastLayerMask { get { return ropeRaycastLayermask; } }
     public float DirectionSpeedNeutralValue { get { return directionSpeedNeutralValue; } }
     public float MinimalDistanceFromOwner { get { return minimalDistanceFromOwner; } }
@@ -22,13 +22,13 @@ public class HookView : View, IHook, ITriggerer {
 
     [Inject] private UpdateHookEvent updateHookEvent;
 
+    [SerializeField] private LayerMask hookableLayersLayerMask;
     [SerializeField] private LayerMask ropeRaycastLayermask;
     [SerializeField] private GameObject hookLinePrefab;
     [SerializeField] private float directionSpeedNeutralValue = 0.15f;
     [SerializeField] private float minimalDistanceFromOwner = 0.75f;
 
     private LineRenderer lineRenderer;
-    private List<int> hookableLayers;
 
     private HookState activeHookState = HookState.Inactive;
     private HookState lastHookState = HookState.Inactive;
@@ -110,6 +110,6 @@ public class HookView : View, IHook, ITriggerer {
 
     private void Awake() {
         lineRenderer = Instantiate(hookLinePrefab, transform).GetComponent<LineRenderer>();
-        hookableLayers = HookableLayer.GetHookableLayers();
     }
+
 }
