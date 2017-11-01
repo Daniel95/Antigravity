@@ -16,7 +16,7 @@ public class UpdateGrapplingHookRopeCommand : Command {
 
         RaycastHit2D hitToAnchor = Physics2D.Linecast(ownerPosition, hook.Anchors[0].position, hook.RopeRaycastLayerMask);
 
-        if (hitToAnchor.collider != null && !hitToAnchor.collider.isTrigger) {
+        if (hitToAnchor.collider != null) {
             Vector2 anchorPosition = hitToAnchor.point + (ownerPosition - hitToAnchor.point).normalized * 0.1f;
             addHookAnchorEvent.Dispatch(anchorPosition, hitToAnchor.transform);
             grapplingHook.DistanceJoint.distance = Vector2.Distance(ownerPosition, hitToAnchor.point);

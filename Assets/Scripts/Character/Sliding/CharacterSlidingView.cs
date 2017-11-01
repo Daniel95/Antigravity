@@ -20,7 +20,7 @@ public class CharacterSlidingView : View, ICharacterSliding {
 
         Vector2 moveDirection = characterVelocityRef.Get().MoveDirection;
 
-        if(moveDirection.x != 0 && moveDirection.y != 0) { return; }
+        if (moveDirection.x != 0 && moveDirection.y != 0) { return; }
 
         cornerDirection = VectorHelper.Round(targetCornerTransform.rotation * Vector2.one);
 

@@ -11,6 +11,7 @@ public class PlayerContext : Context {
             .AddContext<InputContext>()
             .AddContext<WeaponContext>()
             .AddContext<PlayerStateContext>()
+            .Do<AddStatusViewToStatusViewContainerCommand<PlayerRotatingAroundCornerStatusView>>()
             .Do<EnableInputCommand>(true)
             .Do<EnableWeaponCommand>(true)
             .Do<EnablePlayerJumpStatusCommand>(true)
@@ -28,6 +29,9 @@ public class PlayerContext : Context {
             .Do<AbortIfPlayerSessionStatsStatusLevelDeathsIsZeroCommand>()
             .Do<AbortIfReachedCheckPointIsNotNullCommand>()
             .Dispatch<PlayerStartAtStartPointEvent>();
+
+        On<LeaveContextSignal>()
+            .Do<RemoveStatusViewFromStatusViewContainerCommand<PlayerRotatingAroundCornerStatusView>>();
 
         On<PlayerTriggerEnter2DEvent>()
             .Do<AbortIfTriggerTagIsNotTheSameCommand>(Tags.Finish)
@@ -65,7 +69,6 @@ public class PlayerContext : Context {
 
         On<PlayerTurnToNextDirectionEvent>()
             .Do<AbortIfPlayerTurnStatusIsNotEnabledCommand>()
-            .Do<DebugLogMessageCommand>("Turn")
             .Do<PlayerTurnToNextDirectionCommand>()
             .Do<PlayerPointToSavedDirectionCommand>();
 
@@ -75,6 +78,14 @@ public class PlayerContext : Context {
 
         On<PlayerSetMoveDirectionEvent>()
             .Do<PlayerSetMoveDirectionCommand>();
+
+        On<PlayerStartRotatingAroundCornerEvent>()
+            .Do<EnablePlayerJumpStatusCommand>(false)
+            .Do<EnablePlayerTurnStatusCommand>(false);
+
+        On<PlayerStopRotatingAroundCornerEvent>()
+            .Do<EnablePlayerJumpStatusCommand>(true)
+            .Do<EnablePlayerTurnStatusCommand>(true);
 
         On<PlayerDiedEvent>()
             .Dispatch<CancelDragInputEvent>()

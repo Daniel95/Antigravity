@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class PlayerSlidingView : CharacterSlidingView {
 
+    [Inject] private PlayerStartRotatingAroundCornerEvent playerStartRotatingAroundCornerEvent;
+    [Inject] private PlayerStopRotatingAroundCornerEvent playerStopRotatingAroundCornerEvent;
+
     [Inject] private PlayerJumpStatus playerJumpStatus;
     [Inject] private PlayerTurnStatus playerTurnStatus;
 
@@ -27,8 +30,7 @@ public class PlayerSlidingView : CharacterSlidingView {
     }
 
     private IEnumerator Rotate90DegreesAroundPosition(Vector2 positionToRotateAround) {
-        playerJumpStatus.Enabled = false;
-        playerTurnStatus.Enabled = false;
+        PlayerRotatingAroundCornerStatusView.Rotating = true;
 
         Vector2 targetOffset = positionToRotateAround - (Vector2)transform.position;
         Vector2 targetDirection = (targetOffset).normalized;
@@ -55,13 +57,6 @@ public class PlayerSlidingView : CharacterSlidingView {
             yield return null;
         }
 
-        /*
-        Vector3 eulerAngles = transform.rotation.eulerAngles;
-        float roundedZAngle = RoundingHelper.RoundTo(eulerAngles.z, 90);
-        Vector3 roundedAngles = new Vector3(eulerAngles.x, eulerAngles.y, roundedZAngle);
-        transform.rotation = Quaternion.Euler(roundedAngles);
-        */
-
         Vector2 newOffset = Quaternion.AngleAxis(90, (rotateAxis * -1)) * targetOffset;
         transform.position = positionToRotateAround + newOffset;
 
@@ -74,9 +69,7 @@ public class PlayerSlidingView : CharacterSlidingView {
         playerDirectionPointerRef.Get().PointToDirection(playerTurnRef.Get().SavedDirection);
         playerVelocityRef.Get().EnableDirectionalMovement();
 
-        playerJumpStatus.Enabled = true;
-        playerTurnStatus.Enabled = true;
-
+        PlayerRotatingAroundCornerStatusView.Rotating = false;
         rotate90DegreesAroundPosition = null;
     }
 

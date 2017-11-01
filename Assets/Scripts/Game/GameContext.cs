@@ -18,6 +18,8 @@ public class GameContext : Context {
         Bind<PlayerStartAtCheckpointEvent>();
         Bind<PlayerStartAtStartPointEvent>();
         Bind<PlayerStartAtStartPointCompletedEvent>();
+        Bind<PlayerStartRotatingAroundCornerEvent>();
+        Bind<PlayerStopRotatingAroundCornerEvent>();
         Bind<CancelDragInputEvent>();
         Bind<DraggingInputEvent>();
         Bind<HoldingInputEvent>();

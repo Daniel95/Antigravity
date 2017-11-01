@@ -13,7 +13,9 @@ public class PlayerStateContext : Context {
             .GotoState<PlayerFloatingContext>();
 
         On<PlayerCollisionEnter2DEvent>()
+            .Do<AbortIfPlayerIsRotatingAroundCornerCommand>()
             .Do<AbortIfPlayerCollidingOrInTriggerWithTagCommand>(Tags.Bouncy)
+            .Do<DebugLogMessageCommand>("Coll enter")
             .Do<DispatchPlayerTurnToNextDirectionEventCommand>()
             .Do<AbortIfSavedCollisionCountIsHigherThenOneCommand>()
             .Do<AbortIfPlayerStateStatusStateIsStatesCommand>(new List<PlayerState> {
@@ -24,6 +26,8 @@ public class PlayerStateContext : Context {
             .GotoState<PlayerSlidingContext>();
 
         On<PlayerCollisionExit2DEvent>()
+            .Do<AbortIfPlayerIsRotatingAroundCornerCommand>()
+            .Do<DebugLogMessageCommand>("Coll exit")
             .Do<AbortIfPlayerCollisionDirectionIsNotZeroCommand>()
             .Do<AbortIfPlayerStateStatusStateIsStatesCommand>(new List<PlayerState> {
                 PlayerState.Floating,
