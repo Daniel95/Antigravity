@@ -7,13 +7,8 @@ public class SpawnCombinedStandardTilesCommand : Command {
     [Inject] private DeserializedLevelSaveDataStatus deserializedLevelSaveDataStatus;
     [Inject] private LevelContainerTransformStatus levelContainerStatus;
 
-    private const string LEVEL_COLLIDER_PATH = "LevelEditor/LevelCollider";
-
     protected override void Execute() {
-        GameObject levelColliderPrefab = Resources.Load<GameObject>(LEVEL_COLLIDER_PATH);
-        GameObject levelColliderGameObject = Object.Instantiate(levelColliderPrefab, levelContainerStatus.LevelContainer);
-
-        InstantiateStandardTiles(levelColliderGameObject.transform);
+        InstantiateStandardTiles(levelContainerStatus.LevelContainer);
     }
 
     private List<GameObject> InstantiateStandardTiles(Transform parent) {

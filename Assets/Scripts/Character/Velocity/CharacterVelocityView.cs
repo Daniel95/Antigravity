@@ -116,6 +116,9 @@ public class CharacterVelocityView : View, ICharacterVelocity {
     private IEnumerator UpdateDirectionalMovement() {
         while (true) {
             previousVelocity = Velocity;
+            //Debug.Log("________ " + FrameHelper.FrameCount);
+            //DebugHelper.LogPreciseVector(rigidbodyComponent.velocity, "Velocity");
+            //DebugHelper.LogPreciseVector(moveDirection, "moveDirection");
             rigidbodyComponent.velocity = moveDirection * currentSpeed;
             yield return new WaitForEndOfFrame();
         }

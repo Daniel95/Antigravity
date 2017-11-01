@@ -13,12 +13,12 @@ public class CharacterCollisionDirectionView : View, ICharacterCollisionDirectio
     private Vector2 collisionDirection;
 
     private void OnCollisionEnter2D(Collision2D collision) {
-        AddCollision(collision);
+        UpdateCollisions(collision);
         collisionDirection = GetCollisionDirection();
     }
 
     private void OnCollisionStay2D(Collision2D collision) {
-        AddCollision(collision);
+        UpdateCollisions(collision);
         collisionDirection = GetCollisionDirection();
     }
 
@@ -33,7 +33,7 @@ public class CharacterCollisionDirectionView : View, ICharacterCollisionDirectio
         return combinedCollisionDirection;
     }
 
-    private void AddCollision(Collision2D collision) {
+    private void UpdateCollisions(Collision2D collision) {
         Vector2 allDirections = new Vector2();
         foreach (ContactPoint2D contact in collision.contacts) {
             Vector2 direction = (contact.point - (Vector2)transform.position).normalized;
@@ -53,10 +53,6 @@ public class CharacterCollisionDirectionView : View, ICharacterCollisionDirectio
         } else {
             collisions.Add(collision.collider, combinedDirection);
         }
-    }
-
-    private void LateUpdate() {
-        collisions.Clear();
     }
 
     public void ResetCollisions() {
