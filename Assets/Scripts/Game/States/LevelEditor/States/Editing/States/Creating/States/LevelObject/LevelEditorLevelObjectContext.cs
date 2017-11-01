@@ -21,10 +21,7 @@ public class LevelEditorLevelObjectContext : Context {
             .Do<DestroyChildInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/LevelObject/LevelObjectButtonGridLayoutGroupUI", CanvasLayer.UI)
             .Do<LevelEditorResetSelectedLevelObjectStatusCommand>();
 
-        On<LevelEditorTouchDownOnLevelObjectEvent>()
-            .Do<LevelEditorUpdateSelectedLevelObjectStatusCommand>();
-
-        On<LevelEditorTouchUpOnGridPositionEvent>()
+        On<TouchUpEvent>()
             .Do<LevelEditorSetReleasedSinceLevelObjectSpawnStatusCommand>(true);
 
         On<PinchStoppedEvent>()
@@ -41,9 +38,9 @@ public class LevelEditorLevelObjectContext : Context {
 
         On<TouchStartEvent>()
             .Do<AbortIfTouchStarted2FingersAfterIdleCommand>()
-            .Do<AbortIfMousePositionIsOverLevelObjectCommand>()
-            .Do<AbortIfLevelEditorScreenPositionDoesContainGridElementCommand>()
             .Do<AbortIfLevelEditorReleasedSinceLevelObjectSpawnStatusIsCommand>(false)
+            .Do<AbortIfLevelEditorScreenPositionDoesContainGridElementCommand>()
+            .Do<AbortIfMousePositionIsOverLevelObjectCommand>()
             .Do<LevelEditorInstantiateAndSelectLevelObjectAtScreenPositionCommand>()
             .Do<LevelEditorSetReleasedSinceLevelObjectSpawnStatusCommand>(false);
 
