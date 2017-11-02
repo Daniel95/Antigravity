@@ -13,6 +13,11 @@ public class CharacterVelocityView : View, ICharacterVelocity {
             return new Vector2(doubleDecimalX, doubleDecimalY);
         }
     }
+    public bool IsMovingStandard {
+        get {
+            return updateDirectionalMovementCoroutine != null;
+        }
+    }
     public Vector2 PreviousVelocity { get { return previousVelocity; } }
     public Vector2 MoveDirection { get { return moveDirection; } }
     public Vector2 StartDirection { get { return startDirection; } }

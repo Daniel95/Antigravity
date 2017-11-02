@@ -3,6 +3,7 @@
 public interface ICharacterVelocity {
 
     Vector2 Velocity { get; }
+    bool IsMovingStandard { get; }
     Vector2 PreviousVelocity { get; }
     Vector2 MoveDirection { get; }
     Vector2 StartDirection { get; }
@@ -13,7 +14,6 @@ public interface ICharacterVelocity {
     Vector2 GetCeilVelocityDirection();
     Vector2 GetPreviousVelocityDirection();
     Vector2 GetCeilPreviousVelocityDirection();
-    bool GetMovingStandard();
 
     void EnableDirectionalMovement();
     void DisableDirectionalMovement();

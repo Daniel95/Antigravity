@@ -1,13 +1,14 @@
 ﻿using IoCPlus;
 using UnityEngine;
 
-public class AbortIfHookedLayerIsZeroCommand : Command {
+public class AbortIfHookProjectileCollidingLayersCountIsZeroCommand : Command {
 
     [Inject] private Ref<IHookProjectile> hookProjectileRef;
 
     protected override void Execute() {
-        if(hookProjectileRef.Get().CollidingTransformLayer == 0) {
+        if(hookProjectileRef.Get().CollidingLayers.Count == 0) {
             Abort();
         }
     }
+
 }

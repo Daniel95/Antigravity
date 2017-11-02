@@ -1,22 +1,24 @@
 ﻿using IoCPlus;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class HookProjectileView : View, IHookProjectile {
 
     public float DistanceFromOwner { get { return distanceFromOwner; } set { distanceFromOwner = value; } }
     public Transform Transform { get { return transform; } }
-    public Transform CollidingTransform { get { return collidingTransform; } set { collidingTransform = value; } }
-    public int CollidingTransformLayer {
+    public List<GameObject> CollidingGameObjects { get { return collidingGameObjects; } set { collidingGameObjects = value; } }
+    public List<int> CollidingLayers {
         get {
-            if(collidingTransform == null) { return 0; }
-            return collidingTransform.gameObject.layer;
+            if (collidingGameObjects.Count <= 0) { return new List<int>(); }
+            return CollidingGameObjects.Select(x => x.layer).ToList();
         }
     }
 
     [Inject] private Ref<IHookProjectile> hookProjectileRef;
 
     private Collider2D myCollider;
-    private Transform collidingTransform;
+    private List<GameObject> collidingGameObjects = new List<GameObject>();
     private float distanceFromOwner;
 
     public override void Initialize() {
@@ -52,4 +54,16 @@ public class HookProjectileView : View, IHookProjectile {
     private void Awake() {
         myCollider = GetComponent<Collider2D>();
     }
+
+
+    private void OnTriggerEnter2D(Collider2D collision) {
+        if (collision.isTrigger) { return; }
+
+    }
+
+    private void OnTriggerExit2D(Collider2D collision) {
+        if (collision.isTrigger) { return; }
+
+    }
+
 }

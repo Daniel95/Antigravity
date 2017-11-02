@@ -51,11 +51,11 @@ public class HookContext : Context {
             .Do<HookProjectileEnableColliderCommand>()
             .Do<SpawnHookProjectileAnchorCommand>()
             .Do<ActivateHookCommand>()
-            .Do<HookProjectileResetCollidingTransformCommand>(0)
+            .Do<HookProjectileClearCollidingGameObjectsCommand>()
             .Do<HookProjectileMoveToShootDirectionCommand>();
 
         On<PullBackHookEvent>()
-            .Do<HookProjectileResetCollidingTransformCommand>()
+            .Do<HookProjectileClearCollidingGameObjectsCommand>()
             .Do<HookProjectileResetParentCommand>()
             .Do<HookProjectileDisableColliderCommand>()
             .GotoState<InActiveContext>()
@@ -87,38 +87,25 @@ public class HookContext : Context {
             .Dispatch<HookProjectileTriggerEnterNonPlayerCollision2DEvent>();
 
         On<HookProjectileTriggerEnterNonPlayerCollision2DEvent>()
-            .Do<HookProjectileSetParentToCollidingTransformCommand>()
+            .Do<HookProjectileSetParentToFirstCollidingGameObjectsCommand>()
             .Do<HookProjectileStopMoveTowardsCommand>();
 
         On<HookProjectileTriggerEnterNonPlayerCollision2DEvent>()
             .Do<WaitFramesCommand>(1)
-            .Do<AbortIfHookProjectileCollidingLayerIsNotAHookableLayerCommand>()
+            .Do<AbortIfHookProjectileCollidingLayersDoesNotContainAHookableLayerCommand>()
             .Dispatch<HookProjectileAttachedEvent>()
             .OnAbort<DispatchPullBackHookEventCommand>();
 
         On<HookProjectileAttachedEvent>()
             .GotoState<GrapplingHookContext>();
 
-        /*
-        On<HookProjectileAttachedEvent>()
-            .Do<AbortIfCollidingLayerIsNotLayerCommand>(HookableLayerLibrary.PullSurface)
-            .GotoState<PullingHookContext>();
-        */    
-
         On<TriggerEnter2DEvent>()
-            .Do<AbortIfColliderIsNotATriggerCommand>()
             .Do<AbortIfGameObjectIsNotHookProjectileCommand>()
-            .Do<HookProjectileSetCollidingTransformToCollider2DTranformCommand>();
-
-        On<TriggerStay2DEvent>()
-            .Do<AbortIfColliderIsNotATriggerCommand>()
-            .Do<AbortIfGameObjectIsNotHookProjectileCommand>()
-            .Do<HookProjectileSetCollidingTransformToCollider2DTranformCommand>();
+            .Do<HookProjectileAddCollider2DGameObjectToCollidingGameObjectsCommand>();
 
         On<TriggerExit2DEvent>()
-            .Do<AbortIfColliderIsNotATriggerCommand>()
             .Do<AbortIfGameObjectIsNotHookProjectileCommand>()
-            .Do<HookProjectileResetCollidingTransformCommand>();
+            .Do<HookProjectileRemoveCollider2DGameObjectFromCollidingGameObjectsCommand>();
 
         On<AddHookAnchorEvent>()
             .Do<AddHookAnchorCommand>();

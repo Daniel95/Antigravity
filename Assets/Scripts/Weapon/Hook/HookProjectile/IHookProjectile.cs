@@ -1,10 +1,11 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public interface IHookProjectile {
 
     float DistanceFromOwner { get; set; }
-    int CollidingTransformLayer { get; }
-    Transform CollidingTransform { get; set; }
+    List<int> CollidingLayers { get; }
+    List<GameObject> CollidingGameObjects { get; set; }
     Transform Transform { get; }
 
     void ActivateHookProjectile(Vector2 startPosition);
