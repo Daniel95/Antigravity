@@ -2,8 +2,8 @@
 
 public class PlayerRotateAroundCornerStatusView : StatusView {
 
-    [Inject] private static PlayerStartRotatingAroundCornerEvent playerStartRotatingAroundCornerEvent;
-    [Inject] private static PlayerStopRotatingAroundCornerEvent playerStopRotatingAroundCorner;
+    [Inject] private static PlayerStartedRotatingAroundCornerEvent playerStartRotatingAroundCornerEvent;
+    [Inject] private static PlayerStoppedRotatingAroundCornerEvent playerStopRotatingAroundCorner;
 
     public static bool Rotating {
         get { return rotating; }

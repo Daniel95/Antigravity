@@ -18,6 +18,7 @@ public class PlayerTurnToNextDirectionCommand : Command {
 
         Vector2 collisionDirection = playerCollisionDirectionRef.Get().CollisionDirection;
         RaycastData combinedRaycastData = playerRaycastDirectionRef.Get().GetCombinedDirectionAndCenterDistances();
+
         Vector2 surroundingsDirection = SurroundingDirectionHelper.GetSurroundingsDirection(collisionDirection, combinedRaycastData.Direction);
 
         playerMoveDirectionRef.Get().TurnToNextDirection(moveDirection, surroundingsDirection, collisionDirection, combinedRaycastData.Distance);

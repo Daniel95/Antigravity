@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class PlayerRotateAroundCornerView : CharacterRotateAroundCornerView {
 
-    [Inject] private PlayerStartRotatingAroundCornerEvent playerStartRotatingAroundCornerEvent;
-    [Inject] private PlayerStopRotatingAroundCornerEvent playerStopRotatingAroundCornerEvent;
+    [Inject] private PlayerStartedRotatingAroundCornerEvent playerStartRotatingAroundCornerEvent;
+    [Inject] private PlayerStoppedRotatingAroundCornerEvent playerStopRotatingAroundCornerEvent;
 
     [Inject] private PlayerJumpStatus playerJumpStatus;
     [Inject] private PlayerTurnStatus playerTurnStatus;
@@ -18,15 +18,40 @@ public class PlayerRotateAroundCornerView : CharacterRotateAroundCornerView {
     [Inject(Label.Player)] private Ref<ICharacterDirectionPointer> playerDirectionPointerRef;
 
     private Coroutine rotateAroundCornerCoroutine;
+    private float startZRotation;
 
     public override void Initialize() {
         base.Initialize();
         playerSlidingRef.Set(this);
     }
 
-    private void StartRotating90DegreesAroundPosition(Vector2 position) {
+    public override void CancelRotatingAroundCorner() {
+        if (rotateAroundCornerCoroutine == null) { return; }
+        StopCoroutine(rotateAroundCornerCoroutine);
+        rotateAroundCornerCoroutine = null;
+
+        float zRotation = transform.rotation.eulerAngles.z;
+        transform.rotation = new Quaternion();
+
+        float angleOffset = Mathf.DeltaAngle(startZRotation, zRotation);
+        float angleDifference = Mathf.Abs(angleOffset);
+
+        if (angleDifference > 45) {
+            Vector3 rotationAxis = angleOffset < 0 ? -Vector3.forward : Vector3.forward;
+            Quaternion rotation = Quaternion.AngleAxis(90, rotationAxis);
+            Vector2 moveDirection = rotation * playerVelocityRef.Get().MoveDirection;
+            playerVelocityRef.Get().SetMoveDirection(VectorHelper.Round(rotation * playerVelocityRef.Get().MoveDirection));
+            playerTurnRef.Get().SavedDirection = VectorHelper.Round(rotation * playerTurnRef.Get().SavedDirection);
+            playerDirectionPointerRef.Get().PointToDirection(playerTurnRef.Get().SavedDirection);
+        }
+
+        PlayerRotateAroundCornerStatusView.Rotating = false;
+    }
+
+    private void StartRotatingAroundCorner(Vector2 cornerPosition) {
         if(rotateAroundCornerCoroutine != null) { return; }
-        rotateAroundCornerCoroutine = StartCoroutine(Rotate90DegreesAroundPosition(position));
+        startZRotation = transform.eulerAngles.z;
+        rotateAroundCornerCoroutine = StartCoroutine(Rotate90DegreesAroundPosition(cornerPosition));
     }
 
     private IEnumerator Rotate90DegreesAroundPosition(Vector2 positionToRotateAround) {
@@ -37,9 +62,6 @@ public class PlayerRotateAroundCornerView : CharacterRotateAroundCornerView {
         Vector2 moveDirectionRight = Quaternion.AngleAxis(90, -Vector3.forward) * playerVelocityRef.Get().MoveDirection;
 
         bool targetIsToTheRight = VectorHelper.DirectionIsToTheRight(moveDirectionRight, targetDirection);
-
-        playerVelocityRef.Get().DisableDirectionalMovement();
-        playerVelocityRef.Get().SetVelocity(Vector2.zero);
 
         Vector3 rotateAxis = targetIsToTheRight ? -Vector3.forward : Vector3.forward;
 
@@ -67,18 +89,17 @@ public class PlayerRotateAroundCornerView : CharacterRotateAroundCornerView {
         playerVelocityRef.Get().SetMoveDirection(VectorHelper.Round(rotation * playerVelocityRef.Get().MoveDirection));
         playerTurnRef.Get().SavedDirection = VectorHelper.Round(rotation * playerTurnRef.Get().SavedDirection);
         playerDirectionPointerRef.Get().PointToDirection(playerTurnRef.Get().SavedDirection);
-        playerVelocityRef.Get().EnableDirectionalMovement();
 
         PlayerRotateAroundCornerStatusView.Rotating = false;
         rotateAroundCornerCoroutine = null;
     }
 
     private void OnEnable() {
-        OnAlignWithTarget += StartRotating90DegreesAroundPosition;
+        OnAlignWithTarget += StartRotatingAroundCorner;
     }
 
     private void OnDisable() {
-        OnAlignWithTarget -= StartRotating90DegreesAroundPosition;
+        OnAlignWithTarget -= StartRotatingAroundCorner;
     }
 
 }

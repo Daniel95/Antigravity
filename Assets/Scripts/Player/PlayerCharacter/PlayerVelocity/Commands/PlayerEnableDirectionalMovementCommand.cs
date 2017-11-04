@@ -1,7 +1,7 @@
 ﻿using IoCPlus;
 using UnityEngine;
 
-public class PlayerSetDirectionalMovementCommand : Command<bool> {
+public class PlayerEnableDirectionalMovementCommand : Command<bool> {
 
     [Inject(Label.Player)] private Ref<ICharacterVelocity> playerVelocityRef;
 

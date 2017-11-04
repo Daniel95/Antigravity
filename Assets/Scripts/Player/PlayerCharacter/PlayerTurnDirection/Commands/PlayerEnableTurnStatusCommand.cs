@@ -1,6 +1,6 @@
 ﻿using IoCPlus;
 
-public class EnablePlayerTurnStatusCommand : Command<bool> {
+public class PlayerEnableTurnStatusCommand : Command<bool> {
 
     [Inject] private PlayerTurnStatus playerTurnStatus;
 

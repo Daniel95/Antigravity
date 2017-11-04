@@ -7,6 +7,7 @@ public interface ICharacterRotateAroundCorner {
     void StartCheckingRotateAroundCornerTransformConditions(Transform targetCornerTransform, Vector2 moveDirection);
     void StopCheckingRotateAroundCornerTransformConditions(Transform targetCornerTransform);
     void StopAllCheckingRotateAroundCornerConditions();
+    void CancelRotatingAroundCorner();
 
 }
     

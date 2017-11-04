@@ -8,7 +8,7 @@ public class PlayerStartAtCheckpointContext : Context {
         On<EnterContextSignal>()
             .Do<SetPlayerStateStatusCommand>(PlayerState.RespawnAtCheckpoint)
             .Do<PlayerResetVelocityCommand>()
-            .Do<PlayerSetDirectionalMovementCommand>(false)
+            .Do<PlayerEnableDirectionalMovementCommand>(false)
             .Do<EnableInputCommand>(false)
             .Do<EnableWeaponCommand>(false)
             .Do<EnablePlayerJumpStatusCommand>(false)
@@ -16,7 +16,7 @@ public class PlayerStartAtCheckpointContext : Context {
             .Do<PlayerMoveTowardsCheckpointCommand>();
 
         On<PlayerMoveTowardsCheckpointCompletedEvent>()
-            .Do<PlayerSetDirectionalMovementCommand>(false)
+            .Do<PlayerEnableDirectionalMovementCommand>(false)
             .Do<EnableInputCommand>(true);
 
         On<DraggingInputEvent>()
@@ -24,7 +24,7 @@ public class PlayerStartAtCheckpointContext : Context {
             .Do<PlayerPointToDirectionCommand>();
 
         On<ReleaseInDirectionInputEvent>()
-            .Do<PlayerSetDirectionalMovementCommand>(true)
+            .Do<PlayerEnableDirectionalMovementCommand>(true)
             .Do<EnableWeaponCommand>(true)
             .Do<EnablePlayerJumpStatusCommand>(true)
             .Do<PlayerStopAimLineCommand>()

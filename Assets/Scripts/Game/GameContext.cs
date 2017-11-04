@@ -13,13 +13,14 @@ public class GameContext : Context {
         Bind<PlayerTemporarySpeedDecreaseEvent>();
         Bind<PlayerTemporarySpeedChangeEvent>();
         Bind<PlayerTryJumpEvent>();
+        Bind<PlayerJumpedEvent>();
         Bind<PlayerBounceEvent>();
         Bind<PlayerRespawnEvent>();
         Bind<PlayerStartAtCheckpointEvent>();
         Bind<PlayerStartAtStartPointEvent>();
         Bind<PlayerStartAtStartPointCompletedEvent>();
-        Bind<PlayerStartRotatingAroundCornerEvent>();
-        Bind<PlayerStopRotatingAroundCornerEvent>();
+        Bind<PlayerStartedRotatingAroundCornerEvent>();
+        Bind<PlayerStoppedRotatingAroundCornerEvent>();
         Bind<CancelDragInputEvent>();
         Bind<DraggingInputEvent>();
         Bind<HoldingInputEvent>();

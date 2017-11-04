@@ -3,7 +3,9 @@ using System.Collections;
 using IoCPlus;
 using System;
 
-public class CharacterRotateAroundCornerView : View, ICharacterRotateAroundCorner {
+public abstract class CharacterRotateAroundCornerView : View, ICharacterRotateAroundCorner {
+
+    [Inject(Label.Player)] private Ref<ICharacterVelocity> playerVelocityRef;
 
     public Transform CurrentTargetCornerTransform { get { return currentTargetCornerTransform; } }
 
@@ -23,11 +25,11 @@ public class CharacterRotateAroundCornerView : View, ICharacterRotateAroundCorne
         if (moveDirection.x != cornerDirection.x && moveDirection.y != cornerDirection.y) { return; }
 
         currentTargetCornerTransform = targetCornerTransform;
-        checkAligningWithTargetCoroutine = StartCoroutine(CheckAligningWithPosition(targetCornerTransform.position, moveDirection));
+        checkAligningWithTargetCoroutine = StartCoroutine(CheckAligningWithPosition(targetCornerTransform.position));
     }
 
     public void StopCheckingRotateAroundCornerTransformConditions(Transform targetCornerTransform) {
-        if(targetCornerTransform != currentTargetCornerTransform) { return; }
+        if (targetCornerTransform != currentTargetCornerTransform) { return; }
         StopAllCheckingRotateAroundCornerConditions();
     }
 
@@ -35,12 +37,15 @@ public class CharacterRotateAroundCornerView : View, ICharacterRotateAroundCorne
         if (checkAligningWithTargetCoroutine != null) {
             StopCoroutine(checkAligningWithTargetCoroutine);
             checkAligningWithTargetCoroutine = null;
+            currentTargetCornerTransform = null;
         }
     }
 
-    private IEnumerator CheckAligningWithPosition(Vector2 cornerPosition, Vector2 moveDirection) {
+    public abstract void CancelRotatingAroundCorner();
+
+    private IEnumerator CheckAligningWithPosition(Vector2 cornerPosition) {
         Vector2 halfWorldScale = VectorHelper.Abs(transform.localScale) / 2;
-        Vector2 characterCornerOffset = VectorHelper.Multiply(halfWorldScale, moveDirection);
+        Vector2 characterCornerOffset = VectorHelper.Multiply(halfWorldScale, playerVelocityRef.Get().MoveDirection);
 
         while (true) {
             Vector2 characterCornerPosition = (Vector2)transform.position + characterCornerOffset;

@@ -31,6 +31,10 @@ public class PlayerStateContext : Context {
             .Dispatch<CancelDragInputEvent>()
             .GotoState<PlayerStartAtCheckpointContext>();
 
+        On<PlayerJumpedEvent>()
+            .Do<AbortIfPlayerStateStatusStateIsStateCommand>(PlayerState.Floating)
+            .GotoState<PlayerFloatingContext>();
+
         On<EnterGrapplingHookContextEvent>()
             .Do<AbortIfPlayerStateStatusStateIsStateCommand>(PlayerState.Grappling)
             .GotoState<PlayerGrapplingContext>();

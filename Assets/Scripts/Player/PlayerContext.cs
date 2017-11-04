@@ -15,7 +15,7 @@ public class PlayerContext : Context {
             .Do<EnableInputCommand>(true)
             .Do<EnableWeaponCommand>(true)
             .Do<EnablePlayerJumpStatusCommand>(true)
-            .Do<EnablePlayerTurnStatusCommand>(true)
+            .Do<PlayerEnableTurnStatusCommand>(true)
             .Do<PlayerSetSavedDirectionToStartDirectionCommand>()
             .Do<PlayerSetMoveDirectionToStartDirectionCommand>()
             .Do<PlayerPointToMoveDirectionCommand>();
@@ -44,15 +44,21 @@ public class PlayerContext : Context {
             .Dispatch<PlayerTryJumpEvent>();
 
         On<PlayerTryJumpEvent>()
+            .Do<PlayerCancelRotatingAroundCornerCommand>();
+
+        On<PlayerTryJumpEvent>()
             .Do<AbortIfPlayerSurroundingDirectionIsZeroCommand>()
             .Do<PlayerJumpCommand>()
-            .Do<PlayerPointToVelocityDirectionCommand>();
+            .Dispatch<PlayerJumpedEvent>();
 
         On<PlayerTryJumpEvent>()
             .Do<AbortIfPlayerSurroundingDirectionIsZeroCommand>()
             .Do<WaitForPlayerRetryJumpTimeCommand>()
             .Do<AbortIfPlayerSurroundingDirectionIsZeroCommand>()
             .Do<PlayerJumpCommand>()
+            .Dispatch<PlayerJumpedEvent>();
+
+        On<PlayerJumpedEvent>()
             .Do<PlayerPointToVelocityDirectionCommand>();
 
         On<PlayerCollisionEnter2DEvent>()
@@ -79,17 +85,20 @@ public class PlayerContext : Context {
         On<PlayerSetMoveDirectionEvent>()
             .Do<PlayerSetMoveDirectionCommand>();
 
-        On<PlayerStartRotatingAroundCornerEvent>()
-            .Do<EnablePlayerJumpStatusCommand>(false)
-            .Do<EnablePlayerTurnStatusCommand>(false);
+        On<PlayerStartedRotatingAroundCornerEvent>()
+            .Do<PlayerEnableDirectionalMovementCommand>(false)
+            .Do<PlayerResetVelocityCommand>()
+            .Do<PlayerEnableTurnStatusCommand>(false);
 
-        On<PlayerStopRotatingAroundCornerEvent>()
-            .Do<EnablePlayerJumpStatusCommand>(true)
-            .Do<EnablePlayerTurnStatusCommand>(true);
+        On<PlayerStoppedRotatingAroundCornerEvent>()
+            .Do<PlayerEnableDirectionalMovementCommand>(true)
+            .Do<PlayerEnableTurnStatusCommand>(true);
 
         On<PlayerDiedEvent>()
             .Dispatch<CancelDragInputEvent>()
             .Do<HookProjectileStopMoveTowardsCommand>()
+            .Do<PlayerStopAllCheckingRotateAroundCornerConditionsCommand>()
+            .Do<PlayerCancelRotatingAroundCornerCommand>()
             .Do<ShakeInOutCommand>(ShakeType.PlayerDied)
             .Do<InstantiatePrefabOnPlayerPositionCommand>("Effects/DieEffect");
 

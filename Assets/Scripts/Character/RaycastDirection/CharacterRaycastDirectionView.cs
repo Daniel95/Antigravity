@@ -56,12 +56,12 @@ public class CharacterRaycastDirectionView : View, ICharacterRaycastDirection {
     }
 
     public Vector2 GetCornersDirection() {
-        Vector2 combinedCornerDirection = GetCornerTopRightRaycastData().Direction +
+        Vector2 combinedCornerDirections = GetCornerTopRightRaycastData().Direction +
             GetCornerTopLeftRaycastData().Direction +
             GetCornerBottomRightRaycastData().Direction +
             GetCornerBottomLeftRaycastData().Direction;
 
-        Vector2 cornerDirection = VectorHelper.Clamp(combinedCornerDirection, -1, 1);
+        Vector2 cornerDirection = VectorHelper.Clamp(combinedCornerDirections, -1, 1);
         return cornerDirection;
     }
 

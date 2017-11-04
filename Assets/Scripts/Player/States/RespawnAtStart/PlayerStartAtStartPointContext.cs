@@ -12,7 +12,7 @@ public class PlayerStartAtStartPointContext : Context {
             .Do<PlayerSetMoveDirectionToStartDirectionCommand>()
             .Do<PlayerPointToMoveDirectionCommand>()
             .Do<WaitForSecondsCommand>(1f)
-            .Do<PlayerSetDirectionalMovementCommand>(true)
+            .Do<PlayerEnableDirectionalMovementCommand>(true)
             .Dispatch<PlayerStartAtStartPointCompletedEvent>();
 
     }
