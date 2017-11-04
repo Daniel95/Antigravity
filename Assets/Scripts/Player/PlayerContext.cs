@@ -11,7 +11,7 @@ public class PlayerContext : Context {
             .AddContext<InputContext>()
             .AddContext<WeaponContext>()
             .AddContext<PlayerStateContext>()
-            .Do<AddStatusViewToStatusViewContainerCommand<PlayerRotatingAroundCornerStatusView>>()
+            .Do<AddStatusViewToStatusViewContainerCommand<PlayerRotateAroundCornerStatusView>>()
             .Do<EnableInputCommand>(true)
             .Do<EnableWeaponCommand>(true)
             .Do<EnablePlayerJumpStatusCommand>(true)
@@ -31,7 +31,7 @@ public class PlayerContext : Context {
             .Dispatch<PlayerStartAtStartPointEvent>();
 
         On<LeaveContextSignal>()
-            .Do<RemoveStatusViewFromStatusViewContainerCommand<PlayerRotatingAroundCornerStatusView>>();
+            .Do<RemoveStatusViewFromStatusViewContainerCommand<PlayerRotateAroundCornerStatusView>>();
 
         On<PlayerTriggerEnter2DEvent>()
             .Do<AbortIfTriggerTagIsNotTheSameCommand>(Tags.Finish)

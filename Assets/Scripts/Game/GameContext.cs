@@ -163,7 +163,7 @@ public class GameContext : Context {
         BindLabeled<Ref<ITriggerHitDetection>>(Label.Player);
         BindLabeled<Ref<IMoveTowards>>(Label.Player);
         BindLabeled<Ref<ICharacterTrail>>(Label.Player);
-        BindLabeled<Ref<ICharacterSliding>>(Label.Player);
+        BindLabeled<Ref<ICharacterRotateAroundCorner>>(Label.Player);
 
         BindLabeled<Ref<ITriggerHitDetection>>(Label.HookProjectile);
         BindLabeled<Ref<IMoveTowards>>(Label.HookProjectile);

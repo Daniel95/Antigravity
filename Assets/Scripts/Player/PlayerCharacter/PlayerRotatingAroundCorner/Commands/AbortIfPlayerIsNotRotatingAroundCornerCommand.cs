@@ -3,7 +3,7 @@
 public class AbortIfPlayerIsNotRotatingAroundCornerCommand : Command {
 
     protected override void Execute() {
-        if(!PlayerRotatingAroundCornerStatusView.Rotating) {
+        if(!PlayerRotateAroundCornerStatusView.Rotating) {
             Abort();
         }
     }

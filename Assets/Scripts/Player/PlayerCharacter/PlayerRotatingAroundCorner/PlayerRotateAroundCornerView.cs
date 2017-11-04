@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class PlayerSlidingView : CharacterSlidingView {
+public class PlayerRotateAroundCornerView : CharacterRotateAroundCornerView {
 
     [Inject] private PlayerStartRotatingAroundCornerEvent playerStartRotatingAroundCornerEvent;
     [Inject] private PlayerStopRotatingAroundCornerEvent playerStopRotatingAroundCornerEvent;
@@ -13,11 +13,11 @@ public class PlayerSlidingView : CharacterSlidingView {
     [SerializeField] private float rotateSpeed = 90;
 
     [Inject(Label.Player)] private Ref<ICharacterVelocity> playerVelocityRef;
-    [Inject(Label.Player)] private Ref<ICharacterSliding> playerSlidingRef;
+    [Inject(Label.Player)] private Ref<ICharacterRotateAroundCorner> playerSlidingRef;
     [Inject(Label.Player)] private Ref<ICharacterTurnDirection> playerTurnRef;
     [Inject(Label.Player)] private Ref<ICharacterDirectionPointer> playerDirectionPointerRef;
 
-    private Coroutine rotate90DegreesAroundPosition;
+    private Coroutine rotateAroundCornerCoroutine;
 
     public override void Initialize() {
         base.Initialize();
@@ -25,12 +25,12 @@ public class PlayerSlidingView : CharacterSlidingView {
     }
 
     private void StartRotating90DegreesAroundPosition(Vector2 position) {
-        if(rotate90DegreesAroundPosition != null) { return; }
-        rotate90DegreesAroundPosition = StartCoroutine(Rotate90DegreesAroundPosition(position));
+        if(rotateAroundCornerCoroutine != null) { return; }
+        rotateAroundCornerCoroutine = StartCoroutine(Rotate90DegreesAroundPosition(position));
     }
 
     private IEnumerator Rotate90DegreesAroundPosition(Vector2 positionToRotateAround) {
-        PlayerRotatingAroundCornerStatusView.Rotating = true;
+        PlayerRotateAroundCornerStatusView.Rotating = true;
 
         Vector2 targetOffset = positionToRotateAround - (Vector2)transform.position;
         Vector2 targetDirection = (targetOffset).normalized;
@@ -69,8 +69,8 @@ public class PlayerSlidingView : CharacterSlidingView {
         playerDirectionPointerRef.Get().PointToDirection(playerTurnRef.Get().SavedDirection);
         playerVelocityRef.Get().EnableDirectionalMovement();
 
-        PlayerRotatingAroundCornerStatusView.Rotating = false;
-        rotate90DegreesAroundPosition = null;
+        PlayerRotateAroundCornerStatusView.Rotating = false;
+        rotateAroundCornerCoroutine = null;
     }
 
     private void OnEnable() {

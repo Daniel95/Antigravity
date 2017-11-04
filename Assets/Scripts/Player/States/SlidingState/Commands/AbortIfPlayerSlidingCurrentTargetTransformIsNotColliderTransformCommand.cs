@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class AbortIfPlayerSlidingCurrentTargetTransformIsNotColliderTransformCommand : Command {
 
-    [Inject(Label.Player)] private Ref<ICharacterSliding> playerSlidingRef;
+    [Inject(Label.Player)] private Ref<ICharacterRotateAroundCorner> playerSlidingRef;
 
     [InjectParameter] private Collider2D collider;
 

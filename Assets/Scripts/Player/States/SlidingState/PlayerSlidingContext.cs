@@ -9,6 +9,9 @@ public class PlayerSlidingContext : Context {
             .Do<SetPlayerStateStatusCommand>(PlayerState.Sliding)
             .Do<PlayerSetDirectionalMovementCommand>(true);
 
+        On<LeaveContextSignal>()
+            .Do<PlayerStopAllCheckingRotateAroundCornerConditionsCommand>();
+
         On<HookProjectileMoveTowardsOwnerCompletedEvent>()
             .Do<PlayerPointToSavedDirectionCommand>();
 
@@ -17,12 +20,12 @@ public class PlayerSlidingContext : Context {
 
         On<PlayerTriggerStay2DEvent>()
             .Do<AbortIfTriggerTagIsNotTheSameCommand>(Tags.ConvexCorner)
-            .Do<PlayerStartCheckingRotateAroundCornerConditionsCommand>();
+            .Do<PlayerStartCheckingRotateAroundCornerTransformConditionsCommand>();
 
         On<PlayerTriggerExit2DEvent>()
             .Do<AbortIfTriggerTagIsNotTheSameCommand>(Tags.ConvexCorner)
             .Do<AbortIfPlayerSlidingCurrentTargetTransformIsNotColliderTransformCommand>()
-            .Do<PlayerStopCheckingRotateAroundCornerConditionsCommand>();
+            .Do<PlayerStopCheckingRotateAroundCornerTransformConditionsCommand>();
 
     }
 }

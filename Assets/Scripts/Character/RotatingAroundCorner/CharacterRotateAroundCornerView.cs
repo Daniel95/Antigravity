@@ -3,11 +3,9 @@ using System.Collections;
 using IoCPlus;
 using System;
 
-public class CharacterSlidingView : View, ICharacterSliding {
+public class CharacterRotateAroundCornerView : View, ICharacterRotateAroundCorner {
 
     public Transform CurrentTargetCornerTransform { get { return currentTargetCornerTransform; } }
-
-    [Inject(Label.Player)] private Ref<ICharacterVelocity> characterVelocityRef;
 
     protected Action<Vector2> OnAlignWithTarget;
 
@@ -15,10 +13,8 @@ public class CharacterSlidingView : View, ICharacterSliding {
     private Transform currentTargetCornerTransform;
     private Vector2 cornerDirection;
 
-    public void StartCheckingRotateAroundCornerConditions(Transform targetCornerTransform) {
+    public void StartCheckingRotateAroundCornerTransformConditions(Transform targetCornerTransform, Vector2 moveDirection) {
         if (checkAligningWithTargetCoroutine != null) { return; }
-
-        Vector2 moveDirection = characterVelocityRef.Get().MoveDirection;
 
         if (moveDirection.x != 0 && moveDirection.y != 0) { return; }
 
@@ -27,18 +23,22 @@ public class CharacterSlidingView : View, ICharacterSliding {
         if (moveDirection.x != cornerDirection.x && moveDirection.y != cornerDirection.y) { return; }
 
         currentTargetCornerTransform = targetCornerTransform;
-        checkAligningWithTargetCoroutine = StartCoroutine(CheckAligningWithPosition(targetCornerTransform.position));
+        checkAligningWithTargetCoroutine = StartCoroutine(CheckAligningWithPosition(targetCornerTransform.position, moveDirection));
     }
 
-    public void StopCheckingRotateAroundCornerConditions() {
+    public void StopCheckingRotateAroundCornerTransformConditions(Transform targetCornerTransform) {
+        if(targetCornerTransform != currentTargetCornerTransform) { return; }
+        StopAllCheckingRotateAroundCornerConditions();
+    }
+
+    public void StopAllCheckingRotateAroundCornerConditions() {
         if (checkAligningWithTargetCoroutine != null) {
             StopCoroutine(checkAligningWithTargetCoroutine);
             checkAligningWithTargetCoroutine = null;
         }
     }
 
-    private IEnumerator CheckAligningWithPosition(Vector2 cornerPosition) {
-        Vector2 moveDirection = characterVelocityRef.Get().MoveDirection;
+    private IEnumerator CheckAligningWithPosition(Vector2 cornerPosition, Vector2 moveDirection) {
         Vector2 halfWorldScale = VectorHelper.Abs(transform.localScale) / 2;
         Vector2 characterCornerOffset = VectorHelper.Multiply(halfWorldScale, moveDirection);
 
