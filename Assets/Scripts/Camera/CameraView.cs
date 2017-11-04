@@ -35,6 +35,14 @@ public class CameraView : View, ICamera {
         transform.localPosition = clampedBoundsLocalPosition;
     }
 
+    public void ResetOrthographicSizeToSystemDefault() {
+        if (PlatformHelper.PlatformIsMobile) {
+            OrthographicSize = mobileOrthographicSize;
+        } else {
+            OrthographicSize = pcDefaultOrthographicSize;
+        }
+    }
+
     private float GetOrthographicSizeRatio() {
         float orthographicSizeMinMaxOffset = Mathf.Abs(maxOrthographicSize - minOrthographicSize);
         float orthographicSizeRatio = (OrthographicSize - minOrthographicSize) / orthographicSizeMinMaxOffset;
@@ -42,11 +50,7 @@ public class CameraView : View, ICamera {
     }
 
     private void Awake() {
-        if (PlatformHelper.PlatformIsMobile) {
-            OrthographicSize = mobileOrthographicSize;
-        } else {
-            OrthographicSize = pcDefaultOrthographicSize;
-        }
+        ResetOrthographicSizeToSystemDefault();
     }
 
 }

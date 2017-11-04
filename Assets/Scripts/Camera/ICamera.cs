@@ -10,4 +10,6 @@ public interface ICamera {
     float MinOrthographicSize { get; }
 
     void SetCameraBounds(CameraBounds cameraBounds);
+    void ResetOrthographicSizeToSystemDefault();
+
 }

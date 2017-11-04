@@ -19,6 +19,7 @@ public class LevelEditorEditingContext : Context {
             .Do<LevelEditorClearLevelObjectsCommand>()
             .Do<LevelEditorClearLevelNameStatusCommand>()
             .Do<ResetCamerPositionCommand>()
+            .Do<ResetCameraOrthographicSizeToSystemDefaultCommand>()
             .Do<DestroyChildInCanvasLayerCommand>("UI/LevelEditor/Editing/GoToSavingStateButtonUI", CanvasLayer.UI)
             .Do<DestroyChildInCanvasLayerCommand>("UI/LevelEditor/Editing/GoToMainMenuStateButtonUI", CanvasLayer.UI);
 
