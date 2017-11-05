@@ -13,6 +13,7 @@ public class GameContext : Context {
         Bind<PlayerTemporarySpeedDecreaseEvent>();
         Bind<PlayerTemporarySpeedChangeEvent>();
         Bind<PlayerTryJumpEvent>();
+        Bind<PlayerJumpFailedEvent>();
         Bind<PlayerJumpedEvent>();
         Bind<PlayerBounceEvent>();
         Bind<PlayerRespawnEvent>();

@@ -39,10 +39,13 @@ public class PlayerRotateAroundCornerView : CharacterRotateAroundCornerView {
         if (angleDifference > 45) {
             Vector3 rotationAxis = angleOffset < 0 ? -Vector3.forward : Vector3.forward;
             Quaternion rotation = Quaternion.AngleAxis(90, rotationAxis);
-            Vector2 moveDirection = rotation * playerVelocityRef.Get().MoveDirection;
-            playerVelocityRef.Get().SetMoveDirection(VectorHelper.Round(rotation * playerVelocityRef.Get().MoveDirection));
-            playerTurnRef.Get().SavedDirection = VectorHelper.Round(rotation * playerTurnRef.Get().SavedDirection);
-            playerDirectionPointerRef.Get().PointToDirection(playerTurnRef.Get().SavedDirection);
+
+            Vector2 moveDirection = VectorHelper.Round(rotation * playerVelocityRef.Get().MoveDirection);
+            playerVelocityRef.Get().SetMoveDirection(moveDirection);
+
+            Vector2 savedDirection = VectorHelper.Round(rotation * playerTurnRef.Get().SavedDirection);
+            playerTurnRef.Get().SavedDirection = savedDirection;
+            playerDirectionPointerRef.Get().PointToDirection(savedDirection);
         }
 
         PlayerRotateAroundCornerStatusView.Rotating = false;
@@ -52,11 +55,10 @@ public class PlayerRotateAroundCornerView : CharacterRotateAroundCornerView {
         if(rotateAroundCornerCoroutine != null) { return; }
         startZRotation = transform.eulerAngles.z;
         rotateAroundCornerCoroutine = StartCoroutine(Rotate90DegreesAroundPosition(cornerPosition));
+        PlayerRotateAroundCornerStatusView.Rotating = true;
     }
 
     private IEnumerator Rotate90DegreesAroundPosition(Vector2 positionToRotateAround) {
-        PlayerRotateAroundCornerStatusView.Rotating = true;
-
         Vector2 targetOffset = positionToRotateAround - (Vector2)transform.position;
         Vector2 targetDirection = (targetOffset).normalized;
         Vector2 moveDirectionRight = Quaternion.AngleAxis(90, -Vector3.forward) * playerVelocityRef.Get().MoveDirection;
@@ -64,9 +66,7 @@ public class PlayerRotateAroundCornerView : CharacterRotateAroundCornerView {
         bool targetIsToTheRight = VectorHelper.DirectionIsToTheRight(moveDirectionRight, targetDirection);
 
         Vector3 rotateAxis = targetIsToTheRight ? -Vector3.forward : Vector3.forward;
-
         float startAngle = transform.rotation.eulerAngles.z;
-
         while (true) {
             float speed = playerVelocityRef.Get().CurrentSpeed;
             transform.RotateAround(positionToRotateAround, rotateAxis, (speed * rotateSpeed) * Time.deltaTime);
@@ -90,8 +90,8 @@ public class PlayerRotateAroundCornerView : CharacterRotateAroundCornerView {
         playerTurnRef.Get().SavedDirection = VectorHelper.Round(rotation * playerTurnRef.Get().SavedDirection);
         playerDirectionPointerRef.Get().PointToDirection(playerTurnRef.Get().SavedDirection);
 
-        PlayerRotateAroundCornerStatusView.Rotating = false;
         rotateAroundCornerCoroutine = null;
+        PlayerRotateAroundCornerStatusView.Rotating = false;
     }
 
     private void OnEnable() {

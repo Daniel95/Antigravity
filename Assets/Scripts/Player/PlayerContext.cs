@@ -49,9 +49,10 @@ public class PlayerContext : Context {
         On<PlayerTryJumpEvent>()
             .Do<AbortIfPlayerSurroundingDirectionIsZeroCommand>()
             .Do<PlayerJumpCommand>()
-            .Dispatch<PlayerJumpedEvent>();
+            .Dispatch<PlayerJumpedEvent>()
+            .OnAbort<DispatchPlayerJumpFailedEventCommand>();
 
-        On<PlayerTryJumpEvent>()
+        On<PlayerJumpFailedEvent>()
             .Do<AbortIfPlayerSurroundingDirectionIsZeroCommand>()
             .Do<WaitForPlayerRetryJumpTimeCommand>()
             .Do<AbortIfPlayerSurroundingDirectionIsZeroCommand>()
