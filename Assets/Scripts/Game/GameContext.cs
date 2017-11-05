@@ -151,6 +151,7 @@ public class GameContext : Context {
         Bind<Ref<ILevelEditorLevelObjectButtonGridLayoutGroup>>();
 
         Bind<Refs<ICheckpoint>>();
+        Bind<Refs<ILevelObjectZone>>();
 
         BindLabeled<Ref<ICharacterDirectionPointer>>(Label.Player);
         BindLabeled<Ref<ICharacterCollisionDirection>>(Label.Player);

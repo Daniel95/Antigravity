@@ -12,14 +12,16 @@ public class LevelEditorLevelObjectContext : Context {
             .Do<AddStatusViewToStatusViewContainerCommand<LevelEditorSelectedLevelObjectStatus>>()
             .Do<InstantiateViewInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/LevelObject/GoToTileStateButtonUI", CanvasLayer.UI)
             .Do<InstantiateViewInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/LevelObject/LevelObjectButtonGridLayoutGroupUI", CanvasLayer.UI)
-            .Do<LevelEditorInstantiateLevelObjectButtonsCommand>("UI/LevelEditor/Editing/Creating/LevelObject/LevelObjectButtonUI");
+            .Do<LevelEditorInstantiateLevelObjectButtonsCommand>("UI/LevelEditor/Editing/Creating/LevelObject/LevelObjectButtonUI")
+            .Do<LevelEditorEnableLevelObjectZonesStandardColorEditorAlphaCommand>(true);
 
         On<LeaveContextSignal>()
             .Do<RemoveStatusViewFromStatusViewContainerCommand<LevelEditorSelectedLevelObjectTransformTypeStatus>>()
             .Do<RemoveStatusViewFromStatusViewContainerCommand<LevelEditorSelectedLevelObjectStatus>>()
             .Do<DestroyChildInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/LevelObject/GoToTileStateButtonUI", CanvasLayer.UI)
             .Do<DestroyChildInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/LevelObject/LevelObjectButtonGridLayoutGroupUI", CanvasLayer.UI)
-            .Do<LevelEditorResetSelectedLevelObjectStatusCommand>();
+            .Do<LevelEditorResetSelectedLevelObjectStatusCommand>()
+            .Do<LevelEditorEnableLevelObjectZonesStandardColorEditorAlphaCommand>(false);
 
         On<TouchUpEvent>()
             .Do<LevelEditorSetReleasedSinceLevelObjectSpawnStatusCommand>(true);
@@ -42,6 +44,7 @@ public class LevelEditorLevelObjectContext : Context {
             .Do<AbortIfLevelEditorScreenPositionDoesContainGridElementCommand>()
             .Do<AbortIfMousePositionIsOverLevelObjectCommand>()
             .Do<LevelEditorInstantiateAndSelectLevelObjectAtScreenPositionCommand>()
+            .Do<LevelEditorEnableLevelObjectZonesStandardColorEditorAlphaCommand>(true)
             .Do<LevelEditorSetReleasedSinceLevelObjectSpawnStatusCommand>(false);
 
         On<LevelEditorTranslateStartWorldPositionStatusUpdatedEvent>()
