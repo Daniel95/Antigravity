@@ -42,10 +42,6 @@ public class PlayerRotateAroundCornerView : CharacterRotateAroundCornerView {
 
             Vector2 moveDirection = VectorHelper.Round(rotation * playerVelocityRef.Get().MoveDirection);
             playerVelocityRef.Get().SetMoveDirection(moveDirection);
-
-            Vector2 savedDirection = VectorHelper.Round(rotation * playerTurnRef.Get().SavedDirection);
-            playerTurnRef.Get().SavedDirection = savedDirection;
-            playerDirectionPointerRef.Get().PointToDirection(savedDirection);
         }
 
         PlayerRotateAroundCornerStatusView.Rotating = false;
