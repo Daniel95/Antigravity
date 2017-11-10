@@ -29,7 +29,7 @@ public class LevelEditorInstantiateAndSelectLevelObjectAtScreenPositionCommand :
         LevelEditorSelectedLevelObjectStatus.LevelObject = levelObjectGameObject;
 
         LevelObjectType levelObjectType = LevelEditorSelectedLevelObjectNodeStatus.LevelObjectNode.LevelObjectType;
-        levelEditorLevelObjectsStatus.LevelObjectsByGameObject.Add(levelObjectGameObject, levelObjectType);
+        levelEditorLevelObjectsStatus.LevelObjectTypesByGameObject.Add(levelObjectGameObject, levelObjectType);
     }
 
 }

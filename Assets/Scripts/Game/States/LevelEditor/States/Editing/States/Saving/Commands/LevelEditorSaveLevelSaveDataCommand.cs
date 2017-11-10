@@ -62,7 +62,7 @@ public class LevelEditorSaveLevelSaveDataCommand : Command {
     private List<LevelObjectSaveData> ExtractLevelObjectsSaveData() {
         List<LevelObjectSaveData> levelObjectSaveDatas = new List<LevelObjectSaveData>();
 
-        Dictionary<GameObject, LevelObjectType> levelObjectsByGameObject = levelObjectsStatus.LevelObjectsByGameObject;
+        Dictionary<GameObject, LevelObjectType> levelObjectsByGameObject = levelObjectsStatus.LevelObjectTypesByGameObject;
         foreach (KeyValuePair<GameObject, LevelObjectType> levelObjectTypeByGameObject in levelObjectsByGameObject) {
             Transform levelObjectTransform = levelObjectTypeByGameObject.Key.transform;
             LevelObjectSaveData levelObjectSaveData = new LevelObjectSaveData {

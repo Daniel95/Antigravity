@@ -39,6 +39,7 @@ public class LevelEditorTileContext : Context {
             .Do<DispatchLevelEditorSelectionFieldChangedEventCommand>();
 
         On<SwipeEndEvent>()
+            .Dispatch<LevelEditorSpawningTilesStoppedEvent>()
             .Do<LevelEditorClearSelectionFieldCommand>()
             .Do<LevelEditorClearSelectionFieldAvailableGridPositionsCommand>()
             .Do<ShowBoxOverlayCommand>(false);
@@ -60,6 +61,7 @@ public class LevelEditorTileContext : Context {
             .Do<DispatchLevelEditorSelectionFieldChangedEventCommand>();
 
         On<LevelEditorTouchUpOnGridPositionEvent>()
+            .Dispatch<LevelEditorSpawningTilesStoppedEvent>()
             .Do<LevelEditorClearSelectionFieldCommand>()
             .Do<LevelEditorClearSelectionFieldAvailableGridPositionsCommand>()
             .Do<ShowBoxOverlayCommand>(false);

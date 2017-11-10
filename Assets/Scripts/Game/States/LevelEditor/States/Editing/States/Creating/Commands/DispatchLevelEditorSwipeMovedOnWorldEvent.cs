@@ -9,7 +9,10 @@ public class DispatchLevelEditorSwipeMovedOnWorldEvent : Command {
 
     protected override void Execute() {
         Vector2 worldPosition = Camera.main.ScreenToWorldPoint(swipeMovedEventParameter.Position);
-        swipeMovedEvent.Dispatch(worldPosition);
+        swipeMovedEvent.Dispatch(new LevelEditorSwipeMovedOnWorldEvent.Parameter {
+            Position = worldPosition,
+            Delta = swipeMovedEventParameter.DeltaPosition,
+        });
     }
 
 }

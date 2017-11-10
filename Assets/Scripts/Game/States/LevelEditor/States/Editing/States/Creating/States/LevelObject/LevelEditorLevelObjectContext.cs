@@ -39,6 +39,7 @@ public class LevelEditorLevelObjectContext : Context {
             .Do<LevelEditorDestroySelectedLevelObjectCommand>();
 
         On<TouchStartEvent>()
+            .Do<AbortIfLevelEditorSelectedLevelObjectNodeIsNullCommand>()
             .Do<AbortIfTouchStarted2FingersAfterIdleCommand>()
             .Do<AbortIfLevelEditorReleasedSinceLevelObjectSpawnStatusIsCommand>(false)
             .Do<AbortIfLevelEditorScreenPositionDoesContainGridElementCommand>()
@@ -46,14 +47,6 @@ public class LevelEditorLevelObjectContext : Context {
             .Do<LevelEditorInstantiateAndSelectLevelObjectAtScreenPositionCommand>()
             .Do<LevelEditorEnableLevelObjectZonesStandardColorEditorAlphaCommand>(true)
             .Do<LevelEditorSetReleasedSinceLevelObjectSpawnStatusCommand>(false);
-
-        On<LevelEditorTranslateStartWorldPositionStatusUpdatedEvent>()
-            .Do<AbortIfLevelEditorSelectedLevelObjectIsNullCommand>()
-            .Do<LevelEditorUpdateTranslateStartOffsetPositionCommand>();
-
-        On<LevelEditorLevelObjectTranslateEvent>()
-            .Do<AbortIfLevelEditorSelectedLevelObjectIsNullCommand>()
-            .Do<LevelEditorMoveSelectedLevelObjectToWorldPositionCommand>();
 
         On<LevelEditorLevelObjectDeleteButtonClickedEvent>()
             .Do<LevelEditorDestroySelectedLevelObjectCommand>();

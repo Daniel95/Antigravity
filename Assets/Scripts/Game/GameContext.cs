@@ -70,6 +70,7 @@ public class GameContext : Context {
         Bind<LevelEditorTouchDownOnWorldEvent>();
         Bind<LevelEditorTouchStartOnWorldEvent>();
         Bind<LevelEditorTouchUpOnWorldEvent>();
+        Bind<LevelEditorSpawningTilesStoppedEvent>();
         Bind<LevelEditorLevelObjectButtonClickedEvent>();
         Bind<LevelEditorSelectionFieldEnabledUpdatedEvent>();
         Bind<LevelEditorSwipeMovedToNewGridPositionEvent>();
@@ -80,9 +81,6 @@ public class GameContext : Context {
         Bind<LevelEditorTranslateStartWorldPositionStatusUpdatedEvent>();
         Bind<LevelEditorSelectedLevelObjectStatusUpdatedEvent>();
         Bind<LevelEditorGridSnapSizeStatusUpdatedEvent>();
-        Bind<LevelEditorLevelObjectTranslateEvent>();
-        Bind<LevelEditorLevelObjectScaleEvent>();
-        Bind<LevelEditorLevelObjectRotateEvent>();
         Bind<LevelEditorTouchDownOnLevelObjectEvent>();
 
         Bind<TapEvent>();

@@ -42,7 +42,7 @@ public class LevelEditorLoadLevelSaveDataCommand : Command {
             levelObjectGameObject.transform.localScale = levelObjectSaveData.Size;
 
             if(levelEditorStatus.Active) {
-                levelObjectsStatus.LevelObjectsByGameObject.Add(levelObjectGameObject, levelObjectType);
+                levelObjectsStatus.LevelObjectTypesByGameObject.Add(levelObjectGameObject, levelObjectType);
             }
         }
     }

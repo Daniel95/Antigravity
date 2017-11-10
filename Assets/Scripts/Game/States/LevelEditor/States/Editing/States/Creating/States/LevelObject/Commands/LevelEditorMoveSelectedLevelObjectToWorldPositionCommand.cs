@@ -5,10 +5,12 @@ public class LevelEditorMoveSelectedLevelObjectToWorldPositionCommand : Command 
 
     [Inject] private LevelEditorLevelObjectTranslateStartOffsetStatus levelObjectTranslateStartOffsetStatus;
 
-    [InjectParameter] private Vector2 worldPosition;
+    [InjectParameter] private LevelEditorSwipeMovedOnWorldEvent.Parameter levelEditorSwipeMovedOnWorldEventParameter;
 
     protected override void Execute() {
-        LevelEditorSelectedLevelObjectStatus.LevelObject.transform.position = worldPosition + levelObjectTranslateStartOffsetStatus.StartOffset;
+        Vector2 worldPosition = levelEditorSwipeMovedOnWorldEventParameter.Position;
+        Vector2 startOffset = levelObjectTranslateStartOffsetStatus.StartOffset;
+        LevelEditorSelectedLevelObjectStatus.LevelObject.transform.position = worldPosition + startOffset;
     }
 
 }
