@@ -7,8 +7,8 @@ public class GenerateableLevelObjectNode {
 
     public GameObject Prefab;
     public LevelObjectType LevelObjectType;
-    public bool CollideWithTiles;
-    public bool CollideWithLevelObjects;
+    public bool CanCollideWithTiles;
+    public bool CanCollideWithLevelObjects;
     public List<LevelObjectTransformType> AvailableInputTypes = new List<LevelObjectTransformType>() {
         LevelObjectTransformType.Translate,
     };

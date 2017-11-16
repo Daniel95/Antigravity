@@ -12,7 +12,7 @@ public class LevelEditorDestroyCollisionWithGridLevelObjectsInSelectionFieldComm
 
         List<GameObject> levelObjectsToRemove = new List<GameObject>();
         foreach (KeyValuePair<GameObject, LevelObjectType> levelObjectTypeByGameObject in levelEditorLevelObjectsStatus.LevelObjectTypesByGameObject) {
-            if (!GenerateableLevelObjectLibrary.GetNode(levelObjectTypeByGameObject.Value).CollideWithTiles) { continue; }
+            if (!GenerateableLevelObjectLibrary.GetNode(levelObjectTypeByGameObject.Value).CanCollideWithTiles) { continue; }
 
             GameObject levelObject = levelObjectTypeByGameObject.Key;
             Vector2 levelObjectGridPosition = LevelEditorGridHelper.WorldToGridPosition(levelObject.transform.position);

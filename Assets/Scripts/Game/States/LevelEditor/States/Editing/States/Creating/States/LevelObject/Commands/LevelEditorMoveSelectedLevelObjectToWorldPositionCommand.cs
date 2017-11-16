@@ -11,6 +11,7 @@ public class LevelEditorMoveSelectedLevelObjectToWorldPositionCommand : Command 
         Vector2 worldPosition = levelEditorSwipeMovedOnWorldEventParameter.Position;
         Vector2 startOffset = levelObjectTranslateStartOffsetStatus.StartOffset;
         LevelEditorSelectedLevelObjectStatus.LevelObject.transform.position = worldPosition + startOffset;
+        DebugHelper.LogPreciseVector(LevelEditorSelectedLevelObjectStatus.LevelObject.transform.position, "New Position " + FrameHelper.FrameCount);
     }
 
 }

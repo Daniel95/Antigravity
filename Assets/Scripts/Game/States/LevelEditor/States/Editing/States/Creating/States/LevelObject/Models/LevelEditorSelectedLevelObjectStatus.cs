@@ -1,4 +1,5 @@
 ﻿using IoCPlus;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class LevelEditorSelectedLevelObjectStatus : StatusView {
@@ -12,6 +13,11 @@ public class LevelEditorSelectedLevelObjectStatus : StatusView {
             selectedLevelObjectStatusUpdatedEvent.Dispatch();
         }
     }
+
+    public static Vector2 PreviousPosition;
+    public static Vector2 PreviousScale;
+    public static Quaternion PreviousRotation;
+    public static List<Collider2D> CollisionColliders = new List<Collider2D>();
 
     private static GameObject levelObject;
 

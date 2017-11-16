@@ -18,4 +18,5 @@ public class ActivateViewOnPlayerCommand<T> : Command where T : View {
 
         context.AddView(view, false);
     }
+
 }

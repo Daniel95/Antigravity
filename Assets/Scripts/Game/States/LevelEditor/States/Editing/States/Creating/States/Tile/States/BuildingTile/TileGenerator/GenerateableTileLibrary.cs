@@ -18,6 +18,18 @@ public class GenerateableTileLibrary : MonoBehaviour {
         return GetInstance().generatableTiles.Find(x => x.TileType == tileType);
     }
 
+    public static GenerateableTileNode GetNode(string tileInstanceName) {
+        string levelObjectPrefabName = tileInstanceName.Replace("(Clone)", "");
+        GenerateableTileNode levelObjectEditorNode = GetInstance().generatableTiles.Find(x => x.Prefab.name == levelObjectPrefabName);
+        return levelObjectEditorNode;
+    }
+
+    public static bool IsTile(string tileInstanceName) {
+        string levelObjectPrefabName = tileInstanceName.Replace("(Clone)", "");
+        bool isTile = GetInstance().generatableTiles.Exists(x => x.Prefab.name == levelObjectPrefabName);
+        return isTile;
+    }
+
     private static GenerateableTileLibrary GetInstance() {
         if (instance == null) {
             instance = Resources.Load<GenerateableTileLibrary>(GENERATABLE_TILE_LIBRARY_PATH);

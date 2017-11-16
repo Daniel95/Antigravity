@@ -66,6 +66,24 @@ public class LevelEditorLevelObjectContext : Context {
             .Do<AbortIfChildInCanvasLayerDoesNotExistCommand>("UI/LevelEditor/Editing/Creating/LevelObject/DestroyLevelObjectButtonUI", CanvasLayer.UI)
             .Do<DestroyChildInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/LevelObject/DestroyLevelObjectButtonUI", CanvasLayer.UI);
 
+        On<CollisionEnter2DEvent>()
+            .Do<AbortIfGameObjectIsNotLevelObjectCommand>()
+            .Do<LevelEditorAddColliderToSelectedLevelObjectCollisionCollidersCommand>()
+            .Do<DispatchLevelEditorLevelObjectCollisionEnter2DEventCommand>();
+
+        On<TriggerEnter2DEvent>()
+            .Do<AbortIfGameObjectIsNotLevelObjectCommand>()
+            .Do<LevelEditorAddColliderToSelectedLevelObjectCollisionCollidersCommand>()
+            .Do<DispatchLevelEditorLevelObjectTriggerEnter2DEventCommand>();
+
+        On<CollisionExit2DEvent>()
+            .Do<AbortIfGameObjectIsNotLevelObjectCommand>()
+            .Do<LevelEditorRemoveColliderFromSelectedLevelObjectCollisionCollidersCommand>();
+
+        On<TriggerExit2DEvent>()
+            .Do<AbortIfGameObjectIsNotLevelObjectCommand>()
+            .Do<LevelEditorRemoveColliderFromSelectedLevelObjectCollisionCollidersCommand>();
+
     }
 
 }

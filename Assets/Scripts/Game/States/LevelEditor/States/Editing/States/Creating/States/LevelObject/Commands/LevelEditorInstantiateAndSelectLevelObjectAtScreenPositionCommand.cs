@@ -14,17 +14,7 @@ public class LevelEditorInstantiateAndSelectLevelObjectAtScreenPositionCommand :
 
         GenerateableLevelObjectNode generateableLevelObjectNode = LevelEditorSelectedLevelObjectNodeStatus.LevelObjectNode;
 
-        GameObject prefab = generateableLevelObjectNode.Prefab;
-        View view = prefab.GetComponent<View>();
-
-        GameObject levelObjectGameObject;
-
-        if (view != null) {
-            levelObjectGameObject = context.InstantiateView(view).gameObject;
-            levelObjectGameObject.transform.position = worldPosition;
-        } else {
-            levelObjectGameObject = Object.Instantiate(generateableLevelObjectNode.Prefab, worldPosition, new Quaternion());
-        }
+        GameObject levelObjectGameObject = levelEditorLevelObjectsStatus.InstantiateLevelObject(generateableLevelObjectNode, worldPosition, context);
 
         LevelEditorSelectedLevelObjectStatus.LevelObject = levelObjectGameObject;
 

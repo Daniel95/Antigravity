@@ -1,5 +1,4 @@
 ﻿using IoCPlus;
-using UnityEngine;
 
 public class LevelEditorLevelObjectTransformContext : Context {
 
@@ -24,6 +23,28 @@ public class LevelEditorLevelObjectTransformContext : Context {
             .Do<AbortIfLevelEditorSelectedLevelObjectTransformTypeIsNotCommand>(LevelObjectTransformType.Rotate)
             .GotoState<LevelEditorLevelObjectRotateContext>();
 
+        /*
+        On<LevelEditorLevelObjectCollisionEnter2DEvent>()
+            .Do<AbortIfLevelEditorCollisionIsALevelObjectCommand>()
+            .Do<AbortIfLevelEditorSelectedLevelObjectCanNotCollideWithTilesCommand>()
+            .Do<LevelEditorResetSelectedLevelObjectTransformToPreviousTransformValuesCommand>()
+            .Dispatch<LevelEditorSelectedLevelObjectTransformWasResetEvent>();
+
+        On<LevelEditorLevelObjectCollisionEnter2DEvent>()
+            .Do<AbortIfLevelEditorCollisionIsNotALevelObjectCommand>()
+            .Do<AbortIfLevelEditorSelectedLevelObjectCanNotCollideWithLevelObjectsCommand>()
+            .Do<LevelEditorResetSelectedLevelObjectTransformToPreviousTransformValuesCommand>()
+            .Dispatch<LevelEditorSelectedLevelObjectTransformWasResetEvent>();
+
+        On<LevelEditorLevelObjectTriggerEnter2DEvent>()
+            .Do<AbortIfLevelEditorColliderIsNotALevelObjectCommand>()
+            .Do<AbortIfLevelEditorSelectedLevelObjectCanNotCollideWithLevelObjectsCommand>()
+            .Do<LevelEditorResetSelectedLevelObjectTransformToPreviousTransformValuesCommand>()
+            .Dispatch<LevelEditorSelectedLevelObjectTransformWasResetEvent>();
+
+      //  On<LevelEditorSelectedLevelObjectTransformWasResetEvent>()
+        //    .Do<LevelEditorResetSelectedLevelObjectStatusCommand>();
+    */
     }
 
 }
