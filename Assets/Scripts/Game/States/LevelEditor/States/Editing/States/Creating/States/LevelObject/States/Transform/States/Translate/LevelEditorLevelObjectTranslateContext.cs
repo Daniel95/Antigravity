@@ -23,7 +23,8 @@ public class LevelEditorLevelObjectTranslateContext : Context {
 
         On<LevelEditorSwipeStartOnWorldEvent>()
             .Do<LevelEditorSaveSelectedLevelObjectPreviousTransformValuesCommand>()
-            .Do<LevelEditorUpdateTranslateStartPositionStatusCommand>();
+            .Do<LevelEditorUpdateTranslateStartPositionStatusCommand>()
+            .Do<LevelEditorUpdateTranslateStartOffsetPositionCommand>();
 
         On<LevelEditorSwipeMovedOnWorldEvent>()
             .Do<AbortIfLevelEditorSelectedLevelObjectIsNullCommand>()
@@ -44,10 +45,6 @@ public class LevelEditorLevelObjectTranslateContext : Context {
         On<LevelEditorSwipeMovedOnWorldEvent>()
             .Do<AbortIfLevelEditorSelectedLevelObjectIsNullCommand>()
             .Do<LevelEditorSaveSelectedLevelObjectPreviousTransformValuesCommand>();
-
-        On<LevelEditorTranslateStartWorldPositionStatusUpdatedEvent>()
-            .Do<AbortIfLevelEditorSelectedLevelObjectIsNullCommand>()
-            .Do<LevelEditorUpdateTranslateStartOffsetPositionCommand>();
 
     }
 

@@ -1,19 +1,7 @@
-﻿using IoCPlus;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class LevelEditorTranslateStartPositionStatus : StatusView {
+public class LevelEditorTranslateStartPositionStatus {
 
-    [Inject] private static LevelEditorTranslateStartWorldPositionStatusUpdatedEvent translateStartWorldPositionUpdatedEvent;
-
-    public static Vector2 StartWorldPosition {
-        get { return startWorldPosition; }
-        set {
-            startWorldPosition = value;
-            translateStartWorldPositionUpdatedEvent.Dispatch();
-        }
-    }
-
-    private static Vector2 startWorldPosition;
-
+    public static Vector2 StartWorldPosition;
 
 }
