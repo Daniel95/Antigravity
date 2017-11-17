@@ -26,7 +26,7 @@ public class GenerateableTileLibrary : MonoBehaviour {
 
     public static bool IsTile(string tileInstanceName) {
         string levelObjectPrefabName = tileInstanceName.Replace("(Clone)", "");
-        bool isTile = GetInstance().generatableTiles.Exists(x => x.Prefab.name == levelObjectPrefabName);
+        bool isTile = GetInstance().generatableTiles.Exists(x => x.Prefab != null && x.Prefab.name == levelObjectPrefabName);
         return isTile;
     }
 

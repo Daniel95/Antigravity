@@ -1,7 +1,7 @@
 ﻿using IoCPlus;
 using UnityEngine;
 
-public class AbortIfGameObjectIsNotLevelObjectCommand : Command {
+public class AbortIfGameObjectIsNotALevelObjectCommand : Command {
 
     [InjectParameter] private GameObject gameObject;
 

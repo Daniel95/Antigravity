@@ -1,6 +1,6 @@
 ﻿using IoCPlus;
 
-public class AbortIfLevelEditorSelectedLevelObjectCanNotCollideWithLevelObjectsCommand : Command {
+public class AbortIfLevelEditorSelectedLevelObjectCannotCollideWithLevelObjectsCommand : Command {
 
     protected override void Execute() {
         GenerateableLevelObjectNode generateableLevelObjectNode = GenerateableLevelObjectLibrary.GetNode(LevelEditorSelectedLevelObjectStatus.LevelObject.name);

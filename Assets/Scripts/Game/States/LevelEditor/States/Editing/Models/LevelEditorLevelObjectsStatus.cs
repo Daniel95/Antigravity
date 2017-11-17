@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class LevelEditorLevelObjectsStatus {
 
-    [Inject] IContext context;
-
     public Dictionary<GameObject, LevelObjectType> LevelObjectTypesByGameObject = new Dictionary<GameObject, LevelObjectType>();
 
     public GameObject InstantiateLevelObject(GenerateableLevelObjectNode generateableLevelObjectNode, Vector2 position, IContext context) {
@@ -21,21 +19,10 @@ public class LevelEditorLevelObjectsStatus {
             levelObjectGameObject = Object.Instantiate(generateableLevelObjectNode.Prefab, position, new Quaternion());
         }
 
-        if (generateableLevelObjectNode.CanCollideWithLevelObjects) {
-            Rigidbody2D rigidBody = levelObjectGameObject.AddComponent<Rigidbody2D>();
-            rigidBody.isKinematic = true;
 
-            CollisionHitDetectionView collisionHitDetectionView = levelObjectGameObject.AddComponent<CollisionHitDetectionView>();
-            context.AddView(collisionHitDetectionView, false);
-
-            TriggerHitDetectionView triggerHitDetectionView = levelObjectGameObject.AddComponent<TriggerHitDetectionView>();
-            context.AddView(triggerHitDetectionView, false);
-        } else if(generateableLevelObjectNode.CanCollideWithLevelObjects) {
-            Rigidbody2D rigidBody = levelObjectGameObject.AddComponent<Rigidbody2D>();
-            rigidBody.isKinematic = true;
-
-            CollisionHitDetectionView collisionHitDetectionView = levelObjectGameObject.AddComponent<CollisionHitDetectionView>();
-            context.AddView(collisionHitDetectionView, false);
+        Collider2D levelObjectCollider = levelObjectGameObject.GetComponent<Collider2D>();
+        if(levelObjectCollider != null) {
+            levelObjectCollider.isTrigger = false;
         }
 
         return levelObjectGameObject;

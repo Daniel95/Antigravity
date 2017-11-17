@@ -1,5 +1,4 @@
 ﻿using IoCPlus;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class LevelEditorSelectedLevelObjectStatus : StatusView {
@@ -9,16 +8,18 @@ public class LevelEditorSelectedLevelObjectStatus : StatusView {
     public static GameObject LevelObject {
         get { return levelObject; }
         set {
+            previousLevelObject = levelObject;
             levelObject = value;
+            levelObjectCollider = levelObject.GetComponent<Collider2D>();
             selectedLevelObjectStatusUpdatedEvent.Dispatch();
         }
     }
 
-    public static Vector2 PreviousPosition;
-    public static Vector2 PreviousScale;
-    public static Quaternion PreviousRotation;
-    public static List<Collider2D> CollisionColliders = new List<Collider2D>();
+    public static Collider2D LevelObjectCollider { get { return levelObjectCollider; } }
+    public static GameObject PreviousLevelObject { get { return previousLevelObject; } }
 
     private static GameObject levelObject;
+    private static Collider2D levelObjectCollider;
+    private static GameObject previousLevelObject;
 
 }

@@ -17,6 +17,28 @@ public class LevelEditorLevelObjectTransformContext : Context {
             .Do<AbortIfLevelEditorSelectedLevelObjectTransformTypeIsNotCommand>(LevelObjectTransformType.Rotate)
             .GotoState<LevelEditorLevelObjectRotateContext>();
 
+        On<LevelEditorSelectedLevelObjectStatusUpdatedEvent>()
+            .Do<AbortIfLevelEditorPreviousSelectedLevelObjectIsNullCommand>()
+            .Do<LevelEditorRemoveRigidBodyFromPreviousSelectedLevelObjectCommand>()
+            .Do<LevelEditorRemoveCollisionHitDetectionViewFromPreviousSelectedLevelObjectCommand>();
+
+        On<LevelEditorSelectedLevelObjectStatusUpdatedEvent>()
+            .Do<WaitFramesCommand>(1)
+            .Do<LevelEditorAddRigidBodyToSelectedLevelObjectCommand>()
+            .Do<LevelEditorAddCollisionHitDetectionViewToSelectedLevelObjectCommand>();
+
+        On<LevelEditorLevelObjectCollisionEnter2DEvent>()
+            .Do<AbortIfLevelEditorSelectedLevelObjectCannotCollideWithLevelObjectsCommand>()
+            .Do<AbortIfGameObjectIsNotALevelObjectCommand>()
+            .Do<DebugLogMessageCommand>("Ignore levelObject")
+            .Do<LevelEditorSelectedLevelObjectIgnoreColliderOfCollisionCommand>();
+
+        On<LevelEditorLevelObjectCollisionEnter2DEvent>()
+            .Do<AbortIfLevelEditorSelectedLevelObjectCannotCollideWithTilesCommand>()
+            .Do<AbortIfGameObjectIsNotATileCommand>()
+            .Do<DebugLogMessageCommand>("Ignore tile")
+            .Do<LevelEditorSelectedLevelObjectIgnoreColliderOfCollisionCommand>();
+
     }
 
 }
