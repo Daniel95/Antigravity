@@ -30,15 +30,25 @@ public class LevelEditorLevelObjectTransformContext : Context {
             .Do<LevelEditorAddRigidBodyToSelectedLevelObjectCommand>()
             .Do<LevelEditorAddCollisionHitDetectionViewToSelectedLevelObjectCommand>();
 
-        On<LevelEditorLevelObjectCollisionEnter2DEvent>()
+        On<LevelEditorSelectedLevelObjectStatusUpdatedEvent>()
+            .Do<AbortIfLevelEditorSelectedLevelObjectIsNullCommand>()
             .Do<AbortIfLevelEditorSelectedLevelObjectCanCollideWithLevelObjectsCommand>()
-            .Do<AbortIfCollisionGameObjectIsNotALevelObjectCommand>()
-            .Do<LevelEditorSelectedLevelObjectIgnoreColliderOfCollisionCommand>();
+            .Do<IgnoreLayerCollisionCommand>(Layers.LevelEditorLevelObject, Layers.LevelEditorLevelObject, true);
 
-        On<LevelEditorLevelObjectCollisionEnter2DEvent>()
+        On<LevelEditorSelectedLevelObjectStatusUpdatedEvent>()
+            .Do<AbortIfLevelEditorSelectedLevelObjectIsNullCommand>()
+            .Do<AbortIfLevelEditorSelectedLevelObjectCannotCollideWithLevelObjectsCommand>()
+            .Do<IgnoreLayerCollisionCommand>(Layers.LevelEditorLevelObject, Layers.LevelEditorLevelObject, false);
+
+        On<LevelEditorSelectedLevelObjectStatusUpdatedEvent>()
+            .Do<AbortIfLevelEditorSelectedLevelObjectIsNullCommand>()
             .Do<AbortIfLevelEditorSelectedLevelObjectCanCollideWithTilesCommand>()
-            .Do<AbortIfCollisionGameObjectIsNotATileCommand>()
-            .Do<LevelEditorSelectedLevelObjectIgnoreColliderOfCollisionCommand>();
+            .Do<IgnoreLayerCollisionCommand>(Layers.LevelEditorLevelObject, Layers.LevelEditorTile, true);
+
+        On<LevelEditorSelectedLevelObjectStatusUpdatedEvent>()
+            .Do<AbortIfLevelEditorSelectedLevelObjectIsNullCommand>()
+            .Do<AbortIfLevelEditorSelectedLevelObjectCannotCollideWithTilesCommand>()
+            .Do<IgnoreLayerCollisionCommand>(Layers.LevelEditorLevelObject, Layers.LevelEditorTile, false);
 
     }
 

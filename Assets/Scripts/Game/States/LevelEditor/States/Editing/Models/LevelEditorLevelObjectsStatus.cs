@@ -19,11 +19,12 @@ public class LevelEditorLevelObjectsStatus {
             levelObjectGameObject = Object.Instantiate(generateableLevelObjectNode.Prefab, position, new Quaternion());
         }
 
-
         Collider2D levelObjectCollider = levelObjectGameObject.GetComponent<Collider2D>();
         if(levelObjectCollider != null) {
             levelObjectCollider.isTrigger = false;
         }
+
+        levelObjectGameObject.layer = LayerMask.NameToLayer(Layers.LevelEditorLevelObject);
 
         return levelObjectGameObject;
     }
