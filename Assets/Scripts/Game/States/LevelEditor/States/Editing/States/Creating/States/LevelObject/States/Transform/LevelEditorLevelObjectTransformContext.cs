@@ -19,24 +19,25 @@ public class LevelEditorLevelObjectTransformContext : Context {
 
         On<LevelEditorSelectedLevelObjectStatusUpdatedEvent>()
             .Do<AbortIfLevelEditorPreviousSelectedLevelObjectIsNullCommand>()
+            .Do<AbortIfLevelEditorSelectedLevelObjectIsPreviousSelectedLevelObjectCommand>()
             .Do<LevelEditorRemoveRigidBodyFromPreviousSelectedLevelObjectCommand>()
             .Do<LevelEditorRemoveCollisionHitDetectionViewFromPreviousSelectedLevelObjectCommand>();
 
         On<LevelEditorSelectedLevelObjectStatusUpdatedEvent>()
             .Do<WaitFramesCommand>(1)
+            .Do<AbortIfLevelEditorSelectedLevelObjectIsNullCommand>()
+            .Do<AbortIfLevelEditorSelectedLevelObjectIsPreviousSelectedLevelObjectCommand>()
             .Do<LevelEditorAddRigidBodyToSelectedLevelObjectCommand>()
             .Do<LevelEditorAddCollisionHitDetectionViewToSelectedLevelObjectCommand>();
 
         On<LevelEditorLevelObjectCollisionEnter2DEvent>()
-            .Do<AbortIfLevelEditorSelectedLevelObjectCannotCollideWithLevelObjectsCommand>()
-            .Do<AbortIfGameObjectIsNotALevelObjectCommand>()
-            .Do<DebugLogMessageCommand>("Ignore levelObject")
+            .Do<AbortIfLevelEditorSelectedLevelObjectCanCollideWithLevelObjectsCommand>()
+            .Do<AbortIfCollisionGameObjectIsNotALevelObjectCommand>()
             .Do<LevelEditorSelectedLevelObjectIgnoreColliderOfCollisionCommand>();
 
         On<LevelEditorLevelObjectCollisionEnter2DEvent>()
-            .Do<AbortIfLevelEditorSelectedLevelObjectCannotCollideWithTilesCommand>()
-            .Do<AbortIfGameObjectIsNotATileCommand>()
-            .Do<DebugLogMessageCommand>("Ignore tile")
+            .Do<AbortIfLevelEditorSelectedLevelObjectCanCollideWithTilesCommand>()
+            .Do<AbortIfCollisionGameObjectIsNotATileCommand>()
             .Do<LevelEditorSelectedLevelObjectIgnoreColliderOfCollisionCommand>();
 
     }

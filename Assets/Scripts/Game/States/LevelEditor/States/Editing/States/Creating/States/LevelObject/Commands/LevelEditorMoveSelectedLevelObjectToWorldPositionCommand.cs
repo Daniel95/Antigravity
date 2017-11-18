@@ -10,7 +10,9 @@ public class LevelEditorMoveSelectedLevelObjectToWorldPositionCommand : Command 
     protected override void Execute() {
         Vector2 worldPosition = levelEditorSwipeMovedOnWorldEventParameter.Position;
         Vector2 startOffset = levelObjectTranslateStartOffsetStatus.StartOffset;
-        LevelEditorSelectedLevelObjectStatus.LevelObject.transform.position = worldPosition + startOffset;
+
+        LevelEditorSelectedLevelObjectStatus.LevelObjectRigidBody.MovePosition(worldPosition + startOffset);
+        LevelEditorSelectedLevelObjectStatus.LevelObjectRigidBody.velocity = Vector2.zero;
     }
 
 }

@@ -53,6 +53,7 @@ public class LevelEditorLevelObjectContext : Context {
 
         On<LevelEditorSelectedLevelObjectStatusUpdatedEvent>()
             .Do<AbortIfLevelEditorSelectedLevelObjectIsNullCommand>()
+            .Do<LevelEditorUpdateSelectedLevelObjectColliderCommand>()
             .Do<LevelEditorUpdateSelectedLevelObjectNodeToSelectedLevelObjectStatusCommand>()
             .Do<LevelEditorUpdateSelectedLevelObjectTransformTypeToSelectedLevelObjectCommand>();
 
@@ -67,6 +68,7 @@ public class LevelEditorLevelObjectContext : Context {
             .Do<DestroyChildInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/LevelObject/DestroyLevelObjectButtonUI", CanvasLayer.UI);
 
         On<CollisionEnter2DEvent>()
+            .Do<AbortIfGameObjectIsNotSelectedLevelObjectCommand>()
             .Do<DispatchLevelEditorLevelObjectCollisionEnter2DEventCommand>();
 
     }
