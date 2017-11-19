@@ -5,7 +5,7 @@ public class LevelEditorUpdateSelectedLevelObjectTransformTypeStatusCommand : Co
     [InjectParameter] private LevelObjectTransformType levelEditorLevelObjectTransformType;
 
     protected override void Execute() {
-        LevelEditorSelectedLevelObjectTransformTypeStatus.LevelObjectTransformType = levelEditorLevelObjectTransformType;
+        LevelEditorSelectedLevelObjectTransformTypeStatus.TransformType = levelEditorLevelObjectTransformType;
     }
 
 }

@@ -1,9 +1,10 @@
 ﻿using IoCPlus;
 using UnityEngine;
 
-public class LevelEditorMoveSelectedLevelObjectToWorldPositionCommand : Command {
+public class LevelEditorTranslateSelectedLevelObjectCommand : Command {
 
     [Inject] private LevelEditorLevelObjectTranslateStartOffsetStatus levelObjectTranslateStartOffsetStatus;
+    [Inject(Label.SelectedLevelObject)] private Ref<ILevelObject> selectedLevelObjectRef;
 
     [InjectParameter] private LevelEditorSwipeMovedOnWorldEvent.Parameter levelEditorSwipeMovedOnWorldEventParameter;
 
@@ -11,8 +12,8 @@ public class LevelEditorMoveSelectedLevelObjectToWorldPositionCommand : Command 
         Vector2 worldPosition = levelEditorSwipeMovedOnWorldEventParameter.Position;
         Vector2 startOffset = levelObjectTranslateStartOffsetStatus.StartOffset;
 
-        LevelEditorSelectedLevelObjectStatus.LevelObjectRigidBody.MovePosition(worldPosition + startOffset);
-        LevelEditorSelectedLevelObjectStatus.LevelObjectRigidBody.velocity = Vector2.zero;
+        selectedLevelObjectRef.Get().Translate(worldPosition + startOffset);
+
     }
 
 }

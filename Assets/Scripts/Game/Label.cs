@@ -1,4 +1,8 @@
 ﻿public enum Label {
+
     Player,
-    HookProjectile
+    HookProjectile,
+    SelectedLevelObject,
+    PreviousSelectedLevelObject,
+
 }

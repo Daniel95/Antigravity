@@ -1,7 +1,7 @@
 ﻿using IoCPlus;
 using UnityEngine;
 
-public class LevelObjectZoneView : View, ILevelObjectZone {
+public class LevelObjectZoneView : LevelObjectView, ILevelObjectZone {
 
     [Inject] private Refs<ILevelObjectZone> levelObjectZoneRefs;
 
@@ -41,6 +41,10 @@ public class LevelObjectZoneView : View, ILevelObjectZone {
         editorStandardColor = overlapColor;
         editorStandardColor.a = standardColorEditorAlpha;
         inGamestandardColor = material.GetColor(STANDARD_COLOR_PROPERTY_NAME);
+    }
+
+    public override void Scale(Vector2 change) {
+        
     }
 
 }

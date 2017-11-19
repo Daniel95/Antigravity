@@ -78,7 +78,7 @@ public class GameContext : Context {
         Bind<LevelEditorLevelObjectDeleteButtonClickedEvent>();
         Bind<LevelEditorSelectedLevelObjectSectionStatusUpdatedEvent>();
         Bind<LevelEditorSelectedLevelObjectTransformTypeStatusUpdatedEvent>();
-        Bind<LevelEditorSelectedLevelObjectStatusUpdatedEvent>();
+        Bind<LevelEditorNewLevelObjectSelectedEvent>();
         Bind<LevelEditorGridSnapSizeStatusUpdatedEvent>();
         Bind<LevelEditorTouchDownOnLevelObjectEvent>();
         Bind<LevelEditorLevelObjectCollisionEnter2DEvent>();
@@ -170,6 +170,9 @@ public class GameContext : Context {
 
         BindLabeled<Ref<ITriggerHitDetection>>(Label.HookProjectile);
         BindLabeled<Ref<IMoveTowards>>(Label.HookProjectile);
+
+        BindLabeled<Ref<ILevelObject>>(Label.SelectedLevelObject);
+        BindLabeled<Ref<ILevelObject>>(Label.PreviousSelectedLevelObject);
 
         Bind<IGameStateService, LocalGameStateService>();
 

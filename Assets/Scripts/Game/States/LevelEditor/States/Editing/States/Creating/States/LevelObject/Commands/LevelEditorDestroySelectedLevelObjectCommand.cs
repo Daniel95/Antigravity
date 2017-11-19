@@ -3,12 +3,12 @@ using UnityEngine;
 
 public class LevelEditorDestroySelectedLevelObjectCommand : Command {
 
+    [Inject(Label.SelectedLevelObject)] private Ref<ILevelObject> selectedLevelObjectRef;
+
     [Inject] private LevelEditorLevelObjectsStatus levelEditorLevelObjectsStatus;
 
     protected override void Execute() {
-        GameObject levelObject = LevelEditorSelectedLevelObjectStatus.LevelObject;
-        levelEditorLevelObjectsStatus.DestroyLevelObject(levelObject);
-        LevelEditorSelectedLevelObjectStatus.LevelObject = null;
+        levelEditorLevelObjectsStatus.DestroyLevelObject(selectedLevelObjectRef.Get().GameObject);
     }
 
 }

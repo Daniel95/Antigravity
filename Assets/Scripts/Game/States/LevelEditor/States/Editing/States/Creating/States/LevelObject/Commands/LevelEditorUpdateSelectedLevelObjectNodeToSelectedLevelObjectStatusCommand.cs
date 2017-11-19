@@ -3,9 +3,11 @@ using UnityEngine;
 
 public class LevelEditorUpdateSelectedLevelObjectNodeToSelectedLevelObjectStatusCommand : Command {
 
+    [Inject(Label.SelectedLevelObject)] private Ref<ILevelObject> selectedLevelObjectRef;
+
     protected override void Execute() {
-        GameObject levelObject = LevelEditorSelectedLevelObjectStatus.LevelObject;
-        LevelEditorSelectedLevelObjectNodeStatus.LevelObjectNode = GenerateableLevelObjectLibrary.GetNode(levelObject.name);
+        GameObject selectedLevelObject = selectedLevelObjectRef.Get().GameObject;
+        LevelEditorSelectedLevelObjectNodeStatus.LevelObjectNode = GenerateableLevelObjectLibrary.GetNode(selectedLevelObject.name);
     }
 
 

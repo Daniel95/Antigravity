@@ -4,7 +4,6 @@ using UnityEngine;
 public class LevelEditorInstantiateAndSelectLevelObjectAtScreenPositionCommand : Command {
 
     [Inject] IContext context;
-
     [Inject] private LevelEditorLevelObjectsStatus levelEditorLevelObjectsStatus;
 
     [InjectParameter] private Vector2 screenPosition;
@@ -16,7 +15,8 @@ public class LevelEditorInstantiateAndSelectLevelObjectAtScreenPositionCommand :
 
         GameObject levelObjectGameObject = levelEditorLevelObjectsStatus.InstantiateLevelObject(generateableLevelObjectNode, worldPosition, context);
 
-        LevelEditorSelectedLevelObjectStatus.LevelObject = levelObjectGameObject;
+        ILevelObject levelObject = levelObjectGameObject.GetComponent<ILevelObject>();
+        levelObject.Select();
 
         LevelObjectType levelObjectType = LevelEditorSelectedLevelObjectNodeStatus.LevelObjectNode.LevelObjectType;
         levelEditorLevelObjectsStatus.LevelObjectTypesByGameObject.Add(levelObjectGameObject, levelObjectType);

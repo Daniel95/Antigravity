@@ -2,8 +2,10 @@
 
 public class AbortIfLevelEditorSelectedLevelObjectIsNotNullCommand : Command {
 
+    [Inject(Label.SelectedLevelObject)] private Ref<ILevelObject> selectedLevelObjectRef;
+
     protected override void Execute() {
-        if(LevelEditorSelectedLevelObjectStatus.LevelObject != null) {
+        if(selectedLevelObjectRef.Get() != null) {
             Abort();
         }
     }

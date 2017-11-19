@@ -1,10 +1,11 @@
 ﻿using IoCPlus;
+using UnityEngine;
 
 public class LevelEditorSelectedLevelObjectTransformTypeStatus : StatusView {
 
     [Inject] private static LevelEditorSelectedLevelObjectTransformTypeStatusUpdatedEvent selectedLevelObjectTransformTypeStatusUpdatedEvent;
 
-    public static LevelObjectTransformType LevelObjectTransformType {
+    public static LevelObjectTransformType? TransformType {
         get {
             return levelObjectTransformType;
         }
@@ -14,6 +15,6 @@ public class LevelEditorSelectedLevelObjectTransformTypeStatus : StatusView {
         }
     }
 
-    private static LevelObjectTransformType levelObjectTransformType;
+    private static LevelObjectTransformType? levelObjectTransformType;
 
 }

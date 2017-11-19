@@ -10,7 +10,8 @@ public class LevelEditorUpdateSelectedLevelObjectStatusCommand : Command {
         foreach (Transform transform in transforms) {
             bool isLevelObject = GenerateableLevelObjectLibrary.IsLevelObject(transform.name);
             if (isLevelObject) {
-                LevelEditorSelectedLevelObjectStatus.LevelObject = transform.gameObject;
+                ILevelObject levelObject = transform.GetComponent<ILevelObject>();
+                levelObject.Select();
                 return;
             }
         }

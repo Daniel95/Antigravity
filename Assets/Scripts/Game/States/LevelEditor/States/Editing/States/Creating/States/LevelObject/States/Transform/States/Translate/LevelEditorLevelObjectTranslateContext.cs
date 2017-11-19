@@ -26,7 +26,7 @@ public class LevelEditorLevelObjectTranslateContext : Context {
             .Do<LevelEditorUpdateTranslateStartOffsetPositionCommand>();
 
         On<LevelEditorSwipeMovedOnWorldEvent>()
-            .Do<LevelEditorMoveSelectedLevelObjectToWorldPositionCommand>();
+            .Do<LevelEditorTranslateSelectedLevelObjectCommand>();
 
     }
 

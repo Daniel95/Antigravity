@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class LevelEditorLevelObjectScaleCommand : Command {
 
+    [Inject(Label.SelectedLevelObject)] private Ref<ILevelObject> selectedLevelObjectRef;
+
     [InjectParameter] private LevelEditorSwipeMovedOnWorldEvent.Parameter levelEditorSwipeMovedOnWorldEventParameter;
 
     protected override void Execute() {
@@ -14,7 +16,7 @@ public class LevelEditorLevelObjectScaleCommand : Command {
         Vector2 worldDelta = currentWorldPosition - previousWorldPosition;
         float distance = worldDelta.sqrMagnitude;
 
-        Vector2 offsetToSelectedLevelObject = levelEditorSwipeMovedOnWorldEventParameter.Position - (Vector2)LevelEditorSelectedLevelObjectStatus.LevelObject.transform.position;
+        Vector2 offsetToSelectedLevelObject = levelEditorSwipeMovedOnWorldEventParameter.Position - (Vector2)selectedLevelObjectRef.Get().GameObject.transform.position;
         Vector2 directionToSelectedLevelObject = offsetToSelectedLevelObject.normalized;
         Vector2 direction = VectorHelper.Abs(directionToSelectedLevelObject);
 
@@ -32,7 +34,7 @@ public class LevelEditorLevelObjectScaleCommand : Command {
         Debug.Log("distance " + distance);
         Debug.Log("scale " + scale);
 
-        LevelEditorSelectedLevelObjectStatus.LevelObject.transform.localScale += scale;
+        selectedLevelObjectRef.Get().Scale(scale);
     }
 
 }
