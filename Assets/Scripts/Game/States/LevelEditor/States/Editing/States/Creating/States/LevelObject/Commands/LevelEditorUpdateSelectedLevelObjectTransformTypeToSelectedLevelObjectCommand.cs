@@ -5,8 +5,12 @@ public class LevelEditorUpdateSelectedLevelObjectTransformTypeToSelectedLevelObj
 
     protected override void Execute() {
         GameObject levelObject = LevelEditorSelectedLevelObjectStatus.LevelObject;
-        LevelObjectTransformType levelObjectTransformType = GenerateableLevelObjectLibrary.GetNode(levelObject.name).GetDefaultLevelObjectInputType();
-        LevelEditorSelectedLevelObjectTransformTypeStatus.LevelObjectTransformType = levelObjectTransformType;
+        GenerateableLevelObjectNode generateableLevelObjectNode = GenerateableLevelObjectLibrary.GetNode(levelObject.name);
+        bool selectedLevelObjectContainsCurrentTransformType = generateableLevelObjectNode.TransformTypes.Contains(LevelEditorSelectedLevelObjectTransformTypeStatus.LevelObjectTransformType);
+        if (!selectedLevelObjectContainsCurrentTransformType) {
+            LevelObjectTransformType defaultTransformType = generateableLevelObjectNode.GetDefaultLevelObjectInputType();
+            LevelEditorSelectedLevelObjectTransformTypeStatus.LevelObjectTransformType = defaultTransformType;
+        } 
     }
 
 }

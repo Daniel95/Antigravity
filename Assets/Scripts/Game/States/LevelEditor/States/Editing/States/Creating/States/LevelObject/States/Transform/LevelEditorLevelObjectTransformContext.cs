@@ -5,6 +5,9 @@ public class LevelEditorLevelObjectTransformContext : Context {
     protected override void SetBindings() {
         base.SetBindings();
 
+        On<LevelEditorLevelObjectTransformTypeButtonClickedEvent>()
+            .Do<LevelEditorUpdateSelectedLevelObjectTransformTypeStatusCommand>();
+
         On<LevelEditorSelectedLevelObjectTransformTypeStatusUpdatedEvent>()
             .Do<AbortIfLevelEditorSelectedLevelObjectTransformTypeIsNotCommand>(LevelObjectTransformType.Translate)
             .GotoState<LevelEditorLevelObjectTranslateContext>();

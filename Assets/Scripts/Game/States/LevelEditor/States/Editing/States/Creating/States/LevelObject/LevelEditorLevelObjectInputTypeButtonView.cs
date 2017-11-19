@@ -14,7 +14,6 @@ public class LevelEditorLevelObjectInputTypeButtonView : View {
     public override void Initialize() {
         base.Initialize();
         button.onClick.AddListener(OnClick);
-
     }
 
     public override void Dispose() {
