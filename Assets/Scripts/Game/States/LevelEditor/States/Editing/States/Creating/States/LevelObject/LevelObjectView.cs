@@ -54,6 +54,7 @@ public class LevelObjectView : View, ILevelObject {
     public void Unselect() {
         previousSelectedLevelObjectRef.Set(this);
         selectedLevelObjectRef.Set(null);
+        selectedLevelObjectStatusUpdatedEvent.Dispatch(this);
         RemoveRigidBody();
         RemoveCollisionHitDetectionView();
     }
