@@ -64,7 +64,7 @@ public class LevelEditorCreatingContext : Context {
             .GotoState<LevelEditorLevelObjectContext>();
 
         On<LevelEditorTouchDownOnLevelObjectEvent>()
-            .Do<LevelEditorUpdateSelectedLevelObjectStatusCommand>();
+            .Do<LevelEditorUpdateSelectedLevelObjectCommand>();
 
         On<LevelEditorTouchStartOnGridPositionEvent>()
             .Do<AbortIfMousePositionIsOverLevelObjectCommand>()

@@ -14,6 +14,7 @@ public class LevelObjectZoneView : LevelObjectView, ILevelObjectZone {
     private Color overlapColor;
     private Color editorStandardColor;
     private Color inGamestandardColor;
+    private SpriteRenderer spriteRenderer;
 
     public override void Initialize() {
         base.Initialize();
@@ -36,15 +37,14 @@ public class LevelObjectZoneView : LevelObjectView, ILevelObjectZone {
     }
 
     private void Awake() {
+        spriteRenderer = GetComponent<SpriteRenderer>();
+
         material = GetComponent<Renderer>().material;
+
         overlapColor = material.GetColor(OVERLAP_COLOR_PROPERTY_NAME);
         editorStandardColor = overlapColor;
         editorStandardColor.a = standardColorEditorAlpha;
         inGamestandardColor = material.GetColor(STANDARD_COLOR_PROPERTY_NAME);
-    }
-
-    public override void Scale(Vector2 change) {
-        
     }
 
 }
