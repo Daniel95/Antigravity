@@ -6,8 +6,8 @@ public class LevelEditorUpdateSelectedLevelObjectTransformTypeToSelectedLevelObj
     [Inject(Label.SelectedLevelObject)] private Ref<ILevelObject> selectedLevelObjectRef;
 
     protected override void Execute() {
-        GameObject levelObject = selectedLevelObjectRef.Get().GameObject;
-        GenerateableLevelObjectNode generateableLevelObjectNode = GenerateableLevelObjectLibrary.GetNode(levelObject.name);
+        LevelObjectType levelObjectType = selectedLevelObjectRef.Get().LevelObjectType;
+        GenerateableLevelObjectNode generateableLevelObjectNode = GenerateableLevelObjectLibrary.GetNode(levelObjectType);
 
         if (LevelEditorSelectedLevelObjectTransformTypeStatus.TransformType == null) {
             UpdateTransformTypeToLevelObjectDefault(generateableLevelObjectNode);

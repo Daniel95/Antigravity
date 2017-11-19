@@ -19,8 +19,11 @@ public class LevelEditorLevelObjectContext : Context {
             .Do<RemoveStatusViewFromStatusViewContainerCommand<LevelEditorSelectedLevelObjectTransformTypeStatus>>()
             .Do<DestroyChildInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/LevelObject/GoToTileStateButtonUI", CanvasLayer.UI)
             .Do<DestroyChildInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/LevelObject/LevelObjectButtonGridLayoutGroupUI", CanvasLayer.UI)
-            .Do<LevelEditorUnselectSelectedLevelObjectCommand>()
             .Do<LevelEditorEnableLevelObjectZonesStandardColorEditorAlphaCommand>(false);
+
+        On<LeaveContextSignal>()
+            .Do<AbortIfLevelEditorSelectedLevelObjectIsNullCommand>()
+            .Do<LevelEditorUnselectSelectedLevelObjectCommand>();
 
         On<TouchUpEvent>()
             .Do<LevelEditorSetReleasedSinceLevelObjectSpawnStatusCommand>(true);

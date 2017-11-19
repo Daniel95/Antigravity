@@ -5,8 +5,6 @@ using UnityEngine;
 
 public class LevelEditorLoadLevelSaveDataCommand : Command {
 
-    [Inject] private LevelEditorStatus levelEditorStatus;
-    [Inject] private LevelEditorLevelObjectsStatus levelObjectsStatus;
     [Inject] private LevelContainerTransformStatus levelContainerStatus;
     [Inject] private LevelNameStatus levelNameStatus;
 
@@ -40,10 +38,6 @@ public class LevelEditorLoadLevelSaveDataCommand : Command {
 
             GameObject levelObjectGameObject = Object.Instantiate(prefab, position, new Quaternion(), levelContainerStatus.LevelContainer);
             levelObjectGameObject.transform.localScale = levelObjectSaveData.Size;
-
-            if(levelEditorStatus.Active) {
-                levelObjectsStatus.LevelObjectTypesByGameObject.Add(levelObjectGameObject, levelObjectType);
-            }
         }
     }
 

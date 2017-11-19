@@ -2,10 +2,12 @@
 
 public class LevelEditorClearLevelObjectsCommand : Command {
 
-    [Inject] private LevelEditorLevelObjectsStatus levelObjectsStatus;
+    [Inject] private Refs<ILevelObject> levelObjectRefs;
 
     protected override void Execute() {
-        levelObjectsStatus.DestroyAllLevelObjects();
+        foreach (ILevelObject levelObject in levelObjectRefs) {
+            levelObject.DestroyLevelObject();
+        }
     }
 
 }

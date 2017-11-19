@@ -6,8 +6,8 @@ public class LevelEditorUpdateSelectedLevelObjectNodeToSelectedLevelObjectStatus
     [Inject(Label.SelectedLevelObject)] private Ref<ILevelObject> selectedLevelObjectRef;
 
     protected override void Execute() {
-        GameObject selectedLevelObject = selectedLevelObjectRef.Get().GameObject;
-        LevelEditorSelectedLevelObjectNodeStatus.LevelObjectNode = GenerateableLevelObjectLibrary.GetNode(selectedLevelObject.name);
+        LevelObjectType levelObjectType = selectedLevelObjectRef.Get().LevelObjectType;
+        LevelEditorSelectedLevelObjectNodeStatus.LevelObjectNode = GenerateableLevelObjectLibrary.GetNode(levelObjectType);
     }
 
 

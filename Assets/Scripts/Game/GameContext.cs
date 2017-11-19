@@ -151,6 +151,7 @@ public class GameContext : Context {
         Bind<Ref<ILevelEditorLevelObjectButtonGridLayoutGroup>>();
 
         Bind<Refs<ICheckpoint>>();
+        Bind<Refs<ILevelObject>>();
         Bind<Refs<ILevelObjectZone>>();
 
         BindLabeled<Ref<ICharacterDirectionPointer>>(Label.Player);
@@ -192,10 +193,8 @@ public class GameContext : Context {
         Bind<LevelEditorReleasedSinceLevelObjectSpawnStatus>();
         Bind<LevelEditorLevelObjectTranslateStartOffsetStatus>();
         Bind<LevelContainerTransformStatus>();
-        Bind<LevelEditorLevelObjectsStatus>();
         Bind<LevelEditorSelectedLevelObjectNodeStatus>();
         Bind<LevelEditorTranslateStartPositionStatus>();
-        Bind<LevelEditorStatus>();
 
         On<EnterContextSignal>()
             .InstantiateView<ApplicationView>()

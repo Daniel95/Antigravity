@@ -6,19 +6,41 @@ public class LevelObjectView : View, ILevelObject {
     public Rigidbody2D Rigidbody { get { return rigidbody; } }
     public GameObject GameObject { get { return gameObject; } }
     public Collider2D Collider { get { return collider; } }
+    public LevelObjectType LevelObjectType { get { return levelObjectType; } set { levelObjectType = value; } }
 
     [Inject] IContext context;
     [Inject(Label.SelectedLevelObject)] private Ref<ILevelObject> selectedLevelObjectRef;
     [Inject(Label.PreviousSelectedLevelObject)] private Ref<ILevelObject> previousSelectedLevelObjectRef;
+    [Inject] private Refs<ILevelObject> levelObjectRefs;
 
     [Inject] private LevelEditorNewLevelObjectSelectedEvent selectedLevelObjectStatusUpdatedEvent;
 
     private new Rigidbody2D rigidbody;
     private new Collider2D collider;
+    private LevelObjectType levelObjectType;
+
+    public override void Initialize() {
+        base.Initialize();
+        levelObjectRefs.Add(this);
+    }
+
+    public override void Dispose() {
+        base.Dispose();
+        levelObjectRefs.Remove(this);
+    }
+
+    public void DestroyLevelObject() {
+        bool isSelected = this == (Object)selectedLevelObjectRef.Get();
+        selectedLevelObjectRef.Set(null);
+        if (isSelected) {
+            selectedLevelObjectStatusUpdatedEvent.Dispatch(this);
+        }
+        Destroy();
+    }
 
     public void Select() {
         if(this == (Object)selectedLevelObjectRef.Get()) { return; }
-        if(selectedLevelObjectRef.Get() != null) {
+        if ((Object)selectedLevelObjectRef.Get() != null) {
             selectedLevelObjectRef.Get().Unselect();
         }
 
@@ -38,7 +60,6 @@ public class LevelObjectView : View, ILevelObject {
 
     public virtual void Translate(Vector2 destination) {
         rigidbody.MovePosition(destination);
-        rigidbody.velocity = Vector2.zero;
     }
 
     public virtual void Scale(Vector2 change) {
@@ -55,6 +76,7 @@ public class LevelObjectView : View, ILevelObject {
         rigidbody.interpolation = RigidbodyInterpolation2D.Interpolate;
         rigidbody.constraints = RigidbodyConstraints2D.FreezeRotation;
         rigidbody.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
+        rigidbody.drag = int.MaxValue;
     }
 
     private void RemoveRigidBody() {

@@ -4,26 +4,27 @@ using UnityEngine;
 
 public class LevelEditorDestroyCollisionWithGridLevelObjectsInSelectionFieldCommand : Command {
 
-    [Inject] private LevelEditorLevelObjectsStatus levelEditorLevelObjectsStatus;
+    [Inject] private Refs<ILevelObject> levelObjectRefs;
 
     protected override void Execute() {
         Vector2 selectionFieldStartPosition = LevelEditorSelectionFieldStatusView.SelectionFieldStartGridPosition;
         Vector2 selectionFieldEndPosition = LevelEditorSelectionFieldStatusView.SelectionFieldEndGridPosition;
 
-        List<GameObject> levelObjectsToRemove = new List<GameObject>();
-        foreach (KeyValuePair<GameObject, LevelObjectType> levelObjectTypeByGameObject in levelEditorLevelObjectsStatus.LevelObjectTypesByGameObject) {
-            if (!GenerateableLevelObjectLibrary.GetNode(levelObjectTypeByGameObject.Value).CanCollideWithTiles) { continue; }
+        List<ILevelObject> levelObjectsToRemove = new List<ILevelObject>();
+        foreach (ILevelObject levelObject in levelObjectRefs) {
+            GenerateableLevelObjectNode generateableLevelObjectNode = GenerateableLevelObjectLibrary.GetNode(levelObject.LevelObjectType);
+            if (!generateableLevelObjectNode.CanCollideWithTiles) { continue; }
 
-            GameObject levelObject = levelObjectTypeByGameObject.Key;
-            Vector2 levelObjectGridPosition = LevelEditorGridHelper.WorldToGridPosition(levelObject.transform.position);
+            GameObject levelObjectGameObject = levelObject.GameObject;
+            Vector2 levelObjectGridPosition = LevelEditorGridHelper.WorldToGridPosition(levelObjectGameObject.transform.position);
 
             if (!levelObjectGridPosition.IsBetweenVectors(selectionFieldStartPosition, selectionFieldEndPosition)) { continue; }
 
             levelObjectsToRemove.Add(levelObject);
         }
 
-        foreach (GameObject levelObject in levelObjectsToRemove) {
-            levelEditorLevelObjectsStatus.DestroyLevelObject(levelObject);
+        foreach (ILevelObject levelObject in levelObjectsToRemove) {
+            levelObject.DestroyLevelObject();
         }
     }
 

@@ -9,7 +9,6 @@ public class LevelEditorTestingContext : Context {
 
         On<EnterContextSignal>()
             .Do<InstantiateViewInCanvasLayerCommand>("UI/LevelEditor/Testing/GoToLevelEditorLevelSelectStateButtonUI", CanvasLayer.UI)
-            .Do<LevelEditorSetLevelEditorStatusCommand>(false)
             .Do<UpdateDeserializedLevelSaveDataCommand>()
             .Do<InstantiateLevelContainerCommand>()
             .Do<SpawnCombinedStandardTilesCommand>()
@@ -18,7 +17,6 @@ public class LevelEditorTestingContext : Context {
             .GotoState<LevelContext>();
 
         On<LeaveContextSignal>()
-            .Do<LevelEditorSetLevelEditorStatusCommand>(true)
             .Do<LevelEditorClearGridCommand>()
             .Do<LevelEditorClearLevelNameStatusCommand>()
             .Do<DestroyLevelContainerCommand>()

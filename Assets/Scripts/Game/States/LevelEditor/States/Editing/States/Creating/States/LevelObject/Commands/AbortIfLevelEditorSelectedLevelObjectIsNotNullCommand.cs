@@ -1,11 +1,12 @@
 ﻿using IoCPlus;
+using UnityEngine;
 
 public class AbortIfLevelEditorSelectedLevelObjectIsNotNullCommand : Command {
 
     [Inject(Label.SelectedLevelObject)] private Ref<ILevelObject> selectedLevelObjectRef;
 
     protected override void Execute() {
-        if(selectedLevelObjectRef.Get() != null) {
+        if ((Object)selectedLevelObjectRef.Get() != null) {
             Abort();
         }
     }

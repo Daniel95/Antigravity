@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class LevelEditorSaveLevelSaveDataCommand : Command {
 
-    [Inject] private LevelEditorLevelObjectsStatus levelObjectsStatus;
+    [Inject] private Refs<ILevelObject> levelObjectRefs;
 
     [Inject] private LevelNameStatus levelNameStatus;
 
@@ -62,13 +62,12 @@ public class LevelEditorSaveLevelSaveDataCommand : Command {
     private List<LevelObjectSaveData> ExtractLevelObjectsSaveData() {
         List<LevelObjectSaveData> levelObjectSaveDatas = new List<LevelObjectSaveData>();
 
-        Dictionary<GameObject, LevelObjectType> levelObjectsByGameObject = levelObjectsStatus.LevelObjectTypesByGameObject;
-        foreach (KeyValuePair<GameObject, LevelObjectType> levelObjectTypeByGameObject in levelObjectsByGameObject) {
-            Transform levelObjectTransform = levelObjectTypeByGameObject.Key.transform;
+        foreach (ILevelObject levelObject in levelObjectRefs) {
             LevelObjectSaveData levelObjectSaveData = new LevelObjectSaveData {
-                Position = levelObjectTransform.position,
-                Size = levelObjectTransform.localScale,
-                LevelObjectType = levelObjectTypeByGameObject.Value,
+                Position = levelObject.GameObject.transform.position,
+                Size = levelObject.GameObject.transform.localScale,
+                Rotation = levelObject.GameObject.transform.rotation,
+                LevelObjectType = levelObject.LevelObjectType,
             };
             levelObjectSaveDatas.Add(levelObjectSaveData);
         }

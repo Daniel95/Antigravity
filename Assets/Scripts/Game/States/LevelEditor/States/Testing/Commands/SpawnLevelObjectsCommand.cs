@@ -6,8 +6,6 @@ public class SpawnLevelObjectsCommand : Command {
 
     [Inject] private DeserializedLevelSaveDataStatus deserializedLevelSaveDataStatus;
     [Inject] private LevelContainerTransformStatus levelContainerStatus;
-    [Inject] private LevelEditorStatus levelEditorStatus;
-    [Inject] private LevelEditorLevelObjectsStatus levelObjectsStatus;
 
     protected override void Execute() {
         LevelSaveData levelSaveData = deserializedLevelSaveDataStatus.LevelSaveData;
@@ -25,10 +23,6 @@ public class SpawnLevelObjectsCommand : Command {
 
             GameObject levelObjectGameObject = Object.Instantiate(prefab, position, new Quaternion(), levelContainerStatus.LevelContainer);
             levelObjectGameObject.transform.localScale = levelObjectSaveData.Size;
-
-            if (levelEditorStatus.Active) {
-                levelObjectsStatus.LevelObjectTypesByGameObject.Add(levelObjectGameObject, levelObjectType);
-            }
         }
     }
 }

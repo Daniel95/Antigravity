@@ -5,7 +5,8 @@ public class AbortIfLevelEditorSelectedLevelObjectCannotCollideWithTilesCommand 
     [Inject(Label.SelectedLevelObject)] private Ref<ILevelObject> selectedLevelObjectRef;
 
     protected override void Execute() {
-        GenerateableLevelObjectNode generateableLevelObjectNode = GenerateableLevelObjectLibrary.GetNode(selectedLevelObjectRef.Get().GameObject.name);
+        LevelObjectType levelObjectType = selectedLevelObjectRef.Get().LevelObjectType;
+        GenerateableLevelObjectNode generateableLevelObjectNode = GenerateableLevelObjectLibrary.GetNode(levelObjectType);
         if (!generateableLevelObjectNode.CanCollideWithTiles) {
             Abort();
         }
