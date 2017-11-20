@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class LevelEditorLoadLevelSaveDataCommand : Command {
 
+    [Inject] private IContext context;
+
     [Inject] private LevelContainerTransformStatus levelContainerStatus;
     [Inject] private LevelNameStatus levelNameStatus;
 
@@ -33,11 +35,11 @@ public class LevelEditorLoadLevelSaveDataCommand : Command {
         foreach (LevelObjectSaveData levelObjectSaveData in levelObjectsSaveData) {
             LevelObjectType levelObjectType = levelObjectSaveData.LevelObjectType;
             GenerateableLevelObjectNode levelEditorLevelObjectEditorNode = GenerateableLevelObjectLibrary.GetNode(levelObjectType);
-            GameObject prefab = levelEditorLevelObjectEditorNode.Prefab;
             Vector2 position = levelObjectSaveData.Position;
 
-            GameObject levelObjectGameObject = Object.Instantiate(prefab, position, new Quaternion(), levelContainerStatus.LevelContainer);
-            levelObjectGameObject.transform.localScale = levelObjectSaveData.Size;
+            GameObject levelObject = LevelObjectHelper.InstantiateLevelObject(levelEditorLevelObjectEditorNode, position, context);
+            levelObject.transform.localScale = levelObjectSaveData.Size;
+            levelObject.transform.rotation = levelObjectSaveData.Rotation;
         }
     }
 

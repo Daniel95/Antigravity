@@ -5,7 +5,5 @@
     Checkpoint,
     KillZone,
     BounceZone,
-    HookZone,
-    PullZone,
 
 }
