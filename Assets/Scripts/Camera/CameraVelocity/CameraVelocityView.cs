@@ -78,7 +78,7 @@ public class CameraVelocityView : View, ICameraVelocity {
 
         while (moveVelocity != Vector2.zero) {
             moveVelocity /= mass;
-            Vector2 orthographicSizeRelativeMoveVelocity = moveVelocity * (1 + camera.OrthographicSizeRatio);
+            Vector2 orthographicSizeRelativeMoveVelocity = moveVelocity * camera.OrthographicSizeRatio;
             Vector2 nextPosition = (Vector2)transform.localPosition + orthographicSizeRelativeMoveVelocity;
             if(camera.CameraBounds != null) {
                 nextPosition = camera.CameraBounds.GetClampedBoundsPosition(nextPosition);

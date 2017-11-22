@@ -19,6 +19,7 @@ public class CameraView : View, ICamera {
     [Inject] private Ref<ICamera> cameraRef;
 
     private CameraBounds cameraBounds;
+    private float defaultOrthographicSize;
 
     public override void Initialize() {
         cameraRef.Set(this);
@@ -44,13 +45,12 @@ public class CameraView : View, ICamera {
     }
 
     private float GetOrthographicSizeRatio() {
-        float orthographicSizeMinMaxOffset = Mathf.Abs(maxOrthographicSize - minOrthographicSize);
-        float orthographicSizeRatio = (OrthographicSize - minOrthographicSize) / orthographicSizeMinMaxOffset;
-        return orthographicSizeRatio;
+        return OrthographicSize / defaultOrthographicSize;
     }
 
     private void Awake() {
         ResetOrthographicSizeToSystemDefault();
+        defaultOrthographicSize = OrthographicSize;
     }
 
 }
