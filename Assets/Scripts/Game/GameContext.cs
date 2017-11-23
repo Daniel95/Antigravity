@@ -81,9 +81,9 @@ public class GameContext : Context {
         Bind<LevelEditorNewLevelObjectSelectedEvent>();
         Bind<LevelEditorGridSnapSizeStatusUpdatedEvent>();
         Bind<LevelEditorTouchDownOnLevelObjectEvent>();
+        Bind<LevelEditorTouchDownOnTileEvent>();
         Bind<LevelEditorLevelObjectCollisionEnter2DEvent>();
         Bind<LevelEditorLevelObjectTriggerEnter2DEvent>();
-        Bind<LevelEditorSelectedLevelObjectTransformWasResetEvent>();
 
         Bind<TapEvent>();
         Bind<TwistEvent>();

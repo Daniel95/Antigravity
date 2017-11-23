@@ -32,6 +32,14 @@ public class LevelEditorTileContext : Context {
             .Do<AbortIfLevelEditorStateIsNotLevelEditorStateCommand>(LevelEditorState.ErasingTile)
             .GotoState<LevelEditorErasingTileContext>();
 
+        On<LevelEditorTouchDownOnLevelObjectEvent>()
+            .Do<AbortIfLevelEditorMousePositionDoesContainTileCommand>()
+            .Do<LevelEditorUpdateSelectedLevelObjectCommand>()
+            .Do<DispatchGoToLevelEditorStateEventCommand>(LevelEditorState.LevelObject);
+
+        On<LevelEditorTouchDownOnTileEvent>()
+            .Do<LevelEditorStartSelectionFieldAtGridPositionCommand>();
+
         On<LevelEditorTouchStartOnGridPositionEvent>()
             .Do<AbortIfLevelEditorSelectionFieldIsDisabledCommand>()
             .Do<LevelEditorStartSelectionFieldAtGridPositionCommand>()
@@ -54,6 +62,11 @@ public class LevelEditorTileContext : Context {
         On<PinchStoppedEvent>()
             .Do<LevelEditorClearSelectionFieldCommand>()
             .Do<LevelEditorSetSelectionFieldEnabledCommand>(true);
+
+        On<LevelEditorSwipeMovedToGridPositionEvent>()
+            .Do<AbortIfLevelEditorGridPositionIsTheSameAsSelectedGridPositionCommand>()
+            .Do<LevelEditorUpdateSelectedGridPositionStatusCommand>()
+            .Do<DispatchLevelEditorSwipeMovedToNewGridPositionEventCommand>();
 
         On<LevelEditorSwipeMovedToNewGridPositionEvent>()
             .Do<AbortIfLevelEditorSelectionFieldIsDisabledCommand>()
@@ -82,6 +95,13 @@ public class LevelEditorTileContext : Context {
         On<LevelEditorSelectionFieldEnabledUpdatedEvent>()
             .Do<AbortIfLevelEditorSelectionFieldIsEnabledCommand>()
             .Do<ShowBoxOverlayCommand>(false);
+
+        On<CameraZoomedEvent>()
+            .Do<AbortIfGridOverlayIsNotShownCommand>()
+            .Do<SetGridOverlaySizeToScreenWorldSizeCommand>();
+
+        On<LevelEditorGridSnapSizeStatusUpdatedEvent>()
+            .Do<LevelEditorSetGridOverlayStepToTileSnapSizeCommand>();
 
     }
 

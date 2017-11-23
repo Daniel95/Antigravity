@@ -59,31 +59,9 @@ public class LevelEditorCreatingContext : Context {
             .Do<AbortIfMousePositionIsNotOverLevelObjectCommand>()
             .Dispatch<LevelEditorTouchDownOnLevelObjectEvent>();
 
-        On<LevelEditorTouchDownOnLevelObjectEvent>()
-            .Do<AbortIfContextStateIsCommand<LevelEditorLevelObjectContext>>()
-            .GotoState<LevelEditorLevelObjectContext>();
-
-        On<LevelEditorTouchDownOnLevelObjectEvent>()
-            .Do<LevelEditorUpdateSelectedLevelObjectCommand>();
-
         On<LevelEditorTouchStartOnGridPositionEvent>()
-            .Do<AbortIfMousePositionIsOverLevelObjectCommand>()
-            .Do<AbortIfContextStateIsCommand<LevelEditorTileContext>>()
             .Do<AbortIfLevelEditorGridPositionDoesNotContainTileCommand>()
-            .Do<LevelEditorStartSelectionFieldAtGridPositionCommand>()
-            .GotoState<LevelEditorTileContext>();
-
-        On<LevelEditorSwipeMovedToGridPositionEvent>()
-            .Do<AbortIfLevelEditorGridPositionIsTheSameAsSelectedGridPositionCommand>()
-            .Do<LevelEditorUpdateSelectedGridPositionStatusCommand>()
-            .Do<DispatchLevelEditorSwipeMovedToNewGridPositionEventCommand>();
-
-        On<CameraZoomedEvent>()
-            .Do<AbortIfGridOverlayIsNotShownCommand>()
-            .Do<SetGridOverlaySizeToScreenWorldSizeCommand>();
-
-        On<LevelEditorGridSnapSizeStatusUpdatedEvent>()
-            .Do<LevelEditorSetGridOverlayStepToTileSnapSizeCommand>();
+            .Do<DispatchLevelEditorTouchDownOnTileEventCommand>();
 
     }
 

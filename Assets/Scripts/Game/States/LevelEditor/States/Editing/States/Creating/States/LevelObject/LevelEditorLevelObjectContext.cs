@@ -25,6 +25,15 @@ public class LevelEditorLevelObjectContext : Context {
             .Do<AbortIfLevelEditorSelectedLevelObjectIsNullCommand>()
             .Do<LevelEditorUnselectSelectedLevelObjectCommand>();
 
+        On<LevelEditorTouchDownOnTileEvent>()
+            .Do<AbortIfMousePositionIsOverLevelObjectCommand>()
+            .Do<LevelEditorStartSelectionFieldAtGridPositionCommand>()
+            .Do<AbortIfContextStateIsCommand<LevelEditorTileContext>>()
+            .Do<DispatchGoToLevelEditorStateEventCommand>(LevelEditorState.Tile);
+
+        On<LevelEditorTouchDownOnLevelObjectEvent>()
+            .Do<LevelEditorUpdateSelectedLevelObjectCommand>();
+
         On<TouchUpEvent>()
             .Do<LevelEditorSetReleasedSinceLevelObjectSpawnStatusCommand>(true);
 
