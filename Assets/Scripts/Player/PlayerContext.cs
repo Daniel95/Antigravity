@@ -33,12 +33,6 @@ public class PlayerContext : Context {
         On<LeaveContextSignal>()
             .Do<RemoveStatusViewFromStatusViewContainerCommand<PlayerRotateAroundCornerStatusView>>();
 
-        On<PlayerTriggerEnter2DEvent>()
-            .Do<AbortIfTriggerTagIsNotTheSameCommand>(Tags.Finish)
-            .Do<AddCurrentSceneToCompletedLevelsCommand>()
-            .Do<SaveGameStateCommand>()
-            .Dispatch<GoToNextSceneEvent>();
-
         On<JumpInputEvent>()
             .Do<AbortIfPlayerJumpStatusIsNotEnabledCommand>()
             .Dispatch<PlayerTryJumpEvent>();

@@ -17,7 +17,7 @@ public class LevelEditorLevelSelectedContext : Context {
 
         On<GoToLevelEditorLevelOverviewStateButtonClickedEvent>()
             .Do<LevelEditorClearLevelNameStatusCommand>()
-            .Do<DispatchGoToLevelEditorStateEventCommand>(LevelEditorState.LevelOverview);
+            .Do<DispatchGoToLevelEditorStateEventCommand>(LevelEditorState.LevelsOverview);
 
     }
 

@@ -9,5 +9,11 @@ public class GameLevelContext : Context {
             .AddContext<LevelUIContext>()
             .GotoState<LevelContext>();
 
+        On<PlayerCollisionEnter2DEvent>()
+            .Do<AbortIfCollisionTagIsNotTheSameAsCommand>(Tags.Finish)
+            .Do<AddCurrentSceneToCompletedLevelsCommand>()
+            .Do<SaveGameStateCommand>()
+            .Dispatch<GoToNextSceneEvent>();
+
     }
 }

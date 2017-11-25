@@ -29,6 +29,7 @@ public class LevelContext : Context {
             .GotoState<PlayerContext>()
             .Do<SetFollowCameraTargetCommand>()
             .Do<EnableFollowCameraCommand>(true);
+
     }
 
 }

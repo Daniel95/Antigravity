@@ -22,5 +22,9 @@ public class LevelEditorTestingContext : Context {
             .Do<DestroyLevelContainerCommand>()
             .Do<DestroyChildInCanvasLayerCommand>("UI/LevelEditor/Testing/GoToLevelEditorLevelSelectStateButtonUI", CanvasLayer.UI);
 
+        On<PlayerCollisionEnter2DEvent>()
+            .Do<AbortIfCollisionTagIsNotTheSameAsCommand>(Tags.Finish)
+            .Do<DispatchGoToLevelEditorStateEventCommand>(LevelEditorState.LevelSelect);
+
     }
 }
