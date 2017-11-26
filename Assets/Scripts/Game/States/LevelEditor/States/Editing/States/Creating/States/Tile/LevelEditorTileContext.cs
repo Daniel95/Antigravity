@@ -34,8 +34,8 @@ public class LevelEditorTileContext : Context {
 
         On<LevelEditorTouchDownOnLevelObjectEvent>()
             .Do<AbortIfLevelEditorMousePositionDoesContainTileCommand>()
-            .Do<LevelEditorUpdateSelectedLevelObjectCommand>()
-            .Do<DispatchGoToLevelEditorStateEventCommand>(LevelEditorState.LevelObject);
+            .Do<DispatchGoToLevelEditorStateEventCommand>(LevelEditorState.LevelObject)
+            .Do<LevelEditorUpdateSelectedLevelObjectCommand>();
 
         On<LevelEditorTouchDownOnTileEvent>()
             .Do<LevelEditorStartSelectionFieldAtGridPositionCommand>();
