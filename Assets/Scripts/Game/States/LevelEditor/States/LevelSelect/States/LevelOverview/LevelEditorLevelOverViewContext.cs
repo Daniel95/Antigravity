@@ -7,14 +7,14 @@ public class LevelEditorLevelOverViewContext : Context {
 
         On<EnterContextSignal>()
             .Do<InstantiateViewInCanvasLayerCommand>("UI/LevelEditor/LevelSelect/LevelOverview/GoToLevelEditorMainMenuStateButtonUI", CanvasLayer.UI)
-            .Do<DispatchLevelEditorSetlevelSelectButtonInteractableEventCommand>(true);
+            .Do<DispatchSetlevelSelectButtonInteractableEventCommand>(true);
 
         On<LeaveContextSignal>()
             .Do<DestroyChildInCanvasLayerCommand>("UI/LevelEditor/LevelSelect/LevelOverview/GoToLevelEditorMainMenuStateButtonUI", CanvasLayer.UI)
-            .Do<DispatchLevelEditorSetlevelSelectButtonInteractableEventCommand>(false);
+            .Do<DispatchSetlevelSelectButtonInteractableEventCommand>(false);
 
-        On<LevelEditorLevelSelectButtonClickedEvent>()
-            .Do<LevelEditorUpdateLevelNameStatusCommand>()
+        On<LevelSelectButtonClickedEvent>()
+            .Do<UpdateLevelNameStatusCommand>()
             .Do<DispatchGoToLevelEditorStateEventCommand>(LevelEditorState.LevelSelected);
 
     }

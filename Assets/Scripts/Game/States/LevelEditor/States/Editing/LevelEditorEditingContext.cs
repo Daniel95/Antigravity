@@ -6,37 +6,37 @@ public class LevelEditorEditingContext : Context {
         base.SetBindings();
 
         On<EnterContextSignal>()
-            .GotoState<LevelEditorCreatingContext>()
+            .GotoState<LevelEditorCreateContext>()
             .Do<InstantiateViewInCanvasLayerCommand>("UI/LevelEditor/Editing/GoToSavingStateButtonUI", CanvasLayer.UI)
             .Do<InstantiateViewInCanvasLayerCommand>("UI/LevelEditor/Editing/GoToMainMenuStateButtonUI", CanvasLayer.UI);
 
         On<EnterContextSignal>()
-            .Do<AbortIfLevelEditorLevelNameStatusLoadedLevelNameIsNullOrEmptyCommand>()
+            .Do<AbortIfLevelNameStatusLoadedLevelNameIsNullOrEmptyCommand>()
             .Do<LevelEditorLoadLevelSaveDataCommand>();
 
         On<LeaveContextSignal>()
-            .Do<LevelEditorClearGridCommand>()
+            .Do<ClearLevelEditorGridCommand>()
             .Do<LevelEditorClearLevelObjectsCommand>()
-            .Do<LevelEditorClearLevelNameStatusCommand>()
+            .Do<ClearLevelNameStatusCommand>()
             .Do<ResetCamerPositionCommand>()
             .Do<ResetCameraOrthographicSizeToSystemDefaultCommand>()
             .Do<DestroyChildInCanvasLayerCommand>("UI/LevelEditor/Editing/GoToSavingStateButtonUI", CanvasLayer.UI)
             .Do<DestroyChildInCanvasLayerCommand>("UI/LevelEditor/Editing/GoToMainMenuStateButtonUI", CanvasLayer.UI);
 
         On<GoToLevelEditorStateEvent>()
-            .Do<AbortIfLevelEditorStateIsNotLevelEditorStateCommand>(LevelEditorState.Creating)
-            .GotoState<LevelEditorCreatingContext>();
+            .Do<AbortIfLevelEditorStateIsNotLevelEditorStateCommand>(LevelEditorState.Create)
+            .GotoState<LevelEditorCreateContext>();
 
         On<GoToLevelEditorStateEvent>()
-            .Do<AbortIfLevelEditorStateIsNotLevelEditorStateCommand>(LevelEditorState.Navigating)
-            .GotoState<LevelEditorNavigatingContext>();
+            .Do<AbortIfLevelEditorStateIsNotLevelEditorStateCommand>(LevelEditorState.Navigate)
+            .GotoState<LevelEditorNavigateContext>();
 
         On<GoToLevelEditorStateEvent>()
-            .Do<AbortIfLevelEditorStateIsNotLevelEditorStateCommand>(LevelEditorState.Saving)
-            .GotoState<LevelEditorSavingContext>();
+            .Do<AbortIfLevelEditorStateIsNotLevelEditorStateCommand>(LevelEditorState.Save)
+            .GotoState<SaveCreatedLevelContext>();
 
-        OnChild<LevelEditorSavingContext, LevelEditorSaveLevelEvent>()
-            .GotoState<LevelEditorCreatingContext>();
+        OnChild<SaveCreatedLevelContext, SaveCreatedLevelEvent>()
+            .GotoState<LevelEditorCreateContext>();
 
     }
 

@@ -69,7 +69,7 @@ public class DebugInputView : View {
     }
 
     public void DeleteAllLevelData() {
-        SerializeHelper.DeleteFilesInFolder(LevelEditorLevelDataPath.Path);
+        SerializeHelper.DeleteFilesInFolder(LevelDataPath.Path);
     }
 
     private static DebugInputView GetInstance() {
