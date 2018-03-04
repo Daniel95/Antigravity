@@ -10,19 +10,13 @@ public class UpdateSelectedLevelObjectTransformTypeToSelectedLevelObjectCommand 
         GenerateableLevelObjectNode generateableLevelObjectNode = GenerateableLevelObjectLibrary.GetNode(levelObjectType);
 
         if (SelectedLevelObjectTransformTypeStatus.TransformType == null) {
-            UpdateTransformTypeToLevelObjectDefault(generateableLevelObjectNode);
-            return;
+            SelectedLevelObjectTransformTypeStatus.TransformType = generateableLevelObjectNode.GetDefaultLevelObjectInputType();
         } else {
             bool selectedLevelObjectContainsCurrentTransformType = generateableLevelObjectNode.TransformTypes.Contains((LevelObjectTransformType)SelectedLevelObjectTransformTypeStatus.TransformType);
             if (!selectedLevelObjectContainsCurrentTransformType) {
-                UpdateTransformTypeToLevelObjectDefault(generateableLevelObjectNode);
+                SelectedLevelObjectTransformTypeStatus.TransformType = generateableLevelObjectNode.GetDefaultLevelObjectInputType();
             }
         }
-    }
-
-    private void UpdateTransformTypeToLevelObjectDefault(GenerateableLevelObjectNode generateableLevelObjectNode) {
-        LevelObjectTransformType defaultTransformType = generateableLevelObjectNode.GetDefaultLevelObjectInputType();
-        SelectedLevelObjectTransformTypeStatus.TransformType = defaultTransformType;
     }
 
 }
