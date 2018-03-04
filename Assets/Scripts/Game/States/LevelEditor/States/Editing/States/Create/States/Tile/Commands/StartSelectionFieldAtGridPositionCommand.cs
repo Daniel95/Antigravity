@@ -6,11 +6,11 @@ public class StartSelectionFieldAtGridPositionCommand : Command {
     [InjectParameter] private Vector2 gridPosition;
 
     protected override void Execute() {
-        Vector2 startPosition = VectorHelper.FloorTo(gridPosition, GridSnapSizeStatus.Size);
+        Vector2 startPosition = VectorHelper.FloorTo(gridPosition, GridSnapSizeStatusView.Size);
         Vector2 endPosition = startPosition;
 
-        endPosition.x += GridSnapSizeStatus.Size.x - 1;
-        endPosition.y += GridSnapSizeStatus.Size.y - 1;
+        endPosition.x += GridSnapSizeStatusView.Size.x - 1;
+        endPosition.y += GridSnapSizeStatusView.Size.y - 1;
 
         SelectionFieldStatusView.SelectionFieldStartGridPosition = startPosition;
         SelectionFieldStatusView.SelectionFieldEndGridPosition = endPosition;

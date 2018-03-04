@@ -190,6 +190,7 @@ public class GameContext : Context {
         Bind<PlayerSessionStatsStatus>();
         Bind<LevelNameStatus>();
         Bind<SelectedGridPositionStatus>();
+        Bind<RectangulatedTileGridStatus>();
         Bind<ReleasedSinceLevelObjectSpawnStatus>();
         Bind<LevelObjectTranslateStartOffsetStatus>();
         Bind<LevelContainerTransformStatus>();

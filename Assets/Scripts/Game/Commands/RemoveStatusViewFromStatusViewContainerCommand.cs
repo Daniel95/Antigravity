@@ -1,6 +1,6 @@
 ﻿using IoCPlus;
 
-public class RemoveStatusViewFromStatusViewContainerCommand<T> : Command where T : StatusView {
+public class RemoveStatusViewFromStatusViewContainerCommand<T> : Command where T : View {
 
     [Inject] private Ref<IStatusViewContainer> statusViewContainerRef;
 

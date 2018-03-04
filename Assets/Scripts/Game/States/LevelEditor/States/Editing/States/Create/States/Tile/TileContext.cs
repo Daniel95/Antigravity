@@ -50,7 +50,8 @@ public class TileContext : Context {
             .Dispatch<SpawningTilesStoppedEvent>()
             .Do<ClearSelectionFieldCommand>()
             .Do<ClearSelectionFieldAvailableGridPositionsCommand>()
-            .Do<ShowBoxOverlayCommand>(false);
+            .Do<ShowBoxOverlayCommand>(false)
+            .Do<UpdateRectangulatedTileGridCommand>();
 
         On<PinchStartedEvent>()
             .Do<SetSelectionFieldEnabledCommand>(false);
@@ -77,7 +78,8 @@ public class TileContext : Context {
             .Dispatch<SpawningTilesStoppedEvent>()
             .Do<ClearSelectionFieldCommand>()
             .Do<ClearSelectionFieldAvailableGridPositionsCommand>()
-            .Do<ShowBoxOverlayCommand>(false);
+            .Do<ShowBoxOverlayCommand>(false)
+            .Do<UpdateRectangulatedTileGridCommand>();
 
         On<SelectionFieldTileSpawnLimitReachedEvent>()
             .Do<SetSelectionFieldBoxColorTypeCommand>(LevelEditorSelectionFieldBoxColorType.Error);

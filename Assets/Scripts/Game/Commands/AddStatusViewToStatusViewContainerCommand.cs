@@ -1,6 +1,6 @@
 ﻿using IoCPlus;
 
-public class AddStatusViewToStatusViewContainerCommand<T> : Command where T : StatusView {
+public class AddStatusViewToStatusViewContainerCommand<T> : Command where T : View {
 
     [Inject] private Ref<IStatusViewContainer> statusViewContainerRef;
 

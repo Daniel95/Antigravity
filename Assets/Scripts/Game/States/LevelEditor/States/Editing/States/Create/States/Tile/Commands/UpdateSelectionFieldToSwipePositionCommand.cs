@@ -6,18 +6,18 @@ public class UpdateSelectionFieldToSwipePositionCommand : Command {
     [InjectParameter] private Vector2 gridPosition;
 
     protected override void Execute() {
-        Vector2 gridStartDivision = VectorHelper.Divide(SelectionFieldStatusView.SelectionFieldStartGridPosition, GridSnapSizeStatus.Size);
+        Vector2 gridStartDivision = VectorHelper.Divide(SelectionFieldStatusView.SelectionFieldStartGridPosition, GridSnapSizeStatusView.Size);
         Vector2 snapStartPosition = VectorHelper.Floor(gridStartDivision);
-        Vector2 startPosition = VectorHelper.Multiply(snapStartPosition, GridSnapSizeStatus.Size);
+        Vector2 startPosition = VectorHelper.Multiply(snapStartPosition, GridSnapSizeStatusView.Size);
 
-        Vector2 gridEndDivision = VectorHelper.Divide(gridPosition, GridSnapSizeStatus.Size);
+        Vector2 gridEndDivision = VectorHelper.Divide(gridPosition, GridSnapSizeStatusView.Size);
         Vector2 snapEndPosition = VectorHelper.Floor(gridEndDivision);
-        Vector2 endPosition = VectorHelper.Multiply(snapEndPosition, GridSnapSizeStatus.Size);
+        Vector2 endPosition = VectorHelper.Multiply(snapEndPosition, GridSnapSizeStatusView.Size);
 
         Vector2 direction = VectorHelper.Clamp(snapEndPosition - snapStartPosition, -1, 1);
 
-        int xOffset = (int)GridSnapSizeStatus.Size.x - 1;
-        int yOffset = (int)GridSnapSizeStatus.Size.y - 1;
+        int xOffset = (int)GridSnapSizeStatusView.Size.x - 1;
+        int yOffset = (int)GridSnapSizeStatusView.Size.y - 1;
 
         if (direction.x >= 0) {
             endPosition.x += xOffset;

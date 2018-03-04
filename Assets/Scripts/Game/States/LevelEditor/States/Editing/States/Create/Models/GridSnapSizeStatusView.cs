@@ -1,7 +1,7 @@
 ﻿using IoCPlus;
 using UnityEngine;
 
-public class GridSnapSizeStatus : View {
+public class GridSnapSizeStatusView : View {
 
     [Inject] private static GridSnapSizeStatusUpdatedEvent gridSnapSizeStatusUpdatedEvent;
 

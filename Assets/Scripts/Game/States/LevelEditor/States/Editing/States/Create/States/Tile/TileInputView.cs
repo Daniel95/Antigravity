@@ -8,6 +8,7 @@ public class TileInputView : View, ITileInput {
     public int SpawnLimit { get { return spawnLimit; } }
 
     [Inject] private SelectionFieldTileSpawnLimitReachedEvent selectionFieldTileSpawnLimitReachedEvent;
+    [Inject] private RectangulatedTileGridStatus rectangulatedTileGridStatus;
     [Inject] private Ref<ITileInput> levelEditorTileInputRef;
 
     [SerializeField] private int spawnLimit = 100;
@@ -53,8 +54,7 @@ public class TileInputView : View, ITileInput {
     }
 
     public void ReplaceNewTilesInSelectionField() {
-
-
+        List<Vector2> rectangulatedTileGrid = rectangulatedTileGridStatus.LastUpdatedRectangulatedTileGrid;
 
         //levelVolume
 
