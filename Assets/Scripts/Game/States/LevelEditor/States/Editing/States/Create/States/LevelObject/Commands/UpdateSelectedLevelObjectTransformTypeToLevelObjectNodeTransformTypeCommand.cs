@@ -4,7 +4,7 @@ public class UpdateSelectedLevelObjectTransformTypeToLevelObjectNodeTransformTyp
 
     protected override void Execute() {
         LevelObjectTransformType levelObjectTransformType = SelectedLevelObjectNodeStatus.LevelObjectNode.GetDefaultLevelObjectInputType();
-        SelectedLevelObjectTransformTypeStatus.TransformType = levelObjectTransformType;
+        SelectedLevelObjectTransformTypeStatusView.TransformType = levelObjectTransformType;
     }
 
 }

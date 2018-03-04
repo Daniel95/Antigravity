@@ -1,7 +1,7 @@
 ﻿using IoCPlus;
 using UnityEngine;
 
-public class SelectedLevelObjectTransformTypeStatus : StatusView {
+public class SelectedLevelObjectTransformTypeStatusView : View {
 
     [Inject] private static SelectedLevelObjectTransformTypeStatusUpdatedEvent selectedLevelObjectTransformTypeStatusUpdatedEvent;
 

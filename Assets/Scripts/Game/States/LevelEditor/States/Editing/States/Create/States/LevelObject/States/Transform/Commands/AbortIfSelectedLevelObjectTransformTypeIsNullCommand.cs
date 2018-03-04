@@ -3,7 +3,7 @@
 public class AbortIfSelectedLevelObjectTransformTypeIsNullCommand : Command {
 
     protected override void Execute() {
-        if(SelectedLevelObjectTransformTypeStatus.TransformType == null) {
+        if(SelectedLevelObjectTransformTypeStatusView.TransformType == null) {
             Abort();
         }
     }

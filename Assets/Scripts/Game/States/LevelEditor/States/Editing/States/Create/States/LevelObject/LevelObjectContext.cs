@@ -8,7 +8,7 @@ public class LevelObjectContext : Context {
 
         On<EnterContextSignal>()
             .AddContext<LevelObjectTransformContext>()
-            .Do<AddStatusViewToStatusViewContainerCommand<SelectedLevelObjectTransformTypeStatus>>()
+            .Do<AddStatusViewToStatusViewContainerCommand<SelectedLevelObjectTransformTypeStatusView>>()
             .Do<InstantiateViewInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/LevelObject/GoToTileStateButtonUI", CanvasLayer.UI)
             .Do<InstantiateViewInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/LevelObject/LevelObjectButtonGridLayoutGroupUI", CanvasLayer.UI)
             .Do<InstantiateLevelObjectButtonsCommand>("UI/LevelEditor/Editing/Creating/LevelObject/LevelObjectButtonUI")
@@ -16,7 +16,7 @@ public class LevelObjectContext : Context {
 
         On<LeaveContextSignal>()
             .Do<ResetSelectedLevelObjectTransformTypeStatusCommand>()
-            .Do<RemoveStatusViewFromStatusViewContainerCommand<SelectedLevelObjectTransformTypeStatus>>()
+            .Do<RemoveStatusViewFromStatusViewContainerCommand<SelectedLevelObjectTransformTypeStatusView>>()
             .Do<DestroyChildInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/LevelObject/GoToTileStateButtonUI", CanvasLayer.UI)
             .Do<DestroyChildInCanvasLayerCommand>("UI/LevelEditor/Editing/Creating/LevelObject/LevelObjectButtonGridLayoutGroupUI", CanvasLayer.UI)
             .Do<EnableLevelObjectZonesStandardColorEditorAlphaCommand>(false);

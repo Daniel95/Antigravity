@@ -1,6 +1,8 @@
-﻿public interface IStatusViewContainer {
+﻿using IoCPlus;
 
-    void AddStatusView<T>() where T : StatusView;
-    void RemoveStatusView<T>() where T : StatusView;
+public interface IStatusViewContainer {
+
+    void AddStatusView<T>() where T : View;
+    void RemoveStatusView<T>() where T : View;
 
 }

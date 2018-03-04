@@ -1,6 +1,6 @@
 ﻿using IoCPlus;
 
-public class PlayerRotateAroundCornerStatusView : StatusView {
+public class PlayerRotateAroundCornerStatusView : View {
 
     [Inject] private static PlayerStartedRotatingAroundCornerEvent playerStartRotatingAroundCornerEvent;
     [Inject] private static PlayerStoppedRotatingAroundCornerEvent playerStopRotatingAroundCorner;

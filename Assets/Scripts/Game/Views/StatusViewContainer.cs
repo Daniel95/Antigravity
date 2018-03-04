@@ -8,9 +8,9 @@ public class StatusViewContainer : View, IStatusViewContainer {
 
     [Inject] private Ref<IStatusViewContainer> statusViewContainerRef;
 
-    private Dictionary<string, StatusView> statusViewsByKey = new Dictionary<string, StatusView>();
+    private Dictionary<string, View> statusViewsByKey = new Dictionary<string, View>();
 
-    public void AddStatusView<T>() where T : StatusView {
+    public void AddStatusView<T>() where T : View {
         string name = typeof(T).ToString();
         GameObject gameObjectStatusViewGameObject = new GameObject() {
             name = name,
@@ -21,9 +21,9 @@ public class StatusViewContainer : View, IStatusViewContainer {
         context.AddView(statusView);
     }
 
-    public void RemoveStatusView<T>() where T : StatusView {
+    public void RemoveStatusView<T>() where T : View {
         string name = typeof(T).ToString();
-        StatusView statusView = statusViewsByKey[name];
+        View statusView = statusViewsByKey[name];
         statusView.Destroy();
         statusViewsByKey.Remove(name);
     }

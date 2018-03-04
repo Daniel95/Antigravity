@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SelectionFieldStatusView : StatusView {
+public class SelectionFieldStatusView : View {
 
     public static bool Enabled {
         get {
